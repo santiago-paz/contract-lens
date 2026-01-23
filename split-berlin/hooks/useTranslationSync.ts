@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { translateText } from '@/app/actions';
 
 export type Side = 'left' | 'right' | null;
 
@@ -17,21 +18,6 @@ interface UseTranslationSyncReturn {
   isTranslating: boolean;
 }
 
-// Mock translation function
-const mockTranslate = async (text: string, toLang: Language): Promise<string> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Basic text manipulation to simulate translation
-      if (!text || text === '<p></p>') return resolve('');
-      
-      // In a real app, this would call an API with 'toLang'
-      const prefix = ''; 
-      
-      resolve(`${prefix}${text}`);
-    }, 1000); 
-  });
-};
-
 export const useTranslationSync = ({ 
   initialLeftLang = 'en', 
   initialRightLang = 'de' 
@@ -41,8 +27,11 @@ export const useTranslationSync = ({
   const [isTranslating, setIsTranslating] = useState(false);
   const [lastEditedSide, setLastEditedSide] = useState<Side>(null);
 
-  // Debounce refs
+  // Debounce ref (shared between sides to ensure only one active translation timer)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Request counter to handle race conditions (ignore old responses)
+  const requestCounter = useRef(0);
 
   const handleLeftChange = (content: string) => {
     setLeftContent(content);
@@ -54,43 +43,34 @@ export const useTranslationSync = ({
     setLastEditedSide('right');
   };
 
+  // Effect for Left -> Right translation
   useEffect(() => {
-    // Clear existing timeout on every render (content change)
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // If no specific side was edited recently (initial load), do nothing
-    if (!lastEditedSide) return;
-
-    // Logic: If Left changed, translate to Right
+    // Only trigger if the user was the last one to edit the LEFT side
     if (lastEditedSide === 'left') {
-      timeoutRef.current = setTimeout(async () => {
-        setIsTranslating(true);
-        try {
-          const translated = await mockTranslate(leftContent, initialRightLang);
-          setRightContent(translated); 
-        } catch (error) {
-          console.error("Translation failed", error);
-        } finally {
-          setIsTranslating(false);
-        }
-      }, 1000); 
-    }
+      const currentRequestId = ++requestCounter.current;
 
-    // Logic: If Right changed, translate to Left
-    if (lastEditedSide === 'right') {
+      // Clear existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
       timeoutRef.current = setTimeout(async () => {
         setIsTranslating(true);
         try {
-          const translated = await mockTranslate(rightContent, initialLeftLang);
-          setLeftContent(translated);
+          const translated = await translateText(leftContent, initialRightLang, initialLeftLang);
+          // Only update if this is still the latest request
+          if (currentRequestId === requestCounter.current) {
+            setRightContent(translated); 
+          }
         } catch (error) {
           console.error("Translation failed", error);
         } finally {
-          setIsTranslating(false);
+          // Only update loading state if this is still the latest request
+          if (currentRequestId === requestCounter.current) {
+            setIsTranslating(false);
+          }
         }
-      }, 1000);
+      }, 2500); 
     }
 
     return () => {
@@ -98,7 +78,44 @@ export const useTranslationSync = ({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [leftContent, rightContent, lastEditedSide, initialLeftLang, initialRightLang]);
+  }, [leftContent, lastEditedSide, initialRightLang, initialLeftLang]); // NOTE: rightContent is NOT a dependency here to avoid loops
+
+  // Effect for Right -> Left translation
+  useEffect(() => {
+    // Only trigger if the user was the last one to edit the RIGHT side
+    if (lastEditedSide === 'right') {
+      const currentRequestId = ++requestCounter.current;
+
+      // Clear existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(async () => {
+        setIsTranslating(true);
+        try {
+          const translated = await translateText(rightContent, initialLeftLang, initialRightLang);
+          // Only update if this is still the latest request
+          if (currentRequestId === requestCounter.current) {
+            setLeftContent(translated);
+          }
+        } catch (error) {
+          console.error("Translation failed", error);
+        } finally {
+          // Only update loading state if this is still the latest request
+          if (currentRequestId === requestCounter.current) {
+            setIsTranslating(false);
+          }
+        }
+      }, 2500);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [rightContent, lastEditedSide, initialLeftLang, initialRightLang]); // NOTE: leftContent is NOT a dependency here to avoid loops
 
   return {
     leftContent,

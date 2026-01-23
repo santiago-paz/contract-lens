@@ -1,8 +1,8 @@
 'use client';
 
 import RichEditor from '@/components/RichEditor';
-import { useTranslationSync, Language } from '@/hooks/useTranslationSync';
-import { ArrowRightLeft, FileText, Loader2 } from 'lucide-react';
+import { Language, useTranslationSync } from '@/hooks/useTranslationSync';
+import { ArrowRightLeft, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 const LANGUAGES: { code: Language; label: string }[] = [
@@ -16,12 +16,12 @@ export default function Home() {
   const [leftLang, setLeftLang] = useState<Language>('en');
   const [rightLang, setRightLang] = useState<Language>('de');
 
-  const { 
-    leftContent, 
-    rightContent, 
-    handleLeftChange, 
+  const {
+    leftContent,
+    rightContent,
+    handleLeftChange,
     handleRightChange,
-    isTranslating 
+    isTranslating
   } = useTranslationSync({
     initialLeftLang: leftLang,
     initialRightLang: rightLang
@@ -33,11 +33,11 @@ export default function Home() {
       <header className="bg-white border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
         <div className="flex items-center gap-2">
           <div className="bg-blue-600 p-2 rounded-md">
-            <FileText className="w-5 h-5 text-white" />
+            <ArrowRightLeft className="w-5 h-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Split Berlin</h1>
+          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Split-Berlin</h1>
         </div>
-        
+
         <div className="flex items-center gap-4">
           {isTranslating && (
             <div className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full animate-pulse">
@@ -45,7 +45,7 @@ export default function Home() {
               <span>Translating...</span>
             </div>
           )}
-          
+
           <button className="ml-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors">
             Export
           </button>
@@ -55,7 +55,7 @@ export default function Home() {
       {/* Main Content - Split View */}
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         <div className="max-w-[1800px] mx-auto w-full h-full flex flex-col gap-6">
-          
+
           <div className="flex items-center justify-center gap-2 text-gray-500 mb-2">
             <ArrowRightLeft className="w-4 h-4" />
             <span className="text-xs font-medium uppercase tracking-wider">Auto-Sync Enabled</span>
@@ -64,7 +64,7 @@ export default function Home() {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 h-full min-h-[600px]">
             {/* Left Editor */}
             <div className="h-full flex flex-col">
-              <RichEditor 
+              <RichEditor
                 language={leftLang}
                 availableLanguages={LANGUAGES}
                 onLanguageChange={setLeftLang}
@@ -76,7 +76,7 @@ export default function Home() {
 
             {/* Right Editor */}
             <div className="h-full flex flex-col">
-              <RichEditor 
+              <RichEditor
                 language={rightLang}
                 availableLanguages={LANGUAGES}
                 onLanguageChange={setRightLang}
