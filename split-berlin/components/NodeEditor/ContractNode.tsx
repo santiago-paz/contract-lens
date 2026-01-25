@@ -87,7 +87,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
       <div
         className={cn(
           "group relative flex items-start gap-2 p-3 rounded-lg border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-all",
-          level > 0 && "ml-6 border-l-2 " + getIndentColor(level),
+          level > 0 && "border-l-2 " + getIndentColor(level),
           isDragging && "bg-blue-50 border-blue-200 z-10"
         )}
         onMouseEnter={() => setIsHovered(true)}
@@ -175,7 +175,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
       {/* Children */}
       {node.isExpanded && node.children.length > 0 && (
         <SortableContext items={node.children.map(c => c.id)} strategy={verticalListSortingStrategy}>
-          <div className="flex flex-col gap-2 mt-2">
+          <div className="flex flex-col gap-2 mt-2 pl-6">
             {node.children.map((child, idx) => (
               <ContractNode
                 key={child.id}
