@@ -31,7 +31,7 @@ const RichEditor = ({
   const t = getTranslations();
 
   return (
-    <div className={cn("flex flex-col border rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>
+    <div className={cn("flex flex-col border border-gray-200 rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>
       <div className="bg-gray-50 border-b flex flex-col">
         <div className="px-4 py-2 flex justify-between items-center border-b border-gray-100">
           {/* Language Selector in Header */}
@@ -57,7 +57,7 @@ const RichEditor = ({
       <textarea
         name={`editor-${language}`}
         id={`editor-${language}`}
-        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400"
+        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-700 placeholder:text-gray-400"
         value={content}
         onChange={(e) => onChange(e.target.value)}
         readOnly={isReadOnly}

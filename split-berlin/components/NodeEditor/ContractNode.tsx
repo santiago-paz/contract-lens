@@ -155,7 +155,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
                 value={node.contentLeft}
                 onChange={(e) => onUpdate(node.id, 'left', e.target.value)}
                 placeholder={getPlaceholder('left')}
-                className="w-full min-h-[60px] p-2 text-sm text-gray-900 placeholder:text-gray-400 border rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-y bg-white"
+                className="w-full min-h-[60px] p-2 text-sm text-gray-700 placeholder:text-gray-400 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-y bg-white"
                 rows={Math.max(2, node.contentLeft.split('\n').length)}
               />
             </div>
@@ -164,7 +164,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
                 value={node.contentRight}
                 onChange={(e) => onUpdate(node.id, 'right', e.target.value)}
                 placeholder={getPlaceholder('right')}
-                className="w-full min-h-[60px] p-2 text-sm text-gray-900 placeholder:text-gray-400 border rounded-md focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none resize-y bg-gray-50/50"
+                className="w-full min-h-[60px] p-2 text-sm text-gray-700 placeholder:text-gray-400 border border-gray-200 rounded-md focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none resize-y bg-gray-50/50"
                 rows={Math.max(2, node.contentRight.split('\n').length)}
               />
             </div>
