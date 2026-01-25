@@ -2,21 +2,17 @@
 
 import { Language } from '@/hooks/useTranslationSync';
 import { cn } from '@/lib/utils';
-import Placeholder from '@tiptap/extension-placeholder';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { Globe, Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote } from 'lucide-react';
-import { useEffect } from 'react';
+import { Globe } from 'lucide-react';
 
 interface RichEditorProps {
   content: string;
-  onChange: (html: string) => void;
+  onChange: (text: string) => void;
   isReadOnly?: boolean;
   language: Language;
   availableLanguages: { code: Language; label: string }[];
   onLanguageChange: (lang: Language) => void;
   className?: string;
-  label?: string; // Keeping label prop optional if we want a static title override
+  label?: string;
   placeholder?: string;
 }
 
@@ -31,40 +27,6 @@ const RichEditor = ({
   label,
   placeholder
 }: RichEditorProps) => {
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions: [
-      StarterKit,
-      Placeholder.configure({
-        placeholder: placeholder || 'Escribe aquí...',
-      }),
-    ],
-    content: content,
-    editable: !isReadOnly,
-    editorProps: {
-      attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[500px] p-4',
-      },
-    },
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-  }, [placeholder]);
-
-  // Sync external content changes to editor
-  useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      const isFocused = editor.isFocused;
-      if (!isFocused) {
-        editor.commands.setContent(content, { emitUpdate: false });
-      }
-    }
-  }, [content, editor]);
-
-  if (!editor) {
-    return null;
-  }
-
   return (
     <div className={cn("flex flex-col border rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>
       <div className="bg-gray-50 border-b flex flex-col">
@@ -87,104 +49,18 @@ const RichEditor = ({
 
           <span className="text-xs text-gray-400 font-mono tracking-wider">{language.toUpperCase()}</span>
         </div>
-
-        {/* Formatting Toolbar */}
-        <div className="px-2 py-1.5 flex items-center gap-1 overflow-x-auto">
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            disabled={!editor.can().chain().focus().toggleBold().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('bold') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Bold"
-          >
-            <Bold className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            disabled={!editor.can().chain().focus().toggleItalic().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('italic') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Italic"
-          >
-            <Italic className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            disabled={!editor.can().chain().focus().toggleStrike().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('strike') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Strikethrough"
-          >
-            <Strikethrough className="w-4 h-4" />
-          </button>
-          
-          <div className="w-px h-4 bg-gray-300 mx-1" />
-
-          <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('heading', { level: 1 }) ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Heading 1"
-          >
-            <Heading1 className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('heading', { level: 2 }) ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Heading 2"
-          >
-            <Heading2 className="w-4 h-4" />
-          </button>
-
-          <div className="w-px h-4 bg-gray-300 mx-1" />
-
-          <button
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('bulletList') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Bullet List"
-          >
-            <List className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('orderedList') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Ordered List"
-          >
-            <ListOrdered className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={cn(
-              "p-1.5 rounded hover:bg-gray-200 transition-colors",
-              editor.isActive('blockquote') ? "bg-gray-200 text-black" : "text-gray-600"
-            )}
-            title="Blockquote"
-          >
-            <Quote className="w-4 h-4" />
-          </button>
-        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto cursor-text" onClick={() => editor.chain().focus().run()}>
-        <EditorContent editor={editor} />
-      </div>
+      <textarea
+        name={`editor-${language}`}
+        id={`editor-${language}`}
+        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-900"
+        value={content}
+        onChange={(e) => onChange(e.target.value)}
+        readOnly={isReadOnly}
+        placeholder={placeholder || 'Escribe aquí...'}
+        spellCheck={false}
+      />
     </div>
   );
 };

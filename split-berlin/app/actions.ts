@@ -7,8 +7,8 @@ export async function translateText(
   targetLang: string, 
   sourceLang?: string
 ) {
-  // Return empty string if content is empty or just a placeholder paragraph
-  if (!content || content.trim() === '' || content === '<p></p>') {
+  // Return empty string if content is empty
+  if (!content || content.trim() === '') {
     return '';
   }
 
@@ -33,10 +33,8 @@ export async function translateText(
     Guidelines:
     1. Maintain the precise legal meaning and nuance of the original text.
     2. Use formal legal terminology appropriate for the target jurisdiction.
-    3. Preserve the original formatting (HTML tags) if present.
-    4. Do not output any preamble, explanation, or notes. Return ONLY the translated text.
-    5. If the text appears to be a fragment, translate it as such, maintaining grammatical consistency.
-    6. CRITICAL: Maintain the exact HTML structure. If the input is a single paragraph <p>...</p>, the output MUST be a single paragraph <p>...</p>. Do not split content into multiple blocks.
+    3. Do not output any preamble, explanation, or notes. Return ONLY the translated text.
+    4. If the text appears to be a fragment, translate it as such, maintaining grammatical consistency.
 
     Target Input Text:
     ${content}
