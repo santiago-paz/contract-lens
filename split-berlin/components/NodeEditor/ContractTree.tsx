@@ -23,7 +23,7 @@ import {
 } from '@dnd-kit/sortable';
 
 export const ContractTree: React.FC = () => {
-  const t = getTranslations('es');
+  const t = getTranslations();
   const [nodes, setNodes] = useState<ContractNodeData[]>([
     {
       id: 'root-title',

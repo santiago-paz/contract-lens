@@ -6,7 +6,7 @@ import { ArrowRightLeft, FileText, Download } from 'lucide-react';
 import { getTranslations } from '@/lib/translations';
 
 export default function Home() {
-  const t = getTranslations('es');
+  const t = getTranslations();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">

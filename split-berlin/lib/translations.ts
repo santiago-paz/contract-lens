@@ -36,11 +36,49 @@ export const translations = {
       clauseLeft: "OBJETO DEL CONTRATO",
       clauseRight: "PURPOSE OF THE AGREEMENT",
     }
+  },
+  en: {
+    common: {
+      preview: "Preview",
+      export: "Export",
+      confirmDelete: "Are you sure you want to delete this node and its children?",
+    },
+    header: {
+      title: "Split-Berlin",
+      subtitle: "Structured Contract Editor",
+    },
+    editor: {
+      originalLanguage: "Original Language (A)",
+      translationLanguage: "Translation (B)",
+      addNode: "Add",
+      deleteNode: "Delete node",
+      addRootSection: "Add new main section:",
+      contentPlaceholder: "Content",
+      translationPlaceholder: "Translation",
+      richEditorPlaceholder: "Type here...",
+      nodeTypes: {
+        title: "Contract Title",
+        intro: "Introduction / Parties",
+        clause: "Main Clause",
+        subclause: "Subclause",
+        item: "Item",
+        subitem: "Sub-item",
+        final_clause: "Final Clause",
+      }
+    },
+    defaults: {
+      contractTitle: "SERVICE AGREEMENT",
+      contractTitleTranslation: "CONTRATO DE SERVICIOS",
+      introLeft: 'Between Alpha Solutions Ltd. (the "Provider") and...',
+      introRight: 'Entre Alpha Solutions Ltd. (el "Proveedor") y...',
+      clauseLeft: "PURPOSE OF THE AGREEMENT",
+      clauseRight: "OBJETO DEL CONTRATO",
+    }
   }
 };
 
-export type Translation = typeof translations.es;
+export type Translation = typeof translations.en;
 
-export const getTranslations = (lang: keyof typeof translations = 'es') => {
+export const getTranslations = (lang: keyof typeof translations = 'en') => {
   return translations[lang];
 };

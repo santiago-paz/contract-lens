@@ -28,7 +28,7 @@ const RichEditor = ({
   label,
   placeholder
 }: RichEditorProps) => {
-  const t = getTranslations('es');
+  const t = getTranslations();
 
   return (
     <div className={cn("flex flex-col border rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>

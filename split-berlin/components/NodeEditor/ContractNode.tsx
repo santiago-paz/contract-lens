@@ -27,7 +27,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
   onDelete,
   onToggleExpand,
 }) => {
-  const t = getTranslations('es');
+  const t = getTranslations();
   const [isHovered, setIsHovered] = React.useState(false);
 
   const {
