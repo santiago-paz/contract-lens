@@ -5,6 +5,7 @@ import { ContractNodeData, NodeType, NODE_TYPES, ROOT_TYPES } from '@/types/cont
 import { ContractNode } from './ContractNode';
 import { Plus } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
+import { getTranslations } from '@/lib/translations';
 import {
   DndContext,
   closestCenter,
@@ -22,28 +23,29 @@ import {
 } from '@dnd-kit/sortable';
 
 export const ContractTree: React.FC = () => {
+  const t = getTranslations('es');
   const [nodes, setNodes] = useState<ContractNodeData[]>([
     {
       id: 'root-title',
       type: 'title',
-      contentLeft: 'CONTRATO DE SERVICIOS',
-      contentRight: 'SERVICE AGREEMENT',
+      contentLeft: t.defaults.contractTitle,
+      contentRight: t.defaults.contractTitleTranslation,
       children: [],
       isExpanded: true,
     },
     {
       id: 'root-intro',
       type: 'intro',
-      contentLeft: 'Entre Alpha Solutions Ltd. (el "Proveedor") y...',
-      contentRight: 'Between Alpha Solutions Ltd. (the "Provider") and...',
+      contentLeft: t.defaults.introLeft,
+      contentRight: t.defaults.introRight,
       children: [],
       isExpanded: true,
     },
     {
       id: 'clause-1',
       type: 'clause',
-      contentLeft: 'OBJETO DEL CONTRATO',
-      contentRight: 'PURPOSE OF THE AGREEMENT',
+      contentLeft: t.defaults.clauseLeft,
+      contentRight: t.defaults.clauseRight,
       children: [],
       isExpanded: true,
     }
@@ -122,7 +124,7 @@ export const ContractTree: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este nodo y sus hijos?')) {
+    if (confirm(t.common.confirmDelete)) {
       setNodes(prev => deleteNodeFromTree(prev, id));
     }
   };
@@ -197,10 +199,10 @@ export const ContractTree: React.FC = () => {
 
         {/* Add Root Node Controls */}
         <div className="mt-8 pt-4 border-t border-dashed border-gray-300">
-          <p className="text-sm text-gray-500 mb-3 font-medium">Añadir nueva sección principal:</p>
+          <p className="text-sm text-gray-500 mb-3 font-medium">{t.editor.addRootSection}</p>
           <div className="flex flex-wrap gap-2">
             {ROOT_TYPES.map(type => {
-              const label = NODE_TYPES.find(t => t.type === type)?.label || type;
+              const label = t.editor.nodeTypes[type] || type;
               return (
                 <button
                   key={type}

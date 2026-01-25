@@ -4,6 +4,7 @@ import { ChevronRight, ChevronDown, Plus, Trash2, GripVertical, Type } from 'luc
 import { cn } from '@/lib/utils';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { getTranslations } from '@/lib/translations';
 
 interface ContractNodeProps {
   node: ContractNodeData;
@@ -26,6 +27,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
   onDelete,
   onToggleExpand,
 }) => {
+  const t = getTranslations('es');
   const [isHovered, setIsHovered] = React.useState(false);
 
   const {
@@ -44,7 +46,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
   };
 
   const getTypeLabel = (type: NodeType) => {
-    return NODE_TYPES.find((t) => t.type === type)?.label || type;
+    return t.editor.nodeTypes[type] || type;
   };
 
   const getIndentColor = (lvl: number) => {
@@ -114,7 +116,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
                     key={childType}
                     onClick={() => onAddChild(node.id, childType)}
                     className="flex items-center gap-1 p-1 px-2 hover:bg-blue-50 text-blue-600 border-r text-xs font-medium"
-                    title={`Añadir ${getTypeLabel(childType)}`}
+                    title={`${t.editor.addNode} ${getTypeLabel(childType)}`}
                   >
                     <Plus className="w-3 h-3" />
                     {getTypeLabel(childType)}
@@ -124,7 +126,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
                 <button
                   onClick={() => onDelete(node.id)}
                   className="p-1 hover:bg-red-50 text-red-600 px-2"
-                  title="Eliminar nodo"
+                  title={t.editor.deleteNode}
                 >
                   <Trash2 className="w-3 h-3" />
                 </button>
@@ -138,7 +140,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
               <textarea
                 value={node.contentLeft}
                 onChange={(e) => onUpdate(node.id, 'left', e.target.value)}
-                placeholder={`Contenido (${getTypeLabel(node.type)})`}
+                placeholder={`${t.editor.contentPlaceholder} (${getTypeLabel(node.type)})`}
                 className="w-full min-h-[60px] p-2 text-sm border rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-y bg-white"
                 rows={Math.max(2, node.contentLeft.split('\n').length)}
               />
@@ -147,7 +149,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
               <textarea
                 value={node.contentRight}
                 onChange={(e) => onUpdate(node.id, 'right', e.target.value)}
-                placeholder={`Traducción (${getTypeLabel(node.type)})`}
+                placeholder={`${t.editor.translationPlaceholder} (${getTypeLabel(node.type)})`}
                 className="w-full min-h-[60px] p-2 text-sm border rounded-md focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none resize-y bg-gray-50/50"
                 rows={Math.max(2, node.contentRight.split('\n').length)}
               />

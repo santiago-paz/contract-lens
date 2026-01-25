@@ -3,6 +3,7 @@
 import { Language } from '@/hooks/useTranslationSync';
 import { cn } from '@/lib/utils';
 import { Globe } from 'lucide-react';
+import { getTranslations } from '@/lib/translations';
 
 interface RichEditorProps {
   content: string;
@@ -27,6 +28,8 @@ const RichEditor = ({
   label,
   placeholder
 }: RichEditorProps) => {
+  const t = getTranslations('es');
+
   return (
     <div className={cn("flex flex-col border rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>
       <div className="bg-gray-50 border-b flex flex-col">
@@ -58,7 +61,7 @@ const RichEditor = ({
         value={content}
         onChange={(e) => onChange(e.target.value)}
         readOnly={isReadOnly}
-        placeholder={placeholder || 'Escribe aquí...'}
+        placeholder={placeholder || t.editor.richEditorPlaceholder}
         spellCheck={false}
       />
     </div>
