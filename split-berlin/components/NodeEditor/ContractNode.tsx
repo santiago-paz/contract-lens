@@ -2,6 +2,8 @@ import React from 'react';
 import { ContractNodeData, NODE_TYPES, NodeType, ALLOWED_CHILDREN } from '@/types/contract';
 import { ChevronRight, ChevronDown, Plus, Trash2, GripVertical, Type } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface ContractNodeProps {
   node: ContractNodeData;
@@ -26,6 +28,21 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: node.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const getTypeLabel = (type: NodeType) => {
     return NODE_TYPES.find((t) => t.type === type)?.label || type;
   };
@@ -49,19 +66,22 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div ref={setNodeRef} style={style} className="flex flex-col w-full">
       {/* Node Row */}
       <div
         className={cn(
           "group relative flex items-start gap-2 p-3 rounded-lg border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-all",
-          level > 0 && "ml-6 border-l-2 " + getIndentColor(level)
+          level > 0 && "ml-6 border-l-2 " + getIndentColor(level),
+          isDragging && "bg-blue-50 border-blue-200 z-10"
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Controls Column */}
         <div className="flex flex-col items-center gap-1 mt-1 text-gray-400">
-          <GripVertical className="w-4 h-4 cursor-grab active:cursor-grabbing" />
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-0.5 hover:bg-gray-200 rounded">
+            <GripVertical className="w-4 h-4" />
+          </div>
           <button onClick={() => onToggleExpand(node.id)}>
             {node.children.length > 0 ? (
               node.isExpanded ? (
@@ -138,21 +158,23 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
 
       {/* Children */}
       {node.isExpanded && node.children.length > 0 && (
-        <div className="flex flex-col gap-2 mt-2">
-          {node.children.map((child, idx) => (
-            <ContractNode
-              key={child.id}
-              node={child}
-              level={level + 1}
-              index={idx}
-              parentType={node.type}
-              onUpdate={onUpdate}
-              onAddChild={onAddChild}
-              onDelete={onDelete}
-              onToggleExpand={onToggleExpand}
-            />
-          ))}
-        </div>
+        <SortableContext items={node.children.map(c => c.id)} strategy={verticalListSortingStrategy}>
+          <div className="flex flex-col gap-2 mt-2">
+            {node.children.map((child, idx) => (
+              <ContractNode
+                key={child.id}
+                node={child}
+                level={level + 1}
+                index={idx}
+                parentType={node.type}
+                onUpdate={onUpdate}
+                onAddChild={onAddChild}
+                onDelete={onDelete}
+                onToggleExpand={onToggleExpand}
+              />
+            ))}
+          </div>
+        </SortableContext>
       )}
     </div>
   );
