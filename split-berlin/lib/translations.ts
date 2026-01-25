@@ -35,6 +35,16 @@ export const translations = {
       introRight: 'Between Alpha Solutions Ltd. (the "Provider") and...',
       clauseLeft: "OBJETO DEL CONTRATO",
       clauseRight: "PURPOSE OF THE AGREEMENT",
+    },
+    languages: {
+      auto: "Detectar idioma (AUTO)",
+      detected: "Detectado",
+      en: "Inglés",
+      es: "Español",
+      de: "Alemán",
+      fr: "Francés",
+      it: "Italiano",
+      pt: "Portugués",
     }
   },
   en: {
@@ -73,6 +83,16 @@ export const translations = {
       introRight: 'Entre Alpha Solutions Ltd. (el "Proveedor") y...',
       clauseLeft: "PURPOSE OF THE AGREEMENT",
       clauseRight: "OBJETO DEL CONTRATO",
+    },
+    languages: {
+      auto: "Detect Language (AUTO)",
+      detected: "Detected",
+      en: "English",
+      es: "Spanish",
+      de: "German",
+      fr: "French",
+      it: "Italian",
+      pt: "Portuguese",
     }
   }
 };

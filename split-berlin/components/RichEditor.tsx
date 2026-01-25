@@ -57,7 +57,7 @@ const RichEditor = ({
       <textarea
         name={`editor-${language}`}
         id={`editor-${language}`}
-        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-900"
+        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400"
         value={content}
         onChange={(e) => onChange(e.target.value)}
         readOnly={isReadOnly}

@@ -1,12 +1,16 @@
 'use client';
 
+import React, { useState } from 'react';
 import { ContractTree } from '@/components/NodeEditor/ContractTree';
 import { ArrowRightLeft, FileText, Download } from 'lucide-react';
+import { LanguageSelector } from '@/components/LanguageSelector';
 
 import { getTranslations } from '@/lib/translations';
 
 export default function Home() {
   const t = getTranslations();
+  const [leftLanguage, setLeftLanguage] = useState('en');
+  const [rightLanguage, setRightLanguage] = useState('es');
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -39,13 +43,25 @@ export default function Home() {
         <div className="max-w-5xl mx-auto w-full">
           {/* Column Headers */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-4 px-14">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-              {t.editor.originalLanguage}
+            <div className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-blue-500 mt-2"></span>
+              <div className="flex-1">
+                <LanguageSelector 
+                  value={leftLanguage} 
+                  onChange={setLeftLanguage} 
+                  side="left" 
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-              {t.editor.translationLanguage}
+            <div className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 mt-2"></span>
+              <div className="flex-1">
+                <LanguageSelector 
+                  value={rightLanguage} 
+                  onChange={setRightLanguage} 
+                  side="right" 
+                />
+              </div>
             </div>
           </div>
 

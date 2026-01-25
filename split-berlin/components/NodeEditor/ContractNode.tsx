@@ -67,6 +67,20 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
     }
   };
 
+  const getPlaceholder = (side: 'left' | 'right') => {
+    if (node.type === 'title') {
+      return side === 'left' ? t.defaults.contractTitle : t.defaults.contractTitleTranslation;
+    }
+    if (node.type === 'intro') {
+      return side === 'left' ? t.defaults.introLeft : t.defaults.introRight;
+    }
+    if (node.type === 'clause') {
+      return side === 'left' ? t.defaults.clauseLeft : t.defaults.clauseRight;
+    }
+    const base = side === 'left' ? t.editor.contentPlaceholder : t.editor.translationPlaceholder;
+    return `${base} (${getTypeLabel(node.type)})`;
+  };
+
   return (
     <div ref={setNodeRef} style={style} className="flex flex-col w-full">
       {/* Node Row */}
@@ -140,8 +154,8 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
               <textarea
                 value={node.contentLeft}
                 onChange={(e) => onUpdate(node.id, 'left', e.target.value)}
-                placeholder={`${t.editor.contentPlaceholder} (${getTypeLabel(node.type)})`}
-                className="w-full min-h-[60px] p-2 text-sm border rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-y bg-white"
+                placeholder={getPlaceholder('left')}
+                className="w-full min-h-[60px] p-2 text-sm text-gray-900 placeholder:text-gray-400 border rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-y bg-white"
                 rows={Math.max(2, node.contentLeft.split('\n').length)}
               />
             </div>
@@ -149,8 +163,8 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
               <textarea
                 value={node.contentRight}
                 onChange={(e) => onUpdate(node.id, 'right', e.target.value)}
-                placeholder={`${t.editor.translationPlaceholder} (${getTypeLabel(node.type)})`}
-                className="w-full min-h-[60px] p-2 text-sm border rounded-md focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none resize-y bg-gray-50/50"
+                placeholder={getPlaceholder('right')}
+                className="w-full min-h-[60px] p-2 text-sm text-gray-900 placeholder:text-gray-400 border rounded-md focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none resize-y bg-gray-50/50"
                 rows={Math.max(2, node.contentRight.split('\n').length)}
               />
             </div>
