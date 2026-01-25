@@ -23,8 +23,8 @@ export const useTranslationSync = ({
   initialLeftLang = 'en', 
   initialRightLang = 'de' 
 }: UseTranslationSyncProps = {}): UseTranslationSyncReturn => {
-  const [leftContent, setLeftContent] = useState<string>('<p>The contract starts here...</p>');
-  const [rightContent, setRightContent] = useState<string>('<p>Der Vertrag beginnt hier...</p>');
+  const [leftContent, setLeftContent] = useState<string>('');
+  const [rightContent, setRightContent] = useState<string>('');
   const [isTranslating, setIsTranslating] = useState(false);
   const [lastEditedSide, setLastEditedSide] = useState<Side>(null);
 

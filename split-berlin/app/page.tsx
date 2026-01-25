@@ -12,6 +12,15 @@ const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'fr', label: 'Français' },
 ];
 
+const PLACEHOLDERS: Record<Language, string> = {
+  en: 'The contract starts here...',
+  de: 'Der Vertrag beginnt hier...',
+  es: 'El contrato comienza aquí...',
+  fr: 'Le contrat commence ici...',
+  it: 'Il contratto inizia qui...',
+  pt: 'O contrato começa aqui...',
+};
+
 export default function Home() {
   const [leftLang, setLeftLang] = useState<Language>('en');
   const [rightLang, setRightLang] = useState<Language>('de');
@@ -70,6 +79,7 @@ export default function Home() {
                 onLanguageChange={setLeftLang}
                 content={leftContent}
                 onChange={handleLeftChange}
+                placeholder={PLACEHOLDERS[leftLang]}
                 className="h-full border-blue-100 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all"
               />
             </div>
@@ -82,6 +92,7 @@ export default function Home() {
                 onLanguageChange={setRightLang}
                 content={rightContent}
                 onChange={handleRightChange}
+                placeholder={PLACEHOLDERS[rightLang]}
                 className="h-full border-indigo-100 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all"
               />
             </div>

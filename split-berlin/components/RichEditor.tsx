@@ -17,6 +17,7 @@ interface RichEditorProps {
   onLanguageChange: (lang: Language) => void;
   className?: string;
   label?: string; // Keeping label prop optional if we want a static title override
+  placeholder?: string;
 }
 
 const RichEditor = ({
@@ -27,14 +28,15 @@ const RichEditor = ({
   availableLanguages,
   onLanguageChange,
   className,
-  label
+  label,
+  placeholder
 }: RichEditorProps) => {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({
-        placeholder: 'Escribe aquí...',
+        placeholder: placeholder || 'Escribe aquí...',
       }),
     ],
     content: content,
@@ -47,7 +49,7 @@ const RichEditor = ({
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
-  });
+  }, [placeholder]);
 
   // Sync external content changes to editor
   useEffect(() => {
