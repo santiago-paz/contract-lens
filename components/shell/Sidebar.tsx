@@ -11,10 +11,12 @@ import {
   LayoutDashboard,
   Menu,
   User,
-  Users
+  Users,
+  LogOut
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { logout } from '@/app/actions/auth';
 
 type NavItem = {
   label: string;
@@ -124,7 +126,17 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
 
       {/* Footer/User (Optional, if not in TopBar) */}
       <div className="p-4 border-t border-gray-100">
-        {/* Can put settings or collapse button here alternatively */}
+        <button
+          onClick={() => logout()}
+          className={cn(
+            "flex w-full items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-gray-600 hover:bg-gray-50 hover:text-red-600 group",
+            isCollapsed && "justify-center px-2"
+          )}
+          title={isCollapsed ? "Cerrar Sesión" : undefined}
+        >
+          <LogOut className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-red-600" />
+          {!isCollapsed && <span className="truncate">Cerrar Sesión</span>}
+        </button>
       </div>
     </aside>
   );
