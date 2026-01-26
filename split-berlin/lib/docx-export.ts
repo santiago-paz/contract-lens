@@ -62,27 +62,22 @@ const getNodeStyle = (type: NodeType) => {
   }
 };
 
-const createContentParagraphs = (nodes: ContractNodeData[], side: 'left' | 'right'): Paragraph[] => {
-  return nodes.map(node => {
-    const style = getNodeStyle(node.type);
-    const text = side === 'left' ? node.contentLeft : node.contentRight;
+const createNodeParagraph = (node: ContractNodeData, side: 'left' | 'right'): Paragraph => {
+  const style = getNodeStyle(node.type);
+  const text = side === 'left' ? node.contentLeft : node.contentRight;
 
-    // Skip empty paragraphs if desired, but here we render them to keep vertical space if user typed spaces
-    // Or we could check if text is empty.
-
-    return new Paragraph({
-      alignment: style.alignment,
-      spacing: style.spacing,
-      indent: style.indent,
-      children: [
-        new TextRun({
-          text: text || "",
-          size: style.size,
-          bold: style.bold,
-          italics: style.italics,
-        })
-      ]
-    });
+  return new Paragraph({
+    alignment: style.alignment,
+    spacing: style.spacing,
+    indent: style.indent,
+    children: [
+      new TextRun({
+        text: text || "",
+        size: style.size,
+        bold: style.bold,
+        italics: style.italics,
+      })
+    ]
   });
 };
 
@@ -95,26 +90,25 @@ export const exportToDocx = async (nodes: ContractNodeData[]) => {
   const USABLE_WIDTH = 9026;
   const COLUMN_WIDTH = USABLE_WIDTH / 2;
 
-  const leftParagraphs = createContentParagraphs(flatNodes, 'left');
-  const rightParagraphs = createContentParagraphs(flatNodes, 'right');
-
-  const row = new TableRow({
-    children: [
-      new TableCell({
-        width: {
-          size: COLUMN_WIDTH,
-          type: WidthType.DXA,
-        },
-        children: leftParagraphs,
-      }),
-      new TableCell({
-        width: {
-          size: COLUMN_WIDTH,
-          type: WidthType.DXA,
-        },
-        children: rightParagraphs,
-      }),
-    ],
+  const rows = flatNodes.map(node => {
+    return new TableRow({
+      children: [
+        new TableCell({
+          width: {
+            size: COLUMN_WIDTH,
+            type: WidthType.DXA,
+          },
+          children: [createNodeParagraph(node, 'left')],
+        }),
+        new TableCell({
+          width: {
+            size: COLUMN_WIDTH,
+            type: WidthType.DXA,
+          },
+          children: [createNodeParagraph(node, 'right')],
+        }),
+      ],
+    });
   });
 
   const table = new Table({
@@ -124,7 +118,7 @@ export const exportToDocx = async (nodes: ContractNodeData[]) => {
       type: WidthType.PERCENTAGE,
     },
     columnWidths: [COLUMN_WIDTH, COLUMN_WIDTH],
-    rows: [row],
+    rows: rows,
   });
 
   const doc = new Document({
