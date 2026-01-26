@@ -12,10 +12,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Acceso Restringido
+            Restricted Access
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Por favor inicia sesión para continuar
+            Please sign in to continue
           </p>
         </div>
         
@@ -23,7 +23,7 @@ export default function LoginPage() {
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
               <label htmlFor="username" className="sr-only">
-                Usuario
+                Username
               </label>
               <input
                 id="username"
@@ -31,12 +31,12 @@ export default function LoginPage() {
                 type="text"
                 required
                 className="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
-                placeholder="Usuario"
+                placeholder="Username"
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                Contraseña
+                Password
               </label>
               <input
                 id="password"
@@ -44,7 +44,7 @@ export default function LoginPage() {
                 type="password"
                 required
                 className="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
-                placeholder="Contraseña"
+                placeholder="Password"
               />
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function LoginPage() {
                 isPending && "opacity-50 cursor-not-allowed"
               )}
             >
-              {isPending ? 'Ingresando...' : 'Ingresar'}
+              {isPending ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

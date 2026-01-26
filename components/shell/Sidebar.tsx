@@ -132,10 +132,10 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             "flex w-full items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-gray-600 hover:bg-gray-50 hover:text-red-600 group",
             isCollapsed && "justify-center px-2"
           )}
-          title={isCollapsed ? "Cerrar Sesión" : undefined}
+          title={isCollapsed ? "Sign Out" : undefined}
         >
           <LogOut className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-red-600" />
-          {!isCollapsed && <span className="truncate">Cerrar Sesión</span>}
+          {!isCollapsed && <span className="truncate">Sign Out</span>}
         </button>
       </div>
     </aside>

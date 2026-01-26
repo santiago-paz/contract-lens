@@ -21,7 +21,7 @@ export async function login(prevState: any, formData: FormData) {
     redirect('/')
   }
 
-  return { message: 'Credenciales inválidas' }
+  return { message: 'Invalid credentials' }
 }
 
 export async function logout() {
