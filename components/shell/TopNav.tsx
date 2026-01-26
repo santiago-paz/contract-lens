@@ -49,9 +49,9 @@ export function TopNav() {
         {/* User Profile */}
         <button className="flex items-center gap-2 ml-2 pl-2 border-l border-transparent md:border-gray-100">
           <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-semibold text-xs border border-amber-200">
-            YM
+            SP
           </div>
-          <span className="text-sm font-medium text-gray-700 hidden md:block">Yahya Mao</span>
+          <span className="text-sm font-medium text-gray-700 hidden md:block">Santiago Paz</span>
           <ChevronDown className="w-4 h-4 text-gray-400 hidden md:block" />
         </button>
       </div>

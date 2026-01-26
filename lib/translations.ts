@@ -6,7 +6,7 @@ export const translations = {
       confirmDelete: "¿Estás seguro de eliminar este nodo y sus hijos?",
     },
     header: {
-      title: "Split-Berlin",
+      title: "Split Berlin",
       subtitle: "Editor de Contratos Estructurados",
     },
     editor: {
@@ -54,7 +54,7 @@ export const translations = {
       confirmDelete: "Are you sure you want to delete this node and its children?",
     },
     header: {
-      title: "Split-Berlin",
+      title: "Split Berlin",
       subtitle: "Structured Contract Editor",
     },
     editor: {
