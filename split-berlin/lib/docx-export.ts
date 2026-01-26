@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, TextRun, TableLayoutType } from "docx";
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, TextRun, PageOrientation } from "docx";
 import { saveAs } from "file-saver";
 import { ContractNodeData } from "@/types/contract";
 
@@ -16,17 +16,18 @@ const flattenNodes = (nodes: ContractNodeData[]): ContractNodeData[] => {
 export const exportToDocx = async (nodes: ContractNodeData[]) => {
   const flatNodes = flattenNodes(nodes);
 
-  // Using DXA units for reliable width across different viewers (Word, Google Docs, etc.)
-  // 9638 DXA is approximately the full printable width of an A4 page with standard margins
-  const TOTAL_WIDTH_DXA = 9638;
-  const COLUMN_WIDTH_DXA = TOTAL_WIDTH_DXA / 2;
+  // A4 Page Width in DXA = 11906
+  // Standard Margins (1 inch) = 1440 DXA
+  // Usable Width = 11906 - (1440 * 2) = 9026 DXA
+  const USABLE_WIDTH = 9026;
+  const COLUMN_WIDTH = USABLE_WIDTH / 2;
 
   const tableRows = flatNodes.map((node) => {
     return new TableRow({
       children: [
         new TableCell({
           width: {
-            size: COLUMN_WIDTH_DXA,
+            size: COLUMN_WIDTH,
             type: WidthType.DXA,
           },
           children: [new Paragraph({
@@ -35,7 +36,7 @@ export const exportToDocx = async (nodes: ContractNodeData[]) => {
         }),
         new TableCell({
           width: {
-            size: COLUMN_WIDTH_DXA,
+            size: COLUMN_WIDTH,
             type: WidthType.DXA,
           },
           children: [new Paragraph({
@@ -47,17 +48,34 @@ export const exportToDocx = async (nodes: ContractNodeData[]) => {
   });
 
   const table = new Table({
-    layout: TableLayoutType.FIXED,
-    width: {
-      size: TOTAL_WIDTH_DXA,
-      type: WidthType.DXA,
-    },
+    // Using columnWidths is the recommended way in docx.js to ensure correct grid generation
+    columnWidths: [COLUMN_WIDTH, COLUMN_WIDTH],
     rows: tableRows,
+    // We omit the 'width' property on the table itself to let columnWidths dictate the layout
+    // or we can set it to 100% explicitly if needed, but let's try the columnWidths approach first
+    // as suggested by documentation for fixed layouts.
+    width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+    }
   });
 
   const doc = new Document({
     sections: [
       {
+        properties: {
+          page: {
+            size: {
+              orientation: PageOrientation.PORTRAIT,
+            },
+            margin: {
+              top: 1440, // 1 inch
+              right: 1440,
+              bottom: 1440,
+              left: 1440,
+            },
+          },
+        },
         children: [table],
       },
     ],
