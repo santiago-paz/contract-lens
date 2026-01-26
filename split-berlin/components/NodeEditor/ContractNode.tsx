@@ -1,10 +1,10 @@
-import React from 'react';
-import { ContractNodeData, NODE_TYPES, NodeType, ALLOWED_CHILDREN } from '@/types/contract';
-import { ChevronRight, ChevronDown, Plus, Trash2, GripVertical, Type } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { getTranslations } from '@/lib/translations';
+import { cn } from '@/lib/utils';
+import { ALLOWED_CHILDREN, ContractNodeData, NodeType } from '@/types/contract';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { ChevronDown, ChevronRight, GripVertical, Plus, Trash2, Type } from 'lucide-react';
+import React from 'react';
 
 interface ContractNodeProps {
   node: ContractNodeData;
@@ -120,7 +120,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
               <span className="font-medium uppercase">{getTypeLabel(node.type)}</span>
               {getNumberingHint() && <span className="font-bold text-gray-700 ml-1">{getNumberingHint()}</span>}
             </div>
-            
+
             {/* Action Buttons (Visible on Hover) */}
             <div className={cn("flex items-center gap-2 transition-opacity", isHovered ? "opacity-100" : "opacity-0")}>
               <div className="flex items-center bg-white border rounded shadow-sm overflow-hidden">
@@ -136,7 +136,7 @@ export const ContractNode: React.FC<ContractNodeProps> = ({
                     {getTypeLabel(childType)}
                   </button>
                 ))}
-                
+
                 <button
                   onClick={() => onDelete(node.id)}
                   className="p-1 hover:bg-red-50 text-red-600 px-2"

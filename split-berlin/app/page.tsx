@@ -3,6 +3,7 @@
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ContractTree } from '@/components/NodeEditor/ContractTree';
 import { exportToDocx } from '@/lib/docx-export';
+import { TEST_CONTRACT } from '@/lib/test-data';
 import { getTranslations } from '@/lib/translations';
 import { ContractNodeData, NodeType } from '@/types/contract';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -151,6 +152,10 @@ export default function Home() {
     await exportToDocx(nodes);
   };
 
+  const handleLoadTestData = () => {
+    setNodes(TEST_CONTRACT);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       {/* Header */}
@@ -166,6 +171,15 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-3">
+          {process.env.NEXT_PUBLIC_DEBUG === 'true' && (
+            <button
+              onClick={handleLoadTestData}
+              className="flex items-center gap-2 px-4 py-2 text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-all text-sm font-medium"
+            >
+              <span>🐞</span>
+              <span>Debug: Fill</span>
+            </button>
+          )}
           <button className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all text-sm font-medium">
             <FileText className="w-4 h-4" />
             <span>{t.common.preview}</span>
