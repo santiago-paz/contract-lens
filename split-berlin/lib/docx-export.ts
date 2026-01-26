@@ -1,6 +1,6 @@
-import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, TextRun, PageOrientation } from "docx";
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, TextRun, TableLayoutType, AlignmentType, PageOrientation } from "docx";
 import { saveAs } from "file-saver";
-import { ContractNodeData } from "@/types/contract";
+import { ContractNodeData, NodeType } from "@/types/contract";
 
 const flattenNodes = (nodes: ContractNodeData[]): ContractNodeData[] => {
   let flat: ContractNodeData[] = [];
@@ -13,6 +13,79 @@ const flattenNodes = (nodes: ContractNodeData[]): ContractNodeData[] => {
   return flat;
 };
 
+const getNodeStyle = (type: NodeType) => {
+  switch (type) {
+    case 'title':
+      return { 
+        size: 32, // 16pt
+        bold: true, 
+        spacing: { after: 240, before: 240 },
+        alignment: AlignmentType.CENTER
+      }; 
+    case 'intro':
+      return { 
+        size: 22, // 11pt
+        italics: true,
+        spacing: { after: 120 } 
+      };
+    case 'clause':
+      return { 
+        size: 24, // 12pt
+        bold: true, 
+        spacing: { before: 240, after: 120 } 
+      };
+    case 'subclause':
+      return { 
+        size: 24, // 12pt
+        spacing: { after: 120 } 
+      };
+    case 'item':
+      return { 
+        size: 22, // 11pt
+        indent: { left: 360 }, 
+        spacing: { after: 80 } 
+      };
+    case 'subitem':
+      return { 
+        size: 20, // 10pt
+        indent: { left: 720 }, 
+        spacing: { after: 80 } 
+      };
+    case 'final_clause':
+      return { 
+        size: 24, // 12pt
+        bold: true, 
+        spacing: { before: 240, after: 120 } 
+      };
+    default:
+      return { size: 24, spacing: { after: 120 } };
+  }
+};
+
+const createContentParagraphs = (nodes: ContractNodeData[], side: 'left' | 'right'): Paragraph[] => {
+  return nodes.map(node => {
+    const style = getNodeStyle(node.type);
+    const text = side === 'left' ? node.contentLeft : node.contentRight;
+    
+    // Skip empty paragraphs if desired, but here we render them to keep vertical space if user typed spaces
+    // Or we could check if text is empty.
+    
+    return new Paragraph({
+      alignment: style.alignment,
+      spacing: style.spacing,
+      indent: style.indent,
+      children: [
+        new TextRun({
+          text: text || "",
+          size: style.size,
+          bold: style.bold,
+          italics: style.italics,
+        })
+      ]
+    });
+  });
+};
+
 export const exportToDocx = async (nodes: ContractNodeData[]) => {
   const flatNodes = flattenNodes(nodes);
 
@@ -22,42 +95,36 @@ export const exportToDocx = async (nodes: ContractNodeData[]) => {
   const USABLE_WIDTH = 9026;
   const COLUMN_WIDTH = USABLE_WIDTH / 2;
 
-  const tableRows = flatNodes.map((node) => {
-    return new TableRow({
-      children: [
-        new TableCell({
-          width: {
-            size: COLUMN_WIDTH,
-            type: WidthType.DXA,
-          },
-          children: [new Paragraph({
-            children: [new TextRun({ text: node.contentLeft || "" })]
-          })],
-        }),
-        new TableCell({
-          width: {
-            size: COLUMN_WIDTH,
-            type: WidthType.DXA,
-          },
-          children: [new Paragraph({
-            children: [new TextRun({ text: node.contentRight || "" })]
-          })],
-        }),
-      ],
-    });
+  const leftParagraphs = createContentParagraphs(flatNodes, 'left');
+  const rightParagraphs = createContentParagraphs(flatNodes, 'right');
+
+  const row = new TableRow({
+    children: [
+      new TableCell({
+        width: {
+          size: COLUMN_WIDTH,
+          type: WidthType.DXA,
+        },
+        children: leftParagraphs,
+      }),
+      new TableCell({
+        width: {
+          size: COLUMN_WIDTH,
+          type: WidthType.DXA,
+        },
+        children: rightParagraphs,
+      }),
+    ],
   });
 
   const table = new Table({
-    // Using columnWidths is the recommended way in docx.js to ensure correct grid generation
-    columnWidths: [COLUMN_WIDTH, COLUMN_WIDTH],
-    rows: tableRows,
-    // We omit the 'width' property on the table itself to let columnWidths dictate the layout
-    // or we can set it to 100% explicitly if needed, but let's try the columnWidths approach first
-    // as suggested by documentation for fixed layouts.
+    layout: TableLayoutType.FIXED,
     width: {
-        size: 100,
-        type: WidthType.PERCENTAGE,
-    }
+      size: 100,
+      type: WidthType.PERCENTAGE,
+    },
+    columnWidths: [COLUMN_WIDTH, COLUMN_WIDTH],
+    rows: [row],
   });
 
   const doc = new Document({
