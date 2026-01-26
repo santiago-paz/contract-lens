@@ -16,9 +16,9 @@ interface UseTranslationSyncReturn {
   handleRightChange: (content: string) => void;
 }
 
-export const useTranslationSync = ({ 
-  initialLeftLang = 'en', 
-  initialRightLang = 'de' 
+export const useTranslationSync = ({
+  initialLeftLang = 'en',
+  initialRightLang = 'de'
 }: UseTranslationSyncProps = {}): UseTranslationSyncReturn => {
   const [leftContent, setLeftContent] = useState<string>('');
   const [rightContent, setRightContent] = useState<string>('');
