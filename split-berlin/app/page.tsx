@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ContractTree } from '@/components/NodeEditor/ContractTree';
-import { ArrowRightLeft, FileText, Download } from 'lucide-react';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { ContractTree } from '@/components/NodeEditor/ContractTree';
+import { exportToDocx } from '@/lib/docx-export';
 import { getTranslations } from '@/lib/translations';
 import { ContractNodeData, NodeType } from '@/types/contract';
-import { v4 as uuidv4 } from 'uuid';
 import { arrayMove } from '@dnd-kit/sortable';
-import { exportToDocx } from '@/lib/docx-export';
+import { ArrowRightLeft, Download, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
   const t = getTranslations();
@@ -45,8 +45,8 @@ export default function Home() {
 
   // Helper functions
   const updateNodeInTree = (
-    currentNodes: ContractNodeData[], 
-    id: string, 
+    currentNodes: ContractNodeData[],
+    id: string,
     updater: (node: ContractNodeData) => ContractNodeData
   ): ContractNodeData[] => {
     return currentNodes.map(node => {
@@ -63,8 +63,8 @@ export default function Home() {
   const addChildToNode = (currentNodes: ContractNodeData[], parentId: string, newChild: ContractNodeData): ContractNodeData[] => {
     return currentNodes.map(node => {
       if (node.id === parentId) {
-        return { 
-          ...node, 
+        return {
+          ...node,
           children: [...node.children, newChild],
           isExpanded: true
         };
@@ -170,7 +170,7 @@ export default function Home() {
             <FileText className="w-4 h-4" />
             <span>{t.common.preview}</span>
           </button>
-          <button 
+          <button
             onClick={handleExport}
             className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-all shadow-sm hover:shadow"
           >
@@ -188,27 +188,27 @@ export default function Home() {
             <div className="flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-blue-500 mt-2"></span>
               <div className="flex-1">
-                <LanguageSelector 
-                  value={leftLanguage} 
-                  onChange={setLeftLanguage} 
-                  side="left" 
+                <LanguageSelector
+                  value={leftLanguage}
+                  onChange={setLeftLanguage}
+                  side="left"
                 />
               </div>
             </div>
             <div className="flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-indigo-500 mt-2"></span>
               <div className="flex-1">
-                <LanguageSelector 
-                  value={rightLanguage} 
-                  onChange={setRightLanguage} 
-                  side="right" 
+                <LanguageSelector
+                  value={rightLanguage}
+                  onChange={setRightLanguage}
+                  side="right"
                 />
               </div>
             </div>
           </div>
 
           {/* Tree Editor */}
-          <ContractTree 
+          <ContractTree
             nodes={nodes}
             onUpdateNode={handleUpdateContent}
             onAddChild={handleAddChild}

@@ -1,6 +1,6 @@
-import { Document, Packer, Paragraph, Table, TableCell, TableRow, WidthType, TextRun, TableLayoutType, AlignmentType, PageOrientation } from "docx";
-import { saveAs } from "file-saver";
 import { ContractNodeData, NodeType } from "@/types/contract";
+import { AlignmentType, Document, Packer, PageOrientation, Paragraph, Table, TableCell, TableLayoutType, TableRow, TextRun, WidthType } from "docx";
+import { saveAs } from "file-saver";
 
 const flattenNodes = (nodes: ContractNodeData[]): ContractNodeData[] => {
   let flat: ContractNodeData[] = [];
@@ -16,46 +16,46 @@ const flattenNodes = (nodes: ContractNodeData[]): ContractNodeData[] => {
 const getNodeStyle = (type: NodeType) => {
   switch (type) {
     case 'title':
-      return { 
+      return {
         size: 32, // 16pt
-        bold: true, 
+        bold: true,
         spacing: { after: 240, before: 240 },
         alignment: AlignmentType.CENTER
-      }; 
+      };
     case 'intro':
-      return { 
+      return {
         size: 22, // 11pt
         italics: true,
-        spacing: { after: 120 } 
+        spacing: { after: 120 }
       };
     case 'clause':
-      return { 
+      return {
         size: 24, // 12pt
-        bold: true, 
-        spacing: { before: 240, after: 120 } 
+        bold: true,
+        spacing: { before: 240, after: 120 }
       };
     case 'subclause':
-      return { 
+      return {
         size: 24, // 12pt
-        spacing: { after: 120 } 
+        spacing: { after: 120 }
       };
     case 'item':
-      return { 
+      return {
         size: 22, // 11pt
-        indent: { left: 360 }, 
-        spacing: { after: 80 } 
+        indent: { left: 360 },
+        spacing: { after: 80 }
       };
     case 'subitem':
-      return { 
+      return {
         size: 20, // 10pt
-        indent: { left: 720 }, 
-        spacing: { after: 80 } 
+        indent: { left: 720 },
+        spacing: { after: 80 }
       };
     case 'final_clause':
-      return { 
+      return {
         size: 24, // 12pt
-        bold: true, 
-        spacing: { before: 240, after: 120 } 
+        bold: true,
+        spacing: { before: 240, after: 120 }
       };
     default:
       return { size: 24, spacing: { after: 120 } };
@@ -66,10 +66,10 @@ const createContentParagraphs = (nodes: ContractNodeData[], side: 'left' | 'righ
   return nodes.map(node => {
     const style = getNodeStyle(node.type);
     const text = side === 'left' ? node.contentLeft : node.contentRight;
-    
+
     // Skip empty paragraphs if desired, but here we render them to keep vertical space if user typed spaces
     // Or we could check if text is empty.
-    
+
     return new Paragraph({
       alignment: style.alignment,
       spacing: style.spacing,
