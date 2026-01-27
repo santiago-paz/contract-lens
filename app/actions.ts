@@ -1,6 +1,35 @@
 'use server';
 
-import { streamText } from 'ai';
+import { streamText, generateObject } from 'ai';
+import { extractText } from '@/lib/text-extractor';
+import { ContractSchema } from '@/types/contract-analysis';
+
+export async function analyzeContract(formData: FormData) {
+  const file = formData.get('file') as File;
+  
+  if (!file) {
+    throw new Error('No file provided');
+  }
+
+  try {
+    const text = await extractText(file);
+    
+    const result = await generateObject({
+      model: 'meta/llama-3.1-8b' as any, // Cast to any to avoid type issues with string model
+      schema: ContractSchema,
+      prompt: `Analyze the following contract text and extract the required information.
+      
+      Contract Text:
+      ${text.slice(0, 50000)}
+      `,
+    });
+
+    return result.object;
+  } catch (error) {
+    console.error('Analysis error:', error);
+    throw new Error('Failed to analyze contract');
+  }
+}
 
 export async function translateText(
   content: string, 

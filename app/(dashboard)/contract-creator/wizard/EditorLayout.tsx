@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
 import { getFileType } from '@/lib/file-config';
+import { ContractAnalysis } from '@/types/contract-analysis';
+import { CONTRACT_TYPES } from '@/lib/constants';
 
 interface EditorLayoutProps {
   children: React.ReactNode;
@@ -23,9 +25,10 @@ interface EditorLayoutProps {
   contractType: string;
   onBack: () => void;
   uploadedFile?: File | null;
+  initialData?: ContractAnalysis | null;
 }
 
-export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile }: EditorLayoutProps) {
+export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData }: EditorLayoutProps) {
   const [activeTab, setActiveTab] = useState('documents');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -105,7 +108,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Title *</label>
                      <input 
                        type="text" 
-                       defaultValue={fileName.replace(/\.[^/.]+$/, "")}
+                       defaultValue={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                      />
                    </div>
@@ -115,6 +118,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <input 
                        type="text" 
                        placeholder="Type to search..."
+                       defaultValue={initialData?.contractOwner || ''}
                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
                      />
                    </div>
@@ -123,15 +127,20 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Manager *</label>
                      <div className="flex flex-wrap gap-2 mb-2">
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          Yahya Mao <button className="hover:text-blue-900">×</button>
+                          {initialData?.contractManager || 'Yahya Mao'} <button className="hover:text-blue-900">×</button>
                         </span>
                      </div>
                    </div>
 
                     <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Category</label>
-                     <select className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none">
-                        <option>{contractType}</option>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                       defaultValue={contractType}
+                     >
+                        {CONTRACT_TYPES.map(type => (
+                            <option key={type} value={type}>{type}</option>
+                        ))}
                      </select>
                    </div>
                 </div>
@@ -147,18 +156,27 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                  <div className="space-y-4 pl-1">
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Status *</label>
-                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900">
-                        <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
-                        Review
-                     </div>
+                     <select 
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                        defaultValue={initialData?.status || 'Review'}
+                     >
+                        <option value="Review">Review</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Signed">Signed</option>
+                        <option value="Active">Active</option>
+                        <option value="Expired">Expired</option>
+                     </select>
                    </div>
                    
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Duration Type *</label>
-                     <select className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100">
-                        <option>One-time</option>
-                        <option>Fixed-term</option>
-                        <option>Indefinite</option>
+                     <select 
+                        className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100"
+                        defaultValue={initialData?.durationType || 'Fixed-term'}
+                     >
+                        <option value="One-time">One-time</option>
+                        <option value="Fixed-term">Fixed-term</option>
+                        <option value="Indefinite">Indefinite</option>
                      </select>
                    </div>
                 </div>

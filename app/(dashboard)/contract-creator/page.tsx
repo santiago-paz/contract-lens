@@ -13,6 +13,7 @@ import { UploadStep } from './wizard/UploadStep';
 import { AnalysisStep } from './wizard/AnalysisStep';
 import { TypeSelectionStep } from './wizard/TypeSelectionStep';
 import { EditorLayout } from './wizard/EditorLayout';
+import { ContractAnalysis } from '@/types/contract-analysis';
 
 type WizardStep = 'upload' | 'analyzing' | 'type-selection' | 'editor';
 
@@ -23,6 +24,7 @@ export default function ContractCreator() {
   const [step, setStep] = useState<WizardStep>('upload');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [selectedType, setSelectedType] = useState<string>('');
+  const [analysisResult, setAnalysisResult] = useState<ContractAnalysis | null>(null);
 
   // Editor State
   const [leftLanguage, setLeftLanguage] = useState('en');
@@ -58,9 +60,12 @@ export default function ContractCreator() {
   const handleFileSelect = (file: File) => {
     setUploadedFile(file);
     setStep('analyzing');
+    // Reset previous analysis
+    setAnalysisResult(null);
   };
 
-  const handleAnalysisComplete = () => {
+  const handleAnalysisComplete = (data: ContractAnalysis) => {
+    setAnalysisResult(data);
     setStep('type-selection');
   };
 
@@ -187,10 +192,10 @@ export default function ContractCreator() {
     return <UploadStep onFileSelect={handleFileSelect} />;
   }
 
-  if (step === 'analyzing') {
+  if (step === 'analyzing' && uploadedFile) {
     return (
         <AnalysisStep 
-            fileName={uploadedFile?.name || 'Document.pdf'} 
+            file={uploadedFile} 
             onComplete={handleAnalysisComplete}
             onCancel={() => setStep('upload')}
         />
@@ -202,6 +207,7 @@ export default function ContractCreator() {
         <TypeSelectionStep 
             onSelect={handleTypeSelect}
             onBack={() => setStep('analyzing')}
+            suggestedType={analysisResult?.contractType}
         />
     );
   }
@@ -212,6 +218,7 @@ export default function ContractCreator() {
         contractType={selectedType}
         onBack={handleBackToDashboard}
         uploadedFile={uploadedFile}
+        initialData={analysisResult}
     >
         {/* Editor Content */}
         <div className="space-y-8">

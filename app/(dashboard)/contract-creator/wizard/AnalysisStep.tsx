@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Check, FileText, Loader2, ArrowRight } from 'lucide-react';
+import { Check, FileText, Loader2, AlertCircle } from 'lucide-react';
+import { analyzeContract } from '@/app/actions';
+import { ContractAnalysis } from '@/types/contract-analysis';
 
 interface AnalysisStepProps {
-  fileName: string;
-  onComplete: () => void;
+  file: File;
+  onComplete: (data: ContractAnalysis) => void;
   onCancel: () => void;
 }
 
-export function AnalysisStep({ fileName, onComplete, onCancel }: AnalysisStepProps) {
-  const [progress, setProgress] = useState(0);
+export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) {
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
   
   const steps = [
     { id: 'document', label: 'Document', description: 'Analyzing contract document structures' },
@@ -20,23 +22,104 @@ export function AnalysisStep({ fileName, onComplete, onCancel }: AnalysisStepPro
   ];
 
   useEffect(() => {
-    // Simulate analysis progress
-    let currentStep = 0;
-    
-    const interval = setInterval(() => {
-      if (currentStep >= steps.length) {
-        clearInterval(interval);
-        setTimeout(onComplete, 800); // Slight delay before finishing
-        return;
-      }
-      
-      const stepId = steps[currentStep].id;
-      setCompletedSteps(prev => [...prev, stepId]);
-      currentStep++;
-    }, 1200); // 1.2s per step
+    let mounted = true;
+    let interval: NodeJS.Timeout;
 
-    return () => clearInterval(interval);
-  }, [onComplete]);
+    const runAnalysis = async () => {
+      try {
+        // Start showing progress simulation for UX while waiting
+        let currentStepIndex = 0;
+        
+        interval = setInterval(() => {
+          if (mounted && currentStepIndex < steps.length - 1) {
+            const stepId = steps[currentStepIndex].id;
+            setCompletedSteps(prev => {
+                if (!prev.includes(stepId)) {
+                    return [...prev, stepId];
+                }
+                return prev;
+            });
+            currentStepIndex++;
+          }
+        }, 1000);
+
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const result = await analyzeContract(formData);
+        
+        if (mounted) {
+          clearInterval(interval);
+          // Mark all steps as completed immediately upon success
+          setCompletedSteps(steps.map(s => s.id));
+          
+          // Wait a bit to show 100% completion before moving on
+          setTimeout(() => {
+            if (mounted) {
+                onComplete(result);
+            }
+          }, 800);
+        }
+        
+      } catch (err) {
+        console.error(err);
+        if (mounted) {
+            clearInterval(interval);
+            setError('Failed to analyze contract. Please try again or skip.');
+        }
+      }
+    };
+
+    runAnalysis();
+
+    return () => {
+        mounted = false;
+        clearInterval(interval);
+    };
+  }, [file]);
+
+  if (error) {
+    return (
+        <div className="w-full max-w-5xl mx-auto animate-fade-in">
+             <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                    <FileText className="w-6 h-6 text-blue-600" />
+                </div>
+                New Contract
+                </h2>
+            </div>
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center">
+                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis Failed</h3>
+                <p className="text-gray-500 mb-8">{error}</p>
+                <div className="flex justify-center gap-4">
+                    <button onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    {/* Fallback to manual entry if AI fails */}
+                    <button 
+                        onClick={() => {
+                             // Create dummy empty analysis to proceed
+                            onComplete({
+                                contractType: 'General Terms and Conditions',
+                                title: file.name.replace(/\.[^/.]+$/, ""),
+                                status: 'Review',
+                                durationType: 'Fixed-term',
+                                summary: '',
+                            });
+                        }} 
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                        Continue Manually
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-5xl mx-auto animate-fade-in">
@@ -59,7 +142,7 @@ export function AnalysisStep({ fileName, onComplete, onCancel }: AnalysisStepPro
                 </div>
             </div>
             
-            <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1 max-w-[250px]">{fileName}</h3>
+            <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1 max-w-[250px]">{file.name}</h3>
             <p className="text-sm text-gray-500 mb-2">Main Contract Document</p>
             <div className="text-xs font-medium bg-blue-50 text-blue-700 px-2 py-1 rounded mb-8">
                 Data extractable
@@ -76,12 +159,13 @@ export function AnalysisStep({ fileName, onComplete, onCancel }: AnalysisStepPro
         {/* Right: Analysis Steps */}
         <div className="w-1/2 pl-12 flex flex-col justify-center">
             <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">We have highlighted the most likely contract types for you.</h3>
+                <h3 className="text-lg font-semibold text-gray-900">AI is analyzing your contract...</h3>
             </div>
             
             <div className="space-y-6">
                 {steps.map((step, index) => {
                     const isCompleted = completedSteps.includes(step.id);
+                    // Next is the one immediately after the last completed one, or the first one if none completed
                     const isNext = !isCompleted && (index === 0 || completedSteps.includes(steps[index-1].id));
                     
                     return (

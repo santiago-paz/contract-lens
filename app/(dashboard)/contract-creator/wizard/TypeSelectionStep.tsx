@@ -1,39 +1,24 @@
-import { Search, FileText, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { Search, FileText, ChevronRight, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CONTRACT_TYPES } from '@/lib/constants';
 
 interface TypeSelectionStepProps {
   onSelect: (type: string) => void;
   onBack: () => void;
+  suggestedType?: string;
 }
 
-const CONTRACT_TYPES = [
-  'General Terms and Conditions',
-  'Order / Commission',
-  'Operating Agreement',
-  'Loan Agreement',
-  'Service Agreement',
-  'Partnership Agreement',
-  'Purchase Agreement',
-  'Cooperation Agreement',
-  'Leasing Agreement',
-  'Supply Agreement',
-  'License Agreement',
-  'Rental Agreement',
-  'Project Agreement',
-  'Framework Agreement',
-  'Sponsoring Agreement',
-  'Standard Contract',
-  'Letter of Commitment',
-  'Insurance Contract',
-  'Non-Disclosure Agreement',
-  'Maintenance Contract',
-  'Work Contract',
-  'Takeover Agreement'
-];
 
-export function TypeSelectionStep({ onSelect, onBack }: TypeSelectionStepProps) {
+export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelectionStepProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  // Auto-select suggested type if available
+  useEffect(() => {
+    if (suggestedType) {
+        setSelectedType(suggestedType);
+    }
+  }, [suggestedType]);
 
   const filteredTypes = CONTRACT_TYPES.filter(t => 
     t.toLowerCase().includes(searchTerm.toLowerCase())
@@ -74,7 +59,9 @@ export function TypeSelectionStep({ onSelect, onBack }: TypeSelectionStepProps) 
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                        {filteredTypes.map((type) => (
+                        {filteredTypes.map((type) => {
+                            const isSuggested = type === suggestedType;
+                            return (
                             <div 
                                 key={type}
                                 onClick={() => setSelectedType(type)}
@@ -82,13 +69,22 @@ export function TypeSelectionStep({ onSelect, onBack }: TypeSelectionStepProps) 
                                     group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all border
                                     ${selectedType === type 
                                         ? 'bg-blue-50 border-blue-200 text-blue-700 shadow-sm' 
-                                        : 'bg-white border-transparent hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                                        : isSuggested
+                                            ? 'bg-green-50 border-green-200 text-green-700 shadow-sm'
+                                            : 'bg-white border-transparent hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                                     }
                                 `}
                             >
                                 <div className="flex items-center gap-3">
-                                    <FileText className={`w-4 h-4 ${selectedType === type ? 'text-blue-500' : 'text-gray-400'}`} />
-                                    <span className="font-medium">{type}</span>
+                                    {isSuggested ? (
+                                        <Sparkles className="w-4 h-4 text-green-600" />
+                                    ) : (
+                                        <FileText className={`w-4 h-4 ${selectedType === type ? 'text-blue-500' : 'text-gray-400'}`} />
+                                    )}
+                                    <span className="font-medium">
+                                        {type}
+                                        {isSuggested && <span className="ml-2 text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">Suggested</span>}
+                                    </span>
                                 </div>
                                 
                                 {selectedType === type && (
@@ -104,7 +100,8 @@ export function TypeSelectionStep({ onSelect, onBack }: TypeSelectionStepProps) 
                                     </button>
                                 )}
                             </div>
-                        ))}
+                        )})}
+
                     </div>
                 </div>
             </div>
