@@ -1,3 +1,4 @@
+import { ACCEPTED_EXTENSIONS } from '@/lib/file-config';
 import { Upload, FileText, File } from 'lucide-react';
 import { useRef } from 'react';
 
@@ -36,7 +37,7 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
             ref={fileInputRef}
             className="hidden" 
             onChange={handleFileChange}
-            accept=".pdf,.docx,.doc"
+            accept={ACCEPTED_EXTENSIONS}
           />
           
           <div className="absolute top-4 right-4 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Step 1</div>

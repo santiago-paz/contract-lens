@@ -211,6 +211,7 @@ export default function ContractCreator() {
         fileName={uploadedFile?.name || 'New Contract'} 
         contractType={selectedType}
         onBack={handleBackToDashboard}
+        uploadedFile={uploadedFile}
     >
         {/* Editor Content */}
         <div className="space-y-8">

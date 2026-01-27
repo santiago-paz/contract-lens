@@ -14,17 +14,24 @@ import {
   ZoomIn,
   ZoomOut
 } from 'lucide-react';
+import { FilePreview } from '@/components/FilePreview';
+import { getFileType } from '@/lib/file-config';
 
 interface EditorLayoutProps {
   children: React.ReactNode;
   fileName: string;
   contractType: string;
   onBack: () => void;
+  uploadedFile?: File | null;
 }
 
-export function EditorLayout({ children, fileName, contractType, onBack }: EditorLayoutProps) {
+export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile }: EditorLayoutProps) {
   const [activeTab, setActiveTab] = useState('documents');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Check if preview is available
+  const fileType = uploadedFile ? getFileType(uploadedFile) : 'unknown';
+  const hasPreview = fileType !== 'unknown';
 
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] -m-6 md:-m-8">
@@ -218,9 +225,19 @@ export function EditorLayout({ children, fileName, contractType, onBack }: Edito
            </div>
 
            {/* Document Content - Scrollable */}
-           <div className="flex-1 overflow-y-auto p-8 bg-gray-50/50">
-             <div className="max-w-4xl mx-auto bg-white shadow-sm border border-gray-200 min-h-[800px] p-8 md:p-12">
-               {children}
+           <div className="flex-1 overflow-y-auto bg-gray-50/50">
+             <div className={`bg-white shadow-sm border border-gray-200 relative ${
+               activeTab === 'documents' && hasPreview && uploadedFile 
+                 ? 'w-full h-full border-0' 
+                 : 'max-w-4xl mx-auto min-h-[800px] p-8 md:p-12'
+             }`}>
+               {activeTab === 'documents' && hasPreview && uploadedFile ? (
+                 <div className="absolute inset-0 z-0">
+                    <FilePreview file={uploadedFile} className="h-full w-full" />
+                 </div>
+               ) : (
+                 children
+               )}
              </div>
            </div>
         </div>
