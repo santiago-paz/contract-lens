@@ -3,6 +3,7 @@
 import { streamText, generateObject } from 'ai';
 import { extractText } from '@/lib/text-extractor';
 import { ContractSchema } from '@/types/contract-analysis';
+import { CONTRACT_TYPES } from '@/lib/constants';
 
 export async function analyzeContract(formData: FormData) {
   const file = formData.get('file') as File;
@@ -23,7 +24,7 @@ export async function analyzeContract(formData: FormData) {
   const truncatedText = text.slice(0, 200000);
   
   const prompt = `Analyze the provided contract text and extract information to populate the following fields:
-  - contractType: Choose the best match from the allowed list.
+  - contractType: Choose the best match from the following allowed list: ${CONTRACT_TYPES.join(', ')}.
   - title: A concise title.
   - contractOwner: Owner/initiator name (optional).
   - contractManager: Manager name (optional).
