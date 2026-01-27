@@ -12,7 +12,14 @@ import {
   ChevronLeft,
   ChevronRight,
   ZoomIn,
-  ZoomOut
+  ZoomOut,
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  List,
+  ListOrdered,
+  Plus
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
 import { getFileType } from '@/lib/file-config';
@@ -103,7 +110,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                   <ChevronDown className="w-4 h-4 ml-auto" />
                 </button>
                 
-                <div className="space-y-4 pl-1">
+                  <div className="space-y-4 pl-1">
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Title *</label>
                      <input 
@@ -115,33 +122,116 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                    
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Owner *</label>
-                     <input 
-                       type="text" 
-                       placeholder="Type to search..."
-                       defaultValue={initialData?.contractOwner || ''}
-                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
-                     />
+                     <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
+                          {initialData?.contractOwner || 'Yahya Mao'} <button className="hover:text-blue-900">×</button>
+                        </span>
+                     </div>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Deputy</label>
+                     <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
+                          Simon Hall <button className="hover:text-blue-900">×</button>
+                        </span>
+                        <input 
+                          type="text" 
+                          className="flex-1 bg-transparent text-sm outline-none min-w-[100px]"
+                          placeholder=""
+                        />
+                     </div>
                    </div>
                    
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Manager *</label>
                      <div className="flex flex-wrap gap-2 mb-2">
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          {initialData?.contractManager || 'Irem Cengiz'} <button className="hover:text-blue-900">×</button>
+                          {initialData?.contractManager || 'Yahya Mao'} <button className="hover:text-blue-900">×</button>
                         </span>
                      </div>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">External Reference</label>
+                     <input 
+                       type="text" 
+                       defaultValue="SWISSGRC"
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                     />
                    </div>
 
                     <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Category</label>
                      <select 
                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
-                       defaultValue={contractType}
+                       defaultValue={contractType || 'Marketing & Events'}
                      >
                         {CONTRACT_TYPES.map(type => (
                             <option key={type} value={type}>{type}</option>
                         ))}
                      </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Organizational Units *</label>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                       defaultValue="Swiss GRC AG"
+                     >
+                        <option value="Swiss GRC AG">Swiss GRC AG</option>
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Contract Value</label>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                     >
+                        <option value="">Select...</option>
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Confidentiality</label>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                     >
+                        <option value="">Select...</option>
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Contract Partner</label>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none mb-2"
+                       defaultValue="Swiss GRC AG"
+                     >
+                        <option value="Swiss GRC AG">Swiss GRC AG</option>
+                     </select>
+                     <button className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                       <Plus className="w-4 h-4" />
+                       New Partner
+                     </button>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Contract Summary</label>
+                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
+                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
+                       </div>
+                       <textarea 
+                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
+                         defaultValue={initialData?.summary || "Dieser Vertrag regelt die Zusammenarbeit zwischen dem Sponsor und dem Veranstalter im Rahmen des Sponsorings für den Event «SWISS GRC DAY» am 14.05.2025."}
+                       />
+                     </div>
                    </div>
                 </div>
               </div>
@@ -156,28 +246,59 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                  <div className="space-y-4 pl-1">
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Status *</label>
-                     <select 
-                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
-                        defaultValue={initialData?.status || 'Review'}
-                     >
-                        <option value="Review">Review</option>
-                        <option value="Draft">Draft</option>
-                        <option value="Signed">Signed</option>
-                        <option value="Active">Active</option>
-                        <option value="Expired">Expired</option>
-                     </select>
+                     <div className="flex items-center gap-2 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900">
+                        <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                        <select 
+                           className="bg-transparent outline-none w-full appearance-none"
+                           defaultValue={initialData?.status || 'Review'}
+                        >
+                           <option value="Review">Review</option>
+                           <option value="Draft">Draft</option>
+                           <option value="Signed">Signed</option>
+                           <option value="Active">Active</option>
+                           <option value="Expired">Expired</option>
+                        </select>
+                     </div>
                    </div>
                    
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Duration Type *</label>
                      <select 
-                        className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100"
-                        defaultValue={initialData?.durationType || 'Fixed-term'}
+                        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                        defaultValue={initialData?.durationType || 'One-time'}
                      >
                         <option value="One-time">One-time</option>
                         <option value="Fixed-term">Fixed-term</option>
                         <option value="Indefinite">Indefinite</option>
                      </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Contract Start *</label>
+                     <input 
+                       type="date"
+                       defaultValue="2025-09-02"
+                       className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100"
+                     />
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Conditions</label>
+                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
+                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
+                       </div>
+                       <textarea 
+                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
+                         placeholder=""
+                       />
+                     </div>
                    </div>
                 </div>
               </div>
@@ -187,7 +308,52 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                 <button className="flex items-center gap-2 w-full text-left font-medium text-gray-700 mb-4 pt-4 border-t border-gray-100">
                   <Shield className="w-4 h-4" />
                   Risks and Compliance
+                  <ChevronDown className="w-4 h-4 ml-auto" />
                 </button>
+                <div className="space-y-4 pl-1">
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Risk Assessment</label>
+                     <select 
+                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                     >
+                        <option value="">Select...</option>
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Liability Amount</label>
+                     <div className="flex gap-2">
+                       <input 
+                         type="text" 
+                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                       />
+                       <select 
+                         className="w-32 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none"
+                       >
+                          <option value="">Select...</option>
+                       </select>
+                     </div>
+                   </div>
+
+                   <div>
+                     <label className="block text-xs font-medium text-gray-500 mb-1">Comments</label>
+                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
+                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
+                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
+                       </div>
+                       <textarea 
+                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
+                         placeholder=""
+                       />
+                     </div>
+                   </div>
+                </div>
               </div>
            </div>
         </div>

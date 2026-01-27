@@ -11,32 +11,58 @@ export async function analyzeContract(formData: FormData) {
     throw new Error('No file provided');
   }
 
+  // Extract text first
+  let text: string;
   try {
-    const text = await extractText(file);
-    
+    text = await extractText(file);
+  } catch (error) {
+    console.error('Text extraction failed:', error);
+    throw new Error('Failed to extract text from file');
+  }
+
+  const truncatedText = text.slice(0, 200000);
+  
+  const prompt = `Analyze the provided contract text and extract information to populate the following fields:
+  - contractType: Choose the best match from the allowed list.
+  - title: A concise title.
+  - contractOwner: Owner/initiator name (optional).
+  - contractManager: Manager name (optional).
+  - status: Default to 'Review'.
+  - durationType: One of 'One-time', 'Fixed-term', 'Indefinite'.
+  - summary: A brief summary.
+
+  Ensure the output is a single JSON object strictly adhering to the schema. Do NOT return an array or list of key-values.
+  
+  Contract Text:
+  ${truncatedText}
+  `;
+
+  try {
     const result = await generateObject({
       model: 'meta/llama-3.1-8b' as any,
       schema: ContractSchema,
-      prompt: `Analyze the provided contract text and extract information to populate the following fields:
-      - contractType: Choose the best match from the allowed list.
-      - title: A concise title.
-      - contractOwner: Owner/initiator name (optional).
-      - contractManager: Manager name (optional).
-      - status: Default to 'Review'.
-      - durationType: One of 'One-time', 'Fixed-term', 'Indefinite'.
-      - summary: A brief summary.
-
-      Ensure the output is a single JSON object strictly adhering to the schema. Do NOT return an array or list of key-values.
-      
-      Contract Text:
-      ${text.slice(0, 50000)}
-      `,
+      prompt,
     });
 
     return result.object;
   } catch (error) {
-    console.error('Analysis error:', error);
-    throw new Error('Failed to analyze contract');
+    console.warn('First analysis attempt failed, retrying...', error);
+    
+    try {
+      // Retry with explicit instruction to fix potential format issues
+      const result = await generateObject({
+        model: 'meta/llama-3.1-8b' as any,
+        schema: ContractSchema,
+        prompt: `Previous analysis failed. Please analyze the contract again and ensure valid JSON output matching the schema.
+        
+        ${prompt}`,
+      });
+      
+      return result.object;
+    } catch (retryError) {
+      console.error('Final analysis error:', retryError);
+      throw new Error('Failed to analyze contract');
+    }
   }
 }
 
