@@ -127,7 +127,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Manager *</label>
                      <div className="flex flex-wrap gap-2 mb-2">
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          {initialData?.contractManager || 'Yahya Mao'} <button className="hover:text-blue-900">×</button>
+                          {initialData?.contractManager || 'Irem Cengiz'} <button className="hover:text-blue-900">×</button>
                         </span>
                      </div>
                    </div>
