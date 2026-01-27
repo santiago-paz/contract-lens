@@ -1,69 +1,126 @@
 'use client';
 
-import { Language } from '@/hooks/useTranslationSync';
-import { cn } from '@/lib/utils';
-import { Globe } from 'lucide-react';
-import { getTranslations } from '@/lib/translations';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import Placeholder from '@tiptap/extension-placeholder';
+import { 
+  Bold, 
+  Italic, 
+  Underline as UnderlineIcon, 
+  Strikethrough, 
+  List, 
+  ListOrdered 
+} from 'lucide-react';
+import { useEffect } from 'react';
 
 interface RichEditorProps {
   content: string;
-  onChange: (text: string) => void;
-  isReadOnly?: boolean;
-  language: Language;
-  availableLanguages: { code: Language; label: string }[];
-  onLanguageChange: (lang: Language) => void;
-  className?: string;
-  label?: string;
+  onChange: (content: string) => void;
   placeholder?: string;
+  className?: string;
+  editable?: boolean;
 }
 
-const RichEditor = ({
-  content,
-  onChange,
-  isReadOnly = false,
-  language,
-  availableLanguages,
-  onLanguageChange,
+const RichEditor = ({ 
+  content, 
+  onChange, 
+  placeholder, 
   className,
-  label,
-  placeholder
+  editable = true
 }: RichEditorProps) => {
-  const t = getTranslations();
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Placeholder.configure({
+        placeholder: placeholder || 'Type something...',
+      }),
+    ],
+    content: content,
+    editable: editable,
+    editorProps: {
+      attributes: {
+        class: 'prose prose-sm max-w-none focus:outline-none min-h-[100px] px-3 py-2',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML());
+    },
+    immediatelyRender: false
+  });
+
+  // Update content if it changes externally
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      // Only update if content is different to avoid cursor jumps
+      // This is a naive check, for production might need better diffing
+      // or only update on blur / distinct actions if two-way binding is heavy
+      if (editor.getText() === '' && content === '') return;
+       
+      // If the content is drastically different, set it.
+      // Ideally we rely on initial content and internal state for simple forms
+    }
+  }, [content, editor]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
-    <div className={cn("flex flex-col border border-gray-200 rounded-lg shadow-sm bg-white overflow-hidden h-full", className)}>
-      <div className="bg-gray-50 border-b flex flex-col">
-        <div className="px-4 py-2 flex justify-between items-center border-b border-gray-100">
-          {/* Language Selector in Header */}
-          <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-gray-500" />
-            <select
-              value={language}
-              onChange={(e) => onLanguageChange(e.target.value as Language)}
-              className="text-sm font-semibold text-gray-700 bg-transparent border-none focus:ring-0 cursor-pointer hover:bg-gray-100 rounded px-2 py-1 transition-colors"
-            >
-              {availableLanguages.map(l => (
-                <option key={l.code} value={l.code}>
-                  {l.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <span className="text-xs text-gray-400 font-mono tracking-wider">{language.toUpperCase()}</span>
-        </div>
+    <div className={`border border-gray-200 rounded-lg overflow-hidden bg-white ${className}`}>
+      <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('bold') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <Bold className="w-3.5 h-3.5" />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('italic') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <Italic className="w-3.5 h-3.5" />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('strike') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <Strikethrough className="w-3.5 h-3.5" />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('underline') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <UnderlineIcon className="w-3.5 h-3.5" />
+        </button>
+        <div className="w-px h-4 bg-gray-300 mx-1"></div>
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('bulletList') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <List className="w-3.5 h-3.5" />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`p-1 hover:bg-gray-200 rounded ${editor.isActive('orderedList') ? 'bg-gray-200 text-black' : 'text-gray-600'}`}
+          type="button"
+          disabled={!editable}
+        >
+          <ListOrdered className="w-3.5 h-3.5" />
+        </button>
       </div>
-
-      <textarea
-        name={`editor-${language}`}
-        id={`editor-${language}`}
-        className="flex-1 w-full h-full p-4 resize-none focus:outline-none font-mono text-sm leading-relaxed text-gray-700 placeholder:text-gray-400"
-        value={content}
-        onChange={(e) => onChange(e.target.value)}
-        readOnly={isReadOnly}
-        placeholder={placeholder || t.editor.richEditorPlaceholder}
-        spellCheck={false}
-      />
+      <EditorContent editor={editor} />
     </div>
   );
 };

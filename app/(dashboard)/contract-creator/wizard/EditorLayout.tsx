@@ -3,7 +3,6 @@ import {
   FileText, 
   Calendar, 
   Shield, 
-  MoreHorizontal, 
   ChevronDown, 
   Search,
   PenLine,
@@ -13,15 +12,10 @@ import {
   ChevronRight,
   ZoomIn,
   ZoomOut,
-  Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  List,
-  ListOrdered,
   Plus
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
+import RichEditor from '@/components/RichEditor';
 import { getFileType } from '@/lib/file-config';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { CONTRACT_TYPES } from '@/lib/constants';
@@ -38,6 +32,10 @@ interface EditorLayoutProps {
 export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData }: EditorLayoutProps) {
   const [activeTab, setActiveTab] = useState('documents');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  const [summary, setSummary] = useState(initialData?.summary || "Dieser Vertrag regelt die Zusammenarbeit zwischen dem Sponsor und dem Veranstalter im Rahmen des Sponsorings für den Event «SWISS GRC DAY» am 14.05.2025.");
+  const [conditions, setConditions] = useState("");
+  const [comments, setComments] = useState("");
 
   // Check if preview is available
   const fileType = uploadedFile ? getFileType(uploadedFile) : 'unknown';
@@ -217,21 +215,10 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
 
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Summary</label>
-                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
-                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
-                       </div>
-                       <textarea 
-                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
-                         defaultValue={initialData?.summary || "Dieser Vertrag regelt die Zusammenarbeit zwischen dem Sponsor und dem Veranstalter im Rahmen des Sponsorings für den Event «SWISS GRC DAY» am 14.05.2025."}
-                       />
-                     </div>
+                     <RichEditor 
+                       content={summary} 
+                       onChange={setSummary} 
+                     />
                    </div>
                 </div>
               </div>
@@ -284,21 +271,10 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
 
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Conditions</label>
-                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
-                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
-                       </div>
-                       <textarea 
-                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
-                         placeholder=""
-                       />
-                     </div>
+                     <RichEditor 
+                       content={conditions} 
+                       onChange={setConditions} 
+                     />
                    </div>
                 </div>
               </div>
@@ -337,21 +313,10 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
 
                    <div>
                      <label className="block text-xs font-medium text-gray-500 mb-1">Comments</label>
-                     <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                       <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Bold className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Italic className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Strikethrough className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Underline className="w-3.5 h-3.5" /></button>
-                         <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><List className="w-3.5 h-3.5" /></button>
-                         <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><ListOrdered className="w-3.5 h-3.5" /></button>
-                       </div>
-                       <textarea 
-                         className="w-full p-3 text-sm text-gray-900 min-h-[100px] outline-none resize-y"
-                         placeholder=""
-                       />
-                     </div>
+                     <RichEditor 
+                       content={comments} 
+                       onChange={setComments} 
+                     />
                    </div>
                 </div>
               </div>
