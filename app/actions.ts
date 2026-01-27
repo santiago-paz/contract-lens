@@ -15,9 +15,18 @@ export async function analyzeContract(formData: FormData) {
     const text = await extractText(file);
     
     const result = await generateObject({
-      model: 'meta/llama-3.1-8b' as any, // Cast to any to avoid type issues with string model
+      model: 'meta/llama-3.1-8b' as any,
       schema: ContractSchema,
-      prompt: `Analyze the following contract text and extract the required information.
+      prompt: `Analyze the provided contract text and extract information to populate the following fields:
+      - contractType: Choose the best match from the allowed list.
+      - title: A concise title.
+      - contractOwner: Owner/initiator name (optional).
+      - contractManager: Manager name (optional).
+      - status: Default to 'Review'.
+      - durationType: One of 'One-time', 'Fixed-term', 'Indefinite'.
+      - summary: A brief summary.
+
+      Ensure the output is a single JSON object strictly adhering to the schema. Do NOT return an array or list of key-values.
       
       Contract Text:
       ${text.slice(0, 50000)}
