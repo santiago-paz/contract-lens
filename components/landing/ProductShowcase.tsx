@@ -131,6 +131,8 @@ export function ProductShowcase() {
                       alt={feature.title}
                       width={1200}
                       height={800}
+                      quality={100}
+                      priority={index === 0}
                       className="w-full h-auto object-cover"
                     />
                   </div>
