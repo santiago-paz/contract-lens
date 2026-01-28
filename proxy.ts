@@ -2,23 +2,38 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function proxy(request: NextRequest) {
-  // Rutas públicas que no requieren autenticación
-  const publicPaths = ['/login', '/favicon.ico', '/public']
-  
-  // Verificar si la ruta actual es pública
-  const isPublicPath = publicPaths.some(path => 
-    request.nextUrl.pathname.startsWith(path) || 
-    request.nextUrl.pathname.match(/\.(svg|png|jpg|jpeg|gif|webp)$/)
-  )
+  const currentUser = request.cookies.get('auth_session')?.value
+  const { pathname } = request.nextUrl
 
-  if (isPublicPath) {
+  // 1. Allow public assets and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/static') ||
+    pathname.startsWith('/screenshots-app') ||
+    pathname.startsWith('/api') ||
+    pathname.endsWith('.svg') ||
+    pathname.endsWith('.png') ||
+    pathname.endsWith('.ico')
+  ) {
     return NextResponse.next()
   }
 
-  // Verificar cookie de sesión
-  const authSession = request.cookies.get('auth_session')
+  // 2. Allow Landing Page
+  if (pathname === '/') {
+    return NextResponse.next()
+  }
 
-  if (!authSession) {
+  // 3. Handle Login Page
+  if (pathname === '/login') {
+    // If already logged in, redirect to dashboard
+    if (currentUser) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+    return NextResponse.next()
+  }
+
+  // 4. Protect all other routes (Dashboard, etc.)
+  if (!currentUser) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
@@ -32,7 +47,8 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 }

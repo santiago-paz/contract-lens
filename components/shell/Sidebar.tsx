@@ -33,7 +33,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: 'PERSONAL',
     items: [
-      { label: 'Overview', href: '/', icon: LayoutDashboard },
+      { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
       { label: 'Contracts', href: '/contracts', icon: FileText },
       { label: 'Alerts', href: '/alerts', icon: Bell },
       { label: 'Tasks', href: '/tasks', icon: CheckSquare },
