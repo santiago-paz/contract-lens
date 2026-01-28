@@ -115,10 +115,11 @@ export function ProductShowcase() {
               {/* Image */}
               <div className="flex-1 w-full">
                 <div className="relative group">
-                   {/* Shadow Effect */}
-                  <div className="absolute -inset-4 bg-gray-200/50 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                   {/* Shadow Effect - Hidden on mobile to prevent overflow issues with full-width */}
+                  <div className="absolute -inset-4 bg-gray-200/50 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500 hidden sm:block"></div>
                   
-                  <div className="relative bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-500 hover:scale-[1.01]">
+                  {/* Image Container - Full width on mobile (-mx-4), rounded on desktop */}
+                  <div className="relative bg-white border-y sm:border border-gray-200 rounded-none sm:rounded-xl overflow-hidden shadow-sm sm:shadow-2xl transform transition-transform duration-500 sm:hover:scale-[1.01] -mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full">
                      {/* Window Controls Mockup */}
                     <div className="h-8 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-2">
                         <div className="w-3 h-3 rounded-full bg-gray-200 border border-gray-300"></div>
