@@ -129,33 +129,33 @@ const translations = {
       }
     },
     teams: {
-      title: "Designed to simplify.",
-      titleHighlight: "Built for your teams.",
-      subtitle: "Split Berlin was developed in response to real client demands and regulatory pressures. Every feature is designed to reduce friction, increase transparency, and give your teams more control.",
+      title: "Chaos into clarity.",
+      titleHighlight: "One platform, endless utility.",
+      subtitle: "Stop chasing documents. Start driving strategy. We turn your static files into actionable data for every stakeholder in your organization.",
       cta: "Talk to our experts",
       legal: {
         title: "Legal Teams",
-        desc: "Standardize drafting, manage approvals, and stay audit-ready with complete histories."
+        desc: "Accelerate reviews and maintain airtight compliance with automated version control and audit trails."
       },
       procurement: {
         title: "Procurement",
-        desc: "Centralize supplier contracts, track renewals with alerts, and monitor vendor risk."
+        desc: "Maximize leverage. Track renewals, monitor performance, and consolidate vendor spend automatically."
       },
       hr: {
         title: "HR",
-        desc: "Manage employment contracts, NDAs, and policies in one secure repository."
+        desc: "Protect people data. Securely manage employment agreements with strict access controls and compliance tracking."
       },
       finance: {
         title: "Finance",
-        desc: "Track values, commitments, and deadlines with real-time reporting and analytics."
+        desc: "No more surprises. Visualize committed spend and cash flow impact directly from your contract data."
       },
       grc: {
         title: "GRC Teams",
-        desc: "Keep contracts compliant, obligations tracked, and vendor risk managed with TPRM integration."
+        desc: "Stay compliant effortlessly. Automated risk monitoring and obligation tracking for every vendor."
       },
       ops: {
         title: "Operations",
-        desc: "Streamline workflows, integrate with existing tools, and scale processes across teams."
+        desc: "Scale without friction. Integrate contract milestones directly into your daily project workflows."
       }
     },
     contact: {
@@ -297,33 +297,33 @@ const translations = {
       }
     },
     teams: {
-      title: "Entwickelt zur Vereinfachung.",
-      titleHighlight: "Gebaut für Ihre Teams.",
-      subtitle: "Split Berlin wurde als Reaktion auf echte Kundenanforderungen und regulatorischen Druck entwickelt. Jede Funktion ist darauf ausgelegt, Reibung zu reduzieren, Transparenz zu erhöhen und Ihren Teams mehr Kontrolle zu geben.",
+      title: "Vom Chaos zur Klarheit.",
+      titleHighlight: "Eine Plattform, unendlicher Nutzen.",
+      subtitle: "Hören Sie auf, Dokumente zu jagen. Beginnen Sie, Strategien voranzutreiben. Wir verwandeln Ihre statischen Dateien in umsetzbare Daten für jeden Stakeholder in Ihrer Organisation.",
       cta: "Sprechen Sie mit unseren Experten",
       legal: {
         title: "Rechtsabteilungen",
-        desc: "Standardisieren Sie Entwürfe, verwalten Sie Genehmigungen und bleiben Sie revisionssicher mit lückenlosen Historien."
+        desc: "Beschleunigen Sie Überprüfungen und gewährleisten Sie lückenlose Compliance mit automatisierter Versionskontrolle und Audit-Trails."
       },
       procurement: {
         title: "Einkauf",
-        desc: "Zentralisieren Sie Lieferantenverträge, verfolgen Sie Verlängerungen mit Alarmen und überwachen Sie Lieferantenrisiken."
+        desc: "Maximieren Sie Ihren Hebel. Verfolgen Sie Verlängerungen, überwachen Sie die Leistung und konsolidieren Sie Lieferantenausgaben automatisch."
       },
       hr: {
         title: "Personalwesen",
-        desc: "Verwalten Sie Arbeitsverträge, NDAs und Richtlinien in einem sicheren Repository."
+        desc: "Schützen Sie Personaldaten. Verwalten Sie Arbeitsverträge sicher mit strengen Zugriffskontrollen und Compliance-Tracking."
       },
       finance: {
         title: "Finanzen",
-        desc: "Verfolgen Sie Werte, Verpflichtungen und Fristen mit Echtzeit-Berichten und Analysen."
+        desc: "Keine Überraschungen mehr. Visualisieren Sie gebundene Ausgaben und Cashflow-Auswirkungen direkt aus Ihren Vertragsdaten."
       },
       grc: {
         title: "GRC-Teams",
-        desc: "Halten Sie Verträge konform, verfolgen Sie Verpflichtungen und verwalten Sie Lieferantenrisiken mit TPRM-Integration."
+        desc: "Mühelos konform bleiben. Automatische Risikoüberwachung und Verpflichtungsverfolgung für jeden Lieferanten."
       },
       ops: {
         title: "Operations",
-        desc: "Optimieren Sie Workflows, integrieren Sie bestehende Tools und skalieren Sie Prozesse teamübergreifend."
+        desc: "Skalieren Sie ohne Reibung. Integrieren Sie Vertragsmeilensteine direkt in Ihre täglichen Projektworkflows."
       }
     },
     contact: {
