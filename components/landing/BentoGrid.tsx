@@ -285,55 +285,57 @@ export function BentoGrid() {
                 </div>
 
                 {/* Visuals Side */}
-                <div className="relative h-full min-h-[300px] flex items-center justify-center">
-                    {/* Partner Card 1: Google */}
-                    <div className="absolute top-4 left-4 bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-64 transition-transform duration-300 hover:scale-105 z-10">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold">G</div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Google LLC</div>
-                                <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                <div className="relative h-full min-h-[300px] flex items-center justify-center p-4">
+                    <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
+                        {/* Partner Card 1: Google */}
+                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold">G</div>
+                                <div>
+                                    <div className="text-sm font-bold text-gray-900">Google LLC</div>
+                                    <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 text-xs flex-wrap">
+                                 <div className="bg-green-50 text-green-700 px-2 py-1 rounded">3 Active</div>
+                                 <div className="bg-red-50 text-red-700 px-2 py-1 rounded">1 Expiring</div>
                             </div>
                         </div>
-                        <div className="flex gap-2 text-xs">
-                             <div className="bg-green-50 text-green-700 px-2 py-1 rounded">3 Active</div>
-                             <div className="bg-red-50 text-red-700 px-2 py-1 rounded">1 Expiring</div>
-                        </div>
-                    </div>
 
-                    {/* Partner Card 2: Salesforce */}
-                    <div className="absolute top-16 right-4 bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-64 transition-transform duration-300 hover:scale-105 z-20">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 bg-[#00A1E0] rounded flex items-center justify-center text-white font-bold">S</div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Salesforce.com</div>
-                                <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                        {/* Partner Card 2: Salesforce */}
+                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 bg-[#00A1E0] rounded flex items-center justify-center text-white font-bold">S</div>
+                                <div>
+                                    <div className="text-sm font-bold text-gray-900">Salesforce</div>
+                                    <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 text-xs flex-wrap">
+                                 <div className="bg-green-50 text-green-700 px-2 py-1 rounded">1 Active</div>
+                                 <div className="bg-blue-50 text-blue-700 px-2 py-1 rounded">Renewal</div>
                             </div>
                         </div>
-                        <div className="flex gap-2 text-xs">
-                             <div className="bg-green-50 text-green-700 px-2 py-1 rounded">1 Active</div>
-                             <div className="bg-blue-50 text-blue-700 px-2 py-1 rounded">Renewal</div>
+
+                        {/* Task Card 1: Sarah */}
+                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                             <div className="flex items-center gap-2 mb-2">
+                                <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">S</div>
+                                <span className="text-xs text-gray-500 truncate">{t.bento.collab.taskCard.assigned}</span>
+                             </div>
+                             <p className="text-sm font-medium text-gray-900 line-clamp-2">{t.bento.collab.taskCard.task}</p>
+                             <div className="mt-2 text-xs text-gray-400">{t.bento.collab.taskCard.due}</div>
                         </div>
-                    </div>
 
-                    {/* Task Card 1: Sarah */}
-                    <div className="absolute bottom-20 left-8 bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-64 transition-transform duration-300 hover:scale-105 z-30">
-                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">S</div>
-                            <span className="text-xs text-gray-500">{t.bento.collab.taskCard.assigned}</span>
-                         </div>
-                         <p className="text-sm font-medium text-gray-900">{t.bento.collab.taskCard.task}</p>
-                         <div className="mt-2 text-xs text-gray-400">{t.bento.collab.taskCard.due}</div>
-                    </div>
-
-                    {/* Task Card 2: Mike */}
-                    <div className="absolute bottom-4 right-8 bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-64 transition-transform duration-300 hover:scale-105 z-40">
-                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold">M</div>
-                            <span className="text-xs text-gray-500">{t.bento.collab.taskCard2.assigned}</span>
-                         </div>
-                         <p className="text-sm font-medium text-gray-900">{t.bento.collab.taskCard2.task}</p>
-                         <div className="mt-2 text-xs text-red-500 font-medium">{t.bento.collab.taskCard2.due}</div>
+                        {/* Task Card 2: Mike */}
+                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                             <div className="flex items-center gap-2 mb-2">
+                                <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold">M</div>
+                                <span className="text-xs text-gray-500 truncate">{t.bento.collab.taskCard2.assigned}</span>
+                             </div>
+                             <p className="text-sm font-medium text-gray-900 line-clamp-2">{t.bento.collab.taskCard2.task}</p>
+                             <div className="mt-2 text-xs text-red-500 font-medium">{t.bento.collab.taskCard2.due}</div>
+                        </div>
                     </div>
                 </div>
              </div>
