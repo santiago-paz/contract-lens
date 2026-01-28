@@ -98,7 +98,7 @@ export function Hero() {
                 className="relative hidden lg:block"
             >
                 {/* Background glow removed for cleaner light mode */}
-                <div className="relative bg-white border border-gray-200 rounded-lg p-6 h-[450px] overflow-hidden shadow-sm rotate-[-2deg] scale-95 origin-right group">
+                <div className="relative bg-white border border-gray-200 rounded-lg p-6 h-[450px] overflow-hidden shadow-sm scale-95 origin-right group">
                     {/* Scanning Line - One-time noticeable scan */}
                     <motion.div 
                         className="absolute left-0 right-0 h-2 bg-blue-500/30 z-20 shadow-[0_0_15px_rgba(59,130,246,0.6)] border-b border-blue-500/60"
@@ -123,19 +123,31 @@ export function Hero() {
                     </div>
 
                     {/* Fake PDF Content - Less Blurry to show "messy" data */}
-                    <div className="space-y-4 opacity-60 blur-[1px] pointer-events-none select-none mt-8">
-                        <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                        <div className="h-4 bg-gray-200 rounded w-4/6"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="grid grid-cols-2 gap-4 mt-8">
-                            <div className="h-32 bg-gray-100 rounded border border-gray-200"></div>
-                            <div className="h-32 bg-gray-100 rounded border border-gray-200"></div>
+                    <div className="space-y-4 opacity-60 blur-[1px] pointer-events-none select-none mt-8 font-mono text-[10px] leading-tight text-gray-400 overflow-hidden">
+                        <p>MASTER SERVICES AGREEMENT</p>
+                        <p>THIS AGREEMENT is made on [DATE] between [PARTY A] and [PARTY B]...</p>
+                        <div className="h-4"></div>
+                        <p className="w-full break-words">
+                           loremipsumdolorsitametconsecteturadipiscingelitseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliquautennimadminimveniamquisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.
+                        </p>
+                        <p>SECTION 2.1 - TERMINATION CLAUSE</p>
+                        <p className="w-full break-words opacity-80">
+                           Thecontractshallautomaticallyrenewforasuccessivetermof12monthsunlesswrittennoticeisprovidedatleast30dayspriortotheexpirationofthecurrentterm.Failuretoprovidesuchnoticewillresultinautomaticrenewal.
+                        </p>
+                        <div className="h-4"></div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="border border-gray-300 p-2">
+                                <p>FEES</p>
+                                <p>$120,000/yr</p>
+                            </div>
+                             <div className="border border-gray-300 p-2">
+                                <p>PAYMENT</p>
+                                <p>NET30</p>
+                            </div>
                         </div>
-                        <div className="h-4 bg-gray-200 rounded w-full mt-4"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                         <p className="w-full break-words mt-4">
+                           confidentialinformationmeansanydataorinformationproprietarytothepartydisclosingitwhetherinwritingororalformthatismarkedasconfidentialorwouldreasonablybeunderstoodtobeconfidential.
+                        </p>
                     </div>
                 </div>
             </motion.div>
