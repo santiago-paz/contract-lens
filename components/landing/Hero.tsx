@@ -77,13 +77,16 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link
-              href="/login"
+            <button
+              onClick={() => {
+                const contactForm = document.getElementById('contact-form');
+                contactForm?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
             >
-              Audit your contracts for free
+              Audit your contracts
               <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
+            </button>
           </motion.div>
         </div>
 
@@ -97,7 +100,7 @@ export function Hero() {
                 className="relative hidden lg:block"
             >
                 {/* Background glow removed for cleaner light mode */}
-                <div className="relative bg-white border border-gray-200 rounded-xl p-6 h-[450px] overflow-hidden shadow-sm rotate-[-2deg] scale-95 origin-right">
+                <div className="relative bg-white border border-gray-200 rounded-lg p-6 h-[450px] overflow-hidden shadow-sm rotate-[-2deg] scale-95 origin-right">
                     <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center backdrop-blur-[1px]">
                         <div className="bg-red-50 text-red-600 px-4 py-2 rounded-full border border-red-100 font-mono text-sm font-medium shadow-sm">
                             UNSTRUCTURED DATA
@@ -130,7 +133,7 @@ export function Hero() {
                 className="relative"
             >
                 {/* Subtle shadow instead of glow */}
-                <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 min-h-[280px]">
+                <div className="relative bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200 min-h-[280px]">
                     {/* Header */}
                     <div className="border-b border-gray-100 bg-gray-50/50 p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">

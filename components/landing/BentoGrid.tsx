@@ -5,7 +5,7 @@ import { Check, Loader2, FileText, Bell, Users, Calendar } from 'lucide-react';
 
 export function BentoGrid() {
   return (
-    <div className="py-24 relative bg-gray-50 border-t border-gray-200">
+    <div id="bento-grid" className="py-24 relative bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">More Than Files: A Command Center</h2>
@@ -20,7 +20,7 @@ export function BentoGrid() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="md:col-span-2 bg-white border border-gray-200 rounded-3xl p-8 overflow-hidden relative group hover:border-blue-300 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-2 bg-white border border-gray-200 rounded-2xl p-8 overflow-hidden relative group hover:border-blue-300 transition-colors shadow-sm hover:shadow-md"
           >
             <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -69,7 +69,7 @@ export function BentoGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="md:col-span-1 bg-white border border-gray-200 rounded-3xl p-8 relative overflow-hidden group hover:border-red-200 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-1 bg-white border border-gray-200 rounded-2xl p-8 relative overflow-hidden group hover:border-red-200 transition-colors shadow-sm hover:shadow-md"
           >
              <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -115,7 +115,7 @@ export function BentoGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="md:col-span-3 bg-white border border-gray-200 rounded-3xl p-8 overflow-hidden relative group hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-3 bg-white border border-gray-200 rounded-2xl p-8 overflow-hidden relative group hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md"
           >
              <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
                 <div>

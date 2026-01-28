@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight, Globe } from 'lucide-react';
 
@@ -5,19 +7,22 @@ export function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-3xl p-8 sm:p-12 text-center mb-16 relative overflow-hidden shadow-xl">
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-8 sm:p-12 text-center mb-16 relative overflow-hidden shadow-xl">
              <div className="relative z-10">
                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
                     How much did the last renewal you forgot to cancel cost you?
                 </h2>
                 <div className="mt-8 flex justify-center">
-                    <Link
-                    href="/login"
-                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl text-blue-600 bg-white hover:bg-gray-50 transition-all shadow-lg"
-                    >
-                    Stop the losses
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                    </Link>
+            <button
+              onClick={() => {
+                const contactForm = document.getElementById('contact-form');
+                contactForm?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-all shadow-lg"
+            >
+              Stop the losses
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </button>
                 </div>
              </div>
              {/* Abstract BG Pattern */}

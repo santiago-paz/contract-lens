@@ -6,31 +6,31 @@ import { Upload, Sparkles, FileEdit } from 'lucide-react';
 
 const features = [
   {
-    title: "Simple Onboarding",
-    description: "Start by uploading your contract or choosing a template. Our wizard guides you through the process, supporting both PDF and DOCX formats.",
+    title: "Intelligent Ingestion",
+    description: "Start by choosing a specialized contract template or simply drag & drop your legacy PDFs. We handle the rest.",
     icon: Upload,
     image: "/screenshots-app/1.png",
     alignment: "left"
   },
   {
-    title: "AI-Powered Analysis",
+    title: "AI Analysis",
     description: "Watch as our engine analyzes the document structure, identifies partners, and extracts critical dates and metadata in seconds.",
     icon: Sparkles,
     image: "/screenshots-app/2.png",
     alignment: "right"
   },
   {
-    title: "Full Control Editor",
+    title: "Structured Data Editor",
     description: "Review extracted data side-by-side with your document. Edit fields, assign owners, and manage auto-renewals in a unified interface.",
     icon: FileEdit,
-    image: "/screenshots-app/3.png",
+    image: "/screenshots-app/4.png",
     alignment: "left"
   }
 ];
 
 export function ProductShowcase() {
   return (
-    <div className="py-24 bg-white relative overflow-hidden">
+    <div id="product-showcase" className="py-24 bg-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 inset-x-0 h-px bg-gray-100"></div>
       
@@ -57,7 +57,7 @@ export function ProductShowcase() {
               {/* Text Content */}
               <div className="flex-1 space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
+                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
                     <feature.icon className="w-6 h-6 text-blue-600" />
                   </div>
                   <span className="text-blue-600 font-medium tracking-wide text-sm uppercase">Step {index + 1}</span>
@@ -116,7 +116,7 @@ export function ProductShowcase() {
                    {/* Shadow Effect */}
                   <div className="absolute -inset-4 bg-gray-200/50 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500"></div>
                   
-                  <div className="relative bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-500 hover:scale-[1.01]">
+                  <div className="relative bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-500 hover:scale-[1.01]">
                      {/* Window Controls Mockup */}
                     <div className="h-8 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-2">
                         <div className="w-3 h-3 rounded-full bg-gray-200 border border-gray-300"></div>

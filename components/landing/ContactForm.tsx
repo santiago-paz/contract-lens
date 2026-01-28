@@ -18,12 +18,12 @@ export function ContactForm() {
   };
 
   return (
-    <div className="py-24 bg-gray-50 relative overflow-hidden border-t border-gray-200">
+    <div id="contact-form" className="py-24 bg-gray-50 relative overflow-hidden border-t border-gray-200">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-blue-50 to-transparent pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-xl">
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 sm:p-12 shadow-xl">
             <div className="text-center mb-10">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in touch</h2>
                 <p className="text-gray-600">Have specific requirements? Our team specializes in complex enterprise setups.</p>
