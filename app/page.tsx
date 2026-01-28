@@ -4,6 +4,7 @@ import { Navbar } from '@/components/landing/Navbar';
 import { Hero } from '@/components/landing/Hero';
 import { ProductShowcase } from '@/components/landing/ProductShowcase';
 import { BentoGrid } from '@/components/landing/BentoGrid';
+import { TeamSection } from '@/components/landing/TeamSection';
 import { Security } from '@/components/landing/Security';
 import { ContactForm } from '@/components/landing/ContactForm';
 import { Footer } from '@/components/landing/Footer';
@@ -17,6 +18,7 @@ export default function LandingPage() {
         <Hero />
         <ProductShowcase />
         <BentoGrid />
+        <TeamSection />
         <Security />
         <ContactForm />
         <Footer />

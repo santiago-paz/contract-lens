@@ -128,6 +128,36 @@ const translations = {
         desc: "Choose where your data lives. Full compliance with EU GDPR and US privacy laws."
       }
     },
+    teams: {
+      title: "Designed to simplify.",
+      titleHighlight: "Built for your teams.",
+      subtitle: "Split Berlin was developed in response to real client demands and regulatory pressures. Every feature is designed to reduce friction, increase transparency, and give your teams more control.",
+      cta: "Talk to our experts",
+      legal: {
+        title: "Legal Teams",
+        desc: "Standardize drafting, manage approvals, and stay audit-ready with complete histories."
+      },
+      procurement: {
+        title: "Procurement",
+        desc: "Centralize supplier contracts, track renewals with alerts, and monitor vendor risk."
+      },
+      hr: {
+        title: "HR",
+        desc: "Manage employment contracts, NDAs, and policies in one secure repository."
+      },
+      finance: {
+        title: "Finance",
+        desc: "Track values, commitments, and deadlines with real-time reporting and analytics."
+      },
+      grc: {
+        title: "GRC Teams",
+        desc: "Keep contracts compliant, obligations tracked, and vendor risk managed with TPRM integration."
+      },
+      ops: {
+        title: "Operations",
+        desc: "Streamline workflows, integrate with existing tools, and scale processes across teams."
+      }
+    },
     contact: {
       title: "Get in touch",
       subtitle: "Have specific requirements? Our team specializes in complex enterprise setups.",
@@ -264,6 +294,36 @@ const translations = {
       hosting: {
         title: "Souveränes Hosting",
         desc: "Wählen Sie, wo Ihre Daten liegen. Volle Konformität mit EU-DSGVO und US-Datenschutzgesetzen."
+      }
+    },
+    teams: {
+      title: "Entwickelt zur Vereinfachung.",
+      titleHighlight: "Gebaut für Ihre Teams.",
+      subtitle: "Split Berlin wurde als Reaktion auf echte Kundenanforderungen und regulatorischen Druck entwickelt. Jede Funktion ist darauf ausgelegt, Reibung zu reduzieren, Transparenz zu erhöhen und Ihren Teams mehr Kontrolle zu geben.",
+      cta: "Sprechen Sie mit unseren Experten",
+      legal: {
+        title: "Rechtsabteilungen",
+        desc: "Standardisieren Sie Entwürfe, verwalten Sie Genehmigungen und bleiben Sie revisionssicher mit lückenlosen Historien."
+      },
+      procurement: {
+        title: "Einkauf",
+        desc: "Zentralisieren Sie Lieferantenverträge, verfolgen Sie Verlängerungen mit Alarmen und überwachen Sie Lieferantenrisiken."
+      },
+      hr: {
+        title: "Personalwesen",
+        desc: "Verwalten Sie Arbeitsverträge, NDAs und Richtlinien in einem sicheren Repository."
+      },
+      finance: {
+        title: "Finanzen",
+        desc: "Verfolgen Sie Werte, Verpflichtungen und Fristen mit Echtzeit-Berichten und Analysen."
+      },
+      grc: {
+        title: "GRC-Teams",
+        desc: "Halten Sie Verträge konform, verfolgen Sie Verpflichtungen und verwalten Sie Lieferantenrisiken mit TPRM-Integration."
+      },
+      ops: {
+        title: "Operations",
+        desc: "Optimieren Sie Workflows, integrieren Sie bestehende Tools und skalieren Sie Prozesse teamübergreifend."
       }
     },
     contact: {
