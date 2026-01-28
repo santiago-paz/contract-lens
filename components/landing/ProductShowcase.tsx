@@ -3,32 +3,32 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Upload, Sparkles, FileEdit } from 'lucide-react';
-
-const features = [
-  {
-    title: "Intelligent Ingestion",
-    description: "Start by choosing a specialized contract template or simply drag & drop your legacy PDFs. We handle the rest.",
-    icon: Upload,
-    image: "/screenshots-app/1.png",
-    alignment: "left"
-  },
-  {
-    title: "AI Analysis",
-    description: "Watch as our engine analyzes the document structure, identifies partners, and extracts critical dates and metadata in seconds.",
-    icon: Sparkles,
-    image: "/screenshots-app/2.png",
-    alignment: "right"
-  },
-  {
-    title: "Structured Data Editor",
-    description: "Review extracted data side-by-side with your document. Edit fields, assign owners, and manage auto-renewals in a unified interface.",
-    icon: FileEdit,
-    image: "/screenshots-app/4.png",
-    alignment: "left"
-  }
-];
+import { useLanguage } from './LanguageContext';
 
 export function ProductShowcase() {
+  const { t } = useLanguage();
+
+  const features = [
+    {
+      icon: Upload,
+      image: "/screenshots-app/1.png",
+      alignment: "left",
+      ...t.showcase.features[0]
+    },
+    {
+      icon: Sparkles,
+      image: "/screenshots-app/2.png",
+      alignment: "right",
+      ...t.showcase.features[1]
+    },
+    {
+      icon: FileEdit,
+      image: "/screenshots-app/4.png",
+      alignment: "left",
+      ...t.showcase.features[2]
+    }
+  ];
+
   return (
     <div id="product-showcase" className="py-24 bg-white relative overflow-hidden">
       {/* Background decoration */}
@@ -37,10 +37,10 @@ export function ProductShowcase() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            See SplitBerlin in Action
+            {t.showcase.title}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-             From upload to active management, experience a workflow designed for finance teams.
+             {t.showcase.subtitle}
           </p>
         </div>
 
@@ -60,7 +60,9 @@ export function ProductShowcase() {
                   <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
                     <feature.icon className="w-6 h-6 text-blue-600" />
                   </div>
-                  <span className="text-blue-600 font-medium tracking-wide text-sm uppercase">Step {index + 1}</span>
+                  <span className="text-blue-600 font-medium tracking-wide text-sm uppercase">
+                    {index === 0 ? t.showcase.step1 : index === 1 ? t.showcase.step2 : t.showcase.step3}
+                  </span>
                 </div>
                 
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">

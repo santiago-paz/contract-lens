@@ -3,17 +3,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
-import Link from 'next/link';
+import { useLanguage } from './LanguageContext';
 
 export function Hero() {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
   
-  const steps = [
-    "Structure Analysis",
-    "Partner Validation",
-    "Extracting Metadata",
-  ];
+  // Use translations for steps
+  const steps = t.hero.analysisSteps;
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -60,8 +58,8 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="text-4xl sm:text-6xl font-bold text-gray-900 tracking-tight mb-6"
           >
-            Your contracts aren't just dead paper. <br className="hidden sm:block" />
-            <span className="text-blue-600">They are cash flows.</span> Control them.
+            {t.hero.title} <br className="hidden sm:block" />
+            <span className="text-blue-600">{t.hero.titleHighlight}</span> {t.hero.titleEnd}
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -69,7 +67,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto"
           >
-            SplitBerlin transforms static PDFs into a living database. Receive renewal alerts, assign tasks to your team, and audit vendors without manual data entry.
+            {t.hero.subtitle}
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -84,7 +82,7 @@ export function Hero() {
               }}
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
             >
-              Audit your contracts
+              {t.hero.cta}
               <ArrowRight className="ml-2 w-4 h-4" />
             </button>
           </motion.div>
@@ -100,30 +98,52 @@ export function Hero() {
                 className="relative hidden lg:block"
             >
                 {/* Background glow removed for cleaner light mode */}
-                <div className="relative bg-white border border-gray-200 rounded-lg p-6 h-[450px] overflow-hidden shadow-sm rotate-[-2deg] scale-95 origin-right">
-                    <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center backdrop-blur-[1px]">
-                        <div className="bg-red-50 text-red-600 px-4 py-2 rounded-full border border-red-100 font-mono text-sm font-medium shadow-sm">
-                            UNSTRUCTURED DATA
+                <div className="relative bg-white border border-gray-200 rounded-lg p-6 h-[450px] overflow-hidden shadow-sm rotate-[-2deg] scale-95 origin-right group">
+                    {/* Scanning Line - One-time noticeable scan */}
+                    <motion.div 
+                        className="absolute left-0 right-0 h-2 bg-blue-500/30 z-20 shadow-[0_0_15px_rgba(59,130,246,0.6)] border-b border-blue-500/60"
+                        initial={{ top: "-10%" }}
+                        whileInView={{ top: "120%" }} // Trigger on view
+                        viewport={{ once: true }} // Only run once
+                        transition={{ 
+                            duration: 2.5, 
+                            ease: "easeInOut",
+                            delay: 0.5 
+                        }}
+                    >
+                        {/* Gradient trail behind the scan line */}
+                        <div className="absolute bottom-full left-0 right-0 h-20 bg-gradient-to-t from-blue-500/10 to-transparent"></div>
+                    </motion.div>
+
+                    {/* Badge at top right */}
+                    <div className="absolute top-4 right-4 z-20">
+                        <div className="bg-red-50 text-red-600 px-3 py-1 rounded-md border border-red-100 font-mono text-xs font-medium shadow-sm">
+                            {t.hero.raw}
                         </div>
                     </div>
-                    {/* Fake PDF Content - Blurry */}
-                    <div className="space-y-4 opacity-40 blur-[2px] pointer-events-none select-none">
-                        <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+
+                    {/* Fake PDF Content - Less Blurry to show "messy" data */}
+                    <div className="space-y-4 opacity-60 blur-[1px] pointer-events-none select-none mt-8">
+                        <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
                         <div className="h-4 bg-gray-200 rounded w-full"></div>
                         <div className="h-4 bg-gray-200 rounded w-5/6"></div>
                         <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                        <div className="h-4 bg-gray-200 rounded w-full"></div>
                         <div className="grid grid-cols-2 gap-4 mt-8">
-                            <div className="h-20 bg-gray-100 rounded border border-gray-200"></div>
-                            <div className="h-20 bg-gray-100 rounded border border-gray-200"></div>
+                            <div className="h-32 bg-gray-100 rounded border border-gray-200"></div>
+                            <div className="h-32 bg-gray-100 rounded border border-gray-200"></div>
                         </div>
                         <div className="h-4 bg-gray-200 rounded w-full mt-4"></div>
                         <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                         <div className="h-4 bg-gray-200 rounded w-full"></div>
                         <div className="h-4 bg-gray-200 rounded w-5/6"></div>
                     </div>
                 </div>
             </motion.div>
+
+            {/* Connecting Arrow */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden lg:block text-blue-600">
+                <ArrowRight className="w-8 h-8 animate-pulse" />
+            </div>
 
             {/* Right: The Solution (Clean UI Card) */}
             <motion.div 
@@ -139,13 +159,13 @@ export function Hero() {
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-[#FF9900] rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-sm">AWS</div>
                             <div>
-                                <h3 className="text-sm font-semibold text-gray-900">Amazon Web Services, Inc.</h3>
-                                <p className="text-xs text-gray-500">Master Service Agreement</p>
+                                <h3 className="text-sm font-semibold text-gray-900">{t.hero.card.vendor}</h3>
+                                <p className="text-xs text-gray-500">{t.hero.card.type}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                Review
+                                {t.hero.card.status}
                             </span>
                         </div>
                     </div>
@@ -164,12 +184,12 @@ export function Hero() {
                                     {/* Extracted Fields */}
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">Contract Value</label>
-                                            <div className="text-sm font-medium text-gray-900">$120,000 / year</div>
+                                            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t.hero.card.valueLabel}</label>
+                                            <div className="text-sm font-medium text-gray-900">{t.hero.card.value}</div>
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">Effective Date</label>
-                                            <div className="text-sm font-medium text-gray-900">Jan 01, 2024</div>
+                                            <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t.hero.card.dateLabel}</label>
+                                            <div className="text-sm font-medium text-gray-900">{t.hero.card.date}</div>
                                         </div>
                                     </div>
 
@@ -179,14 +199,14 @@ export function Hero() {
                                             <AlertCircle className="w-5 h-5 text-red-500" />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm font-semibold text-gray-900">Auto-Renewal Risk</h4>
-                                            <p className="text-xs text-gray-600 mt-0.5">Contract auto-renews in <span className="font-bold text-red-600">12 days</span> unless cancelled.</p>
+                                            <h4 className="text-sm font-semibold text-gray-900">{t.hero.card.riskTitle}</h4>
+                                            <p className="text-xs text-gray-600 mt-0.5">{t.hero.card.riskText}</p>
                                         </div>
                                     </div>
                                     
                                     <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-100 px-3 py-2 rounded-lg text-sm w-fit">
                                         <Check className="w-4 h-4" />
-                                        <span>Analysis Complete</span>
+                                        <span>{t.hero.card.complete}</span>
                                     </div>
                                 </motion.div>
                             ) : (
@@ -248,7 +268,7 @@ export function Hero() {
                         >
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                <div className="text-xs font-medium text-gray-700">Data Verified</div>
+                                <div className="text-xs font-medium text-gray-700">{t.hero.card.verified}</div>
                             </div>
                         </motion.div>
                     )}

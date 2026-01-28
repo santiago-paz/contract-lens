@@ -2,15 +2,18 @@
 
 import { motion } from 'framer-motion';
 import { Check, Loader2, FileText, Bell, Users, Calendar } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 export function BentoGrid() {
+  const { t } = useLanguage();
+
   return (
     <div id="bento-grid" className="py-24 relative bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">More Than Files: A Command Center</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t.bento.title}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            SplitBerlin is a complete suite for managing your contract lifecycle.
+            {t.bento.subtitle}
           </p>
         </div>
 
@@ -27,10 +30,10 @@ export function BentoGrid() {
                     <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
                         <FileText className="w-6 h-6 text-blue-600" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">Smart Ingestion</h3>
+                    <h3 className="text-xl font-semibold text-gray-900">{t.bento.ingestion.title}</h3>
                 </div>
                 <p className="text-gray-600 mb-8 max-w-md">
-                    It doesn't just read, it understands structure and validates vendors against global databases.
+                    {t.bento.ingestion.description}
                 </p>
 
                 {/* Mock UI */}
@@ -38,7 +41,7 @@ export function BentoGrid() {
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium text-gray-900">Contract Analysis</span>
-                            <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">Processing</span>
+                            <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{t.bento.ingestion.processing}</span>
                         </div>
                         <div className="space-y-3">
                             {['Structure Analysis', 'Partner Identification', 'Date Extraction'].map((step, i) => (
@@ -55,7 +58,7 @@ export function BentoGrid() {
                                 <div className="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
                                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                                 </div>
-                                <div className="text-sm text-gray-600 font-medium">Validating Metadata...</div>
+                                <div className="text-sm text-gray-600 font-medium">{t.bento.ingestion.validating}</div>
                             </div>
                         </div>
                     </div>
@@ -76,10 +79,10 @@ export function BentoGrid() {
                     <div className="p-2 bg-red-50 rounded-lg border border-red-100">
                         <Bell className="w-6 h-6 text-red-500" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">Proactive Guard</h3>
+                    <h3 className="text-xl font-semibold text-gray-900">{t.bento.guard.title}</h3>
                 </div>
                 <p className="text-gray-600 mb-8">
-                    Your CFO will sleep soundly. Automatic alerts with no configuration.
+                    {t.bento.guard.description}
                 </p>
 
                 {/* Mock Notification */}
@@ -90,8 +93,8 @@ export function BentoGrid() {
                                 <Calendar className="w-4 h-4 text-red-500" />
                             </div>
                             <div>
-                                <p className="text-sm font-semibold text-gray-900">Salesforce Renewal</p>
-                                <p className="text-xs text-gray-500">Expires in 30 days. Action required.</p>
+                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert1}</p>
+                                <p className="text-xs text-gray-500">{t.bento.guard.alert1Sub}</p>
                             </div>
                         </div>
                     </div>
@@ -101,7 +104,7 @@ export function BentoGrid() {
                                 <Users className="w-4 h-4 text-blue-600" />
                             </div>
                             <div>
-                                <p className="text-sm font-semibold text-gray-900">Approval Needed</p>
+                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert2}</p>
                             </div>
                         </div>
                     </div>
@@ -123,25 +126,19 @@ export function BentoGrid() {
                         <div className="p-2 bg-indigo-50 rounded-lg border border-indigo-100">
                             <Users className="w-6 h-6 text-indigo-500" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900">Real Collaboration</h3>
+                        <h3 className="text-xl font-semibold text-gray-900">{t.bento.collab.title}</h3>
                     </div>
                     <p className="text-gray-600 mb-6">
-                        Assign tasks directly on the contract and group documents by vendor. No more email threads.
+                        {t.bento.collab.description}
                     </p>
                     
                     <ul className="space-y-3 text-gray-600">
-                        <li className="flex items-center gap-2">
-                            <Check className="w-4 h-4 text-indigo-500" />
-                            <span>Assign specific clauses to legal</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                            <Check className="w-4 h-4 text-indigo-500" />
-                            <span>Track approval workflows</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                            <Check className="w-4 h-4 text-indigo-500" />
-                            <span>Vendor-centric document view</span>
-                        </li>
+                        {t.bento.collab.list.map((item, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                                <Check className="w-4 h-4 text-indigo-500" />
+                                <span>{item}</span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
@@ -153,7 +150,7 @@ export function BentoGrid() {
                             <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold">G</div>
                             <div>
                                 <div className="text-sm font-bold text-gray-900">Google LLC</div>
-                                <div className="text-xs text-gray-500">Partner Intelligence</div>
+                                <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
                             </div>
                         </div>
                         <div className="flex gap-2 text-xs">
@@ -166,10 +163,10 @@ export function BentoGrid() {
                     <div className="absolute bottom-0 right-10 bg-white rounded-xl p-4 shadow-lg border border-gray-200 w-64 transform rotate-3 hover:rotate-0 transition-transform duration-300 z-20">
                          <div className="flex items-center gap-2 mb-2">
                             <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">S</div>
-                            <span className="text-xs text-gray-500">@Sarah assigned to you</span>
+                            <span className="text-xs text-gray-500">{t.bento.collab.taskCard.assigned}</span>
                          </div>
-                         <p className="text-sm font-medium text-gray-900">"Review Liability Clause"</p>
-                         <div className="mt-2 text-xs text-gray-400">Due tomorrow</div>
+                         <p className="text-sm font-medium text-gray-900">{t.bento.collab.taskCard.task}</p>
+                         <div className="mt-2 text-xs text-gray-400">{t.bento.collab.taskCard.due}</div>
                     </div>
                 </div>
              </div>
