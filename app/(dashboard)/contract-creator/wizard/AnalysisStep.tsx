@@ -59,17 +59,12 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
           // Mark all steps as completed immediately upon success
           setCompletedSteps(steps.map(s => s.id));
           
-          if (isDebugMode) {
-            // In debug mode, we stop here and let the user inspect/proceed
-            setAnalysisResult(result);
-          } else {
-            // Wait a bit to show 100% completion before moving on
-            setTimeout(() => {
-              if (mounted) {
-                  onComplete(result);
-              }
-            }, 800);
-          }
+          // Wait a bit to show 100% completion before moving on
+          setTimeout(() => {
+            if (mounted) {
+                onComplete(result);
+            }
+          }, 800);
         }
         
       } catch (err) {
@@ -162,53 +157,6 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
     );
   }
 
-  // If we have a result and are in debug mode, show the success confirmation screen
-  if (analysisResult && isDebugMode) {
-    return (
-      <div className="w-full max-w-5xl mx-auto animate-fade-in">
-        <DebugOverlay 
-           isOpen={showDebug} 
-           onClose={() => setShowDebug(false)} 
-           data={analysisResult}
-           context="AnalysisStep - Success"
-        />
-
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <FileText className="w-6 h-6 text-blue-600" />
-            </div>
-            New Contract
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center">
-          <div className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Check className="w-8 h-8" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis Complete</h3>
-          <p className="text-gray-500 mb-8">
-            The contract has been successfully analyzed. Since debug mode is enabled, you can inspect the extracted data before proceeding.
-          </p>
-          <div className="flex justify-center gap-4">
-             <button 
-              onClick={() => setShowDebug(true)}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center gap-2"
-            >
-              <Bug className="w-4 h-4" />
-              Inspect Data
-            </button>
-            <button 
-              onClick={() => onComplete(analysisResult)}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm"
-            >
-              Continue to Editor
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-5xl mx-auto animate-fade-in">

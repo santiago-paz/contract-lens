@@ -4,12 +4,14 @@ import {
   Shield, 
   ChevronDown, 
   Search,
-  Plus
+  Plus,
+  Info
 } from 'lucide-react';
 import RichEditor from '@/components/RichEditor';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { PillInput } from './PillInput';
+import { Tooltip } from '@/components/Tooltip';
 
 interface EditorSidebarProps {
   isOpen: boolean;
@@ -84,7 +86,12 @@ export function EditorSidebar({
           
           <div className="space-y-4 pl-1">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Title *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Title *
+                <Tooltip content="The official name of the contract document.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <input 
                 type="text" 
                 defaultValue={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
@@ -93,7 +100,12 @@ export function EditorSidebar({
             </div>
             
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Owner *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Owner *
+                <Tooltip content="The primary person or entity responsible for this contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <PillInput 
                 value={contractOwner}
                 onChange={setContractOwner}
@@ -102,7 +114,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Deputy</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Deputy
+                <Tooltip content="A secondary contact person who can act on behalf of the owner.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <PillInput 
                 value={deputy}
                 onChange={setDeputy}
@@ -111,7 +128,12 @@ export function EditorSidebar({
             </div>
             
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Manager *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Manager *
+                <Tooltip content="The person responsible for the administrative management of the contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <PillInput 
                 value={contractManager}
                 onChange={setContractManager}
@@ -120,7 +142,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">External Reference</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                External Reference
+                <Tooltip content="Unique identifier or code from an external system.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <input 
                 type="text" 
                 defaultValue={initialData?.externalReference || ""}
@@ -129,7 +156,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Category</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Category
+                <Tooltip content="Classification of the contract for reporting and organization.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -144,7 +176,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Organizational Units *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Organizational Units *
+                <Tooltip content="The department or unit to which this contract belongs.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -158,7 +195,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Value</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Value
+                <Tooltip content="Total monetary value of the contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -172,7 +214,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Confidentiality</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Confidentiality
+                <Tooltip content="Level of secrecy required for this document.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -186,7 +233,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Partner</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Partner
+                <Tooltip content="The external entity or counterparty involved in the contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative mb-2">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -222,7 +274,12 @@ export function EditorSidebar({
           </button>
           <div className="space-y-4 pl-1">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Status *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Status *
+                <Tooltip content="Current lifecycle state of the contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="flex items-center gap-2 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900">
                 <div className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"></div>
                 <select 
@@ -240,7 +297,12 @@ export function EditorSidebar({
             </div>
             
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Duration Type *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Duration Type *
+                <Tooltip content="How the contract duration is defined (e.g., fixed or indefinite).">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <select 
                 className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
                 defaultValue={initialData?.durationType || "Fixed-term"}
@@ -252,7 +314,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Start *</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Contract Start *
+                <Tooltip content="The date on which the contract becomes effective.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <input 
                 type="date"
                 defaultValue={initialData?.contractStart || ""}
@@ -279,7 +346,12 @@ export function EditorSidebar({
           </button>
           <div className="space-y-4 pl-1">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Risk Assessment</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Risk Assessment
+                <Tooltip content="Evaluation of potential risks associated with this contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
@@ -293,7 +365,12 @@ export function EditorSidebar({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Liability Amount</label>
+              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+                Liability Amount
+                <Tooltip content="Maximum financial liability as defined in the contract.">
+                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
+                </Tooltip>
+              </label>
               <div className="flex gap-2">
                 <input 
                   type="text" 
