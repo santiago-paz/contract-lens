@@ -37,10 +37,10 @@ export function Footer() {
                 <div className="bg-blue-600 p-1 rounded-md">
                     <Globe className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-lg font-bold text-gray-900">SplitBerlin</span>
+                <span className="text-lg font-bold text-gray-900">Split Berlin</span>
             </div>
             <div className="text-sm text-gray-500">
-                © {new Date().getFullYear()} SplitBerlin. {t.footer.rights}
+                © {new Date().getFullYear()} Split Berlin. {t.footer.rights}
             </div>
             <div className="flex gap-6">
                 <a href="#" className="text-gray-500 hover:text-gray-900 transition-colors">{t.footer.privacy}</a>

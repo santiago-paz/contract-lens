@@ -23,7 +23,7 @@ const translations = {
       title: "Your contracts aren't just dead paper.",
       titleHighlight: "They are cash flows.",
       titleEnd: "Control them.",
-      subtitle: "SplitBerlin transforms static PDFs into a living database. Receive renewal alerts, assign tasks to your team, and audit vendors without manual data entry.",
+      subtitle: "Split Berlin transforms static PDFs into a living database. Receive renewal alerts, assign tasks to your team, and audit vendors without manual data entry.",
       cta: "Audit your contracts",
       unstructured: "UNSTRUCTURED DATA",
       raw: "RAW DOCUMENT",
@@ -43,7 +43,7 @@ const translations = {
       }
     },
     showcase: {
-      title: "See SplitBerlin in Action",
+      title: "See Split Berlin in Action",
       subtitle: "From upload to active management, experience a workflow designed for finance teams.",
       step1: "Step 1",
       step2: "Step 2",
@@ -65,19 +65,33 @@ const translations = {
     },
     bento: {
       title: "More Than Files: A Command Center",
-      subtitle: "SplitBerlin is a complete suite for managing your contract lifecycle.",
+      subtitle: "Split Berlin is a complete suite for managing your contract lifecycle.",
       ingestion: {
         title: "Smart Ingestion",
         description: "It doesn't just read, it understands structure and validates vendors against global databases.",
         processing: "Processing",
-        validating: "Validating Metadata..."
+        validating: "Validating Metadata...",
+        results: {
+          title: "Analysis Complete",
+          summaryLabel: "Summary",
+          summaryText: "Standard enterprise license agreement for workspace provision. Includes SLA of 99.9%.",
+          vendorLabel: "Contract Partner",
+          vendor: "Slack Technologies, LLC",
+          valueLabel: "Value",
+          value: "€14,500 / year"
+        }
       },
       guard: {
         title: "Proactive Guard",
         description: "Your CFO will sleep soundly. Automatic alerts with no configuration.",
         alert1: "Salesforce Renewal",
         alert1Sub: "Expires in 30 days. Action required.",
-        alert2: "Approval Needed"
+        alert2: "Approval Needed",
+        alert2Sub: "New DPA for review",
+        alert3: "Budget Warning",
+        alert3Sub: "Marketing Q1 at 105%",
+        alert4: "New Vendor",
+        alert4Sub: "Linear Orbit Inc. added"
       },
       collab: {
         title: "Real Collaboration",
@@ -92,6 +106,11 @@ const translations = {
           assigned: "@Sarah assigned to you",
           task: "\"Review Liability Clause\"",
           due: "Due tomorrow"
+        },
+        taskCard2: {
+          assigned: "@Mike assigned to you",
+          task: "\"Approve Renewal\"",
+          due: "Due today"
         }
       }
     },
@@ -142,7 +161,7 @@ const translations = {
       title: "Verträge sind kein totes Papier.",
       titleHighlight: "Sie sind Cashflow.",
       titleEnd: "Behalten Sie die Kontrolle.",
-      subtitle: "SplitBerlin verwandelt statische PDFs in eine lebendige Datenbank. Erhalten Sie Verlängerungswarnungen, weisen Sie Aufgaben zu und prüfen Sie Anbieter ohne manuelle Dateneingabe.",
+      subtitle: "Split Berlin verwandelt statische PDFs in eine lebendige Datenbank. Erhalten Sie Verlängerungswarnungen, weisen Sie Aufgaben zu und prüfen Sie Anbieter ohne manuelle Dateneingabe.",
       cta: "Verträge prüfen",
       unstructured: "UNSTRUKTURIERT",
       raw: "ROHDATEN",
@@ -162,7 +181,7 @@ const translations = {
       }
     },
     showcase: {
-      title: "SplitBerlin in Aktion",
+      title: "Split Berlin in Aktion",
       subtitle: "Vom Upload bis zum aktiven Management: Ein Workflow für Finanzteams.",
       step1: "Schritt 1",
       step2: "Schritt 2",
@@ -184,19 +203,33 @@ const translations = {
     },
     bento: {
       title: "Mehr als Dateien: Ein Kommandozentrum",
-      subtitle: "SplitBerlin ist eine Komplettlösung für Ihr Vertragsmanagement.",
+      subtitle: "Split Berlin ist eine Komplettlösung für Ihr Vertragsmanagement.",
       ingestion: {
         title: "Smarte Erfassung",
         description: "Liest nicht nur, sondern versteht die Struktur und validiert Anbieter gegen globale Datenbanken.",
         processing: "Verarbeitung",
-        validating: "Validiere Metadaten..."
+        validating: "Validiere Metadaten...",
+        results: {
+          title: "Analyse abgeschlossen",
+          summaryLabel: "Zusammenfassung",
+          summaryText: "Standard-Unternehmenslizenzvertrag für Workspace-Bereitstellung. Enthält SLA von 99,9%.",
+          vendorLabel: "Vertragspartner",
+          vendor: "Slack Technologies, LLC",
+          valueLabel: "Wert",
+          value: "14.500 € / Jahr"
+        }
       },
       guard: {
         title: "Proaktiver Schutz",
         description: "Ihr CFO wird ruhig schlafen. Automatische Warnungen ohne Konfiguration.",
         alert1: "Salesforce Verlängerung",
         alert1Sub: "Läuft in 30 Tagen ab. Handlung erforderlich.",
-        alert2: "Freigabe erforderlich"
+        alert2: "Freigabe erforderlich",
+        alert2Sub: "Neuer AVV zur Prüfung",
+        alert3: "Budget Warnung",
+        alert3Sub: "Marketing Q1 bei 105%",
+        alert4: "Neuer Anbieter",
+        alert4Sub: "Linear Orbit Inc. hinzugefügt"
       },
       collab: {
         title: "Echte Zusammenarbeit",
@@ -211,6 +244,11 @@ const translations = {
           assigned: "@Sarah zugewiesen",
           task: "\"Haftungsklausel prüfen\"",
           due: "Fällig morgen"
+        },
+        taskCard2: {
+          assigned: "@Mike zugewiesen",
+          task: "\"Verlängerung freigeben\"",
+          due: "Fällig heute"
         }
       }
     },
