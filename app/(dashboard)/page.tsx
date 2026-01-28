@@ -1,7 +1,6 @@
 'use client';
 
-import { FileText, Clock, AlertCircle, MoreHorizontal, FileIcon, Search, Plus, Filter, LayoutGrid, List } from 'lucide-react';
-import Image from 'next/image';
+import { FileIcon, FileText } from 'lucide-react';
 
 // Temporary mock data for presentation
 const ACTIVITIES = [
@@ -95,14 +94,14 @@ export default function Overview() {
             <div className="relative pl-4 space-y-8">
               {/* Vertical Line */}
               <div className="absolute left-[21px] top-3 bottom-3 w-0.5 bg-gray-200" />
-              
+
               {ACTIVITIES.map((activity, idx) => (
                 <div key={activity.id} className="relative flex items-center gap-6">
                   {/* Dot */}
                   <div className="absolute left-0 w-11 h-11 flex items-center justify-center bg-white z-10">
                     <div className="w-3 h-3 rounded-full bg-blue-500 ring-4 ring-blue-50" />
                   </div>
-                  
+
                   {/* Content */}
                   <div className="flex-1 flex items-center justify-between ml-12">
                     <span className="font-medium text-blue-600">{activity.text}</span>
@@ -120,17 +119,17 @@ export default function Overview() {
             <h2 className="text-xl font-bold text-gray-700">My Tasks (1)</h2>
             <button className="text-sm text-blue-600 hover:underline">All Tasks</button>
           </div>
-          
+
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative group hover:shadow-md transition-shadow">
             {/* Top red accent */}
             <div className="h-1 w-full bg-red-500 absolute top-0" />
-            
+
             <div className="p-6">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-blue-900 text-lg">Update Sponsorship Contracts</h3>
                 <span className="text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded">Tomorrow</span>
               </div>
-              
+
               <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
                 <span>Open • License Agreement</span>
                 <span className="text-gray-400">License Agreement GRC Toolbox SaaS</span>
@@ -152,9 +151,9 @@ export default function Overview() {
             <div key={contract.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer group">
               {/* Document Preview Placeholder */}
               <div className="bg-gray-50 rounded-xl h-32 mb-4 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
-                 <FileText className="w-10 h-10 text-gray-300" />
+                <FileText className="w-10 h-10 text-gray-300" />
               </div>
-              
+
               {/* Content */}
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
@@ -166,7 +165,7 @@ export default function Overview() {
                     <FileIcon className="w-4 h-4" />
                   </div>
                 </div>
-                
+
                 <div className="pt-2 border-t border-gray-50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${contract.dotColor}`} />

@@ -33,7 +33,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [activeTab, setActiveTab] = useState('documents');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
-  const [summary, setSummary] = useState(initialData?.summary || "Dieser Vertrag regelt die Zusammenarbeit zwischen dem Sponsor und dem Veranstalter im Rahmen des Sponsorings für den Event «SWISS GRC DAY» am 14.05.2025.");
+  const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState("");
   const [comments, setComments] = useState("");
 
@@ -131,13 +131,8 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Deputy</label>
                      <div className="flex flex-wrap gap-2 mb-2">
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          Simon Hall <button className="hover:text-blue-900">×</button>
+                          {initialData?.contractManager || ''} <button className="hover:text-blue-900">×</button>
                         </span>
-                        <input 
-                          type="text" 
-                          className="flex-1 bg-transparent text-sm outline-none min-w-[100px]"
-                          placeholder=""
-                        />
                      </div>
                    </div>
                    
@@ -154,7 +149,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">External Reference</label>
                      <input 
                        type="text" 
-                       defaultValue="SWISSGRC"
+                       defaultValue=""
                        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
                      />
                    </div>
@@ -164,7 +159,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <div className="relative">
                        <select 
                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
-                         defaultValue={contractType || 'Marketing & Events'}
+                         defaultValue={contractType || ''}
                        >
                           {CONTRACT_TYPES.map(type => (
                               <option key={type} value={type}>{type}</option>
@@ -179,9 +174,9 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <div className="relative">
                        <select 
                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
-                         defaultValue="Swiss GRC AG"
+                         defaultValue=""
                        >
-                          <option value="Swiss GRC AG">Swiss GRC AG</option>
+                          <option value="">Select...</option>
                        </select>
                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                      </div>
@@ -216,9 +211,9 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <div className="relative mb-2">
                        <select 
                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
-                         defaultValue="Swiss GRC AG"
+                            defaultValue=""
                        >
-                          <option value="Swiss GRC AG">Swiss GRC AG</option>
+                          <option value="">Select...</option>
                        </select>
                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                      </div>
@@ -252,7 +247,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                         <div className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"></div>
                         <select 
                            className="bg-transparent outline-none w-full appearance-none"
-                           defaultValue={initialData?.status || 'Review'}
+                           defaultValue=""
                         >
                            <option value="Review">Review</option>
                            <option value="Draft">Draft</option>
@@ -268,7 +263,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Duration Type *</label>
                      <select 
                         className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
-                        defaultValue={initialData?.durationType || 'One-time'}
+                        defaultValue=""
                      >
                         <option value="One-time">One-time</option>
                         <option value="Fixed-term">Fixed-term</option>
@@ -280,7 +275,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                      <label className="block text-xs font-medium text-gray-500 mb-1">Contract Start *</label>
                      <input 
                        type="date"
-                       defaultValue="2025-09-02"
+                       defaultValue=""
                        className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100"
                      />
                    </div>
