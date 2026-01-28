@@ -6,7 +6,10 @@ import {
   Save,
   Download,
   ChevronLeft,
-  Bug
+  Bug,
+  Eye,
+  Check,
+  Loader2
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
 import { getFileType } from '@/lib/file-config';
@@ -28,6 +31,16 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
   const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaved(true);
+      setIsSaving(false);
+    }, 1500);
+  };
+
   
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState(initialData?.conditions || "");
@@ -70,7 +83,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
              </div>
              {isSaved ? (
                <div className="flex items-center gap-4">
-                 <h1 className="text-xl font-semibold text-gray-900">
+             <h1 className="text-xl font-semibold text-gray-900 truncate max-w-[400px]" title={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}>
                    {initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
                  </h1>
                </div>
@@ -85,17 +98,37 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
 
         {isSaved && (
            <div className="flex items-center">
-             {/* Workflow Steps */}
-             <div className="flex items-center text-sm font-medium text-gray-500">
-               <div className="flex items-center gap-2 px-3 text-gray-400">Draft</div>
-               <div className="h-0.5 w-4 bg-gray-200"></div>
-               <div className="flex items-center gap-2 px-3 text-yellow-600 font-semibold relative after:absolute after:bottom-[-20px] after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-yellow-500 after:rounded-full">Review</div>
-               <div className="h-0.5 w-4 bg-gray-200"></div>
-               <div className="flex items-center gap-2 px-3 text-gray-400">Active</div>
-               <div className="h-0.5 w-4 bg-gray-200"></div>
-               <div className="flex items-center gap-2 px-3 text-gray-400">Completed</div>
-               <div className="h-0.5 w-4 bg-gray-200"></div>
-               <div className="flex items-center gap-2 px-3 text-gray-400">Archived</div>
+             {/* Workflow Steps - Stepper Style */}
+             <div className="flex items-center">
+               {[
+                 { id: 'draft', label: 'Draft', status: 'completed' },
+                 { id: 'review', label: 'Review', status: 'current' },
+                 { id: 'active', label: 'Active', status: 'upcoming' },
+                 { id: 'completed', label: 'Completed', status: 'upcoming' },
+                 { id: 'archived', label: 'Archived', status: 'upcoming' },
+               ].map((step, index, array) => (
+                 <div key={step.id} className="flex items-center">
+                   <div className={`flex flex-col items-center gap-1 px-4 relative ${
+                     step.status === 'current' ? 'text-blue-600' : 
+                     step.status === 'completed' ? 'text-green-600' : 'text-gray-400'
+                   }`}>
+                     <div className="flex items-center gap-2">
+                       {step.status === 'completed' && <Check className="w-3 h-3" />}
+                       <span className={`text-sm font-medium ${step.status === 'current' ? 'font-semibold' : ''}`}>
+                         {step.label}
+                       </span>
+                     </div>
+                     {step.status === 'current' && (
+                       <div className="absolute -bottom-5 w-1 h-1 rounded-full bg-blue-600"></div>
+                     )}
+                   </div>
+                   {index < array.length - 1 && (
+                     <div className={`h-[2px] w-8 rounded-full ${
+                       step.status === 'completed' ? 'bg-green-600' : 'bg-gray-200'
+                     }`}></div>
+                   )}
+                 </div>
+               ))}
              </div>
            </div>
         )}
@@ -112,24 +145,39 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           )}
           {isSaved && (
              <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
-               <div className="w-4 h-4 border-2 border-current rounded-full flex items-center justify-center text-[10px]">👁</div>
+               <Eye className="w-4 h-4" />
                Following
              </button>
           )}
-          <button className="p-2 text-gray-400 hover:text-gray-600">
-            <Search className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={() => setIsSaved(true)}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2"
-          >
-            <Save className="w-4 h-4" />
-            Save
-          </button>
-          {isSaved && (
-            <button className="px-3 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
-              Actions
+          {!isSaved && (
+            <button 
+              onClick={handleSave}
+              disabled={isSaving}
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  Save
+                </>
+              )}
             </button>
+          )}
+          {isSaved && (
+            <div className="flex items-center gap-2">
+              <button className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2">
+                <Save className="w-4 h-4" />
+                Save
+              </button>
+              <button className="px-3 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+                Actions
+              </button>
+            </div>
           )}
         </div>
       </div>
