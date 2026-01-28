@@ -260,7 +260,7 @@ export function BentoGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="md:col-span-3 bg-white border border-gray-200 rounded-2xl p-8 overflow-hidden relative group hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-3 bg-white border border-gray-200 rounded-2xl p-5 sm:p-8 overflow-hidden relative group hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md"
           >
              <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
                 <div>
@@ -285,7 +285,7 @@ export function BentoGrid() {
                 </div>
 
                 {/* Visuals Side */}
-                <div className="relative h-full min-h-[300px] flex items-center justify-center p-4">
+                <div className="relative h-full min-h-[300px] flex items-center justify-center p-0 sm:p-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
                         {/* Partner Card 1: Google */}
                         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
