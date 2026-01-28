@@ -37,10 +37,12 @@ export function Hero() {
         setShowResults(true);
       }, 2400);
 
-      // Step 4: Reset after showing results for a while
+      // Step 4: Stop animation after showing results
+      /*
       timeout = setTimeout(() => {
         runAnimation();
       }, 6000); 
+      */
     };
 
     runAnimation();
@@ -188,10 +190,9 @@ export function Hero() {
                             {showResults ? (
                                 <motion.div 
                                     key="results"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="space-y-6"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-6 h-[268px]"
                                 >
                                     {/* Extracted Fields */}
                                     <div className="grid grid-cols-2 gap-4">
@@ -227,7 +228,7 @@ export function Hero() {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    className="space-y-3 pt-2"
+                                    className="space-y-3 pt-2 h-[268px]"
                                 >
                                     {steps.map((step, index) => {
                                         let status: 'waiting' | 'loading' | 'done' = 'waiting';
@@ -267,17 +268,16 @@ export function Hero() {
 
                 {/* Floating Elements for effect - Only show when results are visible */}
                 <AnimatePresence>
-                    {showResults && (
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ 
-                                opacity: { duration: 0.3 },
-                                y: { duration: 4, repeat: Infinity, ease: "easeInOut" } 
-                            }}
-                            className="absolute -right-8 top-12 bg-white rounded-lg shadow-xl p-3 border border-gray-100 hidden sm:block"
-                        >
+                            {showResults && (
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
+                                    transition={{ 
+                                        opacity: { duration: 0.3 },
+                                        y: { duration: 4, repeat: Infinity, ease: "easeInOut" } 
+                                    }}
+                                    className="absolute -right-8 top-12 bg-white rounded-lg shadow-xl p-3 border border-gray-100 hidden sm:block"
+                                >
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                 <div className="text-xs font-medium text-gray-700">{t.hero.card.verified}</div>
