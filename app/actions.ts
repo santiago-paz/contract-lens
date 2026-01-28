@@ -27,10 +27,21 @@ export async function analyzeContract(formData: FormData) {
   - contractType: Choose the best match from the following allowed list: ${CONTRACT_TYPES.join(', ')}.
   - title: A concise title.
   - contractOwner: Owner/initiator name (optional).
+  - deputy: Deputy or secondary contact (optional).
   - contractManager: Manager name (optional).
+  - externalReference: Any reference code/number (optional).
+  - organizationalUnit: Department/Unit name (optional).
+  - contractValue: Total value/amount (optional).
+  - confidentiality: Confidentiality level (optional).
+  - contractPartner: Partner/Counterparty name (optional).
   - status: Default to 'Review'.
   - durationType: One of 'One-time', 'Fixed-term', 'Indefinite'.
+  - contractStart: Start date in YYYY-MM-DD (optional).
   - summary: A brief summary.
+  - conditions: Key conditions/terms (optional).
+  - riskAssessment: Risk level (Low/Medium/High) (optional).
+  - liabilityAmount: Liability limit/cap (optional).
+  - comments: General observations (optional).
 
   Ensure the output is a single JSON object strictly adhering to the schema. Do NOT return an array or list of key-values.
   

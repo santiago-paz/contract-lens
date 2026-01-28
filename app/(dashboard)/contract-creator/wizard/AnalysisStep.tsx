@@ -104,11 +104,24 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                         onClick={() => {
                              // Create dummy empty analysis to proceed
                             onComplete({
-                                contractType: 'General Terms and Conditions',
-                                title: file.name.replace(/\.[^/.]+$/, ""),
-                                status: 'Review',
-                                durationType: 'Fixed-term',
-                                summary: '',
+                              contractType: 'General Terms and Conditions',
+                              title: file.name.replace(/\.[^/.]+$/, ""),
+                              status: 'Review',
+                              durationType: 'Fixed-term',
+                              summary: '',
+                              contractOwner: null,
+                              deputy: null,
+                              contractManager: null,
+                              externalReference: null,
+                              organizationalUnit: null,
+                              contractValue: null,
+                              confidentiality: null,
+                              contractPartner: null,
+                              contractStart: null,
+                              conditions: null,
+                              riskAssessment: null,
+                              liabilityAmount: null,
+                              comments: null
                             });
                         }} 
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
