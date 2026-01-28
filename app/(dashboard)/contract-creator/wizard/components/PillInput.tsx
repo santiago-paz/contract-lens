@@ -1,69 +1,75 @@
 import { useState } from 'react';
 
 interface PillInputProps {
-  value: string | null | undefined;
-  onChange: (val: string | null) => void;
+  value: string[];
+  onChange: (val: string[]) => void;
   placeholder?: string;
 }
 
-export function PillInput({ value, onChange, placeholder }: PillInputProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempValue, setTempValue] = useState(value || '');
-
-  const handleStartEdit = () => {
-    setTempValue(value || '');
-    setIsEditing(true);
-  };
+export function PillInput({ value = [], onChange, placeholder }: PillInputProps) {
+  const [isTyping, setIsTyping] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const handleCommit = () => {
-    setIsEditing(false);
-    if (tempValue.trim()) {
-      onChange(tempValue.trim());
-    } else {
-      onChange(null);
+    if (inputValue.trim()) {
+      onChange([...value, inputValue.trim()]);
+      setInputValue('');
+    }
+    setIsTyping(false);
+  };
+
+  const handleRemove = (indexToRemove: number) => {
+    onChange(value.filter((_, index) => index !== indexToRemove));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCommit();
+      // Keep typing focus if desired, or maybe not. 
+      // Usually pill inputs let you keep adding.
+      // We'll set isTyping true again effectively by focusing the input or keeping it rendered
+      setIsTyping(true); 
+    }
+    if (e.key === 'Backspace' && !inputValue && value.length > 0) {
+      // Remove last tag if backspace pressed with empty input
+      handleRemove(value.length - 1);
     }
   };
 
-  const handleRemove = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onChange(null);
-  };
-
-  if (value && !isEditing) {
-    return (
-      <div className="flex flex-wrap gap-2 mb-2">
+  return (
+    <div 
+      className="flex flex-wrap gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent min-h-[42px]"
+      onClick={() => setIsTyping(true)}
+    >
+      {value.map((pill, index) => (
         <span 
-          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs cursor-pointer hover:bg-blue-100 transition-colors"
-          onClick={handleStartEdit}
-          title="Click to edit"
+          key={index}
+          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs animate-fade-in"
         >
-          {value} 
+          {pill} 
           <button 
+            type="button"
             className="hover:text-blue-900 p-0.5 rounded-full hover:bg-blue-200 transition-colors"
-            onClick={handleRemove}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRemove(index);
+            }}
           >
             ×
           </button>
         </span>
-      </div>
-    );
-  }
-
-  return (
-    <input 
-      type="text" 
-      value={tempValue}
-      onChange={(e) => setTempValue(e.target.value)}
-      onBlur={handleCommit}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleCommit();
-        }
-      }}
-      placeholder={placeholder}
-      autoFocus={isEditing}
-      className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-2"
-    />
+      ))}
+      
+      <input 
+        type="text" 
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onBlur={handleCommit}
+        onKeyDown={handleKeyDown}
+        placeholder={value.length === 0 ? placeholder : ''}
+        className="flex-1 bg-transparent outline-none min-w-[100px] text-gray-900 placeholder:text-gray-400"
+      />
+    </div>
   );
 }

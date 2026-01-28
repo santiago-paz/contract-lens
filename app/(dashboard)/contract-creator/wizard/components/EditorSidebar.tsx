@@ -18,12 +18,12 @@ interface EditorSidebarProps {
   contractType: string;
   
   // Form State
-  contractOwner: string | null;
-  setContractOwner: (val: string | null) => void;
-  deputy: string | null;
-  setDeputy: (val: string | null) => void;
-  contractManager: string | null;
-  setContractManager: (val: string | null) => void;
+  contractOwner: string[];
+  setContractOwner: (val: string[]) => void;
+  deputy: string[];
+  setDeputy: (val: string[]) => void;
+  contractManager: string[];
+  setContractManager: (val: string[]) => void;
   summary: string;
   setSummary: (val: string) => void;
   conditions: string;

@@ -30,9 +30,9 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState(initialData?.conditions || "");
   const [comments, setComments] = useState(initialData?.comments || "");
-  const [contractOwner, setContractOwner] = useState(initialData?.contractOwner || null);
-  const [deputy, setDeputy] = useState(initialData?.deputy || null);
-  const [contractManager, setContractManager] = useState(initialData?.contractManager || null);
+  const [contractOwner, setContractOwner] = useState<string[]>(initialData?.contractOwner ? [initialData.contractOwner] : []);
+  const [deputy, setDeputy] = useState<string[]>(initialData?.deputy ? [initialData.deputy] : []);
+  const [contractManager, setContractManager] = useState<string[]>(initialData?.contractManager ? [initialData.contractManager] : []);
 
   const [showDebug, setShowDebug] = useState(false);
   const isDebugMode = process.env.NEXT_PUBLIC_DEBUG === 'true';
