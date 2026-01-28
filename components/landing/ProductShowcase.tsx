@@ -30,12 +30,12 @@ export function ProductShowcase() {
   ];
 
   return (
-    <div id="product-showcase" className="py-24 bg-white relative overflow-hidden">
+    <div id="product-showcase" className="py-12 sm:py-24 bg-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 inset-x-0 h-px bg-gray-100"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             {t.showcase.title}
           </h2>
@@ -44,7 +44,7 @@ export function ProductShowcase() {
           </p>
         </div>
 
-        <div className="space-y-24 sm:space-y-32">
+        <div className="space-y-16 sm:space-y-32">
           {features.map((feature, index) => (
             <motion.div 
               key={index}
@@ -52,7 +52,7 @@ export function ProductShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7 }}
-              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}
+              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-8 lg:gap-20`}
             >
               {/* Text Content */}
               <div className="flex-1 space-y-6">

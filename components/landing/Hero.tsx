@@ -49,9 +49,9 @@ export function Hero() {
   }, []);
 
   return (
-    <div className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden bg-white">
+    <div className="relative pt-24 pb-12 sm:pt-40 sm:pb-24 overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -89,7 +89,7 @@ export function Hero() {
         </div>
 
         {/* Split Screen Visual */}
-        <div className="relative mt-20 lg:grid lg:grid-cols-2 lg:gap-8 items-center max-w-6xl mx-auto">
+        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 items-center max-w-6xl mx-auto">
             {/* Left: The Problem (Blurry PDF) */}
             <motion.div 
                 initial={{ opacity: 0, x: -50 }}

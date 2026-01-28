@@ -48,9 +48,9 @@ export function BentoGrid() {
   }, []);
 
   return (
-    <div id="bento-grid" className="py-24 relative bg-gray-50 border-t border-gray-200">
+    <div id="bento-grid" className="py-12 sm:py-24 relative bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t.bento.title}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {t.bento.subtitle}
@@ -286,7 +286,7 @@ export function BentoGrid() {
 
                 {/* Visuals Side */}
                 <div className="relative h-full min-h-[300px] flex items-center justify-center p-4">
-                    <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
                         {/* Partner Card 1: Google */}
                         <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                             <div className="flex items-center gap-3 mb-3">
