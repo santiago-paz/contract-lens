@@ -27,6 +27,8 @@ interface EditorLayoutProps {
 export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData }: EditorLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
+  const [isSaved, setIsSaved] = useState(false);
+  
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState(initialData?.conditions || "");
   const [comments, setComments] = useState(initialData?.comments || "");
@@ -63,13 +65,40 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
              </div>
            </button>
            <div>
-             <div className="text-xs text-gray-500 mb-1">Contracts / New Contract Folder</div>
-             <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-               New Contract
-               <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full font-normal">Draft</span>
-             </h1>
+             <div className="text-xs text-gray-500 mb-1">
+               {isSaved ? `Contracts / 10023 - ${initialData?.title || fileName.replace(/\.[^/.]+$/, "")}` : 'Contracts / New Contract'}
+             </div>
+             {isSaved ? (
+               <div className="flex items-center gap-4">
+                 <h1 className="text-xl font-semibold text-gray-900">
+                   {initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
+                 </h1>
+               </div>
+             ) : (
+               <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                 New Contract
+                 <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full font-normal">Draft</span>
+               </h1>
+             )}
            </div>
         </div>
+
+        {isSaved && (
+           <div className="flex items-center">
+             {/* Workflow Steps */}
+             <div className="flex items-center text-sm font-medium text-gray-500">
+               <div className="flex items-center gap-2 px-3 text-gray-400">Draft</div>
+               <div className="h-0.5 w-4 bg-gray-200"></div>
+               <div className="flex items-center gap-2 px-3 text-yellow-600 font-semibold relative after:absolute after:bottom-[-20px] after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-yellow-500 after:rounded-full">Review</div>
+               <div className="h-0.5 w-4 bg-gray-200"></div>
+               <div className="flex items-center gap-2 px-3 text-gray-400">Active</div>
+               <div className="h-0.5 w-4 bg-gray-200"></div>
+               <div className="flex items-center gap-2 px-3 text-gray-400">Completed</div>
+               <div className="h-0.5 w-4 bg-gray-200"></div>
+               <div className="flex items-center gap-2 px-3 text-gray-400">Archived</div>
+             </div>
+           </div>
+        )}
 
         <div className="flex items-center gap-3">
           {isDebugMode && (
@@ -81,13 +110,27 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
               <Bug className="w-5 h-5" />
             </button>
           )}
+          {isSaved && (
+             <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
+               <div className="w-4 h-4 border-2 border-current rounded-full flex items-center justify-center text-[10px]">👁</div>
+               Following
+             </button>
+          )}
           <button className="p-2 text-gray-400 hover:text-gray-600">
             <Search className="w-5 h-5" />
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2">
+          <button 
+            onClick={() => setIsSaved(true)}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2"
+          >
             <Save className="w-4 h-4" />
             Save
           </button>
+          {isSaved && (
+            <button className="px-3 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+              Actions
+            </button>
+          )}
         </div>
       </div>
 
@@ -95,6 +138,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         {/* Left Sidebar - Metadata Form */}
         <EditorSidebar 
           isOpen={sidebarOpen}
+          isSaved={isSaved}
           initialData={initialData}
           fileName={fileName}
           contractType={contractType}
