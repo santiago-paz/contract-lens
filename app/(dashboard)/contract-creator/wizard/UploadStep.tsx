@@ -85,9 +85,6 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
         </div>
       </div>
       
-      <div className="mt-12 pt-8 border-t border-gray-100 flex justify-center text-sm text-gray-400">
-        Or choose yourself
-      </div>
     </div>
   );
 }
