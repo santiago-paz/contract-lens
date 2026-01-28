@@ -24,18 +24,18 @@ export function Hero() {
       // Step 1: Move to Partner Validation
       timeout = setTimeout(() => {
         setCurrentStep(1);
-      }, 800);
+      }, 1500);
 
       // Step 2: Move to Extracting Metadata
       timeout = setTimeout(() => {
         setCurrentStep(2);
-      }, 1600);
+      }, 3000);
 
       // Step 3: Finish Extraction, Show Results
       timeout = setTimeout(() => {
         setCurrentStep(3); // All done
         setShowResults(true);
-      }, 2400);
+      }, 4500);
 
       // Step 4: Stop animation after showing results
       /*
@@ -192,10 +192,10 @@ export function Hero() {
                                     key="results"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
-                                    className="space-y-6 h-[268px]"
+                                    className="flex flex-col h-[218px]"
                                 >
                                     {/* Extracted Fields */}
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
                                         <div className="space-y-1">
                                             <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t.hero.card.valueLabel}</label>
                                             <div className="text-sm font-medium text-gray-900">{t.hero.card.value}</div>
@@ -207,7 +207,7 @@ export function Hero() {
                                     </div>
 
                                     {/* Renewal Alert */}
-                                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3">
+                                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3 mb-6">
                                         <div className="p-2 bg-white rounded-full border border-red-100 shadow-sm animate-pulse">
                                             <AlertCircle className="w-5 h-5 text-red-500" />
                                         </div>
@@ -217,7 +217,7 @@ export function Hero() {
                                         </div>
                                     </div>
                                     
-                                    <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-100 px-3 py-2 rounded-lg text-sm w-fit">
+                                    <div className="mt-auto flex items-center gap-2 text-green-700 bg-green-50 border border-green-100 px-3 py-2 rounded-lg text-sm w-fit">
                                         <Check className="w-4 h-4" />
                                         <span>{t.hero.card.complete}</span>
                                     </div>
@@ -228,7 +228,7 @@ export function Hero() {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    className="space-y-3 pt-2 h-[268px]"
+                                    className="space-y-3 pt-2 h-[218px]"
                                 >
                                     {steps.map((step, index) => {
                                         let status: 'waiting' | 'loading' | 'done' = 'waiting';
