@@ -19,27 +19,27 @@ export function BentoGrid() {
       // Step 1: Partner ID
       timeout = setTimeout(() => {
         setCurrentStep(1);
-      }, 1500);
+      }, 2000);
 
       // Step 2: Date Extraction
       timeout = setTimeout(() => {
         setCurrentStep(2);
-      }, 3000);
+      }, 4500);
 
       // Step 3: Finish, show validating
       timeout = setTimeout(() => {
         setCurrentStep(3);
-      }, 4500);
+      }, 7000);
 
       // Step 4: Show Results
       timeout = setTimeout(() => {
         setCurrentStep(4);
-      }, 6000);
+      }, 9500);
 
       // Reset
       timeout = setTimeout(() => {
         runAnimation();
-      }, 10000);
+      }, 14000);
     };
 
     runAnimation();
@@ -77,7 +77,7 @@ export function BentoGrid() {
                 </p>
 
                 {/* Mock UI */}
-                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 max-w-lg mx-auto transform group-hover:scale-[1.02] transition-transform duration-500 min-h-[220px] flex flex-col justify-center">
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 max-w-lg mx-auto transform group-hover:scale-[1.02] transition-transform duration-500 h-[300px] flex flex-col justify-center">
                     <AnimatePresence mode="wait">
                         {currentStep < 4 ? (
                             <motion.div 
@@ -85,7 +85,7 @@ export function BentoGrid() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="space-y-4 w-full"
+                                className="space-y-4 w-full h-full flex flex-col justify-center"
                             >
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium text-gray-900">Contract Analysis</span>
@@ -146,7 +146,7 @@ export function BentoGrid() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0 }}
-                                className="space-y-4 w-full"
+                                className="space-y-4 w-full h-full flex flex-col justify-center"
                             >
                                 <div className="flex items-center gap-2 mb-2 text-green-600 bg-green-50 px-3 py-1.5 rounded-lg w-fit">
                                     <Check className="w-4 h-4" />
