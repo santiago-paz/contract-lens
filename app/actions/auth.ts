@@ -2,26 +2,50 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { prisma } from '@/lib/prisma'
+import bcrypt from 'bcryptjs'
+import { encrypt } from '@/lib/auth'
 
 export async function login(prevState: any, formData: FormData) {
-  const username = formData.get('username')
-  const password = formData.get('password')
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
 
-  const validUser = process.env.AUTH_USER || 'admin'
-  const validPass = process.env.AUTH_PASS || 'admin'
+  if (!email || !password) {
+    return { message: 'Please enter both email and password' }
+  }
 
-  if (username === validUser && password === validPass) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    })
+
+    if (!user) {
+      return { message: 'Invalid credentials' }
+    }
+
+    const passwordsMatch = await bcrypt.compare(password, user.password)
+
+    if (!passwordsMatch) {
+      return { message: 'Invalid credentials' }
+    }
+
+    // Create session
+    const session = await encrypt({ id: user.id, email: user.email, name: user.name })
+    
     const cookieStore = await cookies()
-    cookieStore.set('auth_session', 'true', {
+    cookieStore.set('auth_session', session, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 7, // 1 week
       path: '/',
     })
-    redirect('/dashboard')
+
+  } catch (error) {
+    console.error('Login error:', error)
+    return { message: 'Something went wrong. Please try again.' }
   }
 
-  return { message: 'Invalid credentials' }
+  redirect('/dashboard')
 }
 
 export async function logout() {

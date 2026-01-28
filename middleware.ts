@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { decrypt } from '@/lib/auth'
 
-export function middleware(request: NextRequest) {
-  const currentUser = request.cookies.get('auth_session')?.value
+export async function middleware(request: NextRequest) {
+  const cookie = request.cookies.get('auth_session')?.value
+  const session = cookie ? await decrypt(cookie) : null
+  
   const { pathname } = request.nextUrl
 
   // 1. Allow public assets and API routes
@@ -26,14 +29,14 @@ export function middleware(request: NextRequest) {
   // 3. Handle Login Page
   if (pathname === '/login') {
     // If already logged in, redirect to dashboard
-    if (currentUser) {
+    if (session) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     return NextResponse.next()
   }
 
   // 4. Protect all other routes (Dashboard, etc.)
-  if (!currentUser) {
+  if (!session) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
