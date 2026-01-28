@@ -41,7 +41,7 @@ export function TeamSection() {
   ];
 
   return (
-    <div className="py-24 bg-[#0B1120] text-white overflow-hidden relative">
+    <div id="teams-section" className="py-24 bg-[#0B1120] text-white overflow-hidden relative">
         {/* Background Effects */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px]"></div>

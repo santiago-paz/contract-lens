@@ -33,6 +33,12 @@ export function Navbar() {
               {t.nav.features}
             </button>
             <button 
+              onClick={() => document.getElementById('teams-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              {t.nav.teams}
+            </button>
+            <button 
               onClick={() => document.getElementById('security')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
             >

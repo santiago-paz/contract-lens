@@ -17,6 +17,7 @@ const translations = {
       getStarted: "Get Started",
       howItWorks: "How it Works",
       features: "Features",
+      teams: "Teams",
       security: "Security"
     },
     hero: {
@@ -185,6 +186,7 @@ const translations = {
       getStarted: "Loslegen",
       howItWorks: "So funktioniert's",
       features: "Funktionen",
+      teams: "Teams",
       security: "Sicherheit"
     },
     hero: {
