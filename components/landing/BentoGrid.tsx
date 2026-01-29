@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate, useSpring } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 import { Check, Loader2, FileText, Bell, Users, Calendar, Building2, Wallet, AlertTriangle, UserPlus, Zap, Shield, Search } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
@@ -9,21 +9,67 @@ export function BentoGrid() {
   const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(0);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shieldRef = useRef<HTMLDivElement>(null);
+  const alertRef = useRef<HTMLDivElement>(null);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const shieldX = useMotionValue(0);
+  const shieldY = useMotionValue(0);
+  const alertX = useMotionValue(0);
+  const alertY = useMotionValue(0);
+
+  const springConfig = { stiffness: 100, damping: 30 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+  const springShieldX = useSpring(shieldX, springConfig);
+  const springShieldY = useSpring(shieldY, springConfig);
+  const springAlertX = useSpring(alertX, springConfig);
+  const springAlertY = useSpring(alertY, springConfig);
 
   const backgroundStyle = useMotionTemplate`
     radial-gradient(
-      250px circle at ${mouseX}px ${mouseY}px,
-      rgba(59, 130, 246, 0.5),
+      250px circle at ${springX}px ${springY}px,
+      rgba(59, 130, 246, 0.4),
       transparent 80%
     )
   `;
+  
+  const shieldMaskStyle = useMotionTemplate`
+    radial-gradient(
+      120px circle at ${springShieldX}px ${springShieldY}px,
+      black,
+      transparent
+    )
+  `;
 
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    let { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  const alertMaskStyle = useMotionTemplate`
+    radial-gradient(
+      180px circle at ${springAlertX}px ${springAlertY}px,
+      black,
+      transparent
+    )
+  `;
+
+  function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
+    if (!containerRef.current) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    
+    mouseX.set(clientX - containerRect.left);
+    mouseY.set(clientY - containerRect.top);
+
+    if (shieldRef.current) {
+      const rect = shieldRef.current.getBoundingClientRect();
+      shieldX.set(clientX - rect.left);
+      shieldY.set(clientY - rect.top);
+    }
+
+    if (alertRef.current) {
+        const rect = alertRef.current.getBoundingClientRect();
+        alertX.set(clientX - rect.left);
+        alertY.set(clientY - rect.top);
+    }
   }
 
   useEffect(() => {
@@ -94,7 +140,7 @@ export function BentoGrid() {
                 </div>
 
                 {/* Mock UI */}
-                <div className="mt-auto bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 max-w-lg w-full mx-auto transform group-hover:scale-[1.02] transition-transform duration-500">
+                <div className="mt-auto bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 max-w-lg w-full mx-auto transform group-hover:scale-[1.02] transition-transform duration-500 h-[280px] flex flex-col justify-center">
                     <AnimatePresence mode="wait">
                         {currentStep < 4 ? (
                             <motion.div 
@@ -183,6 +229,7 @@ export function BentoGrid() {
 
           {/* Card 2: Proactive Guard - Alert */}
           <motion.div 
+            ref={containerRef}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -202,8 +249,25 @@ export function BentoGrid() {
              
              <div className="relative z-10 flex flex-col h-full">
                 <div className="mb-8">
-                    <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm mb-6">
-                        <Shield className="w-6 h-6 text-white" />
+                    <div ref={shieldRef} className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm mb-6 relative group/shield overflow-hidden">
+                        <Shield className="w-6 h-6 text-white/40" />
+                        <motion.div 
+                          className="absolute inset-0 flex items-center justify-center text-white"
+                          style={{
+                            maskImage: shieldMaskStyle,
+                            WebkitMaskImage: shieldMaskStyle
+                          }}
+                        >
+                          <Shield className="w-6 h-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+                        </motion.div>
+                        {/* Border Shine */}
+                        <motion.div
+                           className="absolute inset-0 rounded-2xl border border-white/50 opacity-0 group-hover:opacity-100"
+                           style={{
+                             maskImage: shieldMaskStyle,
+                             WebkitMaskImage: shieldMaskStyle
+                           }}
+                        />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-3">{t.bento.guard.title}</h3>
                     <p className="text-gray-400 text-lg leading-relaxed">
@@ -211,24 +275,67 @@ export function BentoGrid() {
                     </p>
                 </div>
 
-                <div className="mt-auto space-y-3">
-                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 hover:bg-white/15 transition-colors">
-                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
-                            <Bell className="w-5 h-5 text-red-400" />
+                <div ref={alertRef} className="mt-auto space-y-3 relative">
+                    {/* Alert 1 */}
+                    <div className="relative group/alert">
+                        {/* Base Layer */}
+                        <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 transition-colors">
+                            <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
+                                <Bell className="w-5 h-5 text-red-400" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold text-white">{t.bento.guard.alert1}</p>
+                                <p className="text-xs text-gray-400">{t.bento.guard.alert1Sub}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-sm font-semibold text-white">{t.bento.guard.alert1}</p>
-                            <p className="text-xs text-gray-400">{t.bento.guard.alert1Sub}</p>
-                        </div>
+
+                        {/* Highlight Layer */}
+                        <motion.div 
+                            className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-xl p-4 border border-white/40 flex items-center gap-4 z-10 pointer-events-none"
+                            style={{
+                                maskImage: alertMaskStyle,
+                                WebkitMaskImage: alertMaskStyle
+                            }}
+                        >
+                            <div className="w-10 h-10 rounded-full bg-red-500/30 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                                <Bell className="w-5 h-5 text-red-200 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{t.bento.guard.alert1}</p>
+                                <p className="text-xs text-gray-200">{t.bento.guard.alert1Sub}</p>
+                            </div>
+                        </motion.div>
                     </div>
-                    <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 opacity-60">
-                         <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
-                            <AlertTriangle className="w-5 h-5 text-amber-400" />
+
+                    {/* Alert 2 */}
+                    <div className="relative group/alert">
+                         {/* Base Layer */}
+                        <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 opacity-60">
+                             <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
+                                <AlertTriangle className="w-5 h-5 text-amber-400" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold text-white">{t.bento.guard.alert3}</p>
+                                <p className="text-xs text-gray-400">{t.bento.guard.alert3Sub}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-sm font-semibold text-white">{t.bento.guard.alert3}</p>
-                            <p className="text-xs text-gray-400">{t.bento.guard.alert3Sub}</p>
-                        </div>
+
+                         {/* Highlight Layer */}
+                         <motion.div 
+                            className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/30 flex items-center gap-4 opacity-100 z-10 pointer-events-none"
+                            style={{
+                                maskImage: alertMaskStyle,
+                                WebkitMaskImage: alertMaskStyle
+                            }}
+                        >
+                             <div className="w-10 h-10 rounded-full bg-amber-500/30 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                                <AlertTriangle className="w-5 h-5 text-amber-200 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{t.bento.guard.alert3}</p>
+                                <p className="text-xs text-gray-200">{t.bento.guard.alert3Sub}</p>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
              </div>
@@ -266,7 +373,7 @@ export function BentoGrid() {
                 <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent z-10 w-20 md:hidden"></div>
                     <div className="grid grid-cols-2 gap-4 w-full">
-                        <div className="space-y-4 mt-8">
+                        <div className="space-y-4">
                              {/* Partner Card 1 */}
                             <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100">
                                 <div className="flex items-center gap-3 mb-3">
@@ -288,9 +395,9 @@ export function BentoGrid() {
                                        <div className="w-6 h-6 rounded-full bg-purple-100 border-2 border-white"></div>
                                        <div className="w-6 h-6 rounded-full bg-yellow-100 border-2 border-white"></div>
                                    </div>
-                                   <span className="text-xs font-semibold text-red-500">Due Today</span>
+                                   <span className="text-xs font-semibold text-red-500">{t.bento.collab.taskCard.due}</span>
                                 </div>
-                                <p className="text-sm font-medium text-gray-900">Review renewal terms</p>
+                                <p className="text-sm font-medium text-gray-900">{t.bento.collab.taskCard.task.replace(/"/g, '')}</p>
                             </div>
                         </div>
 
@@ -307,6 +414,18 @@ export function BentoGrid() {
                                 <div className="flex gap-2 text-xs">
                                      <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded-md font-medium">Auto-Renew</span>
                                 </div>
+                            </div>
+
+                            {/* Task Card 2 */}
+                             <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100 opacity-80">
+                                <div className="flex items-center justify-between mb-2">
+                                   <div className="flex -space-x-2">
+                                       <div className="w-6 h-6 rounded-full bg-green-100 border-2 border-white"></div>
+                                       <div className="w-6 h-6 rounded-full bg-blue-100 border-2 border-white"></div>
+                                   </div>
+                                   <span className="text-xs font-semibold text-orange-500">{t.bento.collab.taskCard2.due}</span>
+                                </div>
+                                <p className="text-sm font-medium text-gray-900">{t.bento.collab.taskCard2.task.replace(/"/g, '')}</p>
                             </div>
                         </div>
                     </div>
