@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useLanguage } from './LanguageContext';
-import { Scale, ShoppingCart, Users, PieChart, ShieldCheck, Cog } from 'lucide-react';
+import { Activity, Database, Banknote, Lock, ShieldCheck, Zap } from 'lucide-react';
 
 export function TeamSection() {
   const { t } = useLanguage();
@@ -10,22 +10,22 @@ export function TeamSection() {
   const teams = [
     {
       key: 'legal',
-      icon: Scale,
+      icon: Activity,
       ...t.teams.legal
     },
     {
       key: 'procurement',
-      icon: ShoppingCart,
+      icon: Database,
       ...t.teams.procurement
     },
     {
       key: 'hr',
-      icon: Users,
+      icon: Banknote,
       ...t.teams.hr
     },
     {
       key: 'finance',
-      icon: PieChart,
+      icon: Lock,
       ...t.teams.finance
     },
     {
@@ -35,7 +35,7 @@ export function TeamSection() {
     },
     {
       key: 'ops',
-      icon: Cog,
+      icon: Zap,
       ...t.teams.ops
     }
   ];

@@ -21,16 +21,16 @@ const translations = {
       security: "Security"
     },
     hero: {
-      title: "Your contracts aren't just dead paper.",
-      titleLine1: "ELIMINATE",
-      titleLine2: "HIDDEN WASTE",
-      titleHighlight: "They are cash flows.",
-      titleEnd: "Control them.",
-      subtitle: "TOTAL SYSTEM VISIBILITY. We auto-classify every contract, organize by vendor, and extract every expiration date. Stop managing folders and start commanding your legal data.",
-      cta: "START AUDIT",
-      unstructured: "UNSTRUCTURED DATA",
-      raw: "RAW DOCUMENT",
-      analysisSteps: ["AUTO-CLASSIFICATION", "DEEP EXTRACTION", "RENEWAL GUARD"],
+      title: "Infrastructure is destiny.",
+      titleLine1: "RESOURCE",
+      titleLine2: "MASTERY",
+      titleHighlight: "Control the outcome.",
+      titleEnd: "Execute.",
+      subtitle: "DEPLOY OPERATIONAL SUPREMACY. We engineer order from chaos. Auto-ingest contracts, audit vendor performance, and enforce capital efficiency. The operating system for your corporate assets.",
+      cta: "INITIATE SYSTEM",
+      unstructured: "RAW DATA",
+      raw: "BINARY INPUT",
+      analysisSteps: ["DATA STRUCTURING", "FORENSIC EXTRACTION", "RISK AUDIT"],
       card: {
         vendor: "Amazon Web Services, Inc.",
         type: "Master Service Agreement",
@@ -39,169 +39,169 @@ const translations = {
         dateLabel: "Effective Date",
         value: "$120,000 / year",
         date: "Jan 01, 2024",
-        riskTitle: "CRITICAL THREAT",
-        riskText: "UNAUTHORIZED AUTO-RENEWAL DETECTED. CANCEL IMMEDIATELY.",
-        verified: "Data Verified",
-        complete: "Analysis Complete"
+        riskTitle: "CRITICAL ALERT",
+        riskText: "UNAUTHORIZED RENEWAL DETECTED. IMMEDIATE ACTION REQUIRED.",
+        verified: "Verified",
+        complete: "Audit Complete"
       }
     },
     showcase: {
-      title: "See Split Berlin in Action",
-      subtitle: "From upload to active management, experience a workflow designed for finance teams.",
-      step1: "Step 1",
-      step2: "Step 2",
-      step3: "Step 3",
+      title: "Precision Engineered Workflow",
+      subtitle: "From raw ingestion to active command. Experience high-velocity asset management.",
+      step1: "Phase 1",
+      step2: "Phase 2",
+      step3: "Phase 3",
       features: [
         {
-          title: "Intelligent Ingestion",
-          description: "Start by choosing a specialized contract template or simply drag & drop your legacy PDFs. We handle the rest."
+          title: "Forensic Ingestion",
+          description: "Drag & drop legacy PDFs. Our engine structures the unstructured, validating vendors against global registries."
         },
         {
-          title: "AI Analysis",
-          description: "Watch as our engine analyzes the document structure, identifies partners, and extracts critical dates and metadata in seconds."
+          title: "Algorithmic Analysis",
+          description: "Deep-learning models deconstruct document architecture, identifying liabilities and critical dates in milliseconds."
         },
         {
-          title: "Structured Data Editor",
-          description: "Review extracted data side-by-side with your document. Edit fields, assign owners, and manage auto-renewals in a unified interface."
+          title: "Structured Command",
+          description: "Data-driven interface. Edit fields, assign owners, and enforce renewal policies in a unified console."
         }
       ]
     },
     bento: {
-      title: "More Than Storage: A Contract Command Center",
-      subtitle: "Split Berlin is a complete suite for managing your contract lifecycle.",
+      title: "The Enterprise Asset OS",
+      subtitle: "Centralize. Audit. Deploy. Optimize. A unified infrastructure for licenses, subscriptions, files, and capital.",
       ingestion: {
-        title: "Smart Ingestion",
-        description: "It doesn't just read, it understands structure and validates vendors against global databases.",
+        title: "Forensic Ingestion",
+        description: "Parses unstructured binaries. Validates entities. Enforces data integrity.",
         processing: "Processing",
-        validating: "Validating Metadata...",
+        validating: "Validating Integrity...",
         results: {
-          title: "Analysis Complete",
-          summaryLabel: "Summary",
-          summaryText: "Standard enterprise license agreement for workspace provision. Includes SLA of 99.9%.",
-          vendorLabel: "Contract Partner",
+          title: "Audit Complete",
+          summaryLabel: "Executive Summary",
+          summaryText: "Standard enterprise license agreement. 99.9% SLA confirmed. Risk level: Low.",
+          vendorLabel: "Entity",
           vendor: "Slack Technologies, LLC",
-          valueLabel: "Value",
+          valueLabel: "Cost Basis",
           value: "€14,500 / year"
         }
       },
       guard: {
-        title: "Proactive Guard",
-        description: "Your CFO will sleep soundly. Automatic alerts with no configuration.",
-        alert1: "Salesforce Renewal",
-        alert1Sub: "Expires in 30 days. Action required.",
-        alert2: "Approval Needed",
-        alert2Sub: "New DPA for review",
-        alert3: "Budget Warning",
-        alert3Sub: "Marketing Q1 at 105%",
-        alert4: "New Vendor",
-        alert4Sub: "Linear Orbit Inc. added"
+        title: "Automated Audit",
+        description: "Continuous cost anomaly detection. Zero configuration required.",
+        alert1: "Renewal Alert",
+        alert1Sub: "T-minus 30 days. Authorization needed.",
+        alert2: "Compliance Check",
+        alert2Sub: "DPA review pending",
+        alert3: "Budget Variance",
+        alert3Sub: "Marketing Q1 > 105%",
+        alert4: "Vendor Detection",
+        alert4Sub: "Linear Orbit Inc. identified"
       },
       collab: {
-        title: "Real Collaboration",
-        description: "Assign tasks directly on the contract and group documents by vendor. No more email threads.",
+        title: "Workflow Orchestration",
+        description: "Direct resource deployment. Granular permissioning. Unified asset view.",
         list: [
-          "Assign specific clauses to legal",
-          "Track approval workflows",
-          "Vendor-centric document view"
+          "Enforce legal review protocols",
+          "Track approval chains",
+          "Vendor-centric asset view"
         ],
-        partnerCard: "Partner Intelligence",
+        partnerCard: "Entity Intelligence",
         taskCard: {
-          assigned: "@Sarah assigned to you",
-          task: "\"Review Liability Clause\"",
-          due: "Due tomorrow"
+          assigned: "@Sarah assigned",
+          task: "\"Audit Liability\"",
+          due: "Due: T-24h"
         },
         taskCard2: {
-          assigned: "@Mike assigned to you",
-          task: "\"Approve Renewal\"",
-          due: "Due today"
+          assigned: "@Mike assigned",
+          task: "\"Approve Spend\"",
+          due: "Due: Today"
         }
       }
     },
     security: {
       encryption: {
-        title: "AES-256 Encryption",
-        desc: "Your data is encrypted at rest and in transit. Enterprise-grade security standard."
+        title: "Military-Grade Encryption",
+        desc: "AES-256 at rest and in transit. Zero-compromise data protection."
       },
       ai: {
-        title: "Zero-Retention AI",
-        desc: "Our AI models process your data without storing it for training. Your IP remains yours."
+        title: "Zero-Retention Architecture",
+        desc: "Ephemeral processing. Your IP never leaves your control."
       },
       hosting: {
-        title: "Sovereign Hosting",
-        desc: "Choose where your data lives. Full compliance with EU GDPR and US privacy laws."
+        title: "Sovereign Infrastructure",
+        desc: "Strict data residency. GDPR/CCPA compliant backbone."
       }
     },
     teams: {
-      title: "Chaos into clarity.",
-      titleHighlight: "One platform, endless utility.",
-      subtitle: "Stop chasing contracts. Start driving strategy. We turn your static agreements into actionable data for every stakeholder in your organization.",
-      cta: "Talk to our experts",
+      title: "Precision Infrastructure",
+      titleHighlight: "Engineered for scale.",
+      subtitle: "High-performance tools for the modern enterprise. Transform static agreements into a queryable asset database.",
+      cta: "Deploy Architecture",
       legal: {
-        title: "Legal Teams",
-        desc: "Accelerate reviews and maintain airtight compliance with automated version control and audit trails."
+        title: "Algorithmic Audit",
+        desc: "Detect unauthorized spend patterns and contract deviations with 99.9% accuracy."
       },
       procurement: {
-        title: "Procurement",
-        desc: "Maximize leverage. Track renewals, monitor performance, and consolidate vendor spend automatically."
+        title: "Data Structuring",
+        desc: "Convert PDF binaries into queryable, SQL-ready datasets for instant analysis."
       },
       hr: {
-        title: "HR",
-        desc: "Protect people data. Securely manage employment agreements with strict access controls and compliance tracking."
+        title: "Capital Recovery",
+        desc: "Identify and reclaim 12% avg. budget leakage from zombie subscriptions."
       },
       finance: {
-        title: "Finance",
-        desc: "No more surprises. Visualize committed spend and cash flow impact directly from your contract data."
+        title: "Security Architecture",
+        desc: "AES-256 encryption at rest. Granular access control. Zero-trust architecture."
       },
       grc: {
-        title: "GRC Teams",
-        desc: "Stay compliant effortlessly. Automated risk monitoring and obligation tracking for every vendor."
+        title: "Compliance Enforcement",
+        desc: "Automated DPA verification and regulatory adherence checks. Audit-ready logs."
       },
       ops: {
-        title: "Operations",
-        desc: "Scale without friction. Integrate contract milestones directly into your daily project workflows."
+        title: "Operational Velocity",
+        desc: "Reduce contract turnaround time by 40% via automated workflows and API integration."
       }
     },
     contact: {
-      title: "Get in touch",
-      subtitle: "Have specific requirements? Our team specializes in complex enterprise setups.",
-      name: "Name",
+      title: "Initiate Deployment",
+      subtitle: "Enterprise-grade requirements? Our engineering team is ready.",
+      name: "Officer Name",
       email: "Work Email",
-      message: "Message",
-      placeholder: "Tell us about your contract management challenges...",
-      send: "Send Message",
-      sending: "Sending...",
-      sentTitle: "Message Sent!",
-      sentDesc: "We'll get back to you within 24 hours.",
-      sendAnother: "Send another message"
+      message: "Directives",
+      placeholder: "Outline your operational requirements...",
+      send: "Transmit",
+      sending: "Transmitting...",
+      sentTitle: "Transmission Received",
+      sentDesc: "We will respond within 24 operational hours.",
+      sendAnother: "Send new directive"
     },
     footer: {
-      ctaTitle: "How much did the last renewal you forgot to cancel cost you?",
-      ctaButton: "Stop the losses",
+      ctaTitle: "Operational failure is a choice.",
+      ctaButton: "Secure Your Infrastructure",
       rights: "All rights reserved.",
-      privacy: "Privacy",
-      terms: "Terms"
+      privacy: "Privacy Protocol",
+      terms: "Terms of Service"
     }
   },
   de: {
     nav: {
       signIn: "Anmelden",
-      getStarted: "Loslegen",
-      howItWorks: "So funktioniert's",
+      getStarted: "Starten",
+      howItWorks: "Funktionsweise",
       features: "Funktionen",
       teams: "Teams",
       security: "Sicherheit"
     },
     hero: {
-      title: "Verträge sind kein totes Papier.",
-      titleLine1: "VERSTECKTE KOSTEN",
-      titleLine2: "ELIMINIEREN",
-      titleHighlight: "Sie sind Cashflow.",
-      titleEnd: "Behalten Sie die Kontrolle.",
-      subtitle: "TOTALE SYSTEMÜBERSICHT. Wir klassifizieren jeden Vertrag, organisieren nach Anbieter und extrahieren jedes Ablaufdatum. Hören Sie auf, Ordner zu verwalten – übernehmen Sie das Kommando.",
-      cta: "AUDIT STARTEN",
-      unstructured: "UNSTRUKTURIERT",
-      raw: "ROHDATEN",
-      analysisSteps: ["AUTO-KLASSIFIZIERUNG", "TIEFEN-EXTRAKTION", "LAUFZEIT-SCHUTZ"],
+      title: "Infrastruktur ist Schicksal.",
+      titleLine1: "RESSOURCEN",
+      titleLine2: "DOMINANZ",
+      titleHighlight: "Kontrollieren Sie das Ergebnis.",
+      titleEnd: "Ausführen.",
+      subtitle: "OPERATIVE ÜBERLEGENHEIT EINFÜHREN. Wir schaffen Ordnung aus dem Chaos. Verträge automatisch erfassen, Anbieterleistung prüfen und Kapitaleffizienz erzwingen. Das Betriebssystem für Ihre Unternehmenswerte.",
+      cta: "SYSTEM STARTEN",
+      unstructured: "ROHDATEN",
+      raw: "BINÄRER INPUT",
+      analysisSteps: ["DATENSTRUKTURIERUNG", "FORENSISCHE EXTRAKTION", "RISIKOPRÜFUNG"],
       card: {
         vendor: "Amazon Web Services, Inc.",
         type: "Rahmenvertrag",
@@ -211,146 +211,146 @@ const translations = {
         value: "120.000 $ / Jahr",
         date: "01. Jan 2024",
         riskTitle: "KRITISCHE WARNUNG",
-        riskText: "UNGEWOLLTE VERLÄNGERUNG ERKANNT. SOFORT KÜNDIGEN.",
-        verified: "Daten verifiziert",
-        complete: "Analyse abgeschlossen"
+        riskText: "UNGEWOLLTE VERLÄNGERUNG ERKANNT. SOFORT HANDELN.",
+        verified: "Verifiziert",
+        complete: "Audit abgeschlossen"
       }
     },
     showcase: {
-      title: "Split Berlin in Aktion: Vom Upload bis zum aktiven Management",
-      subtitle: "Ein Workflow für Finanzteams.",
-      step1: "Schritt 1",
-      step2: "Schritt 2",
-      step3: "Schritt 3",
+      title: "Präzisionsgefertigter Workflow",
+      subtitle: "Von der Rohdatenerfassung bis zum aktiven Kommando. Erleben Sie Asset-Management mit hoher Geschwindigkeit.",
+      step1: "Phase 1",
+      step2: "Phase 2",
+      step3: "Phase 3",
       features: [
         {
-          title: "Intelligente Erfassung",
-          description: "Wählen Sie eine Vertragsvorlage oder ziehen Sie alte PDFs einfach per Drag & Drop hinein. Wir erledigen den Rest."
+          title: "Forensische Erfassung",
+          description: "Ziehen Sie alte PDFs per Drag & Drop. Unsere Engine strukturiert das Unstrukturierte und validiert Anbieter gegen globale Register."
         },
         {
-          title: "KI-Analyse",
-          description: "Sehen Sie zu, wie unsere Engine die Dokumentenstruktur analysiert, Partner identifiziert und kritische Daten in Sekunden extrahiert."
+          title: "Algorithmische Analyse",
+          description: "Deep-Learning-Modelle dekonstruieren die Dokumentenarchitektur und identifizieren Verbindlichkeiten und kritische Daten in Millisekunden."
         },
         {
-          title: "Strukturierter Daten-Editor",
-          description: "Überprüfen Sie extrahierte Daten Seite an Seite mit Ihrem Dokument. Bearbeiten Sie Felder, weisen Sie Verantwortliche zu und verwalten Sie Verlängerungen."
+          title: "Strukturiertes Kommando",
+          description: "Datengesteuerte Schnittstelle. Felder bearbeiten, Verantwortliche zuweisen und Verlängerungsrichtlinien in einer einheitlichen Konsole durchsetzen."
         }
       ]
     },
     bento: {
-      title: "Mehr als Speicher: Ein Vertrags-Kommandozentrum",
-      subtitle: "Split Berlin ist eine Komplettlösung für Ihr Vertragsmanagement.",
+      title: "Das Enterprise Asset OS",
+      subtitle: "Zentralisieren. Auditieren. Bereitstellen. Optimieren. Eine einheitliche Infrastruktur für Lizenzen, Abonnements, Dateien und Kapital.",
       ingestion: {
-        title: "Smarte Erfassung",
-        description: "Liest nicht nur, sondern versteht die Struktur und validiert Anbieter gegen globale Datenbanken.",
+        title: "Forensische Erfassung",
+        description: "Parst unstrukturierte Binärdaten. Validiert Entitäten. Erzwingt Datenintegrität.",
         processing: "Verarbeitung",
-        validating: "Validiere Metadaten...",
+        validating: "Integrität prüfen...",
         results: {
-          title: "Analyse abgeschlossen",
-          summaryLabel: "Zusammenfassung",
-          summaryText: "Standard-Unternehmenslizenzvertrag für Workspace-Bereitstellung. Enthält SLA von 99,9%.",
-          vendorLabel: "Vertragspartner",
+          title: "Audit abgeschlossen",
+          summaryLabel: "Executive Summary",
+          summaryText: "Standard-Unternehmenslizenzvertrag. 99,9% SLA bestätigt. Risikostufe: Niedrig.",
+          vendorLabel: "Entität",
           vendor: "Slack Technologies, LLC",
-          valueLabel: "Wert",
+          valueLabel: "Kostenbasis",
           value: "14.500 € / Jahr"
         }
       },
       guard: {
-        title: "Proaktiver Schutz",
-        description: "Ihr CFO wird ruhig schlafen. Automatische Warnungen ohne Konfiguration.",
-        alert1: "Salesforce Verlängerung",
-        alert1Sub: "Läuft in 30 Tagen ab. Handlung erforderlich.",
-        alert2: "Freigabe erforderlich",
-        alert2Sub: "Neuer AVV zur Prüfung",
-        alert3: "Budget Warnung",
-        alert3Sub: "Marketing Q1 bei 105%",
-        alert4: "Neuer Anbieter",
-        alert4Sub: "Linear Orbit Inc. hinzugefügt"
+        title: "Automatisches Audit",
+        description: "Kontinuierliche Kostenanomalieerkennung. Keine Konfiguration erforderlich.",
+        alert1: "Verlängerungswarnung",
+        alert1Sub: "T-minus 30 Tage. Autorisierung erforderlich.",
+        alert2: "Compliance-Prüfung",
+        alert2Sub: "AVV-Prüfung ausstehend",
+        alert3: "Budgetabweichung",
+        alert3Sub: "Marketing Q1 > 105%",
+        alert4: "Anbietererkennung",
+        alert4Sub: "Linear Orbit Inc. identifiziert"
       },
       collab: {
-        title: "Echte Zusammenarbeit",
-        description: "Aufgaben direkt am Vertrag zuweisen und Dokumente nach Anbieter gruppieren. Keine E-Mail-Ketten mehr.",
+        title: "Workflow-Orchestrierung",
+        description: "Direkte Ressourcenbereitstellung. Granulare Berechtigungen. Einheitliche Asset-Ansicht.",
         list: [
-          "Klauseln an Rechtsabteilung zuweisen",
-          "Genehmigungsworkflows verfolgen",
-          "Anbieter-zentrierte Dokumentenansicht"
+          "Rechtsprüfungsprotokolle durchsetzen",
+          "Genehmigungsketten verfolgen",
+          "Anbieterzentrierte Asset-Ansicht"
         ],
         partnerCard: "Partner-Intelligenz",
         taskCard: {
           assigned: "@Sarah zugewiesen",
-          task: "\"Haftungsklausel prüfen\"",
-          due: "Fällig morgen"
+          task: "\"Haftung prüfen\"",
+          due: "Fällig: T-24h"
         },
         taskCard2: {
           assigned: "@Mike zugewiesen",
-          task: "\"Verlängerung freigeben\"",
-          due: "Fällig heute"
+          task: "\"Ausgaben genehmigen\"",
+          due: "Fällig: Heute"
         }
       }
     },
     security: {
       encryption: {
-        title: "AES-256 Verschlüsselung",
-        desc: "Ihre Daten sind sicher verschlüsselt. Sicherheitsstandard auf Unternehmensniveau."
+        title: "Militärstandard-Verschlüsselung",
+        desc: "AES-256 in Ruhe und Übertragung. Kompromissloser Datenschutz."
       },
       ai: {
-        title: "Zero-Retention KI",
-        desc: "Unsere KI-Modelle verarbeiten Ihre Daten, ohne sie für das Training zu speichern. Ihr geistiges Eigentum bleibt bei Ihnen."
+        title: "Zero-Retention-Architektur",
+        desc: "Ephemere Verarbeitung. Ihr geistiges Eigentum verlässt nie Ihre Kontrolle."
       },
       hosting: {
-        title: "Souveränes Hosting",
-        desc: "Wählen Sie, wo Ihre Daten liegen. Volle Konformität mit EU-DSGVO und US-Datenschutzgesetzen."
+        title: "Sovereign Infrastruktur",
+        desc: "Strenge Datenresidenz. DSGVO-konformer Backbone."
       }
     },
     teams: {
-      title: "Vom Chaos zur Klarheit.",
-      titleHighlight: "Eine Plattform, unendlicher Nutzen.",
-      subtitle: "Hören Sie auf, Verträge zu jagen. Beginnen Sie, Strategien voranzutreiben. Wir verwandeln Ihre statischen Vereinbarungen in umsetzbare Daten für jeden Stakeholder in Ihrer Organisation.",
-      cta: "Sprechen Sie mit unseren Experten",
+      title: "Präzisionsinfrastruktur",
+      titleHighlight: "Für Skalierung entwickelt.",
+      subtitle: "Hochleistungstools für das moderne Unternehmen. Verwandeln Sie statische Vereinbarungen in eine abfragbare Asset-Datenbank.",
+      cta: "Architektur bereitstellen",
       legal: {
-        title: "Rechtsabteilungen",
-        desc: "Beschleunigen Sie Überprüfungen und gewährleisten Sie lückenlose Compliance mit automatisierter Versionskontrolle und Audit-Trails."
+        title: "Algorithmisches Audit",
+        desc: "Erkennen Sie unautorisierte Ausgabenmuster und Vertragsabweichungen mit 99,9% Genauigkeit."
       },
       procurement: {
-        title: "Einkauf",
-        desc: "Maximieren Sie Ihren Hebel. Verfolgen Sie Verlängerungen, überwachen Sie die Leistung und konsolidieren Sie Lieferantenausgaben automatisch."
+        title: "Datenstrukturierung",
+        desc: "Konvertieren Sie PDF-Binärdaten in abfragbare, SQL-fähige Datensätze für sofortige Analysen."
       },
       hr: {
-        title: "Personalwesen",
-        desc: "Schützen Sie Personaldaten. Verwalten Sie Arbeitsverträge sicher mit strengen Zugriffskontrollen und Compliance-Tracking."
+        title: "Kapitalrückgewinnung",
+        desc: "Identifizieren und fordern Sie durchschnittlich 12% Budgetverluste aus Zombie-Abonnements zurück."
       },
       finance: {
-        title: "Finanzen",
-        desc: "Keine Überraschungen mehr. Visualisieren Sie gebundene Ausgaben und Cashflow-Auswirkungen direkt aus Ihren Vertragsdaten."
+        title: "Sicherheitsarchitektur",
+        desc: "AES-256-Verschlüsselung. Granulare Zugriffskontrolle. Zero-Trust-Architektur."
       },
       grc: {
-        title: "GRC-Teams",
-        desc: "Mühelos konform bleiben. Automatische Risikoüberwachung und Verpflichtungsverfolgung für jeden Lieferanten."
+        title: "Compliance-Durchsetzung",
+        desc: "Automatisierte AVV-Verifizierung und regulatorische Konformitätsprüfungen."
       },
       ops: {
-        title: "Operations",
-        desc: "Skalieren Sie ohne Reibung. Integrieren Sie Vertragsmeilensteine direkt in Ihre täglichen Projektworkflows."
+        title: "Operative Geschwindigkeit",
+        desc: "Reduzieren Sie die Vertragsdurchlaufzeit um 40% durch automatisierte Workflows und API-Integration."
       }
     },
     contact: {
-      title: "Kontakt aufnehmen",
-      subtitle: "Haben Sie spezielle Anforderungen? Unser Team ist auf komplexe Unternehmens-Setups spezialisiert.",
-      name: "Name",
+      title: "Bereitstellung initiieren",
+      subtitle: "Anforderungen auf Unternehmensebene? Unser Engineering-Team ist bereit.",
+      name: "Name des Verantwortlichen",
       email: "Geschäftliche E-Mail",
-      message: "Nachricht",
-      placeholder: "Erzählen Sie uns von Ihren Herausforderungen im Vertragsmanagement...",
-      send: "Nachricht senden",
-      sending: "Senden...",
-      sentTitle: "Nachricht gesendet!",
-      sentDesc: "Wir melden uns innerhalb von 24 Stunden bei Ihnen.",
-      sendAnother: "Weitere Nachricht senden"
+      message: "Anweisungen",
+      placeholder: "Skizzieren Sie Ihre operativen Anforderungen...",
+      send: "Übermitteln",
+      sending: "Übertrage...",
+      sentTitle: "Übertragung empfangen",
+      sentDesc: "Wir werden innerhalb von 24 operativen Stunden antworten.",
+      sendAnother: "Neue Anweisung senden"
     },
     footer: {
-      ctaTitle: "Wie viel hat Sie die letzte vergessene Vertragsverlängerung gekostet?",
-      ctaButton: "Verluste stoppen",
+      ctaTitle: "Operatives Versagen ist eine Wahl.",
+      ctaButton: "Infrastruktur sichern",
       rights: "Alle Rechte vorbehalten.",
-      privacy: "Datenschutz",
-      terms: "AGB"
+      privacy: "Datenschutzprotokoll",
+      terms: "Nutzungsbedingungen"
     }
   }
 };

@@ -15,7 +15,7 @@ export function Security() {
         <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white mb-6">
                 <Shield className="w-4 h-4" />
-                <span className="text-sm font-bold font-mono uppercase">Security Protocol</span>
+                <span className="text-sm font-bold font-mono uppercase">Defense Protocol</span>
             </div>
         </div>
 

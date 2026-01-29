@@ -85,7 +85,7 @@ export function BentoGrid() {
                 <div className="mt-auto bg-white border-2 border-black shadow-hard-sm p-6 max-w-lg w-full mx-auto h-[280px] flex flex-col justify-center relative">
                     {/* Header bar */}
                     <div className="absolute top-0 left-0 right-0 h-8 bg-black flex items-center px-2 justify-between">
-                         <span className="text-white font-mono text-[10px] uppercase">Terminal_View</span>
+                         <span className="text-white font-mono text-[10px] uppercase">DATA_INGESTION_STREAM</span>
                          <div className="flex gap-1">
                              <div className="w-2 h-2 bg-[#CCFF00]"></div>
                              <div className="w-2 h-2 bg-white"></div>
@@ -108,14 +108,14 @@ export function BentoGrid() {
                                             <FileText className="w-4 h-4 text-black" />
                                         </div>
                                         <div>
-                                            <div className="text-sm font-bold font-mono text-black">Contract_v2.pdf</div>
+                                            <div className="text-sm font-bold font-mono text-black">MASTER_SERVICE_AGREEMENT_V1.PDF</div>
                                             <div className="text-xs font-mono text-gray-500">2.4 MB</div>
                                         </div>
                                     </div>
                                     <span className={`text-xs font-bold font-mono px-2 py-1 border border-black ${
                                         currentStep === 3 ? 'bg-[#CCFF00] text-black' : 'bg-gray-100 text-black'
                                     }`}>
-                                        {currentStep === 3 ? 'COMPLETE' : 'PROCESSING'}
+                                        {currentStep === 3 ? 'VERIFIED' : 'ANALYZING'}
                                     </span>
                                 </div>
                                 <div className="space-y-3">

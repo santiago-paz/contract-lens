@@ -35,7 +35,7 @@ export function ProductShowcase() {
                     <div className="w-4 h-4 bg-transparent border border-white hover:bg-white cursor-pointer transition-colors"></div>
                     <div className="w-4 h-4 bg-transparent border border-white hover:bg-white cursor-pointer transition-colors"></div>
                 </div>
-                <div className="text-white font-mono text-xs uppercase tracking-widest">System_Preview_Mode</div>
+                <div className="text-white font-mono text-xs uppercase tracking-widest">LIVE_OPERATIONAL_FEED</div>
             </div>
             
             <div className="relative bg-black p-2">

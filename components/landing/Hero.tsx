@@ -58,7 +58,7 @@ export function Hero() {
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#CCFF00] border-2 border-black shadow-hard-sm mb-8"
                     >
                         <Terminal className="w-4 h-4 text-black" />
-                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">COST CONTROL ENGINE</span>
+                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">RESOURCE CONTROL UNIT</span>
                     </motion.div>
                     
                     <motion.h1 
@@ -117,7 +117,7 @@ export function Hero() {
                                  <div className="w-3 h-3 rounded-full bg-[#CCFF00] border border-black"></div>
                                  <div className="w-3 h-3 rounded-full bg-white border border-black"></div>
                              </div>
-                             <div className="text-[#CCFF00] font-mono text-xs uppercase tracking-widest">CONTRACT_ANALYSIS_ENGINE_V2.0</div>
+                             <div className="text-[#CCFF00] font-mono text-xs uppercase tracking-widest">ASSET_OS_KERNEL_V2.4</div>
                              <div className="w-4"></div>
                         </div>
 
@@ -140,7 +140,7 @@ export function Hero() {
                                             )}
                                         </div>
                                         <div>
-                                            <h3 className="font-bold font-mono uppercase text-black">CONTRACT AUDIT</h3>
+                                            <h3 className="font-bold font-mono uppercase text-black">FORENSIC AUDIT</h3>
                                             <p className="text-xs font-mono text-gray-500 mt-1">TARGET: SERVICE_AGREEMENT_2024.PDF</p>
                                         </div>
                                     </div>
@@ -190,15 +190,6 @@ export function Hero() {
                                                         status === 'loading' ? 'text-black font-black tracking-wider' : 
                                                         'text-black font-bold'
                                                     }`}>{step}</p>
-                                                    {status === 'loading' && (
-                                                        <motion.div 
-                                                            layoutId="active-step-indicator"
-                                                            className="h-0.5 bg-[#CCFF00] mt-1 origin-left"
-                                                            initial={{ scaleX: 0 }}
-                                                            animate={{ scaleX: 1 }}
-                                                            transition={{ duration: 1.5, ease: "easeInOut" }}
-                                                        />
-                                                    )}
                                                 </div>
                                             </div>
                                         );
