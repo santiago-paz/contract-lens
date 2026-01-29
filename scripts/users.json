@@ -58,5 +58,38 @@
         "timestamp": "2026-01-26T14:15:00Z"
       }
     ]
+  },
+  {
+    "email": "thomas.schulze@example.com",
+    "password": "password123",
+    "name": "Thomas Schulze",
+    "equipo": "Management",
+    "contracts": [],
+    "tasks": [
+      {
+        "title": "Review Sponsorship Contracts",
+        "status": "Open",
+        "type": "Sponsorship Contract",
+        "dueDate": "2026-02-01T09:00:00Z"
+      },
+      {
+        "title": "Sign Sponsorship Contracts",
+        "status": "Open",
+        "type": "Sponsorship Contract",
+        "dueDate": "2026-01-30T17:00:00Z"
+      }
+    ],
+    "activities": [
+      {
+        "description": "Sponsorship Contracts 2026",
+        "action": "created",
+        "timestamp": "2026-01-28T08:30:00Z"
+      },
+      {
+        "description": "Sponsorship Contracts template",
+        "action": "updated",
+        "timestamp": "2026-01-26T14:15:00Z"
+      }
+    ]
   }
 ]
