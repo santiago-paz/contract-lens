@@ -52,10 +52,10 @@ export function ProductShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7 }}
-              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-24`}
+              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-16 xl:gap-24`}
             >
               {/* Text Content */}
-              <div className="flex-1 space-y-8">
+              <div className="flex-1 lg:flex-[0.8] space-y-8">
                 <div className="flex items-center gap-4 mb-4">
                   <span className="font-mono text-xs font-bold tracking-widest text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                     Step {feature.step}
@@ -110,7 +110,7 @@ export function ProductShowcase() {
               </div>
 
               {/* Image */}
-              <div className="flex-1 w-full">
+              <div className="flex-1 lg:flex-[1.2] w-full">
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl blur-lg opacity-50 group-hover:opacity-100 transition duration-1000"></div>
                   

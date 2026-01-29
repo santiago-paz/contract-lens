@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Check, Loader2, FileText, Bell, Users, Calendar, Building2, Wallet, AlertTriangle, UserPlus, Zap, Shield, Search } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
@@ -8,6 +8,23 @@ import { useLanguage } from './LanguageContext';
 export function BentoGrid() {
   const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(0);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const backgroundStyle = useMotionTemplate`
+    radial-gradient(
+      250px circle at ${mouseX}px ${mouseY}px,
+      rgba(59, 130, 246, 0.5),
+      transparent 80%
+    )
+  `;
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -171,9 +188,17 @@ export function BentoGrid() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="md:col-span-2 bg-gray-900 text-white rounded-[2rem] p-8 sm:p-10 relative overflow-hidden group"
+            onMouseMove={handleMouseMove}
           >
              {/* Decorative gradient */}
-             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+             
+             <motion.div
+               className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-40 transition-opacity duration-500"
+               style={{
+                 background: backgroundStyle
+               }}
+             />
              
              <div className="relative z-10 flex flex-col h-full">
                 <div className="mb-8">
