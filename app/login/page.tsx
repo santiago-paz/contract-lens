@@ -1,119 +1,148 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { login } from '@/app/actions/auth'
-import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { ArrowLeft, Globe } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2, Terminal, ShieldCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const [state, action, isPending] = useActionState(login, null)
+  const [focusedField, setFocusedField] = useState<string | null>(null)
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Link 
-          href="/"
-          className="group absolute left-4 top-4 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900 sm:left-8 sm:top-8"
-        >
-          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Back to Home
-        </Link>
+    <div className="min-h-screen bg-white relative overflow-hidden flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      {/* Grid Background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none"></div>
 
-        <div className="flex justify-center mb-6">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 p-2 rounded-lg">
-              <Globe className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">Split Berlin</span>
-          </div>
-        </div>
+      {/* Back Link */}
+      <Link 
+        href="/"
+        className="absolute left-4 top-4 sm:left-8 sm:top-8 inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-black shadow-hard-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all z-20"
+      >
+        <ArrowLeft className="w-4 h-4 text-black" />
+        <span className="text-xs font-bold font-mono text-black uppercase tracking-wide">Return to Base</span>
+      </Link>
 
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Access the contract analysis dashboard
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10 border border-gray-100">
-          <form action={action} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="you@example.com"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                Password
-              </label>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="••••••••"
-                />
-              </div>
-            </div>
-
-            {state?.message && (
-              <div className="rounded-md bg-red-50 p-4">
-                <div className="flex">
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      Login failed
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <p>{state.message}</p>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md relative z-10"
+      >
+        <div className="bg-white border-2 border-black shadow-hard">
+            {/* Header */}
+            <div className="bg-black text-white p-6 border-b-2 border-black">
+                <div className="flex justify-between items-start mb-6">
+                    <div className="flex items-center gap-2">
+                        <div className="bg-[#CCFF00] text-black w-8 h-8 flex items-center justify-center border border-white">
+                            <span className="font-bold font-mono text-lg leading-none">S</span>
+                        </div>
+                        <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Split Berlin</span>
                     </div>
-                  </div>
+                    <div className="flex items-center gap-1 px-2 py-1 bg-[#CCFF00] text-black text-[10px] font-bold font-mono uppercase">
+                        <ShieldCheck className="w-3 h-3" />
+                        SECURE
+                    </div>
                 </div>
-              </div>
-            )}
-
-            <div>
-              <button
-                type="submit"
-                disabled={isPending}
-                className={cn(
-                  "flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all",
-                  isPending && "opacity-70 cursor-not-allowed"
-                )}
-              >
-                {isPending ? (
-                  <div className="flex items-center gap-2">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Signing in...
-                  </div>
-                ) : (
-                  'Sign in'
-                )}
-              </button>
+                
+                <h2 className="text-2xl font-bold font-mono text-white tracking-tight uppercase">System Access</h2>
+                <div className="flex items-center gap-2 mt-2">
+                    <Terminal className="w-3 h-3 text-[#CCFF00]" />
+                    <p className="text-[#CCFF00] text-xs font-mono uppercase">AUTHENTICATION_PROTOCOL_V2</p>
+                </div>
             </div>
-          </form>
+
+            <div className="p-8">
+                <form action={action} className="space-y-6">
+                    {/* Email Input */}
+                    <div className="space-y-2">
+                        <label 
+                            htmlFor="email" 
+                            className={`block text-xs font-bold font-mono uppercase tracking-wider transition-colors ${focusedField === 'email' ? 'text-black' : 'text-gray-500'}`}
+                        >
+                            Identifier (Email)
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                onFocus={() => setFocusedField('email')}
+                                onBlur={() => setFocusedField(null)}
+                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                placeholder="ENTER IDENTIFIER..."
+                            />
+                        </div>
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="space-y-2">
+                        <label 
+                            htmlFor="password" 
+                            className={`block text-xs font-bold font-mono uppercase tracking-wider transition-colors ${focusedField === 'password' ? 'text-black' : 'text-gray-500'}`}
+                        >
+                            Access Key (Password)
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                required
+                                onFocus={() => setFocusedField('password')}
+                                onBlur={() => setFocusedField(null)}
+                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                placeholder="ENTER KEY..."
+                            />
+                        </div>
+                    </div>
+
+                    {/* Error Message */}
+                    {state?.message && (
+                        <div className="bg-red-50 border-2 border-red-500 p-4 relative overflow-hidden">
+                             <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                             <div className="flex gap-3">
+                                <div className="text-red-600 font-bold font-mono uppercase text-xs">Error:</div>
+                                <p className="text-xs font-mono text-red-600 uppercase">{state.message}</p>
+                             </div>
+                        </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <div className="pt-2">
+                        <button
+                            type="submit"
+                            disabled={isPending}
+                            className="w-full group relative inline-flex items-center justify-center px-8 py-4 bg-black text-white text-sm font-bold font-mono uppercase border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-white hover:text-black transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                        >
+                            {isPending ? (
+                                <span className="flex items-center gap-2">
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    AUTHENTICATING...
+                                </span>
+                            ) : (
+                                <span className="flex items-center gap-2">
+                                    INITIALIZE SESSION
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            {/* Footer of the card */}
+            <div className="bg-gray-50 px-8 py-4 border-t-2 border-black">
+                 <div className="flex justify-between items-center text-[10px] font-mono uppercase text-gray-500">
+                    <span>SECURE CONNECTION</span>
+                    <span>ENCRYPTED_SHA256</span>
+                 </div>
+            </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
