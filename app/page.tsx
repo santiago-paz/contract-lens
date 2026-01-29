@@ -16,7 +16,7 @@ export default function LandingPage() {
   return (
     <LanguageProvider>
       <CookieProvider>
-        <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black">
+        <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black overflow-x-hidden max-w-[100vw]">
           <Navbar />
           <Hero />
           <ProductShowcase />
