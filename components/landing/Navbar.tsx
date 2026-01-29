@@ -2,14 +2,23 @@
 
 import Link from 'next/link';
 import { Globe, Menu, X } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 import { useLanguage } from './LanguageContext';
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (id: string) => {
     setIsOpen(false);
@@ -17,33 +26,33 @@ export function Navbar() {
   };
 
   const LanguageToggle = () => (
-    <div className="flex bg-gray-100 rounded-full p-1 relative w-[72px]">
+    <div className="flex bg-gray-100/50 backdrop-blur-sm rounded-full p-1 relative w-[72px] h-8 items-center border border-gray-200/50">
       <motion.div
-        className="absolute bg-white rounded-full shadow-sm"
+        className="absolute bg-white rounded-full shadow-sm border border-gray-100"
         initial={false}
         animate={{
           x: language === 'en' ? 0 : "100%"
         }}
         style={{
-          top: '4px',
-          bottom: '4px',
-          left: '4px',
-          width: 'calc(50% - 4px)'
+          top: '3px',
+          bottom: '3px',
+          left: '3px',
+          width: 'calc(50% - 3px)'
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
       />
       <button
         onClick={() => setLanguage('en')}
-        className={`relative z-10 w-1/2 py-1 text-xs font-bold transition-colors text-center rounded-full ${
-          language === 'en' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'
+        className={`relative z-10 w-1/2 text-[10px] font-bold transition-colors text-center ${
+          language === 'en' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700'
         }`}
       >
         EN
       </button>
       <button
         onClick={() => setLanguage('de')}
-        className={`relative z-10 w-1/2 py-1 text-xs font-bold transition-colors text-center rounded-full ${
-          language === 'de' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'
+        className={`relative z-10 w-1/2 text-[10px] font-bold transition-colors text-center ${
+          language === 'de' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700'
         }`}
       >
         DE
@@ -52,127 +61,119 @@ export function Navbar() {
   );
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 p-1.5 rounded-lg">
-              <Globe className="w-5 h-5 text-white" />
+    <>
+      <nav className={`fixed top-4 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'px-4' : 'px-4 sm:px-8'}`}>
+        <div className={`max-w-5xl mx-auto transition-all duration-300 ${
+          scrolled 
+            ? 'bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg shadow-gray-200/20 rounded-full py-3 px-6' 
+            : 'bg-transparent py-4 px-0'
+        }`}>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="bg-black text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-black/20">
+                 <div className="font-bold text-sm leading-none">S</div>
+              </div>
+              <span className={`text-lg font-bold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-gray-900'}`}>
+                Split Berlin
+              </span>
             </div>
-            <span className="text-xl font-bold text-gray-900 tracking-tight">Split Berlin</span>
-          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8 mr-8">
-            <button 
-              onClick={() => scrollToSection('product-showcase')}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {t.nav.howItWorks}
-            </button>
-            <button 
-              onClick={() => scrollToSection('bento-grid')}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {t.nav.features}
-            </button>
-            <button 
-              onClick={() => scrollToSection('teams-section')}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {t.nav.teams}
-            </button>
-            <button 
-              onClick={() => scrollToSection('security')}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {t.nav.security}
-            </button>
-          </div>
+            {/* Desktop Navigation */}
+            <div className={`hidden md:flex items-center gap-1 bg-gray-100/50 p-1 rounded-full border border-gray-200/50 backdrop-blur-sm ${scrolled ? 'hidden lg:flex' : ''}`}>
+              <NavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</NavButton>
+              <NavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</NavButton>
+              <NavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</NavButton>
+              <NavButton onClick={() => scrollToSection('security')}>{t.nav.security}</NavButton>
+            </div>
 
-          {/* Desktop Right Section */}
-          <div className="hidden md:flex items-center gap-4">
-             <div className="pr-4 border-r border-gray-200">
+            {/* Desktop Right Section */}
+            <div className="hidden md:flex items-center gap-3">
                <LanguageToggle />
-             </div>
 
-             <Link 
-              href="/login" 
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {t.nav.signIn}
-            </Link>
-            <button
-              onClick={() => scrollToSection('contact-form')}
-              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
-            >
-              {t.nav.getStarted}
-            </button>
-          </div>
-
-          {/* Mobile Right Section (Language Toggle + Menu Button) */}
-          <div className="flex md:hidden items-center gap-3">
-            <LanguageToggle />
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-600 hover:text-gray-900 p-2"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200">
-          <div className="px-4 pt-2 pb-6 space-y-4">
-            <div className="flex flex-col space-y-3">
-              <button 
-                onClick={() => scrollToSection('product-showcase')}
-                className="text-left text-base font-medium text-gray-600 hover:text-gray-900 py-2"
-              >
-                {t.nav.howItWorks}
-              </button>
-              <button 
-                onClick={() => scrollToSection('bento-grid')}
-                className="text-left text-base font-medium text-gray-600 hover:text-gray-900 py-2"
-              >
-                {t.nav.features}
-              </button>
-              <button 
-                onClick={() => scrollToSection('teams-section')}
-                className="text-left text-base font-medium text-gray-600 hover:text-gray-900 py-2"
-              >
-                {t.nav.teams}
-              </button>
-              <button 
-                onClick={() => scrollToSection('security')}
-                className="text-left text-base font-medium text-gray-600 hover:text-gray-900 py-2"
-              >
-                {t.nav.security}
-              </button>
-            </div>
-
-            <div className="border-t border-gray-100 pt-4 flex flex-col gap-4">
-              <Link 
+               <Link 
                 href="/login" 
-                onClick={() => setIsOpen(false)}
-                className="text-base font-medium text-gray-600 hover:text-gray-900 py-2"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-3 py-2"
               >
                 {t.nav.signIn}
               </Link>
               <button
                 onClick={() => scrollToSection('contact-form')}
-                className="w-full rounded-lg bg-blue-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-500 transition-colors text-center"
+                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2 text-sm font-medium text-white shadow-lg shadow-gray-200 hover:bg-gray-800 hover:-translate-y-0.5 transition-all"
               >
                 {t.nav.getStarted}
               </button>
             </div>
+
+            {/* Mobile Toggle */}
+            <div className="flex md:hidden items-center gap-3">
+              <LanguageToggle />
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="bg-white p-2 rounded-full border border-gray-200 shadow-sm text-gray-600 hover:text-gray-900"
+              >
+                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
         </div>
-      )}
-    </nav>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-x-4 top-24 z-40 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 md:hidden"
+          >
+            <div className="flex flex-col space-y-2">
+              <MobileNavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</MobileNavButton>
+              <MobileNavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</MobileNavButton>
+              <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
+              <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>
+              
+              <div className="h-px bg-gray-100 my-2" />
+              
+              <Link 
+                href="/login" 
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center w-full py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+              >
+                {t.nav.signIn}
+              </Link>
+              <button
+                onClick={() => scrollToSection('contact-form')}
+                className="w-full py-3 text-sm font-medium text-white bg-black rounded-xl shadow-lg shadow-gray-200"
+              >
+                {t.nav.getStarted}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+function NavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <button 
+      onClick={onClick}
+      className="px-4 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all duration-200"
+    >
+      {children}
+    </button>
+  );
+}
+
+function MobileNavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <button 
+      onClick={onClick}
+      className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      {children}
+    </button>
   );
 }

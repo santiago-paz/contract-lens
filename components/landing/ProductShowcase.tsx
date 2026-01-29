@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Upload, Sparkles, FileEdit } from 'lucide-react';
+import { Upload, Sparkles, FileEdit, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
 export function ProductShowcase() {
@@ -13,38 +13,38 @@ export function ProductShowcase() {
       icon: Upload,
       image: "/screenshots-app/1.png",
       alignment: "left",
+      step: "01",
       ...t.showcase.features[0]
     },
     {
       icon: Sparkles,
       image: "/screenshots-app/2.png",
       alignment: "right",
+      step: "02",
       ...t.showcase.features[1]
     },
     {
       icon: FileEdit,
       image: "/screenshots-app/4.png",
       alignment: "left",
+      step: "03",
       ...t.showcase.features[2]
     }
   ];
 
   return (
-    <div id="product-showcase" className="py-12 sm:py-24 bg-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gray-100"></div>
-      
+    <div id="product-showcase" className="py-24 sm:py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+        <div className="mb-20 sm:mb-32 max-w-3xl">
+          <h2 className="text-4xl sm:text-6xl font-bold text-gray-900 tracking-tighter mb-8">
             {t.showcase.title}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-500 leading-relaxed">
              {t.showcase.subtitle}
           </p>
         </div>
 
-        <div className="space-y-16 sm:space-y-32">
+        <div className="space-y-32">
           {features.map((feature, index) => (
             <motion.div 
               key={index}
@@ -52,59 +52,56 @@ export function ProductShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7 }}
-              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-8 lg:gap-20`}
+              className={`flex flex-col ${feature.alignment === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-24`}
             >
               {/* Text Content */}
-              <div className="flex-1 space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                    <feature.icon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <span className="text-blue-600 font-medium tracking-wide text-sm uppercase">
-                    {index === 0 ? t.showcase.step1 : index === 1 ? t.showcase.step2 : t.showcase.step3}
+              <div className="flex-1 space-y-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="font-mono text-xs font-bold tracking-widest text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                    Step {feature.step}
                   </span>
                 </div>
                 
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
                   {feature.title}
                 </h3>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   {feature.description}
                 </p>
                 
-                <ul className="space-y-3 pt-4">
+                <ul className="space-y-4 pt-4">
                     {index === 0 && (
                         <>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 Drag & Drop Interface
                             </li>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 Support for Scanned PDFs
                             </li>
                         </>
                     )}
                     {index === 1 && (
                         <>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 Vendor Validation
                             </li>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 Real-time Feedback
                             </li>
                         </>
                     )}
                      {index === 2 && (
                         <>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 Side-by-side Comparison
                             </li>
-                             <li className="flex items-center gap-3 text-gray-600">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                             <li className="flex items-center gap-3 text-gray-700 font-medium">
+                                <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                 One-click Save
                             </li>
                         </>
@@ -115,27 +112,28 @@ export function ProductShowcase() {
               {/* Image */}
               <div className="flex-1 w-full">
                 <div className="relative group">
-                   {/* Shadow Effect - Hidden on mobile to prevent overflow issues with full-width */}
-                  <div className="absolute -inset-4 bg-gray-200/50 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500 hidden sm:block"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl blur-lg opacity-50 group-hover:opacity-100 transition duration-1000"></div>
                   
-                  {/* Image Container - Full width on mobile (-mx-4), rounded on desktop */}
-                  <div className="relative bg-white border-y sm:border border-gray-200 rounded-none sm:rounded-xl overflow-hidden shadow-sm sm:shadow-2xl transform transition-transform duration-500 sm:hover:scale-[1.01] -mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full">
+                  <div className="relative rounded-xl overflow-hidden bg-gray-900 shadow-2xl ring-1 ring-gray-900/10 transform transition-transform duration-700 sm:group-hover:scale-[1.02]">
                      {/* Window Controls Mockup */}
-                    <div className="h-8 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-2">
-                        <div className="w-3 h-3 rounded-full bg-gray-200 border border-gray-300"></div>
-                        <div className="w-3 h-3 rounded-full bg-gray-200 border border-gray-300"></div>
-                        <div className="w-3 h-3 rounded-full bg-gray-200 border border-gray-300"></div>
+                    <div className="h-10 bg-gray-800/80 backdrop-blur-md flex items-center px-4 gap-2 border-b border-gray-700">
+                        <div className="w-3 h-3 rounded-full bg-[#FF5F57]"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#FEBC2E]"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#28C840]"></div>
+                        
+                        <div className="mx-auto text-xs font-medium text-gray-400 font-mono opacity-50"></div>
                     </div>
                     
-                    <Image
-                      src={feature.image}
-                      alt={feature.title}
-                      width={1200}
-                      height={800}
-                      quality={100}
-                      priority={index === 0}
-                      className="w-full h-auto object-cover"
-                    />
+                    <div className="relative bg-gray-800">
+                        <Image
+                        src={feature.image}
+                        alt={feature.title}
+                        width={1920}
+                        height={1080}
+                        quality={100}
+                        className="w-full h-auto"
+                        />
+                    </div>
                   </div>
                 </div>
               </div>
