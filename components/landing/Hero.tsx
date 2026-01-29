@@ -65,7 +65,7 @@ export function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="text-6xl sm:text-8xl font-black text-black tracking-tighter mb-8 leading-[0.9]"
+                        className="text-6xl sm:text-8xl font-black text-black tracking-tighter mb-8 leading-[0.9] break-words hyphens-auto"
                     >
                         {t.hero.titleLine1} <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800" style={{ WebkitTextStroke: '2px black', color: 'transparent' }}>{t.hero.titleLine2}</span>
@@ -223,7 +223,8 @@ export function Hero() {
                     </div>
                     
                     {/* Decorative Background Elements behind the window */}
-                    <div className="absolute -z-10 top-4 -right-4 w-full h-full border-2 border-black bg-gray-100"></div>
+                    <div className="hidden sm:block absolute -z-10 top-4 -right-4 w-full h-full border-2 border-black bg-gray-100"></div>
+                    <div className="sm:hidden absolute -z-10 top-2 -right-2 w-full h-full border-2 border-black bg-gray-100"></div>
                 </motion.div>
             </div>
         </div>

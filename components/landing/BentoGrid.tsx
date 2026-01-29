@@ -48,7 +48,7 @@ export function BentoGrid() {
   }, []);
 
   return (
-    <div id="bento-grid" className="py-20 sm:py-32 relative bg-white border-b-2 border-black">
+    <div id="bento-grid" className="py-20 sm:py-32 relative bg-white border-b-2 border-black overflow-hidden">
       {/* Grid Background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none"></div>
 
