@@ -10,7 +10,7 @@ export function ProductShowcase() {
     <div id="product-showcase" className="py-24 sm:py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-6xl font-bold text-gray-900 tracking-tighter mb-6">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tighter mb-6">
             {t.showcase.title}
           </h2>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto">
