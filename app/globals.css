@@ -3,12 +3,18 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --accent: #CCFF00; /* Neon Green */
+  --accent-foreground: #000000;
+  --border: #000000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -30,9 +36,35 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+  font-family: var(--font-geist-mono);
+  letter-spacing: -0.02em;
 }
 
-/* Utilities */
+/* Brutalist Utilities */
+.shadow-hard {
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.shadow-hard-lg {
+  box-shadow: 8px 8px 0px 0px #000000;
+}
+
+.border-hard {
+  border: 2px solid #000000;
+}
+
+/* Grid Background */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+    linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+}
+
 .perspective-1000 {
   perspective: 1000px;
 }

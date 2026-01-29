@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, Loader2, CheckCircle2, FileText, PenTool } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, FileText, PenTool, ArrowRight } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -22,40 +22,37 @@ export function ContactForm() {
   };
 
   return (
-    <div id="contact-form" className="py-24 bg-gray-50 relative overflow-hidden border-t border-gray-200">
-        {/* Decorative elements */}
-        <div className="absolute top-0 inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+    <div id="contact-form" className="py-24 bg-white relative overflow-hidden border-t-2 border-black">
+        {/* Grid Background */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none"></div>
         
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden relative ring-1 ring-gray-900/5"
-                style={{ 
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.1)',
-                }}
+                className="bg-white border-2 border-black shadow-hard"
             >
                 {/* Document Header */}
-                <div className="bg-gray-50/50 border-b border-gray-100 p-8 flex justify-between items-start">
+                <div className="bg-black text-white p-6 border-b-2 border-black flex justify-between items-start">
                     <div>
                         <div className="flex items-center gap-2 mb-3">
-                             <div className="bg-blue-600 text-white w-6 h-6 rounded-md flex items-center justify-center shadow-md shadow-blue-600/20">
-                                <span className="font-bold text-xs leading-none">S</span>
+                             <div className="bg-[#CCFF00] text-black w-6 h-6 flex items-center justify-center border border-white">
+                                <span className="font-bold font-mono text-xs leading-none">S</span>
                              </div>
-                             <span className="font-bold text-sm tracking-wide text-gray-900">Split Berlin</span>
+                             <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Split Berlin</span>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Communication Request</h2>
-                        <p className="text-gray-500 text-xs mt-1 font-mono">REF: CONTACT-{(new Date()).getFullYear()}-001</p>
+                        <h2 className="text-2xl font-bold font-mono text-white tracking-tight uppercase">Communication Request</h2>
+                        <p className="text-[#CCFF00] text-xs mt-1 font-mono uppercase">REF: CONTACT-{(new Date()).getFullYear()}-001</p>
                     </div>
                     <div className="hidden sm:block">
-                        <div className="w-20 h-20 border-4 border-double border-gray-200 rounded-full flex items-center justify-center rotate-12 opacity-30">
-                            <span className="font-serif font-bold text-gray-400 text-[10px] uppercase text-center leading-tight">Official<br/>Inquiry</span>
+                        <div className="w-20 h-20 border-2 border-white flex items-center justify-center opacity-100">
+                            <span className="font-mono font-bold text-white text-[10px] uppercase text-center leading-tight">Official<br/>Inquiry</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-8">
+                <div className="p-8 sm:p-12">
                     <AnimatePresence mode="wait">
                         {success ? (
                             <motion.div 
@@ -69,16 +66,16 @@ export function ContactForm() {
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: "spring", delay: 0.2 }}
-                                    className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6 border-4 border-green-100"
+                                    className="w-20 h-20 bg-[#CCFF00] flex items-center justify-center mb-6 border-2 border-black shadow-hard-sm"
                                 >
-                                    <CheckCircle2 className="w-10 h-10 text-green-600" />
+                                    <CheckCircle2 className="w-10 h-10 text-black" />
                                 </motion.div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">{t.contact.sentTitle}</h3>
-                                <p className="text-gray-600 mb-8 max-w-sm text-sm">{t.contact.sentDesc}</p>
+                                <h3 className="text-2xl font-bold font-mono text-black uppercase mb-2">{t.contact.sentTitle}</h3>
+                                <p className="text-black font-mono mb-8 max-w-sm text-sm uppercase">{t.contact.sentDesc}</p>
                                 
                                 <button 
                                     onClick={() => setSuccess(false)}
-                                    className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+                                    className="text-sm font-bold font-mono text-black uppercase hover:bg-[#CCFF00] hover:px-2 transition-all"
                                 >
                                     {t.contact.sendAnother}
                                 </button>
@@ -95,14 +92,14 @@ export function ContactForm() {
                                 {/* Section 1 */}
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
-                                        <span className="bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded">SECTION 1</span>
-                                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">The Parties</h3>
-                                        <div className="h-px bg-gray-100 flex-grow"></div>
+                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">SECTION 1</span>
+                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">The Parties</h3>
+                                        <div className="h-0.5 bg-black flex-grow"></div>
                                     </div>
                                     
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
                                         <div className="relative group">
-                                            <label htmlFor="name" className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'name' ? 'text-blue-600' : 'text-gray-500'}`}>
+                                            <label htmlFor="name" className={`block text-xs font-bold font-mono uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'name' ? 'text-black' : 'text-gray-500'}`}>
                                                 {t.contact.name}
                                             </label>
                                             <input 
@@ -111,12 +108,12 @@ export function ContactForm() {
                                                 required
                                                 onFocus={() => setFocusedField('name')}
                                                 onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-gray-50/50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-gray-400"
-                                                placeholder="Enter full name..."
+                                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                                placeholder="ENTER FULL NAME..."
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label htmlFor="email" className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'email' ? 'text-blue-600' : 'text-gray-500'}`}>
+                                            <label htmlFor="email" className={`block text-xs font-bold font-mono uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'email' ? 'text-black' : 'text-gray-500'}`}>
                                                 {t.contact.email}
                                             </label>
                                             <input 
@@ -125,8 +122,8 @@ export function ContactForm() {
                                                 required
                                                 onFocus={() => setFocusedField('email')}
                                                 onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-gray-50/50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-gray-400"
-                                                placeholder="Enter email address..."
+                                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                                placeholder="ENTER EMAIL ADDRESS..."
                                             />
                                         </div>
                                     </div>
@@ -135,13 +132,13 @@ export function ContactForm() {
                                 {/* Section 2 */}
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
-                                        <span className="bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded">SECTION 2</span>
-                                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest">The Details</h3>
-                                        <div className="h-px bg-gray-100 flex-grow"></div>
+                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">SECTION 2</span>
+                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">The Details</h3>
+                                        <div className="h-0.5 bg-black flex-grow"></div>
                                     </div>
 
                                     <div className="relative">
-                                        <label htmlFor="message" className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'message' ? 'text-blue-600' : 'text-gray-500'}`}>
+                                        <label htmlFor="message" className={`block text-xs font-bold font-mono uppercase tracking-wider mb-1.5 transition-colors ${focusedField === 'message' ? 'text-black' : 'text-gray-500'}`}>
                                             {t.contact.message}
                                         </label>
                                         <textarea 
@@ -150,32 +147,32 @@ export function ContactForm() {
                                             rows={4}
                                             onFocus={() => setFocusedField('message')}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-gray-50/50 border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed"
-                                            placeholder="Please describe the nature of your inquiry..."
+                                            className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed uppercase"
+                                            placeholder="DESCRIBE INQUIRY..."
                                         />
                                     </div>
                                 </div>
 
                                 {/* Footer / Sign */}
-                                <div className="pt-6 border-t border-dashed border-gray-200 mt-8">
+                                <div className="pt-6 border-t-2 border-dashed border-black mt-8">
                                     <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                                        <div className="text-[10px] text-gray-400 max-w-xs italic text-center sm:text-left leading-relaxed">
-                                            *By clicking submit, you acknowledge that while this form looks very official, it does not actually bind you to anything other than a friendly conversation. No lawyers were harmed in the making of this HTML.
+                                        <div className="text-[10px] font-mono text-gray-500 max-w-xs uppercase text-center sm:text-left leading-relaxed">
+                                            *By clicking submit, you acknowledge that while this form looks very official, it does not actually bind you to anything other than a friendly conversation.
                                         </div>
                                         <button
                                             type="submit"
                                             disabled={loading}
-                                            className="group relative inline-flex items-center justify-center px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-lg shadow-blue-600/20 hover:bg-blue-700 hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                                            className="group relative inline-flex items-center justify-center px-8 py-3 bg-black text-white text-sm font-bold font-mono uppercase border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-white hover:text-black transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                                         >
                                             {loading ? (
                                                 <span className="flex items-center gap-2">
                                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                                    Sending...
+                                                    TRANSMITTING...
                                                 </span>
                                             ) : (
                                                 <span className="flex items-center gap-2">
-                                                    Send Request
-                                                    <ArrowRightCustom className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                    SEND REQUEST
+                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                                 </span>
                                             )}
                                         </button>
@@ -189,22 +186,4 @@ export function ContactForm() {
         </div>
     </div>
   );
-}
-
-function ArrowRightCustom({ className }: { className?: string }) {
-    return (
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className={className}
-        >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-        </svg>
-    )
 }

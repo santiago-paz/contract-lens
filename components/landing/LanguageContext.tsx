@@ -22,6 +22,8 @@ const translations = {
     },
     hero: {
       title: "Your contracts aren't just dead paper.",
+      titleLine1: "CONTRACTS",
+      titleLine2: "UNDER CONTROL",
       titleHighlight: "They are cash flows.",
       titleEnd: "Control them.",
       subtitle: "Split Berlin transforms your documents into a living database. Receive renewal alerts, assign tasks to your team, and audit vendors without manual data entry.",
@@ -191,6 +193,8 @@ const translations = {
     },
     hero: {
       title: "Verträge sind kein totes Papier.",
+      titleLine1: "VERTRÄGE",
+      titleLine2: "IM GRIFF",
       titleHighlight: "Sie sind Cashflow.",
       titleEnd: "Behalten Sie die Kontrolle.",
       subtitle: "Split Berlin verwandelt Ihre Dokumente in eine lebendige Datenbank. Erhalten Sie Verlängerungswarnungen, weisen Sie Aufgaben zu und prüfen Sie Anbieter ohne manuelle Dateneingabe.",

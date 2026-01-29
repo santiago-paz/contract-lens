@@ -13,7 +13,7 @@ import { LanguageProvider } from '@/components/landing/LanguageContext';
 export default function LandingPage() {
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-white text-gray-900 selection:bg-blue-100 selection:text-blue-900">
+      <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black">
         <Navbar />
         <Hero />
         <ProductShowcase />
