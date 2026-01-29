@@ -28,9 +28,10 @@ interface EditorLayoutProps {
   onBack: () => void;
   uploadedFile?: File | null;
   initialData?: ContractAnalysis | null;
+  contractId?: string;
 }
 
-export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData }: EditorLayoutProps) {
+export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData, contractId }: EditorLayoutProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
@@ -43,6 +44,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [contractOwner, setContractOwner] = useState<string[]>(initialData?.contractOwner ? [initialData.contractOwner] : []);
   const [deputy, setDeputy] = useState<string[]>(initialData?.deputy ? [initialData.deputy] : []);
   const [contractManager, setContractManager] = useState<string[]>(initialData?.contractManager ? [initialData.contractManager] : []);
+  const [status, setStatus] = useState<string>(initialData?.status || "Review");
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -60,6 +62,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         summary,
         conditions,
         comments,
+        status, // I added this
         contractOwner: contractOwner[0] || null,
         deputy: deputy[0] || null,
         contractManager: contractManager[0] || null,
@@ -68,12 +71,17 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         summary,
         conditions,
         comments,
+        status, // Ensure status is spread last
       };
 
       formData.append('metadata', JSON.stringify(metadata));
       
       // If we had editable content text, we would append it here
       // formData.append('content', content);
+
+      if (contractId) {
+        formData.append('contractId', contractId);
+      }
 
       const result = await saveContract(formData);
 
@@ -246,6 +254,8 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           setConditions={setConditions}
           comments={comments}
           setComments={setComments}
+          status={status}
+          setStatus={setStatus}
         />
 
         {/* Main Content Area */}

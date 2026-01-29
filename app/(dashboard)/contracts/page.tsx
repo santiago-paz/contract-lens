@@ -1,8 +1,9 @@
-import { FileIcon, FileText, Edit, Plus, Search, Filter } from 'lucide-react';
+import { FileIcon, FileText, Plus, Search, Filter } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { ContractActions } from './ContractActions';
 
 function getStatusColor(status: string) {
   const s = status.toLowerCase();
@@ -120,9 +121,7 @@ export default async function ContractsPage() {
                         {new Date(contract.updatedAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit Contract">
-                          <Edit className="w-4 h-4" />
-                        </button>
+                        <ContractActions contractId={contract.id} />
                       </td>
                     </tr>
                   );
