@@ -41,23 +41,17 @@ export function TeamSection() {
   ];
 
   return (
-    <div id="teams-section" className="py-24 bg-[#0B1120] text-white overflow-hidden relative">
-        {/* Background Effects */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px]"></div>
-        </div>
-
+    <div id="teams-section" className="py-24 bg-black text-white overflow-hidden relative border-b-2 border-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl font-bold mb-6"
+            className="text-4xl sm:text-6xl font-black mb-6 uppercase tracking-tighter"
           >
             {t.teams.title} <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-200">
+            <span className="text-[#CCFF00]" style={{ WebkitTextStroke: '1px #CCFF00', color: 'transparent' }}>
               {t.teams.titleHighlight}
             </span>
           </motion.h2>
@@ -66,7 +60,7 @@ export function TeamSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-gray-400"
+            className="text-xl text-gray-400 font-mono"
           >
             {t.teams.subtitle}
           </motion.p>
@@ -80,13 +74,13 @@ export function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors duration-300"
+              className="bg-black border-2 border-white p-8 hover:bg-[#CCFF00] hover:text-black hover:border-black transition-colors duration-200 group"
             >
-              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+              <div className="w-12 h-12 border-2 border-white flex items-center justify-center mb-6 text-white group-hover:border-black group-hover:text-black">
                 <team.icon className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold mb-3">{team.title}</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="text-xl font-bold font-mono mb-3 uppercase tracking-wide">{team.title}</h3>
+              <p className="text-gray-400 font-mono text-sm leading-relaxed group-hover:text-black">
                 {team.desc}
               </p>
             </motion.div>
@@ -105,7 +99,7 @@ export function TeamSection() {
                 const contactForm = document.getElementById('contact-form');
                 contactForm?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-8 py-3 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase rounded-none text-black bg-[#CCFF00] border-2 border-[#CCFF00] hover:bg-black hover:text-[#CCFF00] transition-all shadow-hard"
             >
               {t.teams.cta}
             </button>

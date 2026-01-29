@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Globe, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
@@ -26,33 +26,20 @@ export function Navbar() {
   };
 
   const LanguageToggle = () => (
-    <div className="flex bg-gray-100/50 backdrop-blur-sm rounded-full p-1 relative w-[72px] h-8 items-center border border-gray-200/50">
-      <motion.div
-        className="absolute bg-white rounded-full shadow-sm border border-gray-100"
-        initial={false}
-        animate={{
-          x: language === 'en' ? 0 : "100%"
-        }}
-        style={{
-          top: '3px',
-          bottom: '3px',
-          left: '3px',
-          width: 'calc(50% - 3px)'
-        }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      />
+    <div className="flex border-2 border-black bg-white h-8 items-center">
       <button
         onClick={() => setLanguage('en')}
-        className={`relative z-10 w-1/2 text-[10px] font-bold transition-colors text-center ${
-          language === 'en' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700'
+        className={`h-full px-3 text-xs font-mono font-bold transition-colors ${
+          language === 'en' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
         }`}
       >
         EN
       </button>
+      <div className="w-0.5 h-full bg-black" />
       <button
         onClick={() => setLanguage('de')}
-        className={`relative z-10 w-1/2 text-[10px] font-bold transition-colors text-center ${
-          language === 'de' ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700'
+        className={`h-full px-3 text-xs font-mono font-bold transition-colors ${
+          language === 'de' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
         }`}
       >
         DE
@@ -62,24 +49,22 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-4 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'px-4' : 'px-4 sm:px-8'}`}>
-        <div className={`max-w-5xl mx-auto transition-all duration-300 ${
-          scrolled 
-            ? 'bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg shadow-gray-200/20 rounded-full py-3 px-6' 
-            : 'bg-transparent py-4 px-0'
-        }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b-2 ${
+        scrolled ? 'bg-white border-black py-3' : 'bg-transparent border-transparent py-4'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <div className="bg-black text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-black/20">
-                 <div className="font-bold text-sm leading-none">S</div>
+              <div className="bg-[#CCFF00] border-2 border-black w-10 h-10 flex items-center justify-center shadow-hard-sm">
+                 <span className="font-mono font-bold text-xl leading-none text-black">S</span>
               </div>
-              <span className={`text-lg font-bold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-gray-900'}`}>
+              <span className="text-xl font-bold tracking-tighter font-mono uppercase">
                 Split Berlin
               </span>
             </div>
 
             {/* Desktop Navigation */}
-            <div className={`hidden md:flex items-center gap-1 bg-gray-100/50 p-1 rounded-full border border-gray-200/50 backdrop-blur-sm ${scrolled ? 'hidden lg:flex' : ''}`}>
+            <div className="hidden md:flex items-center gap-8">
               <NavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</NavButton>
               <NavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</NavButton>
               <NavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</NavButton>
@@ -87,29 +72,29 @@ export function Navbar() {
             </div>
 
             {/* Desktop Right Section */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-4">
                <LanguageToggle />
 
                <Link 
                 href="/login" 
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-3 py-2"
+                className="text-sm font-mono font-bold uppercase tracking-wider hover:underline underline-offset-4 decoration-2"
               >
                 {t.nav.signIn}
               </Link>
               <button
                 onClick={() => scrollToSection('contact-form')}
-                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2 text-sm font-medium text-white shadow-lg shadow-gray-200 hover:bg-gray-800 hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center justify-center px-6 py-2 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
               >
                 {t.nav.getStarted}
               </button>
             </div>
 
             {/* Mobile Toggle */}
-            <div className="flex md:hidden items-center gap-3">
+            <div className="flex md:hidden items-center gap-4">
               <LanguageToggle />
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-white p-2 rounded-full border border-gray-200 shadow-sm text-gray-600 hover:text-gray-900"
+                className="p-2 border-2 border-black shadow-hard-sm bg-white active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
               >
                 {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -125,26 +110,28 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-4 top-24 z-40 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 md:hidden"
+            className="fixed inset-0 top-[72px] z-40 bg-white md:hidden overflow-y-auto"
           >
-            <div className="flex flex-col space-y-2">
-              <MobileNavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</MobileNavButton>
-              <MobileNavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</MobileNavButton>
-              <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
-              <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>
+            <div className="flex flex-col p-6 space-y-6">
+              <div className="space-y-4">
+                <MobileNavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</MobileNavButton>
+                <MobileNavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</MobileNavButton>
+                <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
+                <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>
+              </div>
               
-              <div className="h-px bg-gray-100 my-2" />
+              <div className="h-0.5 bg-black w-full" />
               
               <Link 
                 href="/login" 
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center w-full py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+                className="flex items-center justify-center w-full py-4 text-sm font-mono font-bold uppercase border-2 border-black hover:bg-[#CCFF00] transition-colors"
               >
                 {t.nav.signIn}
               </Link>
               <button
                 onClick={() => scrollToSection('contact-form')}
-                className="w-full py-3 text-sm font-medium text-white bg-black rounded-xl shadow-lg shadow-gray-200"
+                className="w-full py-4 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               >
                 {t.nav.getStarted}
               </button>
@@ -160,7 +147,7 @@ function NavButton({ children, onClick }: { children: React.ReactNode; onClick: 
   return (
     <button 
       onClick={onClick}
-      className="px-4 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-white rounded-full transition-all duration-200"
+      className="text-sm font-mono font-medium uppercase tracking-wide hover:bg-[#CCFF00] px-2 py-1 transition-colors"
     >
       {children}
     </button>
@@ -171,7 +158,7 @@ function MobileNavButton({ children, onClick }: { children: React.ReactNode; onC
   return (
     <button 
       onClick={onClick}
-      className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
+      className="w-full text-left text-2xl font-mono font-bold uppercase tracking-tight hover:text-[#CCFF00] hover:bg-black px-2 transition-colors"
     >
       {children}
     </button>
