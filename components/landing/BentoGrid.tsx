@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Check, Loader2, FileText, Bell, Users, Calendar, ArrowRight, Building2, Wallet, AlertTriangle, UserPlus } from 'lucide-react';
+import { Check, Loader2, FileText, Bell, Users, Calendar, Building2, Wallet, AlertTriangle, UserPlus, Zap, Shield, Search } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
 export function BentoGrid() {
@@ -48,36 +48,36 @@ export function BentoGrid() {
   }, []);
 
   return (
-    <div id="bento-grid" className="py-12 sm:py-24 relative bg-gray-50 border-t border-gray-200">
+    <div id="bento-grid" className="py-20 sm:py-32 relative bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">{t.bento.title}</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="text-left mb-16 sm:mb-24 max-w-3xl">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight mb-6">{t.bento.title}</h2>
+          <p className="text-xl text-gray-500 leading-relaxed">
             {t.bento.subtitle}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 sm:gap-8 auto-rows-[minmax(350px,auto)]">
           {/* Card 1: Ingestion Wizard - Large span */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="md:col-span-2 bg-white border border-gray-200 rounded-2xl p-8 overflow-hidden relative group hover:border-blue-300 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-4 bg-gray-50 rounded-[2rem] p-8 sm:p-10 overflow-hidden relative group transition-all hover:bg-gray-100/80"
           >
-            <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
-                        <FileText className="w-6 h-6 text-blue-600" />
+            <div className="relative z-10 flex flex-col h-full">
+                <div className="mb-8">
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6">
+                        <Zap className="w-6 h-6 text-blue-600" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">{t.bento.ingestion.title}</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.bento.ingestion.title}</h3>
+                    <p className="text-gray-600 max-w-md text-lg">
+                        {t.bento.ingestion.description}
+                    </p>
                 </div>
-                <p className="text-gray-600 mb-8 max-w-md">
-                    {t.bento.ingestion.description}
-                </p>
 
                 {/* Mock UI */}
-                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 max-w-lg mx-auto transform group-hover:scale-[1.02] transition-transform duration-500 h-[300px] flex flex-col justify-center">
+                <div className="mt-auto bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 max-w-lg w-full mx-auto transform group-hover:scale-[1.02] transition-transform duration-500">
                     <AnimatePresence mode="wait">
                         {currentStep < 4 ? (
                             <motion.div 
@@ -85,59 +85,48 @@ export function BentoGrid() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="space-y-4 w-full h-full flex flex-col justify-center"
+                                className="space-y-5"
                             >
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium text-gray-900">Contract Analysis</span>
-                                    <span className={`text-xs px-2 py-1 rounded-full transition-colors duration-300 ${
-                                        currentStep === 3 ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50'
+                                <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                                            <FileText className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-semibold text-gray-900">Contract_v2.pdf</div>
+                                            <div className="text-xs text-gray-500">2.4 MB • Just now</div>
+                                        </div>
+                                    </div>
+                                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                                        currentStep === 3 ? 'text-green-700 bg-green-50' : 'text-blue-700 bg-blue-50'
                                     }`}>
                                         {currentStep === 3 ? 'Complete' : t.bento.ingestion.processing}
                                     </span>
                                 </div>
                                 <div className="space-y-3">
-                                    {['Structure Analysis', 'Partner Identification', 'Date Extraction'].map((step, i) => {
+                                    {['Analysis', 'Partner ID', 'Extraction'].map((step, i) => {
                                         let status: 'waiting' | 'loading' | 'done' = 'waiting';
                                         if (i < currentStep) status = 'done';
                                         else if (i === currentStep) status = 'loading';
 
                                         return (
-                                            <div key={i} className="flex items-center gap-3">
-                                                <div className={`
-                                                    w-6 h-6 rounded-full flex items-center justify-center border transition-all duration-300
-                                                    ${status === 'done' ? 'bg-green-50 text-green-600 border-green-100' : 
-                                                    status === 'loading' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-gray-50 text-gray-300 border-gray-100'}
-                                                `}>
-                                                    {status === 'done' ? (
-                                                        <Check className="w-3.5 h-3.5" />
-                                                    ) : status === 'loading' ? (
-                                                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                                    ) : (
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                                            <div key={i} className="flex items-center justify-between group/step">
+                                                <span className={`text-sm font-medium transition-colors ${status === 'waiting' ? 'text-gray-400' : 'text-gray-700'}`}>{step}</span>
+                                                <div className="flex items-center gap-3">
+                                                    {status === 'loading' && (
+                                                        <span className="text-xs text-blue-600 font-medium animate-pulse">Processing...</span>
                                                     )}
-                                                </div>
-                                                <div className="h-2 bg-gray-100 rounded w-full overflow-hidden">
-                                                    <motion.div 
-                                                        className="h-full bg-blue-500 rounded"
-                                                        initial={{ width: "0%" }}
-                                                        animate={{ 
-                                                            width: status === 'done' ? "100%" : status === 'loading' ? "60%" : "0%",
-                                                            backgroundColor: status === 'done' ? "#22c55e" : "#3b82f6"
-                                                        }}
-                                                        transition={{ duration: 0.5 }}
-                                                    />
+                                                    <div className={`
+                                                        w-5 h-5 rounded-full flex items-center justify-center border transition-all duration-300
+                                                        ${status === 'done' ? 'bg-green-500 text-white border-green-500' : 
+                                                        status === 'loading' ? 'border-blue-500 border-2' : 'border-gray-200'}
+                                                    `}>
+                                                        {status === 'done' && <Check className="w-3 h-3" />}
+                                                    </div>
                                                 </div>
                                             </div>
                                         );
                                     })}
-                                     <div className={`flex items-center gap-3 transition-opacity duration-300 ${currentStep === 3 ? 'opacity-100' : 'opacity-50'}`}>
-                                        <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${
-                                            currentStep === 3 ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-gray-50 text-gray-300 border-gray-100'
-                                        }`}>
-                                            <Loader2 className={`w-3.5 h-3.5 ${currentStep === 3 ? 'animate-spin' : ''}`} />
-                                        </div>
-                                        <div className="text-sm text-gray-600 font-medium">{t.bento.ingestion.validating}</div>
-                                    </div>
                                 </div>
                             </motion.div>
                         ) : (
@@ -146,37 +135,27 @@ export function BentoGrid() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0 }}
-                                className="space-y-4 w-full h-full flex flex-col justify-center"
+                                className="space-y-4"
                             >
-                                <div className="flex items-center gap-2 mb-2 text-green-600 bg-green-50 px-3 py-1.5 rounded-lg w-fit">
+                                <div className="flex items-center gap-2 mb-4 text-green-700 bg-green-50 px-3 py-1.5 rounded-full w-fit">
                                     <Check className="w-4 h-4" />
-                                    <span className="text-xs font-semibold uppercase tracking-wide">{t.bento.ingestion.results.title}</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide">{t.bento.ingestion.results.title}</span>
                                 </div>
                                 
-                                <div className="space-y-3">
-                                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wider">{t.bento.ingestion.results.summaryLabel}</div>
-                                        <p className="text-sm text-gray-900 leading-relaxed">
-                                            {t.bento.ingestion.results.summaryText}
-                                        </p>
+                                <div className="p-4 bg-gray-50 rounded-xl">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Building2 className="w-4 h-4 text-gray-400" />
+                                        <span className="text-sm font-semibold text-gray-900">{t.bento.ingestion.results.vendor}</span>
                                     </div>
-
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Building2 className="w-3.5 h-3.5 text-gray-400" />
-                                                <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t.bento.ingestion.results.vendorLabel}</div>
-                                            </div>
-                                            <div className="text-sm font-semibold text-gray-900 truncate">{t.bento.ingestion.results.vendor}</div>
-                                        </div>
-                                        <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Wallet className="w-3.5 h-3.5 text-gray-400" />
-                                                <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t.bento.ingestion.results.valueLabel}</div>
-                                            </div>
-                                            <div className="text-sm font-semibold text-gray-900">{t.bento.ingestion.results.value}</div>
-                                        </div>
+                                    <div className="flex items-center gap-2">
+                                        <Wallet className="w-4 h-4 text-gray-400" />
+                                        <span className="text-sm font-medium text-gray-600">{t.bento.ingestion.results.value}</span>
                                     </div>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-xl">
+                                    <p className="text-sm text-gray-600 leading-relaxed">
+                                        {t.bento.ingestion.results.summaryText}
+                                    </p>
                                 </div>
                             </motion.div>
                         )}
@@ -191,150 +170,119 @@ export function BentoGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="md:col-span-1 bg-white border border-gray-200 rounded-2xl p-8 relative overflow-hidden group hover:border-red-200 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-2 bg-gray-900 text-white rounded-[2rem] p-8 sm:p-10 relative overflow-hidden group"
           >
-             <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-red-50 rounded-lg border border-red-100">
-                        <Bell className="w-6 h-6 text-red-500" />
+             {/* Decorative gradient */}
+             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+             
+             <div className="relative z-10 flex flex-col h-full">
+                <div className="mb-8">
+                    <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm mb-6">
+                        <Shield className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">{t.bento.guard.title}</h3>
+                    <h3 className="text-2xl font-bold text-white mb-3">{t.bento.guard.title}</h3>
+                    <p className="text-gray-400 text-lg leading-relaxed">
+                        {t.bento.guard.description}
+                    </p>
                 </div>
-                <p className="text-gray-600 mb-8">
-                    {t.bento.guard.description}
-                </p>
 
-                {/* Mock Notification */}
-                <div className="space-y-3">
-                    <div className="bg-white rounded-lg p-3 shadow-md border border-gray-100 border-l-4 border-l-red-500 transform translate-x-2 group-hover:translate-x-0 transition-transform">
-                        <div className="flex items-start gap-3">
-                            <div className="mt-0.5">
-                                <Calendar className="w-4 h-4 text-red-500" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert1}</p>
-                                <p className="text-xs text-gray-500">{t.bento.guard.alert1Sub}</p>
-                            </div>
+                <div className="mt-auto space-y-3">
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 hover:bg-white/15 transition-colors">
+                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
+                            <Bell className="w-5 h-5 text-red-400" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-white">{t.bento.guard.alert1}</p>
+                            <p className="text-xs text-gray-400">{t.bento.guard.alert1Sub}</p>
                         </div>
                     </div>
-                    <div className="bg-white/80 rounded-lg p-3 shadow-sm border border-gray-100 border-l-4 border-l-blue-500 transform translate-x-6 group-hover:translate-x-4 transition-transform opacity-75">
-                         <div className="flex items-start gap-3">
-                            <div className="mt-0.5">
-                                <Users className="w-4 h-4 text-blue-600" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert2}</p>
-                                <p className="text-xs text-gray-500">{t.bento.guard.alert2Sub}</p>
-                            </div>
+                    <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/5 flex items-center gap-4 opacity-60">
+                         <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
+                            <AlertTriangle className="w-5 h-5 text-amber-400" />
                         </div>
-                    </div>
-                    <div className="bg-white/60 rounded-lg p-3 shadow-sm border border-gray-100 border-l-4 border-l-amber-500 transform translate-x-8 group-hover:translate-x-6 transition-transform opacity-60">
-                         <div className="flex items-start gap-3">
-                            <div className="mt-0.5">
-                                <AlertTriangle className="w-4 h-4 text-amber-500" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert3}</p>
-                                <p className="text-xs text-gray-500">{t.bento.guard.alert3Sub}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white/40 rounded-lg p-3 shadow-sm border border-gray-100 border-l-4 border-l-green-500 transform translate-x-10 group-hover:translate-x-8 transition-transform opacity-40">
-                         <div className="flex items-start gap-3">
-                            <div className="mt-0.5">
-                                <UserPlus className="w-4 h-4 text-green-500" />
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-gray-900">{t.bento.guard.alert4}</p>
-                                <p className="text-xs text-gray-500">{t.bento.guard.alert4Sub}</p>
-                            </div>
+                        <div>
+                            <p className="text-sm font-semibold text-white">{t.bento.guard.alert3}</p>
+                            <p className="text-xs text-gray-400">{t.bento.guard.alert3Sub}</p>
                         </div>
                     </div>
                 </div>
              </div>
           </motion.div>
 
-          {/* Card 3: Partner & Task Management */}
+          {/* Card 3: Partner & Task Management - Full Width */}
           <motion.div 
              initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="md:col-span-3 bg-white border border-gray-200 rounded-2xl p-5 sm:p-8 overflow-hidden relative group hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md"
+            className="md:col-span-6 bg-gray-50 rounded-[2rem] p-8 sm:p-12 overflow-hidden relative group"
           >
-             <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+             <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
                 <div>
-                     <div className="flex items-center gap-3 mb-4">
-                        <div className="p-2 bg-indigo-50 rounded-lg border border-indigo-100">
-                            <Users className="w-6 h-6 text-indigo-500" />
-                        </div>
-                        <h3 className="text-xl font-semibold text-gray-900">{t.bento.collab.title}</h3>
+                     <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6">
+                        <Users className="w-6 h-6 text-indigo-600" />
                     </div>
-                    <p className="text-gray-600 mb-6">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4">{t.bento.collab.title}</h3>
+                    <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                         {t.bento.collab.description}
                     </p>
                     
-                    <ul className="space-y-3 text-gray-600">
+                    <div className="flex flex-wrap gap-3">
                         {t.bento.collab.list.map((item, i) => (
-                            <li key={i} className="flex items-center gap-2">
-                                <Check className="w-4 h-4 text-indigo-500" />
-                                <span>{item}</span>
-                            </li>
+                            <span key={i} className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-gray-700 shadow-sm border border-gray-100">
+                                <Check className="w-4 h-4 text-green-500" />
+                                {item}
+                            </span>
                         ))}
-                    </ul>
+                    </div>
                 </div>
 
                 {/* Visuals Side */}
-                <div className="relative h-full min-h-[300px] flex items-center justify-center p-0 sm:p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
-                        {/* Partner Card 1: Google */}
-                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold">G</div>
-                                <div>
-                                    <div className="text-sm font-bold text-gray-900">Google LLC</div>
-                                    <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent z-10 w-20 md:hidden"></div>
+                    <div className="grid grid-cols-2 gap-4 w-full">
+                        <div className="space-y-4 mt-8">
+                             {/* Partner Card 1 */}
+                            <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">G</div>
+                                    <div>
+                                        <div className="text-sm font-bold text-gray-900">Google LLC</div>
+                                        <div className="text-xs text-gray-500">Service Provider</div>
+                                    </div>
+                                </div>
+                                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                    <div className="h-full bg-green-500 w-3/4 rounded-full"></div>
                                 </div>
                             </div>
-                            <div className="flex gap-2 text-xs flex-wrap">
-                                 <div className="bg-green-50 text-green-700 px-2 py-1 rounded">3 Active</div>
-                                 <div className="bg-red-50 text-red-700 px-2 py-1 rounded">1 Expiring</div>
+                            
+                             {/* Task Card 1 */}
+                             <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100 opacity-80">
+                                <div className="flex items-center justify-between mb-2">
+                                   <div className="flex -space-x-2">
+                                       <div className="w-6 h-6 rounded-full bg-purple-100 border-2 border-white"></div>
+                                       <div className="w-6 h-6 rounded-full bg-yellow-100 border-2 border-white"></div>
+                                   </div>
+                                   <span className="text-xs font-semibold text-red-500">Due Today</span>
+                                </div>
+                                <p className="text-sm font-medium text-gray-900">Review renewal terms</p>
                             </div>
                         </div>
 
-                        {/* Partner Card 2: Salesforce */}
-                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="w-8 h-8 bg-[#00A1E0] rounded flex items-center justify-center text-white font-bold">S</div>
-                                <div>
-                                    <div className="text-sm font-bold text-gray-900">Salesforce</div>
-                                    <div className="text-xs text-gray-500">{t.bento.collab.partnerCard}</div>
+                        <div className="space-y-4">
+                            {/* Partner Card 2 */}
+                            <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 bg-[#00A1E0] rounded-xl flex items-center justify-center text-white font-bold text-lg">S</div>
+                                    <div>
+                                        <div className="text-sm font-bold text-gray-900">Salesforce</div>
+                                        <div className="text-xs text-gray-500">CRM Platform</div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 text-xs">
+                                     <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded-md font-medium">Auto-Renew</span>
                                 </div>
                             </div>
-                            <div className="flex gap-2 text-xs flex-wrap">
-                                 <div className="bg-green-50 text-green-700 px-2 py-1 rounded">1 Active</div>
-                                 <div className="bg-blue-50 text-blue-700 px-2 py-1 rounded">Renewal</div>
-                            </div>
-                        </div>
-
-                        {/* Task Card 1: Sarah */}
-                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">S</div>
-                                <span className="text-xs text-gray-500 truncate">{t.bento.collab.taskCard.assigned}</span>
-                             </div>
-                             <p className="text-sm font-medium text-gray-900 line-clamp-2">{t.bento.collab.taskCard.task}</p>
-                             <div className="mt-2 text-xs text-gray-400">{t.bento.collab.taskCard.due}</div>
-                        </div>
-
-                        {/* Task Card 2: Mike */}
-                        <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                             <div className="flex items-center gap-2 mb-2">
-                                <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold">M</div>
-                                <span className="text-xs text-gray-500 truncate">{t.bento.collab.taskCard2.assigned}</span>
-                             </div>
-                             <p className="text-sm font-medium text-gray-900 line-clamp-2">{t.bento.collab.taskCard2.task}</p>
-                             <div className="mt-2 text-xs text-red-500 font-medium">{t.bento.collab.taskCard2.due}</div>
                         </div>
                     </div>
                 </div>
