@@ -1,7 +1,54 @@
 [
   {
-    "email": "usuario@ejemplo.com",
+    "email": "irem.cengiz@example.com",
     "password": "password123",
-    "equipo": "NombreDelEquipo"
+    "name": "Irem Cengiz",
+    "equipo": "Management",
+    "contracts": [
+      {
+        "contractNumber": "10023",
+        "title": "Partnership GCC GRC DAY",
+        "type": "Sponsorship Contract",
+        "status": "Active"
+      },
+      {
+        "contractNumber": "10022",
+        "title": "Sponsoring SWISS GRC DAY 2025",
+        "type": "Sponsorship Contract",
+        "status": "Review"
+      },
+      {
+        "contractNumber": "10006",
+        "title": "License Agreement",
+        "type": "License Contract",
+        "status": "Active"
+      },
+      {
+        "contractNumber": "10002",
+        "title": "HubSpot Service",
+        "type": "Service Contract",
+        "status": "Active"
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Update Sponsorship Contracts",
+        "status": "Open",
+        "type": "License Agreement",
+        "dueDate": "2026-01-29T12:00:00Z"
+      }
+    ],
+    "activities": [
+      {
+        "description": "Partnership GCC GRC DAY was updated",
+        "action": "updated",
+        "timestamp": "2026-01-28T19:45:00Z"
+      },
+      {
+        "description": "Partnership GCC GRC DAY was created",
+        "action": "created",
+        "timestamp": "2026-01-27T10:00:00Z"
+      }
+    ]
   }
 ]
