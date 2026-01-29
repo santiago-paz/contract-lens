@@ -29,12 +29,12 @@ function getStatusStyle(status: string) {
     return { bg: 'bg-[#CCFF00]', text: 'text-black', border: 'border-black' };
   }
   if (s === 'review' || s === 'pending' || s === 'in_progress') {
-    return { bg: 'bg-white', text: 'text-black', border: 'border-black' }; // Use striped background maybe?
+    return { bg: 'bg-white', text: 'text-black', border: 'border-gray-300' };
   }
   if (s === 'draft' || s === 'open') {
-    return { bg: 'bg-gray-200', text: 'text-black', border: 'border-black' };
+    return { bg: 'bg-gray-100', text: 'text-black', border: 'border-gray-300' };
   }
-  return { bg: 'bg-white', text: 'text-gray-500', border: 'border-gray-400' };
+  return { bg: 'bg-white', text: 'text-gray-500', border: 'border-gray-200' };
 }
 
 export default async function Overview() {
@@ -91,22 +91,22 @@ export default async function Overview() {
   return (
     <div className="space-y-12">
       {/* Header Greeting */}
-      <div className="bg-white border border-black p-6 shadow-hard flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-sm">
         <div>
            <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 bg-[#CCFF00] border border-black animate-pulse"></div>
-                <span className="text-xs font-mono font-bold uppercase text-black">System Online</span>
+                <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse"></div>
+                <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">System Online</span>
            </div>
-           <h1 className="text-3xl md:text-4xl font-black font-mono uppercase tracking-tighter text-black">
+           <h1 className="text-3xl font-black font-sans uppercase tracking-tighter text-black">
               Welcome back, {user.name?.split(' ')[0] || 'User'}
            </h1>
-           <p className="text-gray-600 font-mono text-sm mt-2 uppercase">Ready to manage operations.</p>
+           <p className="text-gray-500 text-sm mt-1 uppercase font-medium">Ready to manage operations.</p>
         </div>
         <Link 
             href="/contract-creator"
-            className="group flex items-center gap-2 px-6 py-3 bg-black text-white border border-black hover:bg-[#CCFF00] hover:text-black transition-all shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+            className="group flex items-center gap-2 px-6 py-3 bg-black text-white hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm"
         >
-            <span className="font-bold font-mono uppercase text-sm">Initiate Contract</span>
+            <span className="font-bold uppercase text-sm">Initiate Contract</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
@@ -114,43 +114,43 @@ export default async function Overview() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity Section */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between border-b border-black pb-2">
+          <div className="flex items-center justify-between border-b border-gray-200 pb-2">
             <div className="flex items-center gap-2">
-                <Terminal className="w-5 h-5" />
-                <h2 className="text-xl font-bold font-mono uppercase text-black">System Logs</h2>
+                <Terminal className="w-4 h-4 text-gray-400" />
+                <h2 className="text-sm font-bold uppercase text-black">System Logs</h2>
             </div>
-            <button className="text-xs font-bold font-mono uppercase text-black hover:bg-[#CCFF00] px-2 py-1 transition-colors">View All Logs</button>
+            <button className="text-[10px] font-bold uppercase text-gray-500 hover:text-black transition-colors">View All</button>
           </div>
           
-          <div className="bg-white border border-black p-0 shadow-hard-sm min-h-[300px]">
+          <div className="bg-white border border-gray-200 shadow-sm rounded-sm min-h-[300px] overflow-hidden">
              {/* Terminal Header */}
-             <div className="bg-black text-white px-4 py-2 flex justify-between items-center border-b border-black">
-                <span className="font-mono text-xs uppercase">ACTIVITY_STREAM.LOG</span>
-                <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-[#CCFF00]"></div>
-                    <div className="w-2 h-2 rounded-full bg-white"></div>
+             <div className="bg-gray-50 px-4 py-2 flex justify-between items-center border-b border-gray-200">
+                <span className="font-mono text-[10px] uppercase text-gray-500 font-bold">ACTIVITY_STREAM.LOG</span>
+                <div className="flex gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-200"></div>
                 </div>
              </div>
              
             {activities.length > 0 ? (
-              <div className="p-6 font-mono text-sm space-y-6">
+              <div className="p-6 font-mono text-xs space-y-6">
                 {activities.map((activity, idx) => (
                   <div key={activity.id} className="relative flex gap-4 group">
-                    <div className="w-24 text-gray-400 text-xs shrink-0 pt-0.5 text-right uppercase">{activity.time}</div>
+                    <div className="w-24 text-gray-400 shrink-0 pt-0.5 text-right uppercase">{activity.time}</div>
                     <div className="relative">
-                         <div className="w-2 h-2 bg-black mt-1.5 z-10 relative group-hover:bg-[#CCFF00] transition-colors border border-black"></div>
+                         <div className="w-1.5 h-1.5 bg-gray-300 mt-1 z-10 relative group-hover:bg-[#CCFF00] transition-colors rounded-full"></div>
                          {idx !== activities.length - 1 && (
-                            <div className="absolute top-3 left-[3px] w-px h-[calc(100%+24px)] bg-gray-200 -z-0"></div>
+                            <div className="absolute top-2.5 left-[2.5px] w-px h-[calc(100%+24px)] bg-gray-100 -z-0"></div>
                          )}
                     </div>
-                    <div className="flex-1 pb-1 border-b border-gray-100 group-last:border-0">
-                      <p className="text-black uppercase leading-relaxed">{activity.text}</p>
+                    <div className="flex-1 pb-1 border-b border-gray-50 group-last:border-0">
+                      <p className="text-gray-700 uppercase leading-relaxed">{activity.text}</p>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-[300px] text-gray-400 font-mono uppercase">
+              <div className="flex flex-col items-center justify-center h-[300px] text-gray-400 font-mono uppercase text-xs">
                 <p>No system activity detected</p>
               </div>
             )}
@@ -159,36 +159,36 @@ export default async function Overview() {
 
         {/* Tasks Section */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-black pb-2">
+          <div className="flex items-center justify-between border-b border-gray-200 pb-2">
             <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                <h2 className="text-xl font-bold font-mono uppercase text-black">Pending Tasks ({tasks.length})</h2>
+                <CheckCircle2 className="w-4 h-4 text-gray-400" />
+                <h2 className="text-sm font-bold uppercase text-black">Pending Tasks ({tasks.length})</h2>
             </div>
-            <button className="text-xs font-bold font-mono uppercase text-black hover:bg-[#CCFF00] px-2 py-1 transition-colors">All Tasks</button>
+            <button className="text-[10px] font-bold uppercase text-gray-500 hover:text-black transition-colors">View All</button>
           </div>
 
           {tasks.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {tasks.map(task => (
-                <div key={task.id} className="bg-white border border-black p-4 shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all relative group">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-bold font-mono text-black uppercase text-sm leading-tight">{task.title}</h3>
+                <div key={task.id} className="bg-white border border-gray-200 p-4 shadow-sm hover:border-black transition-colors relative group rounded-sm">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-black uppercase text-xs leading-snug">{task.title}</h3>
                     {task.dueDate && (
-                      <span className="text-[10px] font-bold font-mono text-white bg-black px-1.5 py-0.5 uppercase shrink-0">
+                      <span className="text-[10px] font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 uppercase shrink-0 rounded-sm">
                         {getTimeAgo(task.dueDate)}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between text-xs font-mono border-t border-black pt-2 mt-2">
-                    <span className="uppercase">{task.status}</span>
-                    <span className="text-gray-500 uppercase">{task.type || 'GEN'}</span>
+                  <div className="flex items-center justify-between text-[10px] font-mono border-t border-gray-100 pt-2 mt-2">
+                    <span className="uppercase text-gray-600">{task.status}</span>
+                    <span className="text-gray-400 uppercase">{task.type || 'GEN'}</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-             <div className="bg-white border border-black p-8 shadow-hard-sm text-center text-gray-400 h-[200px] flex items-center justify-center font-mono uppercase">
+             <div className="bg-white border border-gray-200 p-8 shadow-sm text-center text-gray-400 h-[200px] flex items-center justify-center font-mono uppercase text-xs rounded-sm">
                <p>All tasks cleared</p>
              </div>
           )}
@@ -197,42 +197,41 @@ export default async function Overview() {
 
       {/* Contracts Section */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between border-b border-black pb-2">
+        <div className="flex items-center justify-between border-b border-gray-200 pb-2">
             <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5" />
-                <h2 className="text-xl font-bold font-mono uppercase text-black">Active Contracts ({contracts.length})</h2>
+                <FileText className="w-4 h-4 text-gray-400" />
+                <h2 className="text-sm font-bold uppercase text-black">Active Contracts ({contracts.length})</h2>
             </div>
-          <Link href="/contracts" className="text-xs font-bold font-mono uppercase text-black hover:bg-[#CCFF00] px-2 py-1 transition-colors">
+          <Link href="/contracts" className="text-[10px] font-bold uppercase text-gray-500 hover:text-black transition-colors">
             View Archive
           </Link>
         </div>
 
         {contracts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {contracts.map((contract) => (
               <Link 
                 href={`/contracts/${contract.id}`} 
                 key={contract.id} 
-                className="group block bg-white border border-black p-0 shadow-hard hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all"
+                className="group block bg-white border border-gray-200 hover:border-black shadow-sm transition-all rounded-sm overflow-hidden"
               >
                 {/* Header Strip */}
-                <div className="h-8 bg-black flex items-center justify-between px-3 border-b border-black group-hover:bg-[#CCFF00] transition-colors">
-                    <span className="text-xs font-mono font-bold text-white group-hover:text-black uppercase truncate">{contract.contractNumber}</span>
-                    <div className="w-2 h-2 bg-[#CCFF00] group-hover:bg-black rounded-full"></div>
+                <div className="h-7 bg-gray-50 flex items-center justify-between px-3 border-b border-gray-200 group-hover:bg-black transition-colors">
+                    <span className="text-[10px] font-mono font-bold text-gray-500 group-hover:text-white uppercase truncate">{contract.contractNumber}</span>
+                    <div className="w-1.5 h-1.5 bg-gray-300 group-hover:bg-[#CCFF00] rounded-full"></div>
                 </div>
 
-                <div className="p-5">
-                    <div className="h-24 flex items-center justify-center border border-dashed border-gray-300 mb-4 bg-gray-50 group-hover:border-black transition-colors relative overflow-hidden">
-                        <FileText className="w-8 h-8 text-gray-300 group-hover:text-black transition-colors" />
-                        <div className="absolute inset-0 bg-[#CCFF00]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="p-4">
+                    <div className="h-20 flex items-center justify-center border border-dashed border-gray-200 mb-3 bg-white group-hover:border-gray-300 transition-colors relative overflow-hidden rounded-sm">
+                        <FileText className="w-6 h-6 text-gray-300 group-hover:text-black transition-colors" />
                     </div>
 
-                    <div className="space-y-3">
-                        <h3 className="font-bold font-mono text-black text-sm uppercase truncate leading-tight" title={contract.title}>{contract.title}</h3>
+                    <div className="space-y-2">
+                        <h3 className="font-bold text-black text-xs uppercase truncate leading-tight group-hover:underline decoration-1 underline-offset-2" title={contract.title}>{contract.title}</h3>
                         
-                        <div className="flex items-center justify-between pt-2 border-t border-black">
-                            <span className="text-[10px] font-mono uppercase text-gray-500">{contract.type}</span>
-                            <span className={`text-[10px] font-bold font-mono uppercase px-1.5 py-0.5 border border-black ${contract.style.bg} ${contract.style.text}`}>
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                            <span className="text-[10px] text-gray-400 uppercase">{contract.type}</span>
+                            <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 border ${contract.style.bg === 'bg-white' ? 'bg-white' : contract.style.bg} ${contract.style.text} ${contract.style.border} rounded-sm`}>
                                 {contract.status}
                             </span>
                         </div>
@@ -242,7 +241,7 @@ export default async function Overview() {
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-black p-12 shadow-hard text-center text-gray-400 font-mono uppercase">
+          <div className="bg-white border border-gray-200 p-12 shadow-sm text-center text-gray-400 font-mono uppercase text-xs rounded-sm">
              <p>No contracts in database</p>
           </div>
         )}

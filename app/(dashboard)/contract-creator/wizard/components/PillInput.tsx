@@ -35,18 +35,18 @@ export function PillInput({ value = [], onChange, placeholder }: PillInputProps)
 
   return (
     <div 
-      className="flex flex-wrap gap-2 px-2 py-2 bg-white border border-black min-h-[42px] focus-within:bg-[#CCFF00]"
+      className="flex flex-wrap gap-2 px-2 py-2 bg-white border border-gray-300 min-h-[42px] focus-within:border-black rounded-sm transition-colors"
       onClick={() => setIsTyping(true)}
     >
       {value.map((pill, index) => (
         <span 
           key={index}
-          className="inline-flex items-center gap-1 px-2 py-0.5 bg-black text-white rounded-none text-[10px] font-bold uppercase animate-fade-in border border-transparent"
+          className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-black border border-gray-200 rounded-sm text-[10px] font-bold uppercase animate-fade-in"
         >
           {pill} 
           <button 
             type="button"
-            className="hover:text-[#CCFF00] ml-1"
+            className="hover:text-red-500 ml-1"
             onClick={(e) => {
               e.stopPropagation();
               handleRemove(index);
@@ -64,7 +64,7 @@ export function PillInput({ value = [], onChange, placeholder }: PillInputProps)
         onBlur={handleCommit}
         onKeyDown={handleKeyDown}
         placeholder={value.length === 0 ? placeholder : ''}
-        className="flex-1 bg-transparent outline-none min-w-[50px] text-black placeholder:text-gray-400 text-xs font-bold uppercase"
+        className="flex-1 bg-transparent outline-none min-w-[50px] text-black placeholder:text-gray-400 text-xs font-medium"
       />
     </div>
   );
