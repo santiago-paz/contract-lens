@@ -213,8 +213,8 @@ const translations = {
       }
     },
     showcase: {
-      title: "Split Berlin in Aktion",
-      subtitle: "Vom Upload bis zum aktiven Management: Ein Workflow für Finanzteams.",
+      title: "Split Berlin in Aktion: Vom Upload bis zum aktiven Management",
+      subtitle: "Ein Workflow für Finanzteams.",
       step1: "Schritt 1",
       step2: "Schritt 2",
       step3: "Schritt 3",
