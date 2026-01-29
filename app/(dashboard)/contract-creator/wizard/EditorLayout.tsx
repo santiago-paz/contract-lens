@@ -115,11 +115,11 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
       />
 
       {/* Top Header */}
-      <div className="bg-white border-b border-black px-6 py-4 flex items-center justify-between shrink-0">
+      <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="text-black hover:bg-[#CCFF00] transition-colors border border-black p-1 shadow-hard-sm active:shadow-none active:translate-x-[1px] active:translate-y-[1px]"
+            className="text-gray-500 hover:text-black transition-colors p-1"
           >
             <div className="flex items-center justify-center">
               <span className="sr-only">Back</span>
@@ -127,19 +127,19 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             </div>
           </button>
           <div className="min-w-0">
-             <div className="text-[10px] font-bold text-gray-500 mb-1 truncate uppercase tracking-wider max-w-[400px]">
-               {isSaved ? `Contracts / ID:10023 / ${initialData?.title || fileName.replace(/\.[^/.]+$/, "")}` : 'System / New Contract / Draft'}
+             <div className="text-[10px] font-bold text-gray-400 mb-1 truncate uppercase tracking-wider max-w-[400px]">
+               {isSaved ? `Contracts / ${initialData?.externalReference || 'ID:10023'} / ${initialData?.title || fileName.replace(/\.[^/.]+$/, "")}` : 'System / New Contract / Draft'}
              </div>
             {isSaved ? (
               <div className="flex items-center gap-4">
-             <h1 className="text-xl font-black text-black uppercase block truncate max-w-[400px]" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}>
+             <h1 className="text-xl font-bold text-black uppercase block truncate max-w-[400px]" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}>
                    {initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
                  </h1>
               </div>
             ) : (
-              <h1 className="text-xl font-black text-black flex items-center gap-2 uppercase">
+              <h1 className="text-xl font-bold text-black flex items-center gap-2 uppercase">
                 New Contract
-                <span className="px-2 py-0.5 bg-black text-[#CCFF00] text-[10px] font-bold uppercase tracking-widest border border-black">Draft Mode</span>
+                <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-widest rounded-sm">Draft Mode</span>
               </h1>
             )}
           </div>
@@ -148,7 +148,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         {isSaved && (
           <div className="flex items-center">
             {/* Workflow Steps - Stepper Style */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {[
                 { id: 'draft', label: 'Draft', status: 'completed' },
                 { id: 'review', label: 'Review', status: 'current' },
@@ -156,13 +156,13 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                 { id: 'completed', label: 'Completed', status: 'upcoming' },
               ].map((step, index, array) => (
                 <div key={step.id} className="flex items-center">
-                  <div className={`px-3 py-1 border text-xs font-bold uppercase ${step.status === 'current' ? 'bg-[#CCFF00] text-black border-black shadow-hard-sm' :
-                      step.status === 'completed' ? 'bg-black text-white border-black' : 'bg-white text-gray-400 border-gray-200'
+                  <div className={`px-3 py-1 text-xs font-bold uppercase rounded-sm transition-colors ${step.status === 'current' ? 'bg-[#CCFF00] text-black' :
+                      step.status === 'completed' ? 'text-gray-900' : 'text-gray-400'
                     }`}>
                     {step.label}
                   </div>
                   {index < array.length - 1 && (
-                    <div className="w-4 h-px bg-black mx-1"></div>
+                    <div className="w-4 h-px bg-gray-200 mx-1"></div>
                   )}
                 </div>
               ))}
@@ -174,7 +174,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           {isDebugMode && (
             <button
               onClick={() => setShowDebug(true)}
-              className="p-2 text-black hover:bg-[#CCFF00] border border-black transition-colors shadow-hard-sm"
+              className="p-2 text-gray-400 hover:text-black transition-colors"
               title="Debug AI Response"
             >
               <Bug className="w-4 h-4" />
@@ -185,7 +185,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-6 py-2 bg-black text-white text-sm font-bold uppercase border-2 border-black hover:bg-[#CCFF00] hover:text-black transition-all shadow-hard flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="px-6 py-2 bg-black text-white text-sm font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isSaving ? (
                 <>
@@ -202,11 +202,11 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           )}
           {isSaved && (
             <div className="flex items-center gap-3">
-              <button className="px-4 py-2 bg-black text-white text-xs font-bold uppercase border-2 border-black hover:bg-[#CCFF00] hover:text-black transition-all shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none flex items-center gap-2">
+              <button className="px-4 py-2 bg-black text-white text-xs font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2">
                 <Save className="w-4 h-4" />
                 Update
               </button>
-              <button className="px-3 py-2 bg-white border-2 border-black text-black text-xs font-bold uppercase hover:bg-gray-50 transition-colors shadow-hard-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none">
+              <button className="px-3 py-2 bg-white border border-gray-200 text-gray-600 text-xs font-bold uppercase hover:bg-gray-50 hover:text-black transition-colors rounded-sm shadow-sm">
                 Actions
               </button>
             </div>
@@ -219,7 +219,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none z-0"></div>
 
         {/* Left Sidebar - Metadata Form */}
-        <div className="relative z-10 h-full border-r border-black bg-white">
+        <div className="relative z-10 h-full border-r border-gray-200 bg-white">
           <EditorSidebar
             isOpen={sidebarOpen}
             isSaved={isSaved}
@@ -246,9 +246,9 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-w-0 relative z-10">
           {/* Tabs */}
-          <div className="bg-white border-b border-black px-6 pt-2 flex items-center gap-1">
+          <div className="bg-white border-b border-gray-200 px-6 pt-2 flex items-center gap-1">
             <button
-              className="px-4 py-2 text-xs font-bold uppercase border-t-2 border-l-2 border-r-2 border-black bg-[#CCFF00] text-black translate-y-[1px]"
+              className="px-4 py-2 text-xs font-bold uppercase border-b-2 border-[#CCFF00] text-black"
             >
               <div className="flex items-center gap-2">
                 <FileText className="w-3 h-3" />
@@ -256,28 +256,28 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
               </div>
             </button>
             <button
-              className="px-4 py-2 text-xs font-bold uppercase border-t-2 border-l-2 border-r-2 border-transparent text-gray-500 hover:text-black hover:border-black/20"
+              className="px-4 py-2 text-xs font-bold uppercase border-b-2 border-transparent text-gray-400 hover:text-black transition-colors"
             >
               Versions
             </button>
           </div>
 
           {/* Toolbar */}
-          <div className="bg-white border-b border-black px-4 py-2 flex items-center justify-between">
+          <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="px-2 py-0.5 bg-black text-white text-[10px] font-bold uppercase">FILE</div>
-              <h2 className="text-xs font-bold text-black uppercase truncate max-w-md">{fileName}</h2>
-              <div className="flex gap-1 border-l border-black pl-2 ml-2">
-                <button className="p-1 hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors"><Download className="w-3 h-3 text-black" /></button>
-                <button className="p-1 hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors"><PenLine className="w-3 h-3 text-black" /></button>
+              <div className="px-2 py-0.5 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase rounded-sm">FILE</div>
+              <h2 className="text-xs font-bold text-gray-700 uppercase truncate max-w-md">{fileName}</h2>
+              <div className="flex gap-1 border-l border-gray-200 pl-2 ml-2">
+                <button className="p-1 hover:bg-gray-100 text-gray-400 hover:text-black transition-colors rounded-sm"><Download className="w-3 h-3" /></button>
+                <button className="p-1 hover:bg-gray-100 text-gray-400 hover:text-black transition-colors rounded-sm"><PenLine className="w-3 h-3" /></button>
               </div>
             </div>
           </div>
 
           {/* Document Content - Scrollable */}
           <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
-            <div className={`bg-white border-2 border-black shadow-hard relative ${hasPreview && uploadedFile
-                ? 'w-full h-full border-2 border-black'
+            <div className={`bg-white border border-gray-200 shadow-sm relative ${hasPreview && uploadedFile
+                ? 'w-full h-full border border-gray-200'
                 : 'max-w-4xl mx-auto min-h-[800px] p-8 md:p-12'
               }`}>
               {hasPreview && uploadedFile ? (

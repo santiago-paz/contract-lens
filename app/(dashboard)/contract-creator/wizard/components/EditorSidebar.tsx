@@ -73,22 +73,22 @@ export function EditorSidebar({
 
   return (
     <div className={`w-96 bg-white flex flex-col overflow-y-auto transition-all duration-300 font-mono h-full ${isOpen ? 'translate-x-0' : '-translate-x-full absolute z-10'}`}>
-      <div className="p-3 border-b border-black flex items-center justify-between bg-white">
-        <div className="flex gap-2">
-          <button className="px-3 py-1.5 bg-[#CCFF00] border border-black text-[10px] font-bold uppercase text-black shadow-hard-sm">Metadata</button>
-          <button className="px-3 py-1.5 bg-white border border-transparent hover:border-black text-[10px] font-bold uppercase text-gray-500 hover:text-black">Relations</button>
+      <div className="p-3 border-b border-gray-200 flex items-center justify-between bg-white">
+        <div className="flex gap-4">
+          <button className="pb-1 border-b-2 border-[#CCFF00] text-[10px] font-bold uppercase text-black">Metadata</button>
+          <button className="pb-1 border-b-2 border-transparent text-[10px] font-bold uppercase text-gray-400 hover:text-black transition-colors">Relations</button>
         </div>
       </div>
 
       <div className="p-4 space-y-6">
         {!isSaved && (
-           <div className="bg-[#CCFF00]/20 border border-black p-4 flex items-start gap-3">
+           <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/50 p-4 flex items-start gap-3 rounded-sm">
              <div className="mt-0.5 text-black">
-               <div className="w-4 h-4 border border-black flex items-center justify-center bg-[#CCFF00]">
+               <div className="w-4 h-4 flex items-center justify-center bg-[#CCFF00] rounded-full">
                  <span className="text-[10px] font-bold">✓</span>
                </div>
              </div>
-             <div className="text-xs font-bold text-black uppercase leading-relaxed">
+             <div className="text-xs font-medium text-black uppercase leading-relaxed">
                Analysis Complete. Data pre-filled from source.
              </div>
            </div>
@@ -97,10 +97,10 @@ export function EditorSidebar({
         {/* Section: Essentials (Only Visible After Save) */}
         {isSaved && (
           <div>
-            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 border-b border-black pb-1">
-              <FileText className="w-3 h-3" />
+            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 border-b border-gray-100 pb-2">
+              <FileText className="w-3 h-3 text-gray-400" />
               Core Attributes
-              <ChevronDown className="w-3 h-3 ml-auto" />
+              <ChevronDown className="w-3 h-3 ml-auto text-gray-400" />
             </button>
             
             <div className="space-y-4 pl-1">
@@ -111,7 +111,7 @@ export function EditorSidebar({
                 <input 
                   type="text" 
                   defaultValue={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
-                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black focus:outline-none focus:bg-[#CCFF00] focus:placeholder-black/50"
+                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all rounded-sm"
                 />
               </div>
               
@@ -122,7 +122,7 @@ export function EditorSidebar({
                 <PillInput 
                   value={contractOwner}
                   onChange={setContractOwner}
-                  placeholder="ADD OWNER..."
+                  placeholder="Add Owner..."
                 />
               </div>
 
@@ -133,7 +133,7 @@ export function EditorSidebar({
                 <PillInput 
                   value={deputy}
                   onChange={setDeputy}
-                  placeholder="ADD DEPUTY..."
+                  placeholder="Add Deputy..."
                 />
               </div>
               
@@ -144,7 +144,7 @@ export function EditorSidebar({
                 <PillInput 
                   value={contractManager}
                   onChange={setContractManager}
-                  placeholder="ADD MANAGER..."
+                  placeholder="Add Manager..."
                 />
               </div>
 
@@ -155,7 +155,7 @@ export function EditorSidebar({
                 <input 
                   type="text" 
                   defaultValue={initialData?.externalReference || "SO-25GCCGRCDAY01"}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-300 text-xs font-mono text-gray-500 outline-none uppercase"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-xs font-mono text-gray-500 outline-none rounded-sm"
                   readOnly={true}
                 />
               </div>
@@ -166,14 +166,14 @@ export function EditorSidebar({
                 </label>
                 <div className="relative">
                   <select 
-                    className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
+                    className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                     defaultValue={contractType || ''}
                   >
                     {CONTRACT_TYPES.map(type => (
                       <option key={type} value={type}>{type}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
 
@@ -183,14 +183,14 @@ export function EditorSidebar({
                 </label>
                 <div className="relative">
                   <select 
-                    className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
+                    className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                     defaultValue={initialData?.organizationalUnit || "Swiss GRC AG"}
                   >
                     <option value="Swiss GRC AG">Swiss GRC AG</option>
                     <option value="Sales">Sales</option>
                     <option value="Legal">Legal</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -202,17 +202,17 @@ export function EditorSidebar({
           <div className="space-y-4 pl-1">
             <div>
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
-                Value (CHF)
+                Value
               </label>
               <div className="relative">
                 <select 
-                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
+                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                   defaultValue={initialData?.contractValue || ""}
                 >
-                  <option value="">SELECT...</option>
+                  <option value="">Select...</option>
                   {initialData?.contractValue && <option value={initialData.contractValue}>{initialData.contractValue}</option>}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
 
@@ -222,17 +222,17 @@ export function EditorSidebar({
               </label>
               <div className="relative">
                 <select 
-                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
+                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                   defaultValue={initialData?.confidentiality || ""}
                 >
-                  <option value="">SELECT...</option>
-                  <option value="None">NONE</option>
-                  <option value="Low">LOW</option>
-                  <option value="Medium">MEDIUM</option>
-                  <option value="High">HIGH</option>
-                  <option value="Strict">STRICT</option>
+                  <option value="">Select...</option>
+                  <option value="None">None</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                  <option value="Strict">Strict</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
 
@@ -243,11 +243,11 @@ export function EditorSidebar({
               <div className="relative mb-2">
                 <input 
                   type="text"
-                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
+                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                   defaultValue={initialData?.contractPartner || "Swiss GRC AG"}
                 />
               </div>
-              <button className="flex items-center gap-1 text-[10px] text-black hover:text-white font-bold border border-black rounded-none px-2 py-1 bg-white hover:bg-black uppercase transition-colors">
+              <button className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-black font-bold border border-gray-200 rounded-sm px-2 py-1 bg-white hover:border-black uppercase transition-all">
                 <Plus className="w-3 h-3" />
                 Add Entity
               </button>
@@ -257,7 +257,7 @@ export function EditorSidebar({
               <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Summary</label>
               <div className="relative">
                 <textarea 
-                   className="w-full px-3 py-2 bg-white border border-black text-xs font-mono text-black outline-none min-h-[100px] resize-y focus:bg-[#CCFF00]"
+                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-sans text-black outline-none min-h-[100px] resize-y focus:border-black rounded-sm transition-all"
                    value={summary}
                    onChange={(e) => setSummary(e.target.value)}
                 />
@@ -268,20 +268,20 @@ export function EditorSidebar({
 
         {/* Section: Lifecycle */}
         <div>
-          <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-black">
-            <Calendar className="w-3 h-3" />
+          <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-gray-100">
+            <Calendar className="w-3 h-3 text-gray-400" />
             Lifecycle Control
-            <ChevronDown className="w-3 h-3 ml-auto" />
+            <ChevronDown className="w-3 h-3 ml-auto text-gray-400" />
           </button>
           <div className="space-y-4 pl-1">
             <div>
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Status *
               </label>
-              <div className="flex items-center gap-2 w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black">
-                <div className={`w-2 h-2 rounded-full border border-black ${getStatusColor(status)} flex-shrink-0`}></div>
+              <div className="flex items-center gap-2 w-full px-3 py-2 bg-white border border-gray-200 text-xs font-bold uppercase text-black rounded-sm">
+                <div className={`w-2 h-2 rounded-full ${getStatusColor(status)} flex-shrink-0`}></div>
                 <select 
-                  className="bg-transparent outline-none w-full appearance-none uppercase"
+                  className="bg-transparent outline-none w-full appearance-none uppercase text-xs font-medium"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
                 >
@@ -291,7 +291,7 @@ export function EditorSidebar({
                   <option value="Active">Active</option>
                   <option value="Expired">Expired</option>
                 </select>
-                <ChevronDown className="w-4 h-4 text-black pointer-events-none flex-shrink-0" />
+                <ChevronDown className="w-4 h-4 text-gray-400 pointer-events-none flex-shrink-0" />
               </div>
             </div>
             
@@ -300,12 +300,12 @@ export function EditorSidebar({
                 Duration Type *
               </label>
               <select 
-                className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
+                className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                 defaultValue={initialData?.durationType || "Once-off"}
               >
-                <option value="Once-off">ONCE-OFF</option>
-                <option value="Fixed-term">FIXED-TERM</option>
-                <option value="Indefinite">INDEFINITE</option>
+                <option value="Once-off">Once-off</option>
+                <option value="Fixed-term">Fixed-term</option>
+                <option value="Indefinite">Indefinite</option>
               </select>
             </div>
 
@@ -317,16 +317,16 @@ export function EditorSidebar({
                 <input 
                   type="date"
                   defaultValue={initialData?.contractStart || "2025-09-02"}
-                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
+                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Conditions</label>
-              <div className="border border-black bg-white overflow-hidden">
+              <div className="border border-gray-200 bg-white overflow-hidden rounded-sm focus-within:border-black transition-all">
                 <textarea 
-                  className="w-full p-2 text-xs font-mono outline-none min-h-[80px] focus:bg-[#CCFF00]"
+                  className="w-full p-2 text-xs font-sans outline-none min-h-[80px]"
                   value={conditions}
                   onChange={(e) => setConditions(e.target.value)}
                 />
@@ -338,23 +338,23 @@ export function EditorSidebar({
         {/* Section: Risks and Compliance */}
         {isSaved && (
           <div>
-            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-black">
-              <Shield className="w-3 h-3" />
+            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-gray-100">
+              <Shield className="w-3 h-3 text-gray-400" />
               Risk Protocol
-              <ChevronDown className="w-3 h-3 ml-auto" />
+              <ChevronDown className="w-3 h-3 ml-auto text-gray-400" />
             </button>
             <div className="space-y-4 pl-1">
                <div>
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">Risk Level</label>
                   <div className="relative">
                     <select 
-                      className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
+                      className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium uppercase text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                       defaultValue={initialData?.riskAssessment || ""}
                     >
-                      <option value="">SELECT...</option>
+                      <option value="">Select...</option>
                       {initialData?.riskAssessment && <option value={initialData.riskAssessment}>{initialData.riskAssessment}</option>}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                </div>
             </div>
