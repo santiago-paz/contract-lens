@@ -8,6 +8,7 @@ import { TeamSection } from '@/components/landing/TeamSection';
 import { Security } from '@/components/landing/Security';
 import { ContactForm } from '@/components/landing/ContactForm';
 import { Footer } from '@/components/landing/Footer';
+import { CookieConsent } from '@/components/landing/CookieConsent';
 import { LanguageProvider } from '@/components/landing/LanguageContext';
 
 export default function LandingPage() {
@@ -22,6 +23,7 @@ export default function LandingPage() {
         <Security />
         <ContactForm />
         <Footer />
+        <CookieConsent />
       </main>
     </LanguageProvider>
   );

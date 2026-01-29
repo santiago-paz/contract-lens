@@ -180,6 +180,11 @@ const translations = {
       rights: "All rights reserved.",
       privacy: "Privacy Protocol",
       terms: "Terms of Service"
+    },
+    cookieConsent: {
+      text: "SYSTEM NOTICE: This interface utilizes cookies to maintain session integrity and optimize performance.",
+      accept: "ACKNOWLEDGE",
+      decline: "DECLINE"
     }
   },
   de: {
@@ -351,6 +356,11 @@ const translations = {
       rights: "Alle Rechte vorbehalten.",
       privacy: "Datenschutzprotokoll",
       terms: "Nutzungsbedingungen"
+    },
+    cookieConsent: {
+      text: "SYSTEMHINWEIS: Diese Schnittstelle verwendet Cookies zur Aufrechterhaltung der Sitzungsintegrität und Leistungsoptimierung.",
+      accept: "BESTÄTIGEN",
+      decline: "ABLEHNEN"
     }
   }
 };
