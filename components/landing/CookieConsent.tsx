@@ -4,34 +4,23 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie, X } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import { useCookieConsent } from './CookieContext';
 
 export function CookieConsent() {
   const { t } = useLanguage();
+  const { consentStatus, acceptCookies, declineCookies } = useCookieConsent();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Check if consent was already given
-    const consent = localStorage.getItem('cookie-consent');
-    if (!consent) {
-      // Small delay for better UX
+    if (consentStatus === 'undecided') {
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 1000);
       return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
     }
-  }, []);
-
-  const handleAccept = () => {
-    localStorage.setItem('cookie-consent', 'true');
-    setIsVisible(false);
-  };
-
-  const handleDecline = () => {
-    // Usually for essential cookies we still store a "false" or "declined" state
-    // but keep the banner hidden for the session or until next visit.
-    localStorage.setItem('cookie-consent', 'declined');
-    setIsVisible(false);
-  };
+  }, [consentStatus]);
 
   return (
     <AnimatePresence>
@@ -54,7 +43,7 @@ export function CookieConsent() {
                 </span>
               </div>
               <button 
-                onClick={handleDecline}
+                onClick={declineCookies}
                 className="hover:bg-black hover:text-[#CCFF00] transition-colors p-1"
               >
                 <X className="w-4 h-4" />
@@ -76,13 +65,13 @@ export function CookieConsent() {
             {/* Actions */}
             <div className="flex gap-3 pt-2">
               <button
-                onClick={handleAccept}
+                onClick={acceptCookies}
                 className="flex-1 bg-black text-[#CCFF00] border-2 border-black font-mono text-xs font-bold uppercase py-2 px-4 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:bg-[#CCFF00] active:text-black"
               >
                 {t.cookieConsent.accept}
               </button>
               <button
-                onClick={handleDecline}
+                onClick={declineCookies}
                 className="flex-1 bg-white text-black border-2 border-black font-mono text-xs font-bold uppercase py-2 px-4 hover:bg-gray-50 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 {t.cookieConsent.decline}
