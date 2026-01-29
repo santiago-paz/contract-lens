@@ -34,6 +34,8 @@ interface EditorSidebarProps {
   setConditions: (val: string) => void;
   comments: string;
   setComments: (val: string) => void;
+  status: string;
+  setStatus: (val: string) => void;
 }
 
 export function EditorSidebar({
@@ -53,9 +55,16 @@ export function EditorSidebar({
   conditions,
   setConditions,
   comments,
-  setComments
+  setComments,
+  status,
+  setStatus
 }: EditorSidebarProps) {
-  const [status, setStatus] = useState(initialData?.status || "Review");
+
+  // Propagate status change up if needed, but for now we need to expose it
+  // Since EditorLayout manages the save logic, we should lift this state up or pass the setter down.
+  // Currently EditorSidebar manages status locally. This is the BUG.
+  
+  // Refactor: Accept status and setStatus as props
 
   const getStatusColor = (currentStatus: string) => {
     switch (currentStatus) {

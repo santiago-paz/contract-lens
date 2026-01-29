@@ -42,6 +42,7 @@ export function ClientEditorWrapper({ contract, initialData }: { contract: any, 
       onBack={() => router.push('/dashboard')}
       uploadedFile={file}
       initialData={initialData}
+      contractId={contract.id}
     >
       <div className="p-8 prose max-w-none">
          {/* Display content if available (fallback if file preview fails or is not supported) */}
