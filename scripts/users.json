@@ -40,14 +40,60 @@
     ],
     "activities": [
       {
-        "description": "Partnership GCC GRC DAY was updated",
+        "description": "Partnership GCC GRC DAY",
         "action": "updated",
         "timestamp": "2026-01-28T19:45:00Z"
       },
       {
-        "description": "Partnership GCC GRC DAY was created",
+        "description": "Partnership GCC GRC DAY",
         "action": "created",
         "timestamp": "2026-01-27T10:00:00Z"
+      }
+    ]
+  },
+  {
+    "email": "max.mustermann@example.com",
+    "password": "password123",
+    "name": "Max Mustermann",
+    "equipo": "Legal",
+    "contracts": [
+      {
+        "contractNumber": "20001",
+        "title": "Vendor Agreement 2026",
+        "type": "Vendor Contract",
+        "status": "Draft"
+      },
+      {
+        "contractNumber": "20002",
+        "title": "NDA for New Client",
+        "type": "Non-Disclosure",
+        "status": "Pending"
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Review Vendor Agreement",
+        "status": "Open",
+        "type": "Vendor Contract",
+        "dueDate": "2026-02-01T09:00:00Z"
+      },
+      {
+        "title": "Sign NDA",
+        "status": "Open",
+        "type": "Non-Disclosure",
+        "dueDate": "2026-01-30T17:00:00Z"
+      }
+    ],
+    "activities": [
+      {
+        "description": "Vendor Agreement 2026",
+        "action": "created",
+        "timestamp": "2026-01-28T08:30:00Z"
+      },
+      {
+        "description": "NDA template",
+        "action": "updated",
+        "timestamp": "2026-01-26T14:15:00Z"
       }
     ]
   }
