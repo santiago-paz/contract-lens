@@ -71,7 +71,7 @@ export async function saveContract(formData: FormData) {
         const updateData: any = { ...commonData };
         // Only update file fields if a new file was provided
         if (fileData) {
-            updateData.fileData = fileData;
+            updateData.fileData = fileData as any;
             updateData.fileName = fileName;
         }
 
@@ -101,7 +101,7 @@ export async function saveContract(formData: FormData) {
             data: {
                 ...commonData,
                 contractNumber: contractNumber,
-                fileData: fileData,
+                fileData: fileData as any,
                 fileName: fileName,
                 userId: userId
             }
