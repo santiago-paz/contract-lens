@@ -10,21 +10,24 @@ import { ContactForm } from '@/components/landing/ContactForm';
 import { Footer } from '@/components/landing/Footer';
 import { CookieConsent } from '@/components/landing/CookieConsent';
 import { LanguageProvider } from '@/components/landing/LanguageContext';
+import { CookieProvider } from '@/components/landing/CookieContext';
 
 export default function LandingPage() {
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black">
-        <Navbar />
-        <Hero />
-        <ProductShowcase />
-        <BentoGrid />
-        <TeamSection />
-        <Security />
-        <ContactForm />
-        <Footer />
-        <CookieConsent />
-      </main>
+      <CookieProvider>
+        <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black">
+          <Navbar />
+          <Hero />
+          <ProductShowcase />
+          <BentoGrid />
+          <TeamSection />
+          <Security />
+          <ContactForm />
+          <Footer />
+          <CookieConsent />
+        </main>
+      </CookieProvider>
     </LanguageProvider>
   );
 }
