@@ -93,10 +93,16 @@ export function Hero() {
                             const contactForm = document.getElementById('contact-form');
                             contactForm?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-black hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
+                        className="group inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-black hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
                     >
                         {t.hero.cta}
-                        <ArrowRight className="ml-2 w-4 h-4" />
+                        <motion.div
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="ml-2"
+                        >
+                            <ArrowRight className="w-4 h-4" />
+                        </motion.div>
                     </button>
                     <button className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all">
                         View Demo
