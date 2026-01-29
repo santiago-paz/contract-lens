@@ -9,14 +9,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  teamId    String?
-  team      Team?    @relation(fields: [teamId], references: [id])
+  id         String     @id @default(cuid())
+  email      String     @unique
+  password   String
+  name       String?
+  avatar     String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  teamId     String?
+  team       Team?      @relation(fields: [teamId], references: [id])
+  contracts  Contract[]
+  tasks      Task[]
+  activities Activity[]
 }
 
 model Team {
@@ -25,4 +29,41 @@ model Team {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   users     User[]
+}
+
+model Contract {
+  id             String   @id @default(cuid())
+  contractNumber String   @unique // displayed ID e.g. "10023"
+  title          String
+  type           String // e.g. "Sponsorship Contract", "License Contract"
+  status         String // e.g. "Active", "Review"
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tasks          Task[]
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String // e.g. "Open"
+  type        String? // e.g. "License Agreement"
+  dueDate     DateTime?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  contractId  String?
+  contract    Contract? @relation(fields: [contractId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  description String
+  action      String // e.g. "created", "updated", "restored", "deleted"
+  timestamp   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 }

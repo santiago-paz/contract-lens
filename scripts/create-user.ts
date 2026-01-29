@@ -2,13 +2,42 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Prisma client has been generated. If you see type errors, please restart the TS server.
 const prisma = new PrismaClient()
+
+interface ContractData {
+  contractNumber: string
+  title: string
+  type: string
+  status: string
+}
+
+interface TaskData {
+  title: string
+  status: string
+  type?: string
+  dueDate?: string
+}
+
+interface ActivityData {
+  description: string
+  action: string
+  timestamp?: string
+}
 
 interface UserData {
   email: string
   password: string
+  name?: string
   equipo: string
+  contracts?: ContractData[]
+  tasks?: TaskData[]
+  activities?: ActivityData[]
 }
 
 async function main() {
@@ -24,7 +53,6 @@ async function main() {
 
   try {
     users = JSON.parse(fileContent)
-    // Support both single object and array
     if (!Array.isArray(users)) {
       users = [users]
     }
@@ -36,22 +64,24 @@ async function main() {
   console.log(`Found ${users.length} user(s) to process...`)
 
   for (const userData of users) {
-    const { email, password, equipo } = userData
+    const { email, password, name, equipo, contracts, tasks, activities } = userData
 
     if (!email || !password || !equipo) {
       console.warn(`Skipping invalid user entry: ${JSON.stringify(userData)}`)
       continue
     }
 
-    console.log(`Processing user ${email} for team ${equipo}...`)
+    console.log(`Processing user ${email} (${name || 'No Name'}) for team ${equipo}...`)
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
-      const user = await prisma.user.create({
-        data: {
-          email,
-          password: hashedPassword,
+      // Create User and Team
+      const user = await prisma.user.upsert({
+        where: { email },
+        update: {
+          name,
+          password: hashedPassword, // Update password if changed
           team: {
             connectOrCreate: {
               where: { name: equipo },
@@ -59,17 +89,99 @@ async function main() {
             }
           }
         },
-        include: {
-          team: true
+        create: {
+          email,
+          password: hashedPassword,
+          name,
+          team: {
+            connectOrCreate: {
+              where: { name: equipo },
+              create: { name: equipo }
+            }
+          }
         }
       })
-      console.log(`User ${email} created successfully.`)
-    } catch (e: any) {
-      if (e.code === 'P2002') {
-        console.error(`User with email ${email} already exists.`)
-      } else {
-        console.error(`Error creating user ${email}:`, e)
+      
+      console.log(`User ${email} upserted successfully. ID: ${user.id}`)
+
+      // Create Contracts
+      if (contracts && contracts.length > 0) {
+        console.log(`Processing ${contracts.length} contracts...`)
+        for (const contract of contracts) {
+          await prisma.contract.upsert({
+            where: { contractNumber: contract.contractNumber },
+            update: {
+              title: contract.title,
+              type: contract.type,
+              status: contract.status,
+              userId: user.id
+            },
+            create: {
+              contractNumber: contract.contractNumber,
+              title: contract.title,
+              type: contract.type,
+              status: contract.status,
+              userId: user.id
+            }
+          })
+        }
       }
+
+      // Create Tasks
+      if (tasks && tasks.length > 0) {
+        console.log(`Processing ${tasks.length} tasks...`)
+        for (const task of tasks) {
+          // Tasks don't have a unique ID in JSON, so we create them blindly or we could try to find by title+user
+          // For simplicity/seeding, let's create if not exists (approximate match) or just create.
+          // To avoid duplicates on re-run, let's try to find first.
+          const existingTask = await prisma.task.findFirst({
+            where: {
+              userId: user.id,
+              title: task.title
+            }
+          })
+
+          if (!existingTask) {
+            await prisma.task.create({
+              data: {
+                title: task.title,
+                status: task.status,
+                type: task.type,
+                dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
+                userId: user.id
+              }
+            })
+          }
+        }
+      }
+
+      // Create Activities
+      if (activities && activities.length > 0) {
+        console.log(`Processing ${activities.length} activities...`)
+        for (const activity of activities) {
+          const existingActivity = await prisma.activity.findFirst({
+            where: {
+              userId: user.id,
+              description: activity.description,
+              timestamp: activity.timestamp ? new Date(activity.timestamp) : undefined
+            }
+          })
+
+          if (!existingActivity) {
+            await prisma.activity.create({
+              data: {
+                description: activity.description,
+                action: activity.action,
+                timestamp: activity.timestamp ? new Date(activity.timestamp) : undefined,
+                userId: user.id
+              }
+            })
+          }
+        }
+      }
+
+    } catch (e: any) {
+      console.error(`Error processing user ${email}:`, e)
     }
   }
 }
