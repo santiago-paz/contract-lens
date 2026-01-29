@@ -371,8 +371,8 @@ export function BentoGrid() {
 
                 {/* Visuals Side */}
                 <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent z-10 w-20 md:hidden"></div>
-                    <div className="grid grid-cols-2 gap-4 w-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-transparent z-10 w-10 md:hidden"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                         <div className="space-y-4">
                              {/* Partner Card 1 */}
                             <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100">
@@ -405,7 +405,7 @@ export function BentoGrid() {
                             {/* Partner Card 2 */}
                             <div className="bg-white rounded-2xl p-5 shadow-xl shadow-gray-200/50 border border-gray-100">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 bg-[#00A1E0] rounded-xl flex items-center justify-center text-white font-bold text-lg">S</div>
+                                    <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-black/20">S</div>
                                     <div>
                                         <div className="text-sm font-bold text-gray-900">Salesforce</div>
                                         <div className="text-xs text-gray-500">CRM Platform</div>
