@@ -58,7 +58,7 @@ export function Hero() {
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#CCFF00] border-2 border-black shadow-hard-sm mb-8"
                     >
                         <Terminal className="w-4 h-4 text-black" />
-                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">AI-Powered Contract Analysis</span>
+                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">COST CONTROL ENGINE</span>
                     </motion.div>
                     
                     <motion.h1 
@@ -97,7 +97,7 @@ export function Hero() {
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <button className="inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide text-black bg-white border-2 border-black shadow-hard hover:bg-gray-50 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
-                            View Demo
+                            SEE SYSTEM
                         </button>
                     </motion.div>
                 </div>
@@ -133,8 +133,8 @@ export function Hero() {
                                             <Zap className="w-6 h-6 text-black" />
                                         </div>
                                         <div>
-                                            <h3 className="font-bold font-mono uppercase text-black">Contract Intelligence</h3>
-                                            <p className="text-xs font-mono text-gray-500">STATUS: ACTIVE</p>
+                                            <h3 className="font-bold font-mono uppercase text-black">WASTE DETECTION</h3>
+                                            <p className="text-xs font-mono text-gray-500">STATUS: SCANNING</p>
                                         </div>
                                     </div>
                                     <div className="px-2 py-1 bg-black text-white text-xs font-mono uppercase">Live</div>
