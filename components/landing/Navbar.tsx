@@ -20,6 +20,17 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const scrollToSection = (id: string) => {
     setIsOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -110,7 +121,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-[72px] z-40 bg-white md:hidden overflow-y-auto"
+            className="fixed inset-0 top-[64px] z-40 bg-white md:hidden overflow-y-auto"
           >
             <div className="flex flex-col p-6 space-y-6">
               <div className="space-y-4">
