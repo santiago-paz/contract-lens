@@ -60,46 +60,36 @@ export function EditorSidebar({
   setStatus
 }: EditorSidebarProps) {
 
-  // Propagate status change up if needed, but for now we need to expose it
-  // Since EditorLayout manages the save logic, we should lift this state up or pass the setter down.
-  // Currently EditorSidebar manages status locally. This is the BUG.
-  
-  // Refactor: Accept status and setStatus as props
-
   const getStatusColor = (currentStatus: string) => {
     switch (currentStatus) {
       case 'Draft': return 'bg-yellow-400';
-      case 'Active': return 'bg-green-400';
+      case 'Active': return 'bg-[#CCFF00]';
       case 'Signed': return 'bg-blue-400';
-      case 'Expired': return 'bg-red-400';
+      case 'Expired': return 'bg-red-500';
       case 'Review': return 'bg-orange-400';
       default: return 'bg-gray-400';
     }
   };
 
   return (
-    <div className={`w-96 bg-white border-r border-gray-200 flex flex-col overflow-y-auto transition-all duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full absolute z-10 h-full'}`}>
-      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+    <div className={`w-96 bg-white flex flex-col overflow-y-auto transition-all duration-300 font-mono h-full ${isOpen ? 'translate-x-0' : '-translate-x-full absolute z-10'}`}>
+      <div className="p-3 border-b border-black flex items-center justify-between bg-white">
         <div className="flex gap-2">
-          <button className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 shadow-sm">Data</button>
-          <button className="px-3 py-1.5 text-sm font-medium text-gray-400 hover:text-gray-600">Sponsorship</button>
+          <button className="px-3 py-1.5 bg-[#CCFF00] border border-black text-[10px] font-bold uppercase text-black shadow-hard-sm">Metadata</button>
+          <button className="px-3 py-1.5 bg-white border border-transparent hover:border-black text-[10px] font-bold uppercase text-gray-500 hover:text-black">Relations</button>
         </div>
-        <button className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 font-medium">
-          <Search className="w-3 h-3" />
-          Expand
-        </button>
       </div>
 
       <div className="p-4 space-y-6">
         {!isSaved && (
-           <div className="bg-green-50 border border-green-100 rounded-lg p-4 flex items-start gap-3">
-             <div className="mt-0.5 text-green-600">
-               <div className="w-5 h-5 rounded-full border-2 border-green-600 flex items-center justify-center">
+           <div className="bg-[#CCFF00]/20 border border-black p-4 flex items-start gap-3">
+             <div className="mt-0.5 text-black">
+               <div className="w-4 h-4 border border-black flex items-center justify-center bg-[#CCFF00]">
                  <span className="text-[10px] font-bold">✓</span>
                </div>
              </div>
-             <div className="text-sm text-green-800">
-               The contract document has been analyzed, and marked fields have been pre-filled.
+             <div className="text-xs font-bold text-black uppercase leading-relaxed">
+               Analysis Complete. Data pre-filled from source.
              </div>
            </div>
         )}
@@ -107,121 +97,100 @@ export function EditorSidebar({
         {/* Section: Essentials (Only Visible After Save) */}
         {isSaved && (
           <div>
-            <button className="flex items-center gap-2 w-full text-left font-medium text-gray-700 mb-4">
-              <FileText className="w-4 h-4" />
-              Essentials
-              <ChevronDown className="w-4 h-4 ml-auto" />
+            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 border-b border-black pb-1">
+              <FileText className="w-3 h-3" />
+              Core Attributes
+              <ChevronDown className="w-3 h-3 ml-auto" />
             </button>
             
             <div className="space-y-4 pl-1">
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Title *
-                  <Tooltip content="The official name of the contract document.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Contract Title *
                 </label>
                 <input 
                   type="text" 
                   defaultValue={initialData?.title || fileName.replace(/\.[^/.]+$/, "")}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black focus:outline-none focus:bg-[#CCFF00] focus:placeholder-black/50"
                 />
               </div>
               
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Contract Owner *
-                  <Tooltip content="The primary person or entity responsible for this contract.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Owner *
                 </label>
                 <PillInput 
                   value={contractOwner}
                   onChange={setContractOwner}
-                  placeholder="Enter contract owner..."
+                  placeholder="ADD OWNER..."
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Owner Deputy
-                  <Tooltip content="A secondary contact person who can act on behalf of the owner.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Deputy
                 </label>
                 <PillInput 
                   value={deputy}
                   onChange={setDeputy}
-                  placeholder="Enter deputy..."
+                  placeholder="ADD DEPUTY..."
                 />
               </div>
               
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Contract Manager *
-                  <Tooltip content="The person responsible for the administrative management of the contract.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Manager *
                 </label>
                 <PillInput 
                   value={contractManager}
                   onChange={setContractManager}
-                  placeholder="Enter contract manager..."
+                  placeholder="ADD MANAGER..."
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  External Reference
-                  <Tooltip content="Unique identifier or code from an external system.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Ref. ID
                 </label>
                 <input 
                   type="text" 
                   defaultValue={initialData?.externalReference || "SO-25GCCGRCDAY01"}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-300 text-xs font-mono text-gray-500 outline-none uppercase"
                   readOnly={true}
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Contract Category
-                  <Tooltip content="Classification of the contract for reporting and organization.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Category
                 </label>
                 <div className="relative">
                   <select 
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
+                    className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
                     defaultValue={contractType || ''}
                   >
                     {CONTRACT_TYPES.map(type => (
                       <option key={type} value={type}>{type}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
                 </div>
               </div>
 
               <div>
-                <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                  Organizational Units *
-                  <Tooltip content="The department or unit to which this contract belongs.">
-                    <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                  </Tooltip>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Org Unit *
                 </label>
                 <div className="relative">
                   <select 
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
+                    className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
                     defaultValue={initialData?.organizationalUnit || "Swiss GRC AG"}
                   >
                     <option value="Swiss GRC AG">Swiss GRC AG</option>
                     <option value="Sales">Sales</option>
                     <option value="Legal">Legal</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -230,78 +199,65 @@ export function EditorSidebar({
 
         {/* Section: Data / Creation Fields */}
         <div>
-          {/* If isSaved, we might want a separator or another header, but typically it continues */}
-          {/* Actually in the screenshot "Contract Value" etc seem to be just next in the list or under a section. */}
-          {/* We'll put them in a section called "Contract Details" if isSaved, or just keep them top level if !isSaved */}
-          
           <div className="space-y-4 pl-1">
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                Contract Value
-                <Tooltip content="Total monetary value of the contract.">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                Value (CHF)
               </label>
               <div className="relative">
                 <select 
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
+                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
                   defaultValue={initialData?.contractValue || ""}
                 >
-                  <option value="">Select...</option>
+                  <option value="">SELECT...</option>
                   {initialData?.contractValue && <option value={initialData.contractValue}>{initialData.contractValue}</option>}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
               </div>
             </div>
 
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Confidentiality
-                <Tooltip content="Level of secrecy required for this document.">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
               </label>
               <div className="relative">
                 <select 
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
+                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
                   defaultValue={initialData?.confidentiality || ""}
                 >
-                  <option value="">Select...</option>
-                  <option value="None">None</option>
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                  <option value="Strict">Strict</option>
+                  <option value="">SELECT...</option>
+                  <option value="None">NONE</option>
+                  <option value="Low">LOW</option>
+                  <option value="Medium">MEDIUM</option>
+                  <option value="High">HIGH</option>
+                  <option value="Strict">STRICT</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
               </div>
             </div>
 
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                Contractual Partners
-                <Tooltip content="The external entity or counterparty involved in the contract.">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                Counterparty
               </label>
               <div className="relative mb-2">
                 <input 
                   type="text"
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
                   defaultValue={initialData?.contractPartner || "Swiss GRC AG"}
                 />
               </div>
-              <button className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium border border-blue-200 rounded px-2 py-1 bg-blue-50">
+              <button className="flex items-center gap-1 text-[10px] text-black hover:text-white font-bold border border-black rounded-none px-2 py-1 bg-white hover:bg-black uppercase transition-colors">
                 <Plus className="w-3 h-3" />
-                New Partner
+                Add Entity
               </button>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Contract Summary</label>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Summary</label>
               <div className="relative">
                 <textarea 
-                   className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none min-h-[100px] resize-y"
+                   className="w-full px-3 py-2 bg-white border border-black text-xs font-mono text-black outline-none min-h-[100px] resize-y focus:bg-[#CCFF00]"
                    value={summary}
                    onChange={(e) => setSummary(e.target.value)}
                 />
@@ -312,23 +268,20 @@ export function EditorSidebar({
 
         {/* Section: Lifecycle */}
         <div>
-          <button className="flex items-center gap-2 w-full text-left font-medium text-gray-700 mb-4 pt-4 border-t border-gray-100">
-            <Calendar className="w-4 h-4" />
-            Lifecycle
-            <ChevronDown className="w-4 h-4 ml-auto" />
+          <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-black">
+            <Calendar className="w-3 h-3" />
+            Lifecycle Control
+            <ChevronDown className="w-3 h-3 ml-auto" />
           </button>
           <div className="space-y-4 pl-1">
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Status *
-                <Tooltip content="Current lifecycle state of the contract.">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
               </label>
-              <div className="flex items-center gap-2 w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900">
-                <div className={`w-2 h-2 rounded-full ${getStatusColor(status)} flex-shrink-0`}></div>
+              <div className="flex items-center gap-2 w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black">
+                <div className={`w-2 h-2 rounded-full border border-black ${getStatusColor(status)} flex-shrink-0`}></div>
                 <select 
-                  className="bg-transparent outline-none w-full appearance-none"
+                  className="bg-transparent outline-none w-full appearance-none uppercase"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
                 >
@@ -338,54 +291,42 @@ export function EditorSidebar({
                   <option value="Active">Active</option>
                   <option value="Expired">Expired</option>
                 </select>
-                <ChevronDown className="w-4 h-4 text-gray-400 pointer-events-none flex-shrink-0" />
+                <ChevronDown className="w-4 h-4 text-black pointer-events-none flex-shrink-0" />
               </div>
             </div>
             
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Duration Type *
-                <Tooltip content="How the contract duration is defined (e.g., fixed or indefinite).">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
               </label>
               <select 
-                className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none"
+                className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
                 defaultValue={initialData?.durationType || "Once-off"}
               >
-                <option value="Once-off">Once-off</option>
-                <option value="Fixed-term">Fixed-term</option>
-                <option value="Indefinite">Indefinite</option>
+                <option value="Once-off">ONCE-OFF</option>
+                <option value="Fixed-term">FIXED-TERM</option>
+                <option value="Indefinite">INDEFINITE</option>
               </select>
             </div>
 
             <div>
-              <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">
-                Start *
-                <Tooltip content="The date on which the contract becomes effective.">
-                  <Info className="w-3 h-3 text-gray-400 hover:text-gray-600 transition-colors cursor-help" />
-                </Tooltip>
+              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                Effective Date *
               </label>
               <div className="relative">
                 <input 
                   type="date"
                   defaultValue={initialData?.contractStart || "2025-09-02"}
-                  className="w-full px-3 py-2 bg-white border border-blue-500 rounded-lg text-sm text-gray-900 outline-none shadow-sm ring-2 ring-blue-100"
+                  className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none focus:bg-[#CCFF00]"
                 />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Conditions</label>
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
-                <div className="flex items-center gap-2 p-2 bg-gray-50 border-b border-gray-200">
-                    <button className="p-1 hover:bg-gray-200 rounded font-bold text-xs">B</button>
-                    <button className="p-1 hover:bg-gray-200 rounded italic text-xs">I</button>
-                    <button className="p-1 hover:bg-gray-200 rounded underline text-xs">U</button>
-                </div>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Conditions</label>
+              <div className="border border-black bg-white overflow-hidden">
                 <textarea 
-                  className="w-full p-2 text-sm outline-none min-h-[80px]"
+                  className="w-full p-2 text-xs font-mono outline-none min-h-[80px] focus:bg-[#CCFF00]"
                   value={conditions}
                   onChange={(e) => setConditions(e.target.value)}
                 />
@@ -394,27 +335,26 @@ export function EditorSidebar({
           </div>
         </div>
 
-        {/* Section: Risks and Compliance (Still relevant but maybe pushed down) */}
+        {/* Section: Risks and Compliance */}
         {isSaved && (
           <div>
-            <button className="flex items-center gap-2 w-full text-left font-medium text-gray-700 mb-4 pt-4 border-t border-gray-100">
-              <Shield className="w-4 h-4" />
-              Risks and Compliance
-              <ChevronDown className="w-4 h-4 ml-auto" />
+            <button className="flex items-center gap-2 w-full text-left font-bold text-black text-xs uppercase mb-4 pt-4 border-t border-black">
+              <Shield className="w-3 h-3" />
+              Risk Protocol
+              <ChevronDown className="w-3 h-3 ml-auto" />
             </button>
             <div className="space-y-4 pl-1">
-               {/* Keep existing risk fields... */}
                <div>
-                  <label className="flex items-center gap-1 text-xs font-medium text-gray-500 mb-1">Risk Assessment</label>
+                  <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">Risk Level</label>
                   <div className="relative">
                     <select 
-                      className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 outline-none appearance-none pr-8"
+                      className="w-full px-3 py-2 bg-white border border-black text-xs font-bold uppercase text-black outline-none appearance-none pr-8 focus:bg-[#CCFF00]"
                       defaultValue={initialData?.riskAssessment || ""}
                     >
-                      <option value="">Select...</option>
+                      <option value="">SELECT...</option>
                       {initialData?.riskAssessment && <option value={initialData.riskAssessment}>{initialData.riskAssessment}</option>}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
                   </div>
                </div>
             </div>

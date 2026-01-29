@@ -16,22 +16,22 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto animate-fade-in">
+    <div className="w-full max-w-6xl mx-auto animate-fade-in font-mono">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <div className="p-2 bg-blue-50 rounded-lg">
-            <FileText className="w-6 h-6 text-blue-600" />
+        <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
+          <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+            <FileText className="w-6 h-6" />
           </div>
-          New Contract
+          Initialize Contract
         </h2>
-        <p className="text-gray-500 mt-2 max-w-xl">
-          When creating a new contract, choose between a single contract or a framework agreement.
+        <p className="text-gray-600 mt-2 max-w-xl uppercase text-xs font-bold tracking-wide">
+          Select contract source // Main Document or Framework Agreement
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Main Document Upload */}
-        <div className="border-2 border-dashed border-blue-200 rounded-2xl p-12 flex flex-col items-center justify-center text-center bg-blue-50/30 hover:bg-blue-50/50 transition-colors relative group">
+        <div className="border-2 border-dashed border-black bg-white p-12 flex flex-col items-center justify-center text-center hover:bg-[#CCFF00]/10 transition-colors relative group">
           <input 
             type="file" 
             ref={fileInputRef}
@@ -40,47 +40,45 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
             accept={ACCEPTED_EXTENSIONS}
           />
           
-          <div className="absolute top-4 right-4 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Step 1</div>
+          <div className="absolute top-0 right-0 border-l-2 border-b-2 border-black bg-black text-[#CCFF00] text-xs font-bold px-3 py-1 uppercase">Step 01</div>
           
-          <div className="w-48 h-48 mb-6 relative">
-             {/* Abstract illustration placeholder using standard shapes/icons since we can't use the exact SVG from screenshot */}
-             <div className="absolute inset-0 bg-blue-100 rounded-full opacity-20 animate-pulse"></div>
-             <div className="absolute inset-0 flex items-center justify-center">
-                <Upload className="w-16 h-16 text-blue-500" />
+          <div className="w-48 h-48 mb-6 relative flex items-center justify-center">
+             <div className="w-32 h-32 border-2 border-black flex items-center justify-center bg-white group-hover:shadow-hard transition-all">
+                <Upload className="w-12 h-12 text-black" />
              </div>
           </div>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Main Contract Document</h3>
-          <p className="text-gray-500 text-sm mb-8 max-w-xs">
-            Upload or Drag & Drop (max. 100 MB)<br/>
-            We automatically extract contract data from PDF and DOCX files.
+          <h3 className="text-xl font-bold text-black mb-2 uppercase">Main Document</h3>
+          <p className="text-gray-600 text-xs mb-8 max-w-xs uppercase leading-relaxed">
+            Upload or Drag & Drop (MAX. 100 MB)<br/>
+            Target formats: PDF, DOCX
           </p>
           
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all flex items-center gap-2"
+            className="px-6 py-4 bg-black text-[#CCFF00] font-bold text-sm uppercase rounded-none border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#CCFF00] hover:text-black transition-all flex items-center gap-2"
           >
             <Upload className="w-4 h-4" />
-            Select & Upload
+            Upload File
           </button>
         </div>
 
         {/* Attachments Upload - Visual only for now */}
-        <div className="border-2 border-dashed border-gray-200 rounded-2xl p-12 flex flex-col items-center justify-center text-center bg-gray-50/30 hover:bg-gray-50/50 transition-colors opacity-75">
+        <div className="border-2 border-dashed border-gray-300 bg-gray-50 p-12 flex flex-col items-center justify-center text-center opacity-75">
            <div className="w-48 h-48 mb-6 relative flex items-center justify-center">
-             <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
-                <File className="w-12 h-12 text-gray-400" />
+             <div className="w-32 h-32 border-2 border-dashed border-gray-300 flex items-center justify-center bg-white">
+                <File className="w-12 h-12 text-gray-300" />
              </div>
           </div>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Attachments</h3>
-          <p className="text-gray-500 text-sm mb-8 max-w-xs">
-            Upload any file or drag & drop (max. 100 MB)
+          <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase">Attachments</h3>
+          <p className="text-gray-400 text-xs mb-8 max-w-xs uppercase">
+            Upload supplemental files<br/>(Coming Soon)
           </p>
           
-          <button className="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all flex items-center gap-2 cursor-not-allowed">
+          <button disabled className="px-6 py-4 bg-white border-2 border-gray-200 text-gray-300 font-bold text-sm uppercase rounded-none cursor-not-allowed flex items-center gap-2">
             <Upload className="w-4 h-4" />
-            Select & Upload
+            Upload File
           </button>
         </div>
       </div>

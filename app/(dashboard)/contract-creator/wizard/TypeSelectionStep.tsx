@@ -25,27 +25,27 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
   );
 
   return (
-    <div className="w-full max-w-5xl mx-auto animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto animate-fade-in font-mono">
         <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
-                <FileText className="w-6 h-6 text-blue-600" />
+            <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
+            <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+                <FileText className="w-6 h-6" />
             </div>
-            New Contract
+            Classify Contract
             </h2>
-             <p className="text-gray-500 mt-2 max-w-xl pl-12">
-                Continue by selecting a (suggested) contract type
+             <p className="text-gray-600 mt-2 max-w-xl pl-14 text-xs font-bold uppercase">
+                Select applicable legal framework
             </p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 min-h-[500px]">
+        <div className="bg-white border-2 border-black shadow-hard p-8 min-h-[500px]">
             <div className="max-w-3xl mx-auto">
                 <div className="relative mb-8">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-black" />
                     <input 
                         type="text"
-                        placeholder="Search for contract types"
-                        className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="SEARCH CONTRACT TYPES..."
+                        className="w-full pl-10 pr-4 py-4 bg-white border-2 border-black font-bold uppercase focus:outline-none focus:bg-[#CCFF00] transition-all placeholder:text-gray-400"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         autoFocus
@@ -53,12 +53,12 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                 </div>
 
                 <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <h3 className="text-xs font-bold text-black uppercase tracking-widest mb-4 flex items-center gap-2 border-b-2 border-black pb-2 inline-block">
                         <FileText className="w-4 h-4" />
-                        Contract Types
+                        Available Definitions
                     </h3>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {filteredTypes.map((type) => {
                             const isSuggested = type === suggestedType;
                             return (
@@ -66,24 +66,24 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                                 key={type}
                                 onClick={() => setSelectedType(type)}
                                 className={`
-                                    group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all border
+                                    group flex items-center justify-between p-4 cursor-pointer transition-all border-2
                                     ${selectedType === type 
-                                        ? 'bg-blue-50 border-blue-200 text-blue-700 shadow-sm' 
+                                        ? 'bg-black text-[#CCFF00] border-black shadow-hard-sm scale-[1.01]' 
                                         : isSuggested
-                                            ? 'bg-green-50 border-green-200 text-green-700 shadow-sm'
-                                            : 'bg-white border-transparent hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                                            ? 'bg-[#CCFF00]/20 border-black text-black hover:bg-[#CCFF00] hover:shadow-hard-sm'
+                                            : 'bg-white border-gray-200 text-gray-500 hover:border-black hover:text-black hover:shadow-hard-sm'
                                     }
                                 `}
                             >
                                 <div className="flex items-center gap-3">
                                     {isSuggested ? (
-                                        <Sparkles className="w-4 h-4 text-green-600" />
+                                        <Sparkles className={`w-4 h-4 ${selectedType === type ? 'text-[#CCFF00]' : 'text-black'}`} />
                                     ) : (
-                                        <FileText className={`w-4 h-4 ${selectedType === type ? 'text-blue-500' : 'text-gray-400'}`} />
+                                        <FileText className={`w-4 h-4 ${selectedType === type ? 'text-[#CCFF00]' : 'text-gray-400 group-hover:text-black'}`} />
                                     )}
-                                    <span className="font-medium">
+                                    <span className="font-bold text-sm uppercase">
                                         {type}
-                                        {isSuggested && <span className="ml-2 text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full uppercase tracking-wide font-bold">Suggested</span>}
+                                        {isSuggested && <span className={`ml-2 text-[10px] px-1.5 py-0.5 border uppercase tracking-wide font-bold ${selectedType === type ? 'bg-[#CCFF00] text-black border-black' : 'bg-black text-white border-black'}`}>Suggested</span>}
                                     </span>
                                 </div>
                                 
@@ -93,7 +93,7 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                                             e.stopPropagation();
                                             onSelect(type);
                                         }}
-                                        className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors flex items-center gap-1 animate-fade-in"
+                                        className="px-2 py-1 bg-[#CCFF00] text-black border border-black text-xs font-bold uppercase hover:bg-white transition-colors flex items-center gap-1 animate-fade-in"
                                     >
                                         Next
                                         <ChevronRight className="w-3 h-3" />
