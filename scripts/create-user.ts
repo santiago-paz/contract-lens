@@ -15,6 +15,15 @@ interface ContractData {
   title: string
   type: string
   status: string
+  summary?: string
+  conditions?: string
+  contractOwner?: string
+  deputy?: string
+  contractManager?: string
+  contractValue?: string
+  startDate?: string
+  endDate?: string
+  renewalDate?: string
 }
 
 interface TaskData {
@@ -114,6 +123,15 @@ async function main() {
               title: contract.title,
               type: contract.type,
               status: contract.status,
+              summary: contract.summary,
+              conditions: contract.conditions,
+              contractOwner: contract.contractOwner,
+              deputy: contract.deputy,
+              contractManager: contract.contractManager,
+              contractValue: contract.contractValue,
+              startDate: contract.startDate,
+              endDate: contract.endDate,
+              renewalDate: contract.renewalDate,
               userId: user.id
             },
             create: {
@@ -121,6 +139,15 @@ async function main() {
               title: contract.title,
               type: contract.type,
               status: contract.status,
+              summary: contract.summary,
+              conditions: contract.conditions,
+              contractOwner: contract.contractOwner,
+              deputy: contract.deputy,
+              contractManager: contract.contractManager,
+              contractValue: contract.contractValue,
+              startDate: contract.startDate,
+              endDate: contract.endDate,
+              renewalDate: contract.renewalDate,
               userId: user.id
             }
           })

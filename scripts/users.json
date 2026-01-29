@@ -4,32 +4,7 @@
     "password": "password123",
     "name": "Irem Cengiz",
     "equipo": "Management",
-    "contracts": [
-      {
-        "contractNumber": "10023",
-        "title": "Partnership GCC GRC DAY",
-        "type": "Sponsorship Contract",
-        "status": "Active"
-      },
-      {
-        "contractNumber": "10022",
-        "title": "Sponsoring SWISS GRC DAY 2025",
-        "type": "Sponsorship Contract",
-        "status": "Review"
-      },
-      {
-        "contractNumber": "10006",
-        "title": "License Agreement",
-        "type": "License Contract",
-        "status": "Active"
-      },
-      {
-        "contractNumber": "10002",
-        "title": "HubSpot Service",
-        "type": "Service Contract",
-        "status": "Active"
-      }
-    ],
+    "contracts": [],
     "tasks": [
       {
         "title": "Update Sponsorship Contracts",
@@ -56,20 +31,7 @@
     "password": "password123",
     "name": "Max Mustermann",
     "equipo": "Legal",
-    "contracts": [
-      {
-        "contractNumber": "20001",
-        "title": "Vendor Agreement 2026",
-        "type": "Vendor Contract",
-        "status": "Draft"
-      },
-      {
-        "contractNumber": "20002",
-        "title": "NDA for New Client",
-        "type": "Non-Disclosure",
-        "status": "Pending"
-      }
-    ],
+    "contracts": [],
     "tasks": [
       {
         "title": "Review Vendor Agreement",

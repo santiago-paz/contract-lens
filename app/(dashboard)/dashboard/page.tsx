@@ -2,6 +2,7 @@ import { FileIcon, FileText } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 function getTimeAgo(date: Date) {
   const now = new Date();
@@ -76,7 +77,8 @@ export default async function Overview() {
   const contracts = user.contracts.map(contract => {
     const colors = getStatusColor(contract.status);
     return {
-      id: contract.contractNumber,
+      id: contract.id,
+      contractNumber: contract.contractNumber,
       title: contract.title,
       type: contract.type,
       status: contract.status,
@@ -172,26 +174,35 @@ export default async function Overview() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-700">My Contracts ({contracts.length})</h2>
-          <button className="text-sm text-blue-600 hover:underline">All Contracts</button>
+          <Link href="/contracts" className="text-sm text-blue-600 hover:underline">
+            All Contracts
+          </Link>
         </div>
 
         {contracts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {contracts.map((contract) => (
-              <div key={contract.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer group">
+              <Link 
+                href={`/contracts/${contract.id}`} 
+                key={contract.id} 
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer group block"
+              >
                 {/* Document Preview Placeholder */}
-                <div className="bg-gray-50 rounded-xl h-32 mb-4 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors">
+                <div className="bg-gray-50 rounded-xl h-32 mb-4 flex items-center justify-center border border-gray-100 group-hover:bg-gray-100 transition-colors relative">
                   <FileText className="w-10 h-10 text-gray-300" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                    <span className="text-xs font-semibold text-gray-600 bg-white/90 px-2 py-1 rounded shadow-sm">Click to edit</span>
+                  </div>
                 </div>
 
                 {/* Content */}
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-blue-900 truncate max-w-[140px]" title={contract.title}>{contract.title}</h3>
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-blue-900 truncate" title={contract.title}>{contract.title}</h3>
                       <p className="text-xs text-gray-500 mt-1">{contract.type}</p>
                     </div>
-                    <div className="p-1.5 rounded-full border border-gray-200 text-gray-400">
+                    <div className="p-1.5 rounded-full border border-gray-200 text-gray-400 shrink-0">
                       <FileIcon className="w-4 h-4" />
                     </div>
                   </div>
@@ -201,10 +212,10 @@ export default async function Overview() {
                       <div className={`w-2 h-2 rounded-full ${contract.dotColor}`} />
                       <span className={`font-medium ${contract.statusColor}`}>{contract.status}</span>
                     </div>
-                    <span className="text-gray-400">{contract.id}</span>
+                    <span className="text-gray-400">{contract.contractNumber}</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
