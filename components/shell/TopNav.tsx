@@ -3,7 +3,13 @@
 import { Bell, ChevronDown, HelpCircle, Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 
-export function TopNav() {
+export function TopNav({ user }: { user?: { name: string | null; email: string } | null }) {
+  const initials = user?.name 
+    ? user.name.split(' ').map((n) => n[0]).join('').substring(0, 2).toUpperCase() 
+    : user?.email?.substring(0, 2).toUpperCase() || '??';
+
+  const displayName = user?.name || user?.email || 'User';
+
   return (
     <header className="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between sticky top-0 z-10">
       {/* Search */}
@@ -44,9 +50,9 @@ export function TopNav() {
         {/* User Profile */}
         <button className="flex items-center gap-2 ml-2 pl-2 border-l border-transparent md:border-gray-100">
           <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-semibold text-xs border border-amber-200">
-            IC
+            {initials}
           </div>
-          <span className="text-sm font-medium text-gray-700 hidden md:block">Irem Cengiz</span>
+          <span className="text-sm font-medium text-gray-700 hidden md:block">{displayName}</span>
           <ChevronDown className="w-4 h-4 text-gray-400 hidden md:block" />
         </button>
       </div>
