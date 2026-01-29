@@ -18,6 +18,9 @@ import { DebugOverlay } from './DebugOverlay';
 
 import { EditorSidebar } from './components/EditorSidebar';
 
+import { saveContract } from '@/app/actions/save-contract';
+import { useRouter } from 'next/navigation';
+
 interface EditorLayoutProps {
   children?: React.ReactNode;
   fileName: string;
@@ -28,26 +31,67 @@ interface EditorLayoutProps {
 }
 
 export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData }: EditorLayoutProps) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaved(true);
-      setIsSaving(false);
-    }, 1500);
-  };
-
-  
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState(initialData?.conditions || "");
   const [comments, setComments] = useState(initialData?.comments || "");
   const [contractOwner, setContractOwner] = useState<string[]>(initialData?.contractOwner ? [initialData.contractOwner] : []);
   const [deputy, setDeputy] = useState<string[]>(initialData?.deputy ? [initialData.deputy] : []);
   const [contractManager, setContractManager] = useState<string[]>(initialData?.contractManager ? [initialData.contractManager] : []);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    
+    try {
+      const formData = new FormData();
+      
+      if (uploadedFile) {
+        formData.append('file', uploadedFile);
+      }
+      
+      const metadata = {
+        title: fileName,
+        contractType,
+        summary,
+        conditions,
+        comments,
+        contractOwner: contractOwner[0] || null,
+        deputy: deputy[0] || null,
+        contractManager: contractManager[0] || null,
+        ...initialData, // Include other initial analysis data
+        // Overwrite with current state
+        summary,
+        conditions,
+        comments,
+      };
+
+      formData.append('metadata', JSON.stringify(metadata));
+      
+      // If we had editable content text, we would append it here
+      // formData.append('content', content);
+
+      const result = await saveContract(formData);
+
+      if (result.success) {
+        setIsSaved(true);
+        // Optional: Redirect or show success
+        // router.push('/dashboard/contracts');
+      } else {
+        console.error('Save failed:', result.error);
+        alert('Failed to save contract: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Error saving:', error);
+      alert('An error occurred while saving.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const [showDebug, setShowDebug] = useState(false);
   const isDebugMode = process.env.NEXT_PUBLIC_DEBUG === 'true';

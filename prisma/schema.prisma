@@ -32,16 +32,33 @@ model Team {
 }
 
 model Contract {
-  id             String   @id @default(cuid())
-  contractNumber String   @unique // displayed ID e.g. "10023"
-  title          String
-  type           String // e.g. "Sponsorship Contract", "License Contract"
-  status         String // e.g. "Active", "Review"
-  userId         String
-  user           User     @relation(fields: [userId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  tasks          Task[]
+  id              String   @id @default(cuid())
+  contractNumber  String   @unique // displayed ID e.g. "10023"
+  title           String
+  type            String // e.g. "Sponsorship Contract", "License Contract"
+  status          String   @default("Draft") // e.g. "Active", "Review", "Draft"
+  
+  // Metadata fields
+  summary         String?  @db.Text
+  conditions      String?  @db.Text
+  contractOwner   String?
+  deputy          String?
+  contractManager String?
+  contractValue   String?
+  startDate       String?
+  endDate         String?
+  renewalDate     String?
+  
+  // File/Content fields
+  fileName        String?
+  content         String?  @db.Text // Extracted text or editor content
+  fileData        Bytes?   // Actual file content if needed
+  
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  tasks           Task[]
 }
 
 model Task {
