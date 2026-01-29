@@ -117,7 +117,7 @@ export function Hero() {
                                  <div className="w-3 h-3 rounded-full bg-[#CCFF00] border border-black"></div>
                                  <div className="w-3 h-3 rounded-full bg-white border border-black"></div>
                              </div>
-                             <div className="text-[#CCFF00] font-mono text-xs uppercase tracking-widest">Analysis_Protocol_v2.0</div>
+                             <div className="text-[#CCFF00] font-mono text-xs uppercase tracking-widest">CONTRACT_ANALYSIS_ENGINE_V2.0</div>
                              <div className="w-4"></div>
                         </div>
 
@@ -129,12 +129,19 @@ export function Hero() {
                             <div className="relative z-10 space-y-6">
                                 <div className="flex items-center justify-between border-b-2 border-black pb-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 bg-[#CCFF00] border-2 border-black flex items-center justify-center">
-                                            <Zap className="w-6 h-6 text-black" />
+                                        <div className="relative w-16 h-16 bg-white border-2 border-black flex items-center justify-center overflow-hidden shrink-0">
+                                            <FileText className="w-8 h-8 text-black" />
+                                            {!showResults && (
+                                                <motion.div
+                                                    className="absolute top-0 left-0 w-full h-0.5 bg-[#CCFF00] shadow-[0_0_8px_2px_rgba(204,255,0,0.6)] z-10"
+                                                    animate={{ top: ['0%', '100%', '0%'] }}
+                                                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                />
+                                            )}
                                         </div>
                                         <div>
-                                            <h3 className="font-bold font-mono uppercase text-black">WASTE DETECTION</h3>
-                                            <p className="text-xs font-mono text-gray-500">STATUS: SCANNING</p>
+                                            <h3 className="font-bold font-mono uppercase text-black">CONTRACT AUDIT</h3>
+                                            <p className="text-xs font-mono text-gray-500 mt-1">TARGET: SERVICE_AGREEMENT_2024.PDF</p>
                                         </div>
                                     </div>
                                     <div className="px-2 py-1 bg-black text-white text-xs font-mono uppercase">Live</div>
@@ -142,7 +149,7 @@ export function Hero() {
 
                                 {/* Steps */}
                                 <div className="space-y-4">
-                                     {steps.map((step, index) => {
+                                    {steps.map((step, index) => {
                                         let status: 'waiting' | 'loading' | 'done' = 'waiting';
                                         if (index < currentStep) status = 'done';
                                         else if (index === currentStep) status = 'loading';
@@ -150,16 +157,48 @@ export function Hero() {
                                         return (
                                             <div key={step} className="flex items-center gap-4 group">
                                                 <div className={`
-                                                    w-6 h-6 border-2 border-black flex items-center justify-center transition-all duration-0
+                                                    w-6 h-6 border-2 border-black flex items-center justify-center transition-all duration-300
                                                     ${status === 'done' ? 'bg-black text-[#CCFF00]' : 
-                                                    status === 'loading' ? 'bg-[#CCFF00] text-black' : 'bg-white text-gray-300'}
+                                                    status === 'loading' ? 'bg-[#CCFF00] text-black scale-110' : 'bg-white text-gray-300'}
                                                 `}>
-                                                    {status === 'done' ? <Check className="w-4 h-4" /> : 
-                                                     status === 'loading' ? <div className="w-2 h-2 bg-black animate-pulse" /> : 
-                                                     <div className="w-2 h-2 bg-gray-200" />}
+                                                    <AnimatePresence mode="wait">
+                                                        {status === 'done' ? (
+                                                            <motion.div
+                                                                key="check"
+                                                                initial={{ scale: 0 }}
+                                                                animate={{ scale: 1 }}
+                                                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                                            >
+                                                                <Check className="w-4 h-4" />
+                                                            </motion.div>
+                                                        ) : status === 'loading' ? (
+                                                            <motion.div 
+                                                                key="loading"
+                                                                animate={{ rotate: 360 }}
+                                                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                                            >
+                                                                <Loader2 className="w-3 h-3" />
+                                                            </motion.div>
+                                                        ) : (
+                                                            <div key="dot" className="w-2 h-2 bg-gray-200" />
+                                                        )}
+                                                    </AnimatePresence>
                                                 </div>
                                                 <div className="flex-1">
-                                                    <p className={`font-mono text-sm uppercase transition-colors ${status === 'waiting' ? 'text-gray-400' : 'text-black font-bold'}`}>{step}</p>
+                                                    <p className={`font-mono text-sm uppercase transition-all duration-300 ${
+                                                        status === 'waiting' ? 'text-gray-400' : 
+                                                        status === 'loading' ? 'text-black font-black tracking-wider' : 
+                                                        'text-black font-bold'
+                                                    }`}>{step}</p>
+                                                    {status === 'loading' && (
+                                                        <motion.div 
+                                                            layoutId="active-step-indicator"
+                                                            className="h-0.5 bg-[#CCFF00] mt-1 origin-left"
+                                                            initial={{ scaleX: 0 }}
+                                                            animate={{ scaleX: 1 }}
+                                                            transition={{ duration: 1.5, ease: "easeInOut" }}
+                                                        />
+                                                    )}
                                                 </div>
                                             </div>
                                         );

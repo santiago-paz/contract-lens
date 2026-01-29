@@ -26,7 +26,7 @@ const translations = {
       titleLine2: "HIDDEN WASTE",
       titleHighlight: "They are cash flows.",
       titleEnd: "Control them.",
-      subtitle: "TOTAL SYSTEM VISIBILITY. We auto-classify every file, organize by vendor, and extract every expiration date. Stop managing folders and start commanding your data.",
+      subtitle: "TOTAL SYSTEM VISIBILITY. We auto-classify every contract, organize by vendor, and extract every expiration date. Stop managing folders and start commanding your legal data.",
       cta: "START AUDIT",
       unstructured: "UNSTRUCTURED DATA",
       raw: "RAW DOCUMENT",
@@ -67,7 +67,7 @@ const translations = {
       ]
     },
     bento: {
-      title: "More Than Files: A Command Center",
+      title: "More Than Storage: A Contract Command Center",
       subtitle: "Split Berlin is a complete suite for managing your contract lifecycle.",
       ingestion: {
         title: "Smart Ingestion",
@@ -134,7 +134,7 @@ const translations = {
     teams: {
       title: "Chaos into clarity.",
       titleHighlight: "One platform, endless utility.",
-      subtitle: "Stop chasing documents. Start driving strategy. We turn your static files into actionable data for every stakeholder in your organization.",
+      subtitle: "Stop chasing contracts. Start driving strategy. We turn your static agreements into actionable data for every stakeholder in your organization.",
       cta: "Talk to our experts",
       legal: {
         title: "Legal Teams",
@@ -197,7 +197,7 @@ const translations = {
       titleLine2: "ELIMINIEREN",
       titleHighlight: "Sie sind Cashflow.",
       titleEnd: "Behalten Sie die Kontrolle.",
-      subtitle: "TOTALE SYSTEMÜBERSICHT. Wir klassifizieren jede Datei, organisieren nach Anbieter und extrahieren jedes Ablaufdatum. Hören Sie auf, Ordner zu verwalten – übernehmen Sie das Kommando.",
+      subtitle: "TOTALE SYSTEMÜBERSICHT. Wir klassifizieren jeden Vertrag, organisieren nach Anbieter und extrahieren jedes Ablaufdatum. Hören Sie auf, Ordner zu verwalten – übernehmen Sie das Kommando.",
       cta: "AUDIT STARTEN",
       unstructured: "UNSTRUKTURIERT",
       raw: "ROHDATEN",
@@ -238,7 +238,7 @@ const translations = {
       ]
     },
     bento: {
-      title: "Mehr als Dateien: Ein Kommandozentrum",
+      title: "Mehr als Speicher: Ein Vertrags-Kommandozentrum",
       subtitle: "Split Berlin ist eine Komplettlösung für Ihr Vertragsmanagement.",
       ingestion: {
         title: "Smarte Erfassung",
@@ -305,7 +305,7 @@ const translations = {
     teams: {
       title: "Vom Chaos zur Klarheit.",
       titleHighlight: "Eine Plattform, unendlicher Nutzen.",
-      subtitle: "Hören Sie auf, Dokumente zu jagen. Beginnen Sie, Strategien voranzutreiben. Wir verwandeln Ihre statischen Dateien in umsetzbare Daten für jeden Stakeholder in Ihrer Organisation.",
+      subtitle: "Hören Sie auf, Verträge zu jagen. Beginnen Sie, Strategien voranzutreiben. Wir verwandeln Ihre statischen Vereinbarungen in umsetzbare Daten für jeden Stakeholder in Ihrer Organisation.",
       cta: "Sprechen Sie mit unseren Experten",
       legal: {
         title: "Rechtsabteilungen",
