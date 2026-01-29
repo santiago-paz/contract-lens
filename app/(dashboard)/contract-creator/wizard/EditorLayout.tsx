@@ -59,19 +59,15 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
       const metadata = {
         title: fileName,
         contractType,
-        summary,
-        conditions,
-        comments,
-        status, // I added this
         contractOwner: contractOwner[0] || null,
         deputy: deputy[0] || null,
         contractManager: contractManager[0] || null,
         ...initialData, // Include other initial analysis data
         // Overwrite with current state
-        summary,
-        conditions,
-        comments,
-        status, // Ensure status is spread last
+        summary: summary,
+        conditions: conditions,
+        comments: comments,
+        status: status, // Ensure status is spread last
       };
 
       formData.append('metadata', JSON.stringify(metadata));
