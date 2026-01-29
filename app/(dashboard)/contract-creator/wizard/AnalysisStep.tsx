@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Check, FileText, Loader2, AlertCircle, Bug } from 'lucide-react';
+import { Check, FileText, Loader2, AlertCircle, Bug, Terminal } from 'lucide-react';
 import { analyzeContract } from '@/app/actions';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { DebugOverlay } from './DebugOverlay';
@@ -20,11 +20,11 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
   const isDebugMode = process.env.NEXT_PUBLIC_DEBUG === 'true';
 
   const steps = [
-    { id: 'document', label: 'Document', description: 'Analyzing contract document structures' },
-    { id: 'partner', label: 'Partner', description: 'Searching for contract partners' },
-    { id: 'dates', label: 'Dates & Deadlines', description: 'Preparing relevant dates & deadlines' },
-    { id: 'metadata', label: 'Metadata', description: 'Searching for additional contract-relevant data' },
-    { id: 'finish', label: 'Finishing', description: 'Preparing final details' },
+    { id: 'document', label: 'Document Structure', description: 'Parsing header, body, footer blocks' },
+    { id: 'partner', label: 'Entity Detection', description: 'Identifying counter-parties' },
+    { id: 'dates', label: 'Temporal Analysis', description: 'Extracting key dates & deadlines' },
+    { id: 'metadata', label: 'Metadata Extraction', description: 'Classifying contract attributes' },
+    { id: 'finish', label: 'Finalizing', description: 'Compiling results object' },
   ];
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
 
   if (error) {
     return (
-        <div className="w-full max-w-5xl mx-auto animate-fade-in">
+        <div className="w-full max-w-5xl mx-auto animate-fade-in font-mono">
              <DebugOverlay 
                isOpen={showDebug} 
                onClose={() => setShowDebug(false)} 
@@ -95,22 +95,22 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
              />
              
              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg">
-                    <FileText className="w-6 h-6 text-blue-600" />
+                <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
+                <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+                    <FileText className="w-6 h-6" />
                 </div>
-                New Contract
+                Analysis Failed
                 </h2>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center">
-                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white border-2 border-black shadow-hard p-12 text-center">
+                <div className="w-16 h-16 bg-red-600 text-white flex items-center justify-center mx-auto mb-4 border-2 border-black shadow-hard-sm">
                     <AlertCircle className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis Failed</h3>
-                <p className="text-gray-500 mb-8">{error}</p>
+                <h3 className="text-lg font-bold text-black uppercase mb-2">Process Terminated</h3>
+                <p className="text-gray-600 mb-8 uppercase text-sm">{error}</p>
                 <div className="flex justify-center gap-4">
-                    <button onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50">
-                        Cancel
+                    <button onClick={onCancel} className="px-6 py-3 border-2 border-black bg-white hover:bg-black hover:text-white uppercase font-bold text-sm transition-colors">
+                        Abort
                     </button>
                     {/* Fallback to manual entry if AI fails */}
                     <button 
@@ -137,7 +137,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                               comments: null
                             });
                         }} 
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        className="px-6 py-3 bg-black text-[#CCFF00] border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] uppercase font-bold text-sm transition-all"
                     >
                         Continue Manually
                     </button>
@@ -145,10 +145,10 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                     {isDebugMode && (
                       <button 
                         onClick={() => setShowDebug(true)}
-                        className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 flex items-center gap-2"
+                        className="px-4 py-2 bg-gray-900 text-white hover:bg-gray-800 flex items-center gap-2 font-mono text-xs uppercase"
                       >
                         <Bug className="w-4 h-4" />
-                        Debug Error
+                        Debug
                       </button>
                     )}
                 </div>
@@ -159,78 +159,93 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
 
 
   return (
-    <div className="w-full max-w-5xl mx-auto animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto animate-fade-in font-mono">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <div className="p-2 bg-blue-50 rounded-lg">
-            <FileText className="w-6 h-6 text-blue-600" />
+        <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
+          <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+            <Terminal className="w-6 h-6" />
           </div>
-          New Contract
+          System Processing
         </h2>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 min-h-[500px] flex">
+      <div className="bg-white border-2 border-black shadow-hard p-0 flex min-h-[500px]">
         {/* Left: Uploaded File Info */}
-        <div className="w-1/2 pr-12 border-r border-gray-100 flex flex-col items-center justify-center text-center">
-            <div className="w-24 h-24 bg-red-50 rounded-xl flex items-center justify-center mb-4 relative group">
-                <FileText className="w-10 h-10 text-red-500" />
-                <div className="absolute -bottom-2 -right-2 bg-green-500 text-white p-1 rounded-full">
-                    <Check className="w-3 h-3" />
+        <div className="w-1/3 border-r-2 border-black p-8 bg-gray-50 flex flex-col">
+            <div className="mb-8">
+                <span className="text-[10px] font-bold uppercase text-gray-500 block mb-2">Target File</span>
+                <div className="p-4 bg-white border-2 border-black shadow-hard-sm">
+                    <FileText className="w-8 h-8 text-black mb-2" />
+                    <h3 className="font-bold text-black text-xs uppercase line-clamp-2 leading-tight break-all">{file.name}</h3>
+                    <p className="text-[10px] text-gray-500 mt-1 uppercase">{(file.size / 1024).toFixed(2)} KB</p>
                 </div>
             </div>
             
-            <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1 max-w-[250px]">{file.name}</h3>
-            <p className="text-sm text-gray-500 mb-2">Main Contract Document</p>
-            <div className="text-xs font-medium bg-blue-50 text-blue-700 px-2 py-1 rounded mb-8">
-                Data extractable
+            <div className="mt-auto">
+                <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse"></div>
+                    <span className="text-xs font-bold uppercase text-black">Processing...</span>
+                </div>
+                <button 
+                    onClick={onCancel}
+                    className="text-xs font-bold text-red-600 hover:text-red-700 uppercase hover:underline"
+                >
+                    Abort Operation
+                </button>
             </div>
-            
-            <button 
-                onClick={onCancel}
-                className="text-sm text-gray-500 hover:text-gray-900 underline"
-            >
-                Cancel
-            </button>
         </div>
 
         {/* Right: Analysis Steps */}
-        <div className="w-1/2 pl-12 flex flex-col justify-center">
-            <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">AI is analyzing your contract...</h3>
-            </div>
+        <div className="w-2/3 p-0 bg-black text-[#CCFF00] font-mono relative overflow-hidden">
+            {/* CRT Effect Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
             
-            <div className="space-y-6">
-                {steps.map((step, index) => {
-                    const isCompleted = completedSteps.includes(step.id);
-                    // Next is the one immediately after the last completed one, or the first one if none completed
-                    const isNext = !isCompleted && (index === 0 || completedSteps.includes(steps[index-1].id));
-                    
-                    return (
-                        <div key={step.id} className="flex items-start gap-4">
-                            <div className={`
-                                w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
-                                ${isCompleted ? 'bg-green-500 text-white' : isNext ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-300'}
-                                transition-colors duration-500
-                            `}>
-                                {isCompleted ? (
-                                    <Check className="w-3.5 h-3.5" />
-                                ) : isNext ? (
-                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                ) : (
-                                    <div className="w-2 h-2 rounded-full bg-current" />
-                                )}
+            <div className="p-8 relative z-20 h-full flex flex-col">
+                <div className="border-b border-[#CCFF00]/30 pb-4 mb-6 flex justify-between items-end">
+                    <h3 className="text-sm font-bold uppercase tracking-widest">Analysis Protocol v2.4</h3>
+                    <span className="text-[10px] opacity-70">PID: {Math.floor(Math.random() * 99999)}</span>
+                </div>
+                
+                <div className="space-y-6 flex-1">
+                    {steps.map((step, index) => {
+                        const isCompleted = completedSteps.includes(step.id);
+                        const isNext = !isCompleted && (index === 0 || completedSteps.includes(steps[index-1].id));
+                        
+                        return (
+                            <div key={step.id} className="flex items-start gap-4 group">
+                                <div className="w-4 flex justify-center mt-1">
+                                    {isCompleted ? (
+                                        <span className="text-[#CCFF00] font-bold">OK</span>
+                                    ) : isNext ? (
+                                        <Loader2 className="w-4 h-4 animate-spin text-[#CCFF00]" />
+                                    ) : (
+                                        <span className="text-gray-600">..</span>
+                                    )}
+                                </div>
+                                <div className="flex-1">
+                                    <div className="flex justify-between items-baseline">
+                                        <h4 className={`text-sm font-bold uppercase tracking-wide ${isCompleted || isNext ? 'text-white' : 'text-gray-600'}`}>
+                                            {step.label}
+                                        </h4>
+                                        {(isCompleted || isNext) && (
+                                            <span className="text-[10px] text-[#CCFF00] opacity-50 uppercase">
+                                                {isCompleted ? 'Done' : 'Running'}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className={`text-xs mt-1 uppercase ${isCompleted || isNext ? 'text-[#CCFF00]/70' : 'text-gray-700'}`}>
+                                        {step.description}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 className={`text-sm font-medium ${isCompleted || isNext ? 'text-gray-900' : 'text-gray-400'}`}>
-                                    {step.label}
-                                </h4>
-                                <p className={`text-xs ${isCompleted || isNext ? 'text-gray-500' : 'text-gray-300'}`}>
-                                    {step.description}
-                                </p>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-[#CCFF00]/30 text-[10px] text-[#CCFF00]/50 uppercase flex justify-between">
+                    <span>Mem: 4096KB OK</span>
+                    <span>Core: Active</span>
+                </div>
             </div>
         </div>
       </div>

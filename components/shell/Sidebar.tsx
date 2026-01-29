@@ -12,7 +12,8 @@ import {
   Menu,
   User,
   Users,
-  LogOut
+  LogOut,
+  Terminal
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -63,21 +64,26 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 relative z-20",
+        "h-screen bg-white border-r border-black flex flex-col transition-all duration-300 relative z-20",
         isCollapsed ? "w-20" : "w-64"
       )}
     >
       {/* Logo Area */}
       <div className={cn(
-        "h-16 flex items-center px-6 border-b border-gray-100",
+        "h-16 flex items-center px-6 border-b border-black bg-black text-white",
         isCollapsed ? "justify-center px-0" : "justify-between"
       )}>
         {!isCollapsed && (
-          <span className="text-xl font-bold text-blue-600 truncate">Split Berlin</span>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-[#CCFF00] border border-white flex items-center justify-center">
+               <span className="text-black font-mono font-bold text-xs leading-none">S</span>
+            </div>
+            <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Split Berlin</span>
+          </div>
         )}
         <button
           onClick={toggleSidebar}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-500"
+          className="p-1 hover:bg-[#CCFF00] hover:text-black rounded-none border border-transparent hover:border-white transition-colors text-white"
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
@@ -85,15 +91,15 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto py-6 space-y-8">
+      <div className="flex-1 overflow-y-auto py-6 space-y-8 bg-white">
         {NAV_SECTIONS.map((section, idx) => (
           <div key={idx} className="px-4">
             {!isCollapsed && (
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-2">
+              <h3 className="text-[10px] font-bold font-mono text-black uppercase tracking-widest mb-4 px-2 border-b border-black pb-1 inline-block">
                 {section.title}
               </h3>
             )}
-            <div className="space-y-1">
+            <div className="space-y-2">
               {section.items.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
                 return (
@@ -101,20 +107,20 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
+                      "flex items-center gap-3 px-3 py-2.5 transition-all group border border-transparent",
                       isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        ? "bg-[#CCFF00] text-black font-bold font-mono border-black shadow-hard-sm"
+                        : "text-gray-500 font-mono hover:text-black hover:border-black hover:translate-x-1",
                       isCollapsed && "justify-center px-2"
                     )}
                     title={isCollapsed ? item.label : undefined}
                   >
                     <item.icon className={cn(
-                      "w-5 h-5 shrink-0",
-                      isActive ? "text-blue-600" : "text-gray-400 group-hover:text-gray-600"
+                      "w-4 h-4 shrink-0",
+                      isActive ? "text-black" : "text-gray-400 group-hover:text-black"
                     )} />
                     {!isCollapsed && (
-                      <span className="truncate">{item.label}</span>
+                      <span className="truncate text-xs uppercase tracking-wide">{item.label}</span>
                     )}
                   </Link>
                 );
@@ -124,18 +130,18 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         ))}
       </div>
 
-      {/* Footer/User (Optional, if not in TopBar) */}
-      <div className="p-4 border-t border-gray-100">
+      {/* Footer/User */}
+      <div className="p-4 border-t border-black bg-gray-50">
         <button
           onClick={() => logout()}
           className={cn(
-            "flex w-full items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-gray-600 hover:bg-gray-50 hover:text-red-600 group",
+            "flex w-full items-center gap-3 px-3 py-2.5 border border-black shadow-hard-sm bg-white hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all text-black group",
             isCollapsed && "justify-center px-2"
           )}
           title={isCollapsed ? "Sign Out" : undefined}
         >
-          <LogOut className="w-5 h-5 shrink-0 text-gray-400 group-hover:text-red-600" />
-          {!isCollapsed && <span className="truncate">Sign Out</span>}
+          <LogOut className="w-4 h-4 shrink-0 text-black" />
+          {!isCollapsed && <span className="truncate text-xs font-bold font-mono uppercase">Sign Out</span>}
         </button>
       </div>
     </aside>
