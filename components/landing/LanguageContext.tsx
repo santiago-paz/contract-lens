@@ -59,6 +59,9 @@ const translations = {
           liability: "Liability",
           term: "Term",
           payment: "Payment",
+          engineTitle: "AI Contract Engine",
+          readyStatus: "Ready",
+          initialStatus: "Select a component to start drafting.",
           generating: "Generating clause structure based on EU Law...",
           clauseTitle: "Limitation of Liability",
           codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid..."
@@ -304,6 +307,9 @@ const translations = {
           liability: "Haftung",
           term: "Laufzeit",
           payment: "Zahlung",
+          engineTitle: "AI Contract Engine",
+          readyStatus: "Bereit",
+          initialStatus: "Wählen Sie eine Komponente, um den Entwurf zu starten.",
           generating: "Generiere Klauselstruktur nach EU-Recht...",
           clauseTitle: "Haftungsbeschränkung",
           codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten..."
