@@ -46,7 +46,7 @@ export function ContactForm() {
                              </div>
                              <div className="flex flex-col">
                                 <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Split Berlin</span>
-                                <span className="text-[10px] font-mono text-[#CCFF00] uppercase tracking-wider">Secure Channel</span>
+                                <span className="text-[10px] font-mono text-[#CCFF00] uppercase tracking-wider">{t.contact.secureChannel}</span>
                              </div>
                         </div>
                         <h2 className="text-3xl sm:text-4xl font-black font-mono text-white tracking-tighter uppercase mb-2">{t.contact.headerTitle}</h2>

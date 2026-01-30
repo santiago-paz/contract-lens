@@ -36,7 +36,11 @@ const translations = {
           autoRenewal: "AUTOMATIC RENEWAL",
           exitClause: "EXIT CLAUSE",
           annualReview: "ANNUAL REVIEW",
-          days: "Days"
+          days: "Days",
+          cronJobs: "CRON_JOBS: ACTIVE",
+          critical: "CRITICAL",
+          warning: "WARNING",
+          normal: "NORMAL"
         }
       },
       translation: {
@@ -65,7 +69,29 @@ const translations = {
           generating: "Generating clause structure based on EU Law...",
           clauseTitle: "Limitation of Liability",
           codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid...",
-          copyToast: "Of course you can copy elements!"
+          copyToast: "Of course you can copy elements!",
+          module: "MODULE",
+          done: "DONE",
+          clauseGenerated: "CLAUSE_GENERATED",
+          validated: "VALIDATED",
+          snippets: {
+            jurisdiction: [
+                "The exclusive place of jurisdiction for all disputes arising from or in connection with this Agreement shall be Berlin, Germany.",
+                "This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Germany."
+            ],
+            liability: [
+                "The Provider shall be liable for damages caused by intent or gross negligence.",
+                "In case of slight negligence, liability shall be limited to the foreseeable damage typical for this type of contract."
+            ],
+            term: [
+                "This Agreement shall commence on the Effective Date and shall continue for an initial term of twelve (12) months.",
+                "It shall automatically renew for successive periods of twelve (12) months unless terminated by either party."
+            ],
+            payment: [
+                "All fees are due and payable within thirty (30) days from the date of invoice.",
+                "Late payments shall accrue interest at a rate of 9 percentage points above the base interest rate."
+            ]
+          }
         }
       },
       anatomy: {
@@ -81,6 +107,7 @@ const translations = {
     },
     hero: {
       badge: "CONTRACT INTELLIGENCE UNIT",
+      seeSystem: "SEE SYSTEM",
       title: "Infrastructure is destiny.",
       titleLine1: "RESOURCE",
       titleLine2: "MASTERY",
@@ -101,6 +128,9 @@ const translations = {
         date: "Jan 01, 2024",
         riskTitle: "CRITICAL ALERT",
         riskText: "UNAUTHORIZED RENEWAL DETECTED. IMMEDIATE ACTION REQUIRED.",
+        detected: "DETECTED",
+        target: "TARGET",
+        latency: "Latency",
         verified: "Verified",
         complete: "Audit Complete"
       }
@@ -178,6 +208,9 @@ const translations = {
       }
     },
     security: {
+      defenseProtocol: "Defense Protocol v1.0",
+      titlePart1: "Enterprise-Grade",
+      titlePart2: "Fortification",
       encryption: {
         title: "Military-Grade Encryption",
         desc: "AES-256 at rest and in transit. Zero-compromise data protection."
@@ -225,6 +258,7 @@ const translations = {
       title: "Initiate Deployment",
       subtitle: "Enterprise-grade requirements? Our engineering team is ready.",
       headerTitle: "Communication Request",
+      secureChannel: "Secure Channel",
       refCode: "REF: CONTACT",
       officialInquiry: "Official Inquiry",
       section1: "Section 1",
@@ -250,6 +284,8 @@ const translations = {
     footer: {
       ctaTitle: "Operational failure is a choice.",
       ctaButton: "Secure Your Infrastructure",
+      systemDesc: "Advanced Contract Analysis System Operated by Split Berlin GmbH",
+      copyright: "SPLIT BERLIN. ALL RIGHTS RESERVED.",
       rights: "All rights reserved.",
       privacy: "Privacy Protocol",
       terms: "Terms of Service"
@@ -285,7 +321,11 @@ const translations = {
           autoRenewal: "AUTOMATISCHE VERLÄNGERUNG",
           exitClause: "AUSSTIEGSKLAUSEL",
           annualReview: "JÄHRLICHE PRÜFUNG",
-          days: "Tage"
+          days: "Tage",
+          cronJobs: "CRON_JOBS: AKTIV",
+          critical: "KRITISCH",
+          warning: "WARNUNG",
+          normal: "NORMAL"
         }
       },
       translation: {
@@ -314,7 +354,29 @@ const translations = {
           generating: "Generiere Klauselstruktur nach EU-Recht...",
           clauseTitle: "Haftungsbeschränkung",
           codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten...",
-          copyToast: "Natürlich können Sie Elemente kopieren!"
+          copyToast: "Natürlich können Sie Elemente kopieren!",
+          module: "MODUL",
+          done: "FERTIG",
+          clauseGenerated: "KLAUSEL_GENERIERT",
+          validated: "VALIDIERT",
+          snippets: {
+            jurisdiction: [
+                "Der ausschließliche Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist Berlin, Deutschland.",
+                "Dieser Vertrag unterliegt dem Recht der Bundesrepublik Deutschland."
+            ],
+            liability: [
+                "Der Anbieter haftet für Schäden, die durch Vorsatz oder grobe Fahrlässigkeit verursacht wurden.",
+                "Bei leichter Fahrlässigkeit beschränkt sich die Haftung auf den vertragstypischen, vorhersehbaren Schaden."
+            ],
+            term: [
+                "Dieser Vertrag beginnt am Datum des Inkrafttretens und hat eine erste Laufzeit von zwölf (12) Monaten.",
+                "Er verlängert sich automatisch um jeweils weitere zwölf (12) Monate, sofern er nicht von einer Partei gekündigt wird."
+            ],
+            payment: [
+                "Alle Gebühren sind innerhalb von dreißig (30) Tagen nach Rechnungsdatum zur Zahlung fällig.",
+                "Bei Zahlungsverzug werden Verzugszinsen in Höhe von 9 Prozentpunkten über dem Basiszinssatz berechnet."
+            ]
+          }
         }
       },
       anatomy: {
@@ -330,6 +392,7 @@ const translations = {
     },
     hero: {
       badge: "VERTRAGSANALYSE-SYSTEM",
+      seeSystem: "SYSTEM ANSEHEN",
       title: "Infrastruktur ist Schicksal.",
       titleLine1: "RESSOURCEN",
       titleLine2: "DOMINANZ",
@@ -350,6 +413,9 @@ const translations = {
         date: "01. Jan 2024",
         riskTitle: "KRITISCHE WARNUNG",
         riskText: "UNGEWOLLTE VERLÄNGERUNG ERKANNT. SOFORT HANDELN.",
+        detected: "ERKANNT",
+        target: "ZIEL",
+        latency: "Latenz",
         verified: "Verifiziert",
         complete: "Audit abgeschlossen"
       }
@@ -427,6 +493,9 @@ const translations = {
       }
     },
     security: {
+      defenseProtocol: "Abwehrprotokoll v1.0",
+      titlePart1: "Unternehmensweite",
+      titlePart2: "Absicherung",
       encryption: {
         title: "Militärstandard-Verschlüsselung",
         desc: "AES-256 in Ruhe und Übertragung. Kompromissloser Datenschutz."
@@ -474,6 +543,7 @@ const translations = {
       title: "Bereitstellung initiieren",
       subtitle: "Anforderungen auf Unternehmensebene? Unser Engineering-Team ist bereit.",
       headerTitle: "Kommunikationsanfrage",
+      secureChannel: "Sicherer Kanal",
       refCode: "REF: KONTAKT",
       officialInquiry: "Offizielle Anfrage",
       section1: "Abschnitt 1",
@@ -499,6 +569,8 @@ const translations = {
     footer: {
       ctaTitle: "Operatives Versagen ist eine Wahl.",
       ctaButton: "Infrastruktur sichern",
+      systemDesc: "Fortschrittliches Vertragsanalysesystem betrieben von Split Berlin GmbH",
+      copyright: "SPLIT BERLIN. ALLE RECHTE VORBEHALTEN.",
       rights: "Alle Rechte vorbehalten.",
       privacy: "Datenschutzprotokoll",
       terms: "Nutzungsbedingungen"

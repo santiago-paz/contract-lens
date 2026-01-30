@@ -73,7 +73,7 @@ const DeadlinesVisual = () => {
         <div className="w-full h-full flex flex-col p-5 sm:p-8 bg-white relative bg-noise">
             <div className="flex justify-between items-center w-full mb-4 sm:mb-6 shrink-0">
                 <div className="font-mono text-xs font-bold uppercase border border-black px-2 py-1 bg-white">
-                    CRON_JOBS: ACTIVE
+                    {t.bauhaus.deadlines.visual.cronJobs}
                 </div>
                 <div className="animate-pulse">
                     <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
@@ -253,24 +253,12 @@ const AIDraftVisual = () => {
     const getGeneratedText = (component: string) => {
         // Simplified mapping for visual effect
         const textMap: Record<string, string[]> = {
-            [t.bauhaus.aiDraft.visual.jurisdiction]: [
-                "The exclusive place of jurisdiction for all disputes arising from or in connection with this Agreement shall be Berlin, Germany.",
-                "This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Germany."
-            ],
-            [t.bauhaus.aiDraft.visual.liability]: [
-                "The Provider shall be liable for damages caused by intent or gross negligence.",
-                "In case of slight negligence, liability shall be limited to the foreseeable damage typical for this type of contract."
-            ],
-            [t.bauhaus.aiDraft.visual.term]: [
-                "This Agreement shall commence on the Effective Date and shall continue for an initial term of twelve (12) months.",
-                "It shall automatically renew for successive periods of twelve (12) months unless terminated by either party."
-            ],
-            [t.bauhaus.aiDraft.visual.payment]: [
-                "All fees are due and payable within thirty (30) days from the date of invoice.",
-                "Late payments shall accrue interest at a rate of 9 percentage points above the base interest rate."
-            ]
+            [t.bauhaus.aiDraft.visual.jurisdiction]: t.bauhaus.aiDraft.visual.snippets.jurisdiction,
+            [t.bauhaus.aiDraft.visual.liability]: t.bauhaus.aiDraft.visual.snippets.liability,
+            [t.bauhaus.aiDraft.visual.term]: t.bauhaus.aiDraft.visual.snippets.term,
+            [t.bauhaus.aiDraft.visual.payment]: t.bauhaus.aiDraft.visual.snippets.payment
         };
-        return textMap[component] || ["CLAUSE_GENERATED", "VALIDATED"];
+        return textMap[component] || [t.bauhaus.aiDraft.visual.clauseGenerated, t.bauhaus.aiDraft.visual.validated];
     };
 
     return (
@@ -404,7 +392,7 @@ const AIDraftVisual = () => {
                                         <div className="mt-4 pt-4 border-t border-slate-900 font-mono text-[9px] text-slate-500 flex justify-between items-center">
                                             <span className="flex items-center gap-2">
                                                 <span className="text-slate-500">{`>`}</span>
-                                                <span className="text-slate-500 uppercase">Module:</span>
+                                                <span className="text-slate-500 uppercase">{t.bauhaus.aiDraft.visual.module}:</span>
                                                 <span className="text-[var(--accent)] font-bold">{activeComponent.toUpperCase()}</span>
                                             </span>
                                             {generationState === 'completed' && (
@@ -413,7 +401,7 @@ const AIDraftVisual = () => {
                                                     animate={{ scale: 1 }}
                                                     className="text-[var(--accent)] font-bold"
                                                 >
-                                                    DONE
+                                                    {t.bauhaus.aiDraft.visual.done}
                                                 </motion.span>
                                             )}
                                         </div>

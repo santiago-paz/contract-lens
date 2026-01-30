@@ -20,11 +20,11 @@ export function Security() {
                 className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white mb-8 border-2 border-black shadow-hard-sm"
             >
                 <Shield className="w-5 h-5 text-[#CCFF00]" />
-                <span className="text-base font-bold font-mono uppercase tracking-widest">Defense Protocol v1.0</span>
+                <span className="text-base font-bold font-mono uppercase tracking-widest">{t.security.defenseProtocol}</span>
             </motion.div>
             
             <h2 className="text-4xl sm:text-5xl font-black text-black uppercase tracking-tighter mb-4">
-                Enterprise-Grade <span className="bg-black text-white px-2">Fortification</span>
+                {t.security.titlePart1} <span className="bg-black text-white px-2">{t.security.titlePart2}</span>
             </h2>
         </div>
 
