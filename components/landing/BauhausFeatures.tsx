@@ -68,14 +68,16 @@ const FeatureSection = ({
 const DeadlinesVisual = () => {
     const { t } = useLanguage();
     return (
-        <div className="w-full h-full flex flex-col p-8 bg-white relative bg-noise">
-            <div className="absolute top-4 right-4 animate-pulse">
-                <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
+        <div className="w-full h-full flex flex-col p-6 bg-white relative bg-noise">
+            <div className="flex justify-between items-center w-full mb-4">
+                <div className="font-mono text-xs font-bold uppercase border border-black px-2 py-1 bg-white">
+                    CRON_JOBS: ACTIVE
+                </div>
+                <div className="animate-pulse">
+                    <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
+                </div>
             </div>
-            <div className="absolute top-4 left-4 font-mono text-xs font-bold uppercase border border-black px-2 py-1 bg-white">
-                CRON_JOBS: ACTIVE
-            </div>
-            <div className="space-y-8 my-auto">
+            <div className="space-y-4 flex-1 flex flex-col justify-center">
                 {[
                     { days: 2, label: t.bauhaus.deadlines.visual.autoRenewal, status: "CRITICAL" },
                     { days: 15, label: t.bauhaus.deadlines.visual.exitClause, status: "WARNING" },
@@ -86,21 +88,21 @@ const DeadlinesVisual = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: i * 0.5, duration: 0.5 }}
-                        className="flex items-center gap-6 group"
+                        className="flex items-center gap-4 group"
                     >
                         <div className={`
-                            w-20 h-20 border-2 border-black flex flex-col items-center justify-center shrink-0 shadow-hard-sm transition-transform group-hover:scale-105
+                            w-16 h-16 border-2 border-black flex flex-col items-center justify-center shrink-0 shadow-hard-sm transition-transform group-hover:scale-105
                             ${item.status === 'CRITICAL' ? 'bg-[var(--accent)] text-black' : 'bg-white text-black'}
                         `}>
-                            <span className="text-3xl font-black leading-none">{item.days}</span>
-                            <span className="text-[10px] font-bold uppercase">{t.bauhaus.deadlines.visual.days}</span>
+                            <span className="text-2xl font-black leading-none">{item.days}</span>
+                            <span className="text-[9px] font-bold uppercase">{t.bauhaus.deadlines.visual.days}</span>
                         </div>
-                        <div className="flex-1 border-b-2 border-gray-200 pb-4 group-hover:border-black transition-colors relative">
-                            <div className="flex justify-between items-center mb-2">
-                                <span className="font-bold font-mono text-sm uppercase tracking-wide">{item.label}</span>
-                                {item.status === 'CRITICAL' && <AlertTriangle className="w-5 h-5 text-black fill-[var(--accent)]" />}
+                        <div className="flex-1 border-b-2 border-gray-200 pb-2 group-hover:border-black transition-colors relative">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="font-bold font-mono text-xs uppercase tracking-wide">{item.label}</span>
+                                {item.status === 'CRITICAL' && <AlertTriangle className="w-4 h-4 text-black fill-[var(--accent)]" />}
                             </div>
-                            <div className="w-full h-3 bg-gray-100 border border-black overflow-hidden relative">
+                            <div className="w-full h-2 bg-gray-100 border border-black overflow-hidden relative">
                                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.1)_25%,rgba(0,0,0,0.1)_50%,transparent_50%,transparent_75%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.1)_100%)] bg-[size:10px_10px] opacity-20"></div>
                                 <motion.div 
                                     className={`h-full border-r-2 border-black ${item.status === 'CRITICAL' ? 'bg-[var(--accent)]' : 'bg-black'}`}
@@ -366,7 +368,7 @@ export function BauhausFeatures() {
             <h2 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter mb-8 leading-[1.1] sm:leading-[0.85] break-words hyphens-auto">
                 {t.bauhaus.header.title1} <span className="relative inline-block px-4"><span className="absolute inset-0 bg-[var(--accent)] transform -skew-x-6 border-2 border-black shadow-hard-sm"></span><span className="relative z-10">{t.bauhaus.header.title2}</span></span>
                 <br className="hidden md:block" />
-                {t.bauhaus.header.title3} <span className="border-b-8 border-black pb-1">{t.bauhaus.header.title4}</span>
+                {t.bauhaus.header.title3} <span className="inline-block border-b-8 border-black pb-2 sm:pb-4 leading-none">{t.bauhaus.header.title4}</span>
             </h2>
             <p className="text-xl md:text-3xl font-mono text-black/70 max-w-3xl mx-auto leading-relaxed">
                 {t.bauhaus.header.subtitle}
