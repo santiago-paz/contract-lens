@@ -20,6 +20,61 @@ const translations = {
       teams: "Teams",
       security: "Security"
     },
+    bauhaus: {
+      header: {
+        title1: "Not just another",
+        title2: "management tool.",
+        title3: "We are your",
+        title4: "unfair advantage.",
+        subtitle: "Fast and powerful where others are merely safe and stable."
+      },
+      deadlines: {
+        title: "Deadlines",
+        subtitle: "Time doesn't forgive. We do.",
+        description: "Preventive visualization of critical deadlines. Alerting you before risk materializes, not after.",
+        visual: {
+          autoRenewal: "AUTOMATIC RENEWAL",
+          exitClause: "EXIT CLAUSE",
+          annualReview: "ANNUAL REVIEW",
+          days: "Days"
+        }
+      },
+      translation: {
+        title: "Simultaneous Translation",
+        subtitle: "Borderless contracts, barrier-free laws",
+        description: "Not Google Translate. Deep legal context translation preserving format and validity in real-time.",
+        visual: {
+            original: "Original (DE)",
+            translated: "Translated (EN)"
+        }
+      },
+      aiDraft: {
+        title: "AI Draft Creation",
+        subtitle: "Legal Architecture, not just text",
+        description: "Outperforming generic models using structured templates and RAG with real jurisprudence for bulletproof contracts.",
+        visual: {
+          status: "ONLINE",
+          components: "COMPONENTS",
+          jurisdiction: "Jurisdiction",
+          liability: "Liability",
+          term: "Term",
+          payment: "Payment",
+          generating: "Generating clause structure based on EU Law...",
+          clauseTitle: "Limitation of Liability",
+          codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid..."
+        }
+      },
+      anatomy: {
+        title: "Anatomical Structure",
+        subtitle: "Contract Anatomy",
+        description: "Surgical breakdown of every clause and obligation. Understand the bone structure of your agreements instantly.",
+        visual: {
+          parties: "Parties",
+          obligations: "Obligations",
+          termination: "Termination"
+        }
+      }
+    },
     hero: {
       title: "Infrastructure is destiny.",
       titleLine1: "RESOURCE",
@@ -195,6 +250,61 @@ const translations = {
       features: "Funktionen",
       teams: "Teams",
       security: "Sicherheit"
+    },
+    bauhaus: {
+      header: {
+        title1: "Nicht nur ein weiteres",
+        title2: "Verwaltungstool.",
+        title3: "Wir sind Ihr",
+        title4: "unfairer Vorteil.",
+        subtitle: "Schnell und leistungsstark, wo andere nur sicher und stabil sind."
+      },
+      deadlines: {
+        title: "Fristen",
+        subtitle: "Die Zeit verzeiht nicht. Wir schon.",
+        description: "Präventive Visualisierung kritischer Fristen. Warnung bevor das Risiko eintritt, nicht danach.",
+        visual: {
+          autoRenewal: "AUTOMATISCHE VERLÄNGERUNG",
+          exitClause: "AUSSTIEGSKLAUSEL",
+          annualReview: "JÄHRLICHE PRÜFUNG",
+          days: "Tage"
+        }
+      },
+      translation: {
+        title: "Simultanübersetzung",
+        subtitle: "Grenzenlose Verträge, Gesetze ohne Barrieren",
+        description: "Kein Google Translate. Übersetzung mit tiefem juristischen Kontext unter Wahrung von Format und Gültigkeit in Echtzeit.",
+        visual: {
+            original: "Original (DE)",
+            translated: "Übersetzt (EN)"
+        }
+      },
+      aiDraft: {
+        title: "KI-Entwurfserstellung",
+        subtitle: "Rechtsarchitektur, nicht nur Text",
+        description: "Übertrifft generische Modelle durch strukturierte Vorlagen und RAG mit echter Rechtsprechung für kugelsichere Verträge.",
+        visual: {
+          status: "ONLINE",
+          components: "KOMPONENTEN",
+          jurisdiction: "Gerichtsstand",
+          liability: "Haftung",
+          term: "Laufzeit",
+          payment: "Zahlung",
+          generating: "Generiere Klauselstruktur nach EU-Recht...",
+          clauseTitle: "Haftungsbeschränkung",
+          codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten..."
+        }
+      },
+      anatomy: {
+        title: "Anatomische Struktur",
+        subtitle: "Vertragsanatomie",
+        description: "Chirurgische Aufschlüsselung jeder Klausel und Verpflichtung. Verstehen Sie die Knochenstruktur Ihrer Verträge sofort.",
+        visual: {
+          parties: "Parteien",
+          obligations: "Pflichten",
+          termination: "Kündigung"
+        }
+      }
     },
     hero: {
       title: "Infrastruktur ist Schicksal.",

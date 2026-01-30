@@ -2,8 +2,7 @@
 
 import { Navbar } from '@/components/landing/Navbar';
 import { Hero } from '@/components/landing/Hero';
-import { ProductShowcase } from '@/components/landing/ProductShowcase';
-import { BentoGrid } from '@/components/landing/BentoGrid';
+import { BauhausFeatures } from '@/components/landing/BauhausFeatures';
 import { TeamSection } from '@/components/landing/TeamSection';
 import { Security } from '@/components/landing/Security';
 import { ContactForm } from '@/components/landing/ContactForm';
@@ -16,11 +15,10 @@ export default function LandingPage() {
   return (
     <LanguageProvider>
       <CookieProvider>
-        <main className="min-h-screen bg-white text-black selection:bg-[#CCFF00] selection:text-black overflow-x-hidden max-w-[100vw]">
+        <main className="min-h-screen bg-white text-black selection:bg-[var(--accent)] selection:text-white overflow-x-hidden max-w-[100vw]">
           <Navbar />
           <Hero />
-          <ProductShowcase />
-          <BentoGrid />
+          <BauhausFeatures />
           <TeamSection />
           <Security />
           <ContactForm />
