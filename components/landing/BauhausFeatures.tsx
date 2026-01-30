@@ -51,7 +51,7 @@ const FeatureSection = ({
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         className="flex-1 w-full"
       >
-        <div className="relative w-full aspect-[4/3] bg-gray-50 border-hard p-2 shadow-hard-lg">
+        <div className="relative w-full bg-gray-50 border-hard p-2 shadow-hard-lg">
             <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
             <div className="w-full h-full bg-white border-hard overflow-hidden relative">
                 {children}
@@ -70,7 +70,7 @@ const DeadlinesVisual = () => {
             <div className="absolute top-4 right-4 animate-pulse">
                 <div className="w-3 h-3 bg-[var(--accent)] rounded-full"></div>
             </div>
-            <div className="space-y-6 mt-4">
+            <div className="space-y-6 my-4">
                 {[
                     { days: 2, label: t.bauhaus.deadlines.visual.autoRenewal, status: "CRITICAL" },
                     { days: 15, label: t.bauhaus.deadlines.visual.exitClause, status: "WARNING" },
@@ -123,9 +123,11 @@ const TranslationVisual = () => {
             onMouseLeave={() => setHovered(false)}
         >
             {/* Left: Original */}
-            <div className="w-1/2 h-full bg-white p-6 border-r border-black/10 flex flex-col">
-                <h5 className="text-xs font-bold uppercase text-gray-400 mb-6">{t.bauhaus.translation.visual.original}</h5>
-                <div className="space-y-4 opacity-100 flex-1">
+            <div className="w-1/2 h-full bg-white p-4 sm:p-6 border-r border-black/10 flex flex-col relative">
+                <div className="h-6 flex items-center mb-4 sm:mb-6">
+                     <h5 className="text-xs font-bold uppercase text-gray-400">{t.bauhaus.translation.visual.original}</h5>
+                </div>
+                <div className="space-y-4 opacity-100 flex-1 overflow-hidden">
                     {/* Header */}
                     <div className="h-3 w-1/2 bg-black/80 rounded-sm mb-2"></div>
                     
@@ -154,16 +156,19 @@ const TranslationVisual = () => {
                          <div className="h-2 w-full bg-black/60 rounded-sm"></div>
                          <div className="h-2 w-4/5 bg-black/60 rounded-sm"></div>
                          <div className="h-2 w-full bg-black/60 rounded-sm"></div>
+                         <div className="h-2 w-3/4 bg-black/60 rounded-sm"></div>
                     </div>
                 </div>
+                {/* Gradient Overlay */}
+                <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent z-10"></div>
             </div>
 
             {/* Right: Translated */}
-            <div className="w-1/2 h-full bg-gray-50 p-6 flex flex-col">
-                <div className="mb-6">
+            <div className="w-1/2 h-full bg-gray-50 p-4 sm:p-6 flex flex-col relative">
+                <div className="h-6 flex items-center mb-4 sm:mb-6">
                     <h5 className="text-xs font-bold uppercase bg-[var(--accent)] text-black inline-block px-1">{t.bauhaus.translation.visual.translated}</h5>
                 </div>
-                <div className="space-y-4 flex-1">
+                <div className="space-y-4 flex-1 overflow-hidden">
                      {/* Header */}
                     <motion.div animate={{ opacity: hovered ? 1 : 0.5 }} className="h-3 w-1/2 bg-black/80 rounded-sm mb-2"></motion.div>
 
@@ -192,8 +197,11 @@ const TranslationVisual = () => {
                          <motion.div animate={{ opacity: hovered ? 1 : 0.5 }} className="h-2 w-11/12 bg-black/60 rounded-sm"></motion.div>
                          <motion.div animate={{ opacity: hovered ? 1 : 0.5 }} className="h-2 w-full bg-black/60 rounded-sm"></motion.div>
                          <motion.div animate={{ opacity: hovered ? 1 : 0.5 }} className="h-2 w-5/6 bg-black/60 rounded-sm"></motion.div>
+                         <motion.div animate={{ opacity: hovered ? 1 : 0.5 }} className="h-2 w-3/4 bg-black/60 rounded-sm"></motion.div>
                     </div>
                 </div>
+                {/* Gradient Overlay */}
+                <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-50 to-transparent z-10"></div>
             </div>
 
             {/* Scanning Line */}
@@ -278,6 +286,11 @@ const AnatomyVisual = () => {
                         <div className="h-1 w-full bg-gray-300"></div>
                         <div className="h-1 w-full bg-gray-300"></div>
                     </div>
+                    <div className="space-y-1 pt-[74px]">
+                        <div className="h-1 w-full bg-gray-300"></div>
+                        <div className="h-1 w-4/5 bg-gray-300"></div>
+                        <div className="h-1 w-1/2 bg-gray-300"></div>
+                    </div>
                 </div>
                 
                 {/* Labels */}
@@ -287,7 +300,7 @@ const AnatomyVisual = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
                 >
-                    <div className="w-8 h-[1px] bg-[var(--accent)]"></div>
+                    <div className="w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-black text-white px-1">{t.bauhaus.anatomy.visual.parties}</span>
                 </motion.div>
 
@@ -297,7 +310,7 @@ const AnatomyVisual = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 }}
                 >
-                    <div className="w-8 h-[1px] bg-[var(--accent)]"></div>
+                    <div className="w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-[var(--accent)] text-black px-1">{t.bauhaus.anatomy.visual.obligations}</span>
                 </motion.div>
                 
@@ -307,7 +320,7 @@ const AnatomyVisual = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.9 }}
                 >
-                    <div className="w-8 h-[1px] bg-[var(--accent)]"></div>
+                    <div className="w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-black text-white px-1">{t.bauhaus.anatomy.visual.termination}</span>
                 </motion.div>
              </div>
