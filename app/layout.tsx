@@ -13,8 +13,48 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Split Berlin",
-  description: "Structured Contract Editor",
+  title: "Split Berlin | The Enterprise Asset OS",
+  description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
+  keywords: [
+    // English
+    "Enterprise Asset OS",
+    "Contract Management",
+    "Forensic Audit",
+    "AI Contract Analysis",
+    "Risk Detection",
+    "Compliance",
+    "Berlin",
+    "Legal Tech",
+    "Structured Data",
+    "Capital Recovery",
+    "Operational Supremacy",
+    // German
+    "Vertragsmanagement",
+    "Digitale Akte",
+    "Künstliche Intelligenz",
+    "Compliance Software",
+    "Vertragsanalyse",
+    "Risikomanagement",
+    "Rechtssicherheit"
+  ],
+  authors: [{ name: "Split Berlin GmbH" }],
+  openGraph: {
+    title: "Split Berlin | The Enterprise Asset OS",
+    description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
+    type: "website",
+    siteName: "Split Berlin",
+    locale: "en_US",
+    alternateLocale: ["de_DE"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Split Berlin | The Enterprise Asset OS",
+    description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
