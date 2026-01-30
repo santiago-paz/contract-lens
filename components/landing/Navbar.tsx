@@ -76,8 +76,7 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <NavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</NavButton>
-              <NavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</NavButton>
+              <NavButton onClick={() => scrollToSection('features')}>{t.nav.features}</NavButton>
               <NavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</NavButton>
               <NavButton onClick={() => scrollToSection('security')}>{t.nav.security}</NavButton>
             </div>
@@ -125,8 +124,7 @@ export function Navbar() {
           >
             <div className="flex flex-col p-6 space-y-6">
               <div className="space-y-4">
-                <MobileNavButton onClick={() => scrollToSection('product-showcase')}>{t.nav.howItWorks}</MobileNavButton>
-                <MobileNavButton onClick={() => scrollToSection('bento-grid')}>{t.nav.features}</MobileNavButton>
+                <MobileNavButton onClick={() => scrollToSection('features')}>{t.nav.features}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>
               </div>

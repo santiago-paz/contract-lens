@@ -202,7 +202,7 @@ export function BentoGrid() {
                     <div className="relative group/alert">
                         <div className="bg-white/5 border border-white/20 p-4 flex items-center gap-4 transition-colors hover:bg-white/10">
                             <div className="w-8 h-8 bg-red-500/20 flex items-center justify-center shrink-0 border border-red-500">
-                                <Bell className="w-4 h-4 text-red-500" />
+                                <Bell className="w-4 h-4 text-red-500 fill-red-500" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold font-mono text-white uppercase">{t.bento.guard.alert1}</p>
@@ -215,7 +215,7 @@ export function BentoGrid() {
                     <div className="relative group/alert">
                         <div className="bg-white/5 border border-white/20 p-4 flex items-center gap-4 transition-colors hover:bg-white/10">
                             <div className="w-8 h-8 bg-blue-500/20 flex items-center justify-center shrink-0 border border-blue-500">
-                                <FileText className="w-4 h-4 text-blue-500" />
+                                <FileText className="w-4 h-4 text-blue-500 fill-blue-500" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold font-mono text-white uppercase">{t.bento.guard.alert2}</p>
@@ -228,7 +228,7 @@ export function BentoGrid() {
                     <div className="relative group/alert">
                         <div className="bg-white/5 border border-white/20 p-4 flex items-center gap-4 opacity-80 hover:opacity-100 transition-opacity">
                              <div className="w-8 h-8 bg-amber-500/20 flex items-center justify-center shrink-0 border border-amber-500">
-                                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                                <AlertTriangle className="w-4 h-4 text-amber-500 fill-amber-500" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold font-mono text-white uppercase">{t.bento.guard.alert3}</p>
@@ -241,7 +241,7 @@ export function BentoGrid() {
                     <div className="relative group/alert">
                         <div className="bg-white/5 border border-white/20 p-4 flex items-center gap-4 opacity-60 hover:opacity-100 transition-opacity">
                              <div className="w-8 h-8 bg-[#CCFF00]/20 flex items-center justify-center shrink-0 border border-[#CCFF00]">
-                                <Users className="w-4 h-4 text-[#CCFF00]" />
+                                <Users className="w-4 h-4 text-[#CCFF00] fill-[#CCFF00] stroke-black" />
                             </div>
                             <div>
                                 <p className="text-sm font-bold font-mono text-white uppercase">{t.bento.guard.alert4}</p>

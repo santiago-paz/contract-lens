@@ -51,7 +51,7 @@ export function Hero() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* Left Column: Typography */}
-                <div className="text-left max-w-2xl mx-auto lg:mx-0">
+                <div className="text-left max-w-4xl mx-auto lg:mx-0">
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -209,7 +209,7 @@ export function Hero() {
                                                 <span className="bg-black text-white text-[10px] font-bold px-2 py-0.5 uppercase">Critical</span>
                                             </div>
                                             <div className="flex items-start gap-3">
-                                                <AlertCircle className="w-5 h-5 text-black shrink-0 mt-0.5" />
+                                                <AlertCircle className="w-5 h-5 text-black fill-transparent stroke-2 shrink-0 mt-0.5" />
                                                 <div>
                                                     <p className="text-sm font-bold font-mono text-black leading-snug uppercase">{t.hero.card.riskText}</p>
                                                     <div className="mt-2 text-xs font-mono text-black/70">REF: Clause 4.2 // DETECTED</div>
