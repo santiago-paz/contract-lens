@@ -66,7 +66,7 @@ export function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="text-5xl sm:text-7xl md:text-8xl font-black text-black tracking-tighter mb-8 leading-[0.85] break-words hyphens-auto"
+                        className="text-6xl sm:text-7xl md:text-8xl font-black text-black tracking-tighter mb-8 leading-[0.85] break-words hyphens-auto"
                     >
                         {t.hero.titleLine1} <br />
                         <span className="relative inline-block">
