@@ -12,7 +12,7 @@ const FeatureSection = ({
   children, 
     align = 'left',
     index,
-    visualAspectRatio = ""
+    visualClassName = "h-full"
   }: { 
     title: string, 
     subtitle: string, 
@@ -20,7 +20,7 @@ const FeatureSection = ({
     children: React.ReactNode, 
     align?: 'left' | 'right',
     index: number,
-    visualAspectRatio?: string
+    visualClassName?: string
   }) => {
     const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -31,12 +31,12 @@ const FeatureSection = ({
         initial={{ opacity: 0, x: align === 'left' ? -50 : 50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 space-y-10"
+        className="flex-1 space-y-10 min-w-0"
       >
         <div className="flex items-start gap-6 relative">
             <span className="absolute -left-8 -top-12 text-[120px] font-black text-black/5 select-none leading-none z-0">0{index}</span>
-            <div className="relative z-10 w-full">
-              <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] break-words hyphens-auto mb-6">
+            <div className="relative z-10 w-full max-w-xl">
+              <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] break-all hyphens-auto mb-6">
                   {title}
               </h3>
               <h4 className="text-lg sm:text-xl font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 py-1 mb-6 border-2 border-black shadow-hard-sm transform -rotate-1 max-w-full break-words leading-tight">
@@ -53,11 +53,11 @@ const FeatureSection = ({
         initial={{ opacity: 0, scale: 0.9 }}
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 w-full"
+        className="flex-1 w-full min-w-0"
       >
         <div className="relative w-full bg-white border-2 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-300">
             <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio}`}>
+            <div className={`w-full bg-white border-2 border-black overflow-hidden relative ${visualClassName}`}>
                 {children}
             </div>
         </div>
@@ -79,7 +79,7 @@ const DeadlinesVisual = () => {
                     <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
                 </div>
             </div>
-            <div className="flex-1 flex flex-col justify-center gap-4 md:gap-8 lg:justify-between lg:gap-0 py-2">
+            <div className="flex-1 flex flex-col justify-center gap-4 md:gap-8 lg:justify-between lg:gap-0 py-2 md:pb-8">
                 {[
                     { days: 2, label: t.bauhaus.deadlines.visual.autoRenewal, status: "CRITICAL" },
                     { days: 15, label: t.bauhaus.deadlines.visual.exitClause, status: "WARNING" },
@@ -90,7 +90,7 @@ const DeadlinesVisual = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: i * 0.5, duration: 0.5 }}
-                        className="flex items-center gap-6 group"
+                        className="flex items-center gap-6 group md:mb-4"
                     >
                         <div className={`
                             w-20 h-20 border-2 border-black flex flex-col items-center justify-center shrink-0 shadow-hard-sm transition-transform group-hover:scale-105
@@ -521,10 +521,10 @@ const AnatomyVisual = () => {
 };
 
 export function BauhausFeatures() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   return (
-    <section id="features" className="bg-white text-black py-24 lg:py-32 overflow-hidden border-b-2 border-black bg-noise relative">
+    <section id="features" lang={language} className="bg-white text-black py-24 lg:py-32 overflow-hidden border-b-2 border-black bg-noise relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-24 max-w-5xl mx-auto text-center">
             <h2 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter mb-8 leading-[1.1] sm:leading-[0.85] break-words hyphens-auto">
@@ -554,6 +554,7 @@ export function BauhausFeatures() {
                 subtitle={t.bauhaus.translation.subtitle}
                 description={t.bauhaus.translation.description}
                 align="right"
+                visualClassName="h-[400px] md:h-[500px] lg:h-auto lg:aspect-[4/3]"
             >
                 <TranslationVisual />
             </FeatureSection>
@@ -564,6 +565,7 @@ export function BauhausFeatures() {
                 subtitle={t.bauhaus.aiDraft.subtitle}
                 description={t.bauhaus.aiDraft.description}
                 align="left"
+                visualClassName="h-[400px] md:h-[500px]"
             >
                 <AIDraftVisual />
             </FeatureSection>
