@@ -57,7 +57,7 @@ const FeatureSection = ({
       >
         <div className="relative w-full bg-white border-2 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-300">
             <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio} !aspect-[4/6]`}>
+            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio} !aspect-[5/6]`}>
                 {children}
             </div>
         </div>
