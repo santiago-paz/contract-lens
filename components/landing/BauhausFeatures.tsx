@@ -296,12 +296,12 @@ const AIDraftVisual = () => {
                                 x: 0, 
                                 opacity: activeComponent && activeComponent !== item ? 0.5 : 1,
                                 borderColor: activeComponent === item ? 'var(--accent)' : 'rgb(51 65 85)', 
-                                color: activeComponent === item ? '#4e4e4e' : 'rgb(203 213 225)',
+                                color: activeComponent === item ? 'black' : 'rgb(203 213 225)',
                             }}
                             transition={{ delay: idx * 0.1 }}
                             className={`w-full text-left px-4 py-3 rounded bg-slate-800 border transition-colors relative overflow-hidden group min-h-[48px] flex items-center outline-none`}
                         >
-                            <span className="font-bold text-sm relative z-10 text-">{`> ${item}`}</span>
+                            <span className="font-bold text-sm relative z-10">{`> ${item}`}</span>
                                     {activeComponent === item && (
                                 <motion.div 
                                     layoutId="activeGlow"
