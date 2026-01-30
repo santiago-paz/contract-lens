@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { AlertTriangle, FileText } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, FileText, Loader2 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
 const FeatureSection = ({ 
@@ -228,72 +228,218 @@ const TranslationVisual = () => {
 // Feature 3: AI Draft
 const AIDraftVisual = () => {
     const { t } = useLanguage();
+    const [activeComponent, setActiveComponent] = useState<string | null>(null);
+    const [generationState, setGenerationState] = useState<'idle' | 'generating' | 'completed'>('idle');
+
+    const handleComponentSelect = (item: string) => {
+        if (activeComponent === item) return;
+        
+        setActiveComponent(item);
+        setGenerationState('generating');
+        
+        // Simulate generation process
+        setTimeout(() => {
+            setGenerationState('completed');
+        }, 1500);
+    };
+
+    const getGeneratedText = (component: string) => {
+        // Simplified mapping for visual effect
+        const textMap: Record<string, string[]> = {
+            [t.bauhaus.aiDraft.visual.jurisdiction]: [
+                "The exclusive place of jurisdiction for all disputes arising from or in connection with this Agreement shall be Berlin, Germany.",
+                "This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Germany."
+            ],
+            [t.bauhaus.aiDraft.visual.liability]: [
+                "The Provider shall be liable for damages caused by intent or gross negligence.",
+                "In case of slight negligence, liability shall be limited to the foreseeable damage typical for this type of contract."
+            ],
+            [t.bauhaus.aiDraft.visual.term]: [
+                "This Agreement shall commence on the Effective Date and shall continue for an initial term of twelve (12) months.",
+                "It shall automatically renew for successive periods of twelve (12) months unless terminated by either party."
+            ],
+            [t.bauhaus.aiDraft.visual.payment]: [
+                "All fees are due and payable within thirty (30) days from the date of invoice.",
+                "Late payments shall accrue interest at a rate of 9 percentage points above the base interest rate."
+            ]
+        };
+        return textMap[component] || ["CLAUSE_GENERATED", "VALIDATED"];
+    };
+
     return (
-        <div className="w-full h-full bg-slate-900 p-8 font-mono text-xs flex flex-col relative overflow-hidden">
+        <div className="w-full h-full bg-slate-900 flex flex-col relative overflow-hidden font-mono">
             <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
             
-            <div className="flex justify-between items-center text-slate-500 mb-6 border-b border-slate-700 pb-3 relative z-10">
-                <span className="font-bold text-slate-300">DRAFT_ARCHITECT_V1.0</span>
-                <span className="text-[var(--accent)] flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse"></span>
-                    {t.bauhaus.aiDraft.visual.status}
+            {/* Header */}
+            <div className="flex justify-between items-center px-5 py-3 border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm z-20 sticky top-0">
+                <span className="font-bold text-slate-200 text-xs tracking-wide">{t.bauhaus.aiDraft.visual.engineTitle}</span>
+                <span className="text-[var(--accent)] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></span>
+                    {t.bauhaus.aiDraft.visual.readyStatus}
                 </span>
             </div>
             
-            <div className="flex-1 flex flex-col sm:flex-row gap-8 relative z-10">
-                <div className="w-full sm:w-1/3 border-b sm:border-b-0 sm:border-r border-slate-700 pb-6 sm:pb-0 sm:pr-4 space-y-3">
-                    <div className="text-slate-400 font-bold uppercase tracking-wider mb-2 text-[10px]">{t.bauhaus.aiDraft.visual.components}</div>
+            {/* Content Area */}
+            <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+                {/* Scrollable List */}
+                <div className="flex-1 overflow-y-auto p-5 space-y-2 scrollbar-hide">
+                    <div className="text-slate-500 font-bold text-[10px] uppercase tracking-wider mb-2 px-1">
+                        {t.bauhaus.aiDraft.visual.components}
+                    </div>
                     {[
                         t.bauhaus.aiDraft.visual.jurisdiction,
                         t.bauhaus.aiDraft.visual.liability,
                         t.bauhaus.aiDraft.visual.term,
                         t.bauhaus.aiDraft.visual.payment
                     ].map((item, idx) => (
-                        <motion.div 
-                            key={item} 
+                        <motion.button 
+                            key={item}
+                            onClick={() => handleComponentSelect(item)}
+                            whileTap={{ scale: 0.98 }}
                             initial={{ x: -10, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
+                            animate={{ 
+                                x: 0, 
+                                opacity: activeComponent && activeComponent !== item ? 0.5 : 1,
+                                borderColor: activeComponent === item ? 'var(--accent)' : 'rgb(51 65 85)', 
+                                color: activeComponent === item ? '#ffffff' : 'rgb(203 213 225)',
+                            }}
                             transition={{ delay: idx * 0.1 }}
-                            className="px-3 py-2 bg-slate-800 text-slate-300 border border-slate-700 hover:border-[var(--accent)] hover:text-[var(--accent)] cursor-pointer transition-all hover:translate-x-1"
+                            className={`w-full text-left px-4 py-3 rounded bg-slate-800 border transition-colors relative overflow-hidden group min-h-[48px] flex items-center outline-none`}
                         >
-                            {`> ${item}`}
-                        </motion.div>
+                            <span className="font-bold text-sm relative z-10">{`> ${item}`}</span>
+                                    {activeComponent === item && (
+                                <motion.div 
+                                    layoutId="activeGlow"
+                                    className="absolute inset-0 bg-[var(--accent)] opacity-20" 
+                                />
+                            )}
+                        </motion.button>
                     ))}
+
+                    {/* Document Preview */}
+                    <AnimatePresence mode="wait">
+                        {activeComponent && (
+                            <motion.div
+                                key={activeComponent}
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="mt-4 p-4 bg-slate-950 border border-slate-800 rounded shadow-inner relative min-h-[120px]">
+                                    <div className="absolute top-0 right-0 p-2 text-slate-700">
+                                        <FileText size={16} />
+                                    </div>
+                                    <div className="space-y-3 opacity-80">
+                                         {/* Document Header */}
+                                        {generationState === 'completed' ? (
+                                            <motion.div 
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                className="text-xs font-bold text-[var(--accent)] mb-4 uppercase tracking-wider"
+                                            >
+                                                {`// ${activeComponent}`}
+                                            </motion.div>
+                                        ) : (
+                                            <div className="h-2 w-1/3 bg-slate-800 rounded mb-4"></div>
+                                        )}
+                                        
+                                        {/* Dynamic Content Area */}
+                                        {generationState === 'generating' ? (
+                                            <div className="space-y-2">
+                                                <motion.div 
+                                                    initial={{ width: 0 }} 
+                                                    animate={{ width: "100%" }} 
+                                                    transition={{ duration: 0.8, repeat: Infinity }}
+                                                    className="h-1.5 bg-slate-800 rounded" 
+                                                />
+                                                <motion.div 
+                                                    initial={{ width: 0 }} 
+                                                    animate={{ width: "90%" }} 
+                                                    transition={{ duration: 0.8, delay: 0.2, repeat: Infinity }}
+                                                    className="h-1.5 bg-slate-800 rounded" 
+                                                />
+                                                <motion.div 
+                                                    initial={{ width: 0 }} 
+                                                    animate={{ width: "95%" }} 
+                                                    transition={{ duration: 0.8, delay: 0.4, repeat: Infinity }}
+                                                    className="h-1.5 bg-slate-800 rounded" 
+                                                />
+                                            </div>
+                                        ) : (
+                                            <motion.div 
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                className="text-[10px] leading-relaxed text-slate-200 font-mono"
+                                            >
+                                                {getGeneratedText(activeComponent).map((line, i) => (
+                                                    <p key={i} className="mb-2">{line}</p>
+                                                ))}
+                                            </motion.div>
+                                        )}
+
+                                        {/* Code Snippet Overlay (Subtle) */}
+                                        <div className="mt-4 pt-4 border-t border-slate-900 font-mono text-[9px] text-slate-500 flex justify-between items-center">
+                                            <span>
+                                                <span className="text-blue-900">const</span> <span className="text-yellow-900">clause</span> = <span className="text-green-900">"{activeComponent.toUpperCase()}_V2"</span>;
+                                            </span>
+                                            {generationState === 'completed' && (
+                                                <motion.span 
+                                                    initial={{ scale: 0 }} 
+                                                    animate={{ scale: 1 }}
+                                                    className="text-[var(--accent)] font-bold"
+                                                >
+                                                    DONE
+                                                </motion.span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
-                
-                <div className="flex-1 space-y-4">
-                    <div className="flex gap-2 text-[var(--accent)] font-bold">
-                        <span>root@split:~$</span>
-                        <motion.span
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-                        >
-                            {t.bauhaus.aiDraft.visual.generating}
-                        </motion.span>
+
+                {/* Status Footer */}
+                <div className="px-5 py-3 bg-slate-900 border-t border-slate-800 z-20 sticky bottom-0 backdrop-blur-md bg-opacity-90 min-h-[48px] flex items-center">
+                    <div className="flex items-center gap-3 text-slate-300 w-full">
+                        {generationState === 'generating' ? (
+                            <>
+                                <Loader2 className="w-4 h-4 text-[var(--accent)] animate-spin shrink-0" />
+                                <motion.span
+                                    key="generating"
+                                    initial={{ opacity: 0, x: 5 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="text-xs font-bold text-[var(--accent)] truncate"
+                                >
+                                    {t.bauhaus.aiDraft.visual.generating}
+                                </motion.span>
+                            </>
+                        ) : generationState === 'completed' ? (
+                            <>
+                                <div className="w-4 h-4 rounded-full bg-[var(--accent)] flex items-center justify-center shrink-0">
+                                    <div className="w-2 h-2 bg-slate-900 rounded-sm"></div>
+                                </div>
+                                <motion.span
+                                    key="completed"
+                                    initial={{ opacity: 0, x: 5 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="text-xs font-bold text-slate-200 truncate"
+                                >
+                                    Draft Generated Successfully.
+                                </motion.span>
+                            </>
+                        ) : (
+                            <motion.span
+                                key="waiting"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-xs text-slate-400 font-bold"
+                            >
+                                {t.bauhaus.aiDraft.visual.initialStatus}
+                            </motion.span>
+                        )}
                     </div>
-                    
-                    <div className="text-slate-400 font-mono text-[10px] bg-slate-950 p-4 border border-slate-800 rounded-none shadow-inner">
-                        <span className="text-blue-400">const</span> <span className="text-yellow-400">agreement</span> = <span className="text-purple-400">new</span> <span className="text-green-400">Contract</span>({`{
-  type: "${t.bauhaus.aiDraft.visual.clauseTitle}",
-  terms: {
-    cap: "12_MONTHS_FEES",
-    exclusions: ["FRAUD", "GROSS_NEGLIGENCE"]
-  }
-}`});
-                    </div>
-                    
-                    <motion.div 
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="p-4 bg-slate-800/50 border-l-4 border-[var(--accent)] text-slate-200 mt-2 font-serif italic relative"
-                    >
-                        <div className="absolute top-0 right-0 p-1 text-[var(--accent)] opacity-20">
-                            <FileText size={40} />
-                        </div>
-                        "{t.bauhaus.aiDraft.visual.codeText}"
-                    </motion.div>
                 </div>
             </div>
         </div>

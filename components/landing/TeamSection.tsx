@@ -61,7 +61,7 @@ export function TeamSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl sm:text-7xl md:text-8xl font-black mb-8 uppercase tracking-tighter leading-[0.85]"
+            className="text-5xl sm:text-7xl md:text-8xl font-black mb-8 uppercase tracking-tighter leading-[0.95] break-words hyphens-auto"
           >
             {t.teams.title} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#CCFF00] to-green-700" style={{ WebkitTextStroke: '2px #CCFF00', color: 'transparent' }}>
