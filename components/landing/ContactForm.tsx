@@ -42,12 +42,16 @@ export function ContactForm() {
                              </div>
                              <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Split Berlin</span>
                         </div>
-                        <h2 className="text-2xl font-bold font-mono text-white tracking-tight uppercase">Communication Request</h2>
-                        <p className="text-[#CCFF00] text-xs mt-1 font-mono uppercase">REF: CONTACT-{(new Date()).getFullYear()}-001</p>
+                        <h2 className="text-2xl font-bold font-mono text-white tracking-tight uppercase">{t.contact.headerTitle}</h2>
+                        <p className="text-[#CCFF00] text-xs mt-1 font-mono uppercase">{t.contact.refCode}-{(new Date()).getFullYear()}-001</p>
                     </div>
                     <div className="hidden sm:block">
                         <div className="w-20 h-20 border-2 border-white flex items-center justify-center opacity-100">
-                            <span className="font-mono font-bold text-white text-[10px] uppercase text-center leading-tight">Official<br/>Inquiry</span>
+                            <span className="font-mono font-bold text-white text-[10px] uppercase text-center leading-tight">
+                                {t.contact.officialInquiry.split(' ').map((word, i) => (
+                                    <span key={i} className="block">{word}</span>
+                                ))}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -92,8 +96,8 @@ export function ContactForm() {
                                 {/* Section 1 */}
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
-                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">SECTION 1</span>
-                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">The Parties</h3>
+                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">{t.contact.section1}</span>
+                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">{t.contact.theParties}</h3>
                                         <div className="h-0.5 bg-black flex-grow"></div>
                                     </div>
                                     
@@ -109,7 +113,7 @@ export function ContactForm() {
                                                 onFocus={() => setFocusedField('name')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
-                                                placeholder="ENTER FULL NAME..."
+                                                placeholder={t.contact.enterFullName}
                                             />
                                         </div>
                                         <div className="relative group">
@@ -123,7 +127,7 @@ export function ContactForm() {
                                                 onFocus={() => setFocusedField('email')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
-                                                placeholder="ENTER EMAIL ADDRESS..."
+                                                placeholder={t.contact.enterEmail}
                                             />
                                         </div>
                                     </div>
@@ -132,8 +136,8 @@ export function ContactForm() {
                                 {/* Section 2 */}
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3">
-                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">SECTION 2</span>
-                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">The Details</h3>
+                                        <span className="bg-black text-white text-[10px] font-bold font-mono px-2 py-0.5 uppercase">{t.contact.section2}</span>
+                                        <h3 className="text-xs font-bold font-mono text-black uppercase tracking-widest">{t.contact.theDetails}</h3>
                                         <div className="h-0.5 bg-black flex-grow"></div>
                                     </div>
 
@@ -148,7 +152,7 @@ export function ContactForm() {
                                             onFocus={() => setFocusedField('message')}
                                             onBlur={() => setFocusedField(null)}
                                             className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed uppercase"
-                                            placeholder="DESCRIBE INQUIRY..."
+                                            placeholder={t.contact.describeInquiry}
                                         />
                                     </div>
                                 </div>
@@ -157,7 +161,7 @@ export function ContactForm() {
                                 <div className="pt-6 border-t-2 border-dashed border-black mt-8">
                                     <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                                         <div className="text-[10px] font-mono text-gray-500 max-w-xs uppercase text-center sm:text-left leading-relaxed">
-                                            *By clicking submit, you acknowledge that while this form looks very official, it does not actually bind you to anything other than a friendly conversation.
+                                            {t.contact.disclaimer}
                                         </div>
                                         <button
                                             type="submit"
@@ -167,11 +171,11 @@ export function ContactForm() {
                                             {loading ? (
                                                 <span className="flex items-center gap-2">
                                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                                    TRANSMITTING...
+                                                    {t.contact.submitting}
                                                 </span>
                                             ) : (
                                                 <span className="flex items-center gap-2">
-                                                    SEND REQUEST
+                                                    {t.contact.submitButton}
                                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                                 </span>
                                             )}
