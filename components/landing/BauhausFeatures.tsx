@@ -12,7 +12,7 @@ const FeatureSection = ({
   children, 
     align = 'left',
     index,
-    visualAspectRatio = "aspect-square md:aspect-video lg:aspect-square"
+    visualAspectRatio = ""
   }: { 
     title: string, 
     subtitle: string, 
@@ -57,7 +57,7 @@ const FeatureSection = ({
       >
         <div className="relative w-full bg-white border-2 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-300">
             <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio} !aspect-[5/6]`}>
+            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio}`}>
                 {children}
             </div>
         </div>
@@ -230,6 +230,13 @@ const AIDraftVisual = () => {
     const { t } = useLanguage();
     const [activeComponent, setActiveComponent] = useState<string | null>(null);
     const [generationState, setGenerationState] = useState<'idle' | 'generating' | 'completed'>('idle');
+    const [showCopyFeedback, setShowCopyFeedback] = useState(false);
+
+    const handleCopy = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setShowCopyFeedback(true);
+        setTimeout(() => setShowCopyFeedback(false), 2000);
+    };
 
     const handleComponentSelect = (item: string) => {
         if (activeComponent === item) return;
@@ -301,12 +308,12 @@ const AIDraftVisual = () => {
                                 x: 0, 
                                 opacity: activeComponent && activeComponent !== item ? 0.5 : 1,
                                 borderColor: activeComponent === item ? 'var(--accent)' : 'rgb(51 65 85)', 
-                                color: activeComponent === item ? '#ffffff' : 'rgb(203 213 225)',
+                                color: activeComponent === item ? '#4e4e4e' : 'rgb(203 213 225)',
                             }}
                             transition={{ delay: idx * 0.1 }}
                             className={`w-full text-left px-4 py-3 rounded bg-slate-800 border transition-colors relative overflow-hidden group min-h-[48px] flex items-center outline-none`}
                         >
-                            <span className="font-bold text-sm relative z-10">{`> ${item}`}</span>
+                            <span className="font-bold text-sm relative z-10 text-">{`> ${item}`}</span>
                                     {activeComponent === item && (
                                 <motion.div 
                                     layoutId="activeGlow"
@@ -327,8 +334,23 @@ const AIDraftVisual = () => {
                                 className="overflow-hidden"
                             >
                                 <div className="mt-4 p-4 bg-slate-950 border border-slate-800 rounded shadow-inner relative min-h-[120px]">
-                                    <div className="absolute top-0 right-0 p-2 text-slate-700">
+                                    <div 
+                                        className="absolute top-0 right-0 p-2 text-slate-700 hover:text-slate-400 cursor-pointer transition-colors z-20"
+                                        onClick={handleCopy}
+                                    >
                                         <FileText size={16} />
+                                        <AnimatePresence>
+                                            {showCopyFeedback && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                    exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                                                    className="absolute right-0 top-8 bg-[var(--accent)] text-black text-[10px] font-bold uppercase whitespace-nowrap px-3 py-2 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black z-50 pointer-events-none"
+                                                >
+                                                    {t.bauhaus.aiDraft.visual.copyToast}
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
                                     <div className="space-y-3 opacity-80">
                                          {/* Document Header */}
@@ -380,8 +402,10 @@ const AIDraftVisual = () => {
 
                                         {/* Code Snippet Overlay (Subtle) */}
                                         <div className="mt-4 pt-4 border-t border-slate-900 font-mono text-[9px] text-slate-500 flex justify-between items-center">
-                                            <span>
-                                                <span className="text-blue-900">const</span> <span className="text-yellow-900">clause</span> = <span className="text-green-900">"{activeComponent.toUpperCase()}_V2"</span>;
+                                            <span className="flex items-center gap-2">
+                                                <span className="text-slate-500">{`>`}</span>
+                                                <span className="text-slate-500 uppercase">Module:</span>
+                                                <span className="text-[var(--accent)] font-bold">{activeComponent.toUpperCase()}</span>
                                             </span>
                                             {generationState === 'completed' && (
                                                 <motion.span 
@@ -472,7 +496,7 @@ const AnatomyVisual = () => {
                 
                 {/* Labels */}
                 <motion.div 
-                    className="absolute -right-8 sm:-right-16 top-10 flex items-center gap-2"
+                    className="absolute -right-8 sm:-right-16 top-15 flex items-center gap-2"
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
@@ -532,7 +556,6 @@ export function BauhausFeatures() {
                 subtitle={t.bauhaus.deadlines.subtitle}
                 description={t.bauhaus.deadlines.description}
                 align="left"
-                visualAspectRatio="aspect-square md:aspect-video lg:aspect-square"
             >
                 <DeadlinesVisual />
             </FeatureSection>
