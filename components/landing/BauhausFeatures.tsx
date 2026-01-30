@@ -10,17 +10,19 @@ const FeatureSection = ({
   subtitle, 
   description, 
   children, 
-  align = 'left',
-  index
-}: { 
-  title: string, 
-  subtitle: string, 
-  description: string, 
-  children: React.ReactNode, 
-  align?: 'left' | 'right',
-  index: number
-}) => {
-  const ref = useRef(null);
+    align = 'left',
+    index,
+    visualAspectRatio = "aspect-square md:aspect-video lg:aspect-square"
+  }: { 
+    title: string, 
+    subtitle: string, 
+    description: string, 
+    children: React.ReactNode, 
+    align?: 'left' | 'right',
+    index: number,
+    visualAspectRatio?: string
+  }) => {
+    const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
@@ -55,7 +57,7 @@ const FeatureSection = ({
       >
         <div className="relative w-full bg-white border-2 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-300">
             <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-            <div className="w-full h-full bg-white border-2 border-black overflow-hidden relative aspect-square  ">
+            <div className={`w-full h-full bg-white border-2 border-black overflow-hidden relative ${visualAspectRatio} !aspect-[4/6]`}>
                 {children}
             </div>
         </div>
@@ -68,8 +70,8 @@ const FeatureSection = ({
 const DeadlinesVisual = () => {
     const { t } = useLanguage();
     return (
-        <div className="w-full h-full flex flex-col p-6 bg-white relative bg-noise">
-            <div className="flex justify-between items-center w-full mb-4">
+        <div className="w-full h-full flex flex-col p-5 sm:p-8 bg-white relative bg-noise">
+            <div className="flex justify-between items-center w-full mb-4 sm:mb-6 shrink-0">
                 <div className="font-mono text-xs font-bold uppercase border border-black px-2 py-1 bg-white">
                     CRON_JOBS: ACTIVE
                 </div>
@@ -77,7 +79,7 @@ const DeadlinesVisual = () => {
                     <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
                 </div>
             </div>
-            <div className="space-y-4 flex-1 flex flex-col justify-center">
+            <div className="flex-1 flex flex-col justify-center gap-4 md:gap-8 lg:justify-between lg:gap-0 py-2">
                 {[
                     { days: 2, label: t.bauhaus.deadlines.visual.autoRenewal, status: "CRITICAL" },
                     { days: 15, label: t.bauhaus.deadlines.visual.exitClause, status: "WARNING" },
@@ -88,21 +90,21 @@ const DeadlinesVisual = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: i * 0.5, duration: 0.5 }}
-                        className="flex items-center gap-4 group"
+                        className="flex items-center gap-6 group"
                     >
                         <div className={`
-                            w-16 h-16 border-2 border-black flex flex-col items-center justify-center shrink-0 shadow-hard-sm transition-transform group-hover:scale-105
+                            w-20 h-20 border-2 border-black flex flex-col items-center justify-center shrink-0 shadow-hard-sm transition-transform group-hover:scale-105
                             ${item.status === 'CRITICAL' ? 'bg-[var(--accent)] text-black' : 'bg-white text-black'}
                         `}>
-                            <span className="text-2xl font-black leading-none">{item.days}</span>
-                            <span className="text-[9px] font-bold uppercase">{t.bauhaus.deadlines.visual.days}</span>
+                            <span className="text-3xl font-black leading-none">{item.days}</span>
+                            <span className="text-[10px] font-bold uppercase">{t.bauhaus.deadlines.visual.days}</span>
                         </div>
-                        <div className="flex-1 border-b-2 border-gray-200 pb-2 group-hover:border-black transition-colors relative">
-                            <div className="flex justify-between items-center mb-1">
-                                <span className="font-bold font-mono text-xs uppercase tracking-wide">{item.label}</span>
-                                {item.status === 'CRITICAL' && <AlertTriangle className="w-4 h-4 text-black fill-[var(--accent)]" />}
+                        <div className="flex-1 border-b-2 border-gray-200 pb-4 group-hover:border-black transition-colors relative">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="font-bold font-mono text-sm uppercase tracking-wide">{item.label}</span>
+                                {item.status === 'CRITICAL' && <AlertTriangle className="w-5 h-5 text-black fill-[var(--accent)]" />}
                             </div>
-                            <div className="w-full h-2 bg-gray-100 border border-black overflow-hidden relative">
+                            <div className="w-full h-3 bg-gray-100 border border-black overflow-hidden relative">
                                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.1)_25%,rgba(0,0,0,0.1)_50%,transparent_50%,transparent_75%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.1)_100%)] bg-[size:10px_10px] opacity-20"></div>
                                 <motion.div 
                                     className={`h-full border-r-2 border-black ${item.status === 'CRITICAL' ? 'bg-[var(--accent)]' : 'bg-black'}`}
@@ -131,38 +133,38 @@ const TranslationVisual = () => {
             onMouseLeave={() => setHovered(false)}
         >
             {/* Left: Original */}
-            <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-white p-4 sm:p-8 border-b-2 sm:border-b-0 sm:border-r-2 border-black flex flex-col relative">
-                <div className="h-8 flex items-center mb-6 justify-between border-b-2 border-gray-100 pb-2">
+            <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-white p-6 sm:p-8 border-b-2 sm:border-b-0 sm:border-r-2 border-black flex flex-col relative">
+                <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-gray-100 pb-2 shrink-0">
                      <h5 className="text-xs font-bold font-mono uppercase text-gray-400">{t.bauhaus.translation.visual.original}</h5>
                      <div className="w-2 h-2 bg-black rounded-full"></div>
                 </div>
-                <div className="space-y-5 opacity-100 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed select-none blur-[0.5px]">
+                <div className="space-y-3 opacity-100 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed select-none blur-[0.5px] flex flex-col justify-center">
                     {/* Header */}
-                    <div className="h-4 w-2/3 bg-black rounded-none mb-4"></div>
+                    <div className="h-4 w-2/3 bg-black rounded-none mb-2"></div>
                     
                     {/* Para 1 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                         <div className="h-2 w-full bg-gray-300 rounded-none"></div>
                         <div className="h-2 w-full bg-gray-300 rounded-none"></div>
                         <div className="h-2 w-3/4 bg-gray-300 rounded-none"></div>
                     </div>
 
                     {/* Para 2 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                         <div className="h-2 w-11/12 bg-gray-300 rounded-none"></div>
                         <div className="h-2 w-full bg-gray-300 rounded-none"></div>
                         <div className="h-2 w-5/6 bg-gray-300 rounded-none"></div>
                     </div>
 
                     {/* Highlighted Section */}
-                    <div className="space-y-2 pt-2 relative">
+                    <div className="space-y-1.5 pt-1 relative">
                         <div className="absolute -left-2 top-0 w-1 h-full bg-[var(--accent)]"></div>
                         <div className="h-2 w-full bg-black rounded-none"></div>
                         <div className="h-2 w-2/3 bg-black rounded-none"></div>
                     </div>
 
                     {/* Para 3 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                          <div className="h-2 w-full bg-gray-300 rounded-none"></div>
                          <div className="h-2 w-4/5 bg-gray-300 rounded-none"></div>
                     </div>
@@ -170,30 +172,30 @@ const TranslationVisual = () => {
             </div>
 
             {/* Right: Translated */}
-            <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-gray-50 p-4 sm:p-8 flex flex-col relative">
-                <div className="h-8 flex items-center mb-6 justify-between border-b-2 border-black pb-2">
+            <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-gray-50 p-6 sm:p-8 flex flex-col relative">
+                <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-black pb-2 shrink-0">
                     <h5 className="text-xs font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 border border-black">{t.bauhaus.translation.visual.translated}</h5>
                 </div>
-                <div className="space-y-5 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed">
+                <div className="space-y-3 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed flex flex-col justify-center">
                      {/* Header */}
-                    <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-4 w-2/3 bg-black rounded-none mb-4 transition-opacity"></motion.div>
+                    <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-4 w-2/3 bg-black rounded-none mb-2 transition-opacity"></motion.div>
 
                     {/* Para 1 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-4/5 bg-black rounded-none transition-opacity"></motion.div>
                     </div>
 
                     {/* Para 2 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-10/12 bg-black rounded-none transition-opacity"></motion.div>
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-3/4 bg-black rounded-none transition-opacity"></motion.div>
                     </div>
 
                     {/* Highlighted Section */}
-                    <div className="space-y-2 pt-2 relative">
+                    <div className="space-y-1.5 pt-1 relative">
                         <motion.div 
                             className="absolute -left-4 top-0 w-1 h-full bg-[var(--accent)]"
                             initial={{ height: 0 }}
@@ -204,19 +206,21 @@ const TranslationVisual = () => {
                     </div>
 
                      {/* Para 3 */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                          <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-11/12 bg-black rounded-none transition-opacity"></motion.div>
                          <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
                     </div>
                 </div>
             </div>
 
-            {/* Scanning Line */}
+            {/* Scanning Effect - Sophisticated */}
             <motion.div 
-                className="absolute top-0 left-0 w-full h-1 bg-[var(--accent)] z-20 shadow-[0_0_20px_4px_rgba(204,255,0,0.5)] border-b border-black"
-                animate={{ top: ["0%", "100%", "0%"] }}
-                transition={{ duration: 4, ease: "linear", repeat: Infinity }}
-            />
+                className="absolute left-0 w-full h-[15%] bg-gradient-to-b from-transparent via-[var(--accent)]/20 to-transparent z-20 pointer-events-none flex items-center"
+                animate={{ top: ["-20%", "120%"] }}
+                transition={{ duration: 3, ease: "linear", repeat: Infinity }}
+            >
+                <div className="w-full h-[2px] bg-[var(--accent)] shadow-[0_0_15px_2px_rgba(204,255,0,0.8)]"></div>
+            </motion.div>
         </div>
     );
 };
@@ -382,6 +386,7 @@ export function BauhausFeatures() {
                 subtitle={t.bauhaus.deadlines.subtitle}
                 description={t.bauhaus.deadlines.description}
                 align="left"
+                visualAspectRatio="aspect-square md:aspect-video lg:aspect-square"
             >
                 <DeadlinesVisual />
             </FeatureSection>
