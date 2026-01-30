@@ -64,7 +64,8 @@ const translations = {
           initialStatus: "Select a component to start drafting.",
           generating: "Generating clause structure based on EU Law...",
           clauseTitle: "Limitation of Liability",
-          codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid..."
+          codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid...",
+          copyToast: "Of course you can copy elements!"
         }
       },
       anatomy: {
@@ -312,7 +313,8 @@ const translations = {
           initialStatus: "Wählen Sie eine Komponente, um den Entwurf zu starten.",
           generating: "Generiere Klauselstruktur nach EU-Recht...",
           clauseTitle: "Haftungsbeschränkung",
-          codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten..."
+          codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten...",
+          copyToast: "Natürlich können Sie Elemente kopieren!"
         }
       },
       anatomy: {
