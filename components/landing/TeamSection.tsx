@@ -41,8 +41,10 @@ export function TeamSection() {
   ];
 
   return (
-    <div id="teams-section" className="py-24 sm:py-32 bg-black text-white overflow-hidden relative border-b-2 border-black bg-noise">
-      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,#333_1px,transparent_1px),linear-gradient(-45deg,#333_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none"></div>
+    <div id="teams-section" className="py-24 sm:py-32 bg-black text-white overflow-hidden relative border-b-2 border-black">
+      {/* Background Grid - Sharper Alternative */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:32px_32px] opacity-40 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_50%,#1a1a1a_0%,transparent_100%)] opacity-50 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-20 sm:mb-28">
