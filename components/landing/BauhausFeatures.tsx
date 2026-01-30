@@ -26,7 +26,7 @@ const FeatureSection = ({
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <div ref={ref} className={`py-24 lg:py-32 flex flex-col ${align === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-32 items-center`}>
+    <div ref={ref} className={`py-16 flex flex-col ${align === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-16 items-center`}>
       <motion.div 
         initial={{ opacity: 0, x: align === 'left' ? -50 : 50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -524,7 +524,7 @@ export function BauhausFeatures() {
   const { t, language } = useLanguage();
   
   return (
-    <section id="features" lang={language} className="bg-white text-black py-24 lg:py-32 overflow-hidden border-b-2 border-black bg-noise relative">
+    <section id="features" lang={language} className="bg-white text-black py-24 lg:py-16 overflow-hidden border-b-2 border-black bg-noise relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-24 max-w-5xl mx-auto text-center">
             <h2 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter mb-8 leading-[1.1] sm:leading-[0.85] break-words hyphens-auto">
@@ -537,7 +537,7 @@ export function BauhausFeatures() {
             </p>
         </div>
 
-        <div className="space-y-12">
+        <div className="space-y-6">
             <FeatureSection
                 index={1}
                 title={t.bauhaus.deadlines.title}
