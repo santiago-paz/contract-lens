@@ -133,7 +133,11 @@ const translations = {
         latency: "Latency",
         verified: "Verified",
         complete: "Audit Complete"
-      }
+      },
+      latency: "Latency",
+      target: "Target",
+      verified: "Verified",
+      complete: "Audit Complete"
     },
     showcase: {
       title: "Precision Engineered Workflow",
@@ -418,7 +422,11 @@ const translations = {
         latency: "Latenz",
         verified: "Verifiziert",
         complete: "Audit abgeschlossen"
-      }
+      },
+      latency: "Latenz",
+      target: "Ziel",
+      verified: "Verifiziert",
+      complete: "Audit abgeschlossen"
     },
     showcase: {
       title: "Präzisionsgefertigter Workflow",
