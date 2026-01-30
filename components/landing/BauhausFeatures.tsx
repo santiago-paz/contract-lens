@@ -36,7 +36,7 @@ const FeatureSection = ({
         <div className="flex items-start gap-6 relative">
             <span className="absolute -left-8 -top-12 text-[120px] font-black text-black/5 select-none leading-none z-0">0{index}</span>
             <div className="relative z-10 w-full max-w-xl">
-              <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] break-all hyphens-auto mb-6">
+              <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] hyphens-auto mb-6">
                   {title}
               </h3>
               <h4 className="text-lg sm:text-xl font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 py-1 mb-6 border-2 border-black shadow-hard-sm transform -rotate-1 max-w-full break-words leading-tight">
