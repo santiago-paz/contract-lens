@@ -103,7 +103,7 @@ export function Hero() {
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <button className="group inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide text-black bg-white border-2 border-black shadow-hard hover:bg-black hover:text-[#CCFF00] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
-                            SEE SYSTEM
+                            {t.hero.seeSystem}
                             <Command className="ml-2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                     </motion.div>
@@ -154,12 +154,12 @@ export function Hero() {
                                               <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shrink-0" />
                                               <h3 className="font-bold font-mono uppercase text-black text-lg truncate">FORENSIC AUDIT</h3>
                                             </div>
-                                            <p className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 inline-block border border-gray-200 break-all max-w-full">TARGET: SERVICE_AGREEMENT_2024.PDF</p>
+                                            <p className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-1 inline-block border border-gray-200 break-all max-w-full">{t.hero.target}: SERVICE_AGREEMENT_2024.PDF</p>
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-end gap-1 shrink-0">
                                       <div className="px-3 py-1 bg-black text-[#CCFF00] text-xs font-mono uppercase font-bold tracking-wider">Live Monitor</div>
-                                      <span className="text-[10px] font-mono text-gray-400">Latency: 12ms</span>
+                                      <span className="text-[10px] font-mono text-gray-400">{t.hero.latency}: 12ms</span>
                                     </div>
                                 </div>
 
@@ -232,7 +232,7 @@ export function Hero() {
                                             </div>
                                             <div className="flex items-center justify-between mb-2 relative z-10">
                                                 <span className="text-xs font-bold font-mono uppercase tracking-wider text-black">{t.hero.card.riskTitle}</span>
-                                                <span className="bg-black text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest animate-pulse">Critical</span>
+                                                <span className="bg-black text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest animate-pulse">CRITICAL</span>
                                             </div>
                                             <div className="flex items-start gap-3 relative z-10">
                                                 <AlertCircle className="w-5 h-5 text-black fill-transparent stroke-2 shrink-0 mt-0.5" />
@@ -241,7 +241,7 @@ export function Hero() {
                                                     <div className="mt-2 text-xs font-mono text-black/70 flex items-center gap-2">
                                                       <span>REF: Clause 4.2</span>
                                                       <span className="w-1 h-1 bg-black rounded-full" />
-                                                      <span className="font-bold">DETECTED</span>
+                                                      <span className="font-bold">{t.hero.detected}</span>
                                                     </div>
                                                 </div>
                                             </div>

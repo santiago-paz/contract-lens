@@ -33,7 +33,7 @@ export function Footer() {
              </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-end gap-12 border-t-4 border-black pt-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 border-t-4 border-black pt-12">
             <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-3">
                     <div className="bg-black text-[#CCFF00] w-16 h-16 border-2 border-black flex items-center justify-center shadow-hard-sm hover:rotate-6 transition-transform">
@@ -45,20 +45,19 @@ export function Footer() {
                     </div>
                 </div>
                 <div className="text-sm font-mono text-black max-w-xs leading-relaxed font-bold uppercase">
-                    Advanced Contract Analysis System <br />
-                    Operated by Split Berlin GmbH
+                    {t.footer.systemDesc}
                 </div>
             </div>
             
-            <div className="flex flex-col items-end gap-6 w-full md:w-auto">
-                <div className="flex flex-wrap justify-end gap-2 sm:gap-4 text-center">
+            <div className="flex flex-col items-start md:items-end gap-6 w-full md:w-auto">
+                <div className="flex flex-wrap justify-start md:justify-end gap-2 sm:gap-4 text-center">
                     <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">{t.footer.privacy}</a>
                     <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">{t.footer.terms}</a>
                     <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">Twitter</a>
                     <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">LinkedIn</a>
                 </div>
                 <div className="text-xs font-mono text-gray-500 uppercase tracking-widest">
-                    © {new Date().getFullYear()} SPLIT BERLIN. ALL RIGHTS RESERVED.
+                    © {new Date().getFullYear()} {t.footer.copyright}
                 </div>
             </div>
         </div>
