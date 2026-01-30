@@ -58,7 +58,7 @@ export function Hero() {
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#CCFF00] border-2 border-black shadow-hard-sm mb-8"
                     >
                         <Terminal className="w-4 h-4 text-black" />
-                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">RESOURCE CONTROL UNIT</span>
+                        <span className="text-sm font-mono font-bold text-black uppercase tracking-wide">{t.hero.badge}</span>
                     </motion.div>
                     
                     <motion.h1 

@@ -43,7 +43,7 @@ export function Footer() {
             <div className="text-sm font-mono text-black">
                 © {new Date().getFullYear()} SPLIT BERLIN. {t.footer.rights}
             </div>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-center">
                 <a href="#" className="font-mono text-sm uppercase font-bold text-black hover:bg-[#CCFF00] px-1 transition-colors">{t.footer.privacy}</a>
                 <a href="#" className="font-mono text-sm uppercase font-bold text-black hover:bg-[#CCFF00] px-1 transition-colors">{t.footer.terms}</a>
                 <a href="#" className="font-mono text-sm uppercase font-bold text-black hover:bg-[#CCFF00] px-1 transition-colors">Twitter</a>

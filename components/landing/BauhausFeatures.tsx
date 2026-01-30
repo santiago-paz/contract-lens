@@ -24,7 +24,7 @@ const FeatureSection = ({
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <div ref={ref} className={`py-24 flex flex-col ${align === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 items-center`}>
+    <div ref={ref} className={`py-12 flex flex-col ${align === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
       <motion.div 
         initial={{ opacity: 0, x: align === 'left' ? -50 : 50 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -33,7 +33,7 @@ const FeatureSection = ({
       >
         <div className="flex items-center gap-4">
             <span className="text-6xl font-black text-black/10 select-none">0{index}</span>
-            <h3 className="text-4xl font-black uppercase tracking-tight leading-none">
+            <h3 className="text-2xl sm:text-4xl font-black uppercase tracking-tight leading-none break-words hyphens-auto">
                 {title}
             </h3>
         </div>
@@ -118,12 +118,12 @@ const TranslationVisual = () => {
     
     return (
         <div 
-            className="w-full h-full flex relative overflow-hidden cursor-crosshair"
+            className="w-full h-full flex flex-col sm:flex-row relative overflow-hidden cursor-crosshair"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
             {/* Left: Original */}
-            <div className="w-1/2 h-full bg-white p-4 sm:p-6 border-r border-black/10 flex flex-col relative">
+            <div className="w-full sm:w-1/2 h-full bg-white p-4 sm:p-6 border-b sm:border-b-0 sm:border-r border-black/10 flex flex-col relative">
                 <div className="h-6 flex items-center mb-4 sm:mb-6">
                      <h5 className="text-xs font-bold uppercase text-gray-400">{t.bauhaus.translation.visual.original}</h5>
                 </div>
@@ -164,7 +164,7 @@ const TranslationVisual = () => {
             </div>
 
             {/* Right: Translated */}
-            <div className="w-1/2 h-full bg-gray-50 p-4 sm:p-6 flex flex-col relative">
+            <div className="w-full sm:w-1/2 h-full bg-gray-50 p-4 sm:p-6 flex flex-col relative">
                 <div className="h-6 flex items-center mb-4 sm:mb-6">
                     <h5 className="text-xs font-bold uppercase bg-[var(--accent)] text-black inline-block px-1">{t.bauhaus.translation.visual.translated}</h5>
                 </div>
@@ -223,8 +223,8 @@ const AIDraftVisual = () => {
                 <span>DRAFT_ARCHITECT_V1</span>
                 <span className="text-[var(--accent)]">● {t.bauhaus.aiDraft.visual.status}</span>
             </div>
-            <div className="flex-1 flex gap-4">
-                <div className="w-1/3 border-r border-slate-700 pr-2 space-y-2">
+            <div className="flex-1 flex flex-col sm:flex-row gap-4">
+                <div className="w-full sm:w-1/3 border-b sm:border-b-0 sm:border-r border-slate-700 pb-4 sm:pb-0 sm:pr-2 space-y-2">
                     <div className="text-slate-400 mb-2">{t.bauhaus.aiDraft.visual.components}</div>
                     {[
                         t.bauhaus.aiDraft.visual.jurisdiction,
@@ -273,7 +273,7 @@ const AIDraftVisual = () => {
 const AnatomyVisual = () => {
     const { t } = useLanguage();
     return (
-        <div className="w-full h-full bg-white p-8 relative flex items-center justify-center">
+        <div className="w-full h-full bg-white p-4 sm:p-8 relative flex items-center justify-center">
              <div className="w-48 h-64 border-hard p-4 relative bg-white z-10 shadow-sm">
                 <div className="space-y-4">
                     <div className="h-2 w-1/3 bg-black"></div>
@@ -295,32 +295,32 @@ const AnatomyVisual = () => {
                 
                 {/* Labels */}
                 <motion.div 
-                    className="absolute -right-12 top-8 flex items-center gap-2"
+                    className="absolute -right-6 sm:-right-12 top-8 flex items-center gap-2"
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
                 >
-                    <div className="w-8 h-[1px] bg-black"></div>
+                    <div className="w-4 sm:w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-black text-white px-1">{t.bauhaus.anatomy.visual.parties}</span>
                 </motion.div>
 
                 <motion.div 
-                    className="absolute -left-12 top-20 flex items-center gap-2 flex-row-reverse"
+                    className="absolute -left-6 sm:-left-12 top-20 flex items-center gap-2 flex-row-reverse"
                     initial={{ opacity: 0, x: 10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 }}
                 >
-                    <div className="w-8 h-[1px] bg-black"></div>
+                    <div className="w-4 sm:w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-[var(--accent)] text-black px-1">{t.bauhaus.anatomy.visual.obligations}</span>
                 </motion.div>
                 
                 <motion.div 
-                    className="absolute -right-12 bottom-12 flex items-center gap-2"
+                    className="absolute -right-6 sm:-right-12 bottom-12 flex items-center gap-2"
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.9 }}
                 >
-                    <div className="w-8 h-[1px] bg-black"></div>
+                    <div className="w-4 sm:w-8 h-[1px] bg-black"></div>
                     <span className="text-[10px] font-bold uppercase bg-black text-white px-1">{t.bauhaus.anatomy.visual.termination}</span>
                 </motion.div>
              </div>
@@ -335,10 +335,10 @@ export function BauhausFeatures() {
   const { t } = useLanguage();
   
   return (
-    <section id="features" className="bg-white text-black py-32 overflow-hidden border-b border-black">
+    <section id="features" className="bg-white text-black py-20 overflow-hidden border-b border-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-24 max-w-4xl mx-auto text-center">
-            <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-8 leading-snug md:leading-[0.9]">
+        <div className="mb-16 max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter mb-8 leading-snug md:leading-[0.9] break-words hyphens-auto">
                 {t.bauhaus.header.title1} <span className="bg-[var(--accent)] text-black px-2">{t.bauhaus.header.title2}</span>
                 <br className="hidden md:block" />
                 {t.bauhaus.header.title3} <span className="border-b-4 border-black pb-1">{t.bauhaus.header.title4}</span>
