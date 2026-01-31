@@ -43,19 +43,10 @@ export async function analyzeContractPlayground(formData: FormData) {
     - title: string
     - contractType: One of [${contractTypesList}]
     - contractOwner: string (party initiating)
-    - contractPartner: string (counterparty)
-    - contractManager: string (person in charge)
     - contractStart: string (YYYY-MM-DD)
     - expirationDate: string (YYYY-MM-DD)
     - durationType: One of ["One-time", "Fixed-term", "Indefinite"]
-    - contractValue: string (e.g. "50.000 EUR")
-    - liabilityAmount: string
-    - riskAssessment: One of ["Low", "Medium", "High"]
     - summary: string (2-3 sentences)
-    - conditions: array of strings (key obligations)
-    - confidentiality: string
-    - externalReference: string
-    - status: One of ["Review", "Draft", "Signed", "Active", "Expired"]
   `;
 
   // Use override if provided, otherwise default (simplified version of the one in actions.ts)
