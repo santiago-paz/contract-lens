@@ -44,6 +44,68 @@ export default function PlaygroundPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Parse validation errors from details
+  const { validationErrors, failedObject } = errorPopup?.details ? (() => {
+    try {
+      const details = JSON.parse(errorPopup.details);
+      let foundErrors = null;
+      let foundObject = null;
+      
+      // Helper to traverse
+      let current = details;
+      while (current) {
+        // Check for ZodError array in message
+        if (current.message && typeof current.message === 'string') {
+           // Check for AI_TypeValidationError structure to get the object
+           // "Type validation failed: Value: { ... }. Error message: [ ... ]"
+           // We use a non-greedy match for the value part up to ". Error message:"
+           const valueMatch = current.message.match(/Type validation failed: Value: (\{.*\}). Error message:/s);
+           if (valueMatch && valueMatch[1]) {
+             try {
+               foundObject = JSON.parse(valueMatch[1]);
+             } catch {}
+           }
+
+           // Check for error array
+           const errorMatch = current.message.match(/Error message: (\[.*\])/s);
+           if (errorMatch && errorMatch[1]) {
+             try {
+               const parsed = JSON.parse(errorMatch[1]);
+               if (Array.isArray(parsed)) foundErrors = parsed;
+             } catch {}
+           } else {
+             // Maybe the message IS the array (ZodError case)
+             try {
+                const parsed = JSON.parse(current.message);
+                if (Array.isArray(parsed)) foundErrors = parsed;
+             } catch {}
+           }
+        }
+        
+        if (foundErrors) break;
+
+        if (current.cause) {
+          current = current.cause;
+        } else {
+          break;
+        }
+      }
+      return { validationErrors: foundErrors, failedObject: foundObject };
+    } catch {
+      return { validationErrors: null, failedObject: null };
+    }
+  })() : { validationErrors: null, failedObject: null };
+
+  const getValueByPath = (obj: any, path: (string | number)[]) => {
+    if (!obj) return undefined;
+    let current = obj;
+    for (const key of path) {
+      if (current === undefined || current === null) return undefined;
+      current = current[key];
+    }
+    return current;
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -211,6 +273,61 @@ export default function PlaygroundPage() {
                 <div className="font-bold mb-2 uppercase tracking-wider text-red-600">Error Message:</div>
                 <div className="mb-6 text-sm font-bold whitespace-pre-wrap break-words">{errorPopup.message}</div>
                 
+                {validationErrors && validationErrors.length > 0 && (
+                  <div className="mb-6 bg-white border-2 border-red-200 p-4 rounded-sm">
+                    <div className="font-bold mb-3 uppercase tracking-wider text-red-600 flex items-center gap-2 border-b border-red-100 pb-2">
+                      <AlertCircle className="w-4 h-4" />
+                      Schema Validation Errors ({validationErrors.length})
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-red-50 border-b border-red-100">
+                          <tr>
+                            <th className="p-2 font-bold uppercase text-red-800 w-1/4">Field</th>
+                            <th className="p-2 font-bold uppercase text-red-800 w-1/4">Value</th>
+                            <th className="p-2 font-bold uppercase text-red-800 w-1/4">Issue</th>
+                            <th className="p-2 font-bold uppercase text-red-800 w-1/4">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-red-50">
+                          {validationErrors.map((err: any, i: number) => {
+                            const value = getValueByPath(failedObject, err.path);
+                            return (
+                              <tr key={i} className="hover:bg-red-50/50 transition-colors">
+                                <td className="p-2 font-mono font-bold text-red-900 align-top">
+                                  {err.path?.join('.')}
+                                </td>
+                                <td className="p-2 font-mono text-gray-600 align-top text-[10px] break-all">
+                                  {value !== undefined ? (
+                                    typeof value === 'string' ? `"${value}"` : JSON.stringify(value)
+                                  ) : (
+                                    <span className="text-gray-400 italic">undefined</span>
+                                  )}
+                                </td>
+                                <td className="p-2 text-red-700 align-top font-medium">
+                                  {err.message}
+                                </td>
+                                <td className="p-2 font-mono text-red-600 text-[10px] align-top">
+                                  {err.code === 'invalid_format' && err.pattern && (
+                                    <div className="bg-red-100 px-1.5 py-0.5 rounded w-fit">Pattern: {err.pattern}</div>
+                                  )}
+                                  {err.code === 'invalid_type' && (
+                                     <div>Expected: {err.expected}, Received: {err.received}</div>
+                                  )}
+                                  {err.code === 'invalid_enum_value' && (
+                                     <div>Allowed: {err.options?.join(', ')}</div>
+                                  )}
+                                  <div className="opacity-50 mt-1">Code: {err.code}</div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
                 {errorPopup.details && (
                   <>
                     <div className="flex justify-between items-end border-t-2 border-gray-200 pt-4 mb-2">
@@ -464,21 +581,31 @@ export default function PlaygroundPage() {
                     <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{result.parsed?.contractType}</p>
                   </div>
 
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+                  {/* <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
                     <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Status</label>
                     <span className="inline-block px-3 py-1 bg-black text-[#CCFF00] text-xs font-bold uppercase tracking-wide border border-black">
                       {result.parsed?.status}
                     </span>
-                  </div>
+                  </div> */}
 
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+                  {/* <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
                     <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Value</label>
                     <p className="font-mono font-bold text-xl text-black">{result.parsed?.contractValue || 'N/A'}</p>
-                  </div>
+                  </div> */}
 
                   <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
                     <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Start Date</label>
                     <p className="font-mono font-bold text-xl text-black">{result.parsed?.contractStart || 'N/A'}</p>
+                  </div>
+
+                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Expiration Date</label>
+                    <p className="font-mono font-bold text-xl text-black">{result.parsed?.expirationDate || 'N/A'}</p>
+                  </div>
+
+                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Duration Type</label>
+                    <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{result.parsed?.durationType || 'N/A'}</p>
                   </div>
 
                   <div className="col-span-3 bg-white p-8 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow relative overflow-hidden">
@@ -494,14 +621,14 @@ export default function PlaygroundPage() {
                         <span className="text-[10px] font-bold uppercase text-gray-700 block">Owner</span>
                         <span className="font-bold text-sm text-black">{result.parsed?.contractOwner || '-'}</span>
                       </div>
-                      <div className="border-l-4 border-[#CCFF00] pl-3">
+                      {/* <div className="border-l-4 border-[#CCFF00] pl-3">
                         <span className="text-[10px] font-bold uppercase text-gray-700 block">Partner</span>
                         <span className="font-bold text-sm text-black">{result.parsed?.contractPartner || '-'}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
-                  <div className="col-span-2 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+                  {/* <div className="col-span-2 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
                     <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Key Conditions</label>
                     <div className="bg-gray-50 p-4 border border-black font-mono text-xs leading-relaxed h-full max-h-[200px] overflow-y-auto">
                       <pre className="whitespace-pre-wrap font-mono text-black">
@@ -510,7 +637,7 @@ export default function PlaygroundPage() {
                           : result.parsed?.conditions}
                       </pre>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
 
