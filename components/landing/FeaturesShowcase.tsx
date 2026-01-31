@@ -438,7 +438,7 @@ const AIDraftVisual = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     className="text-xs font-bold text-slate-200 truncate"
                                 >
-                                    Draft Generated Successfully.
+                                    {t.features.aiDraft.visual.draftGenerated}
                                 </motion.span>
                             </>
                         ) : (
@@ -554,7 +554,7 @@ export function FeaturesShowcase() {
                 subtitle={t.features.translation.subtitle}
                 description={t.features.translation.description}
                 align="right"
-                visualClassName="h-[400px] md:h-[500px] lg:h-auto lg:aspect-[4/3]"
+                visualClassName="h-[400px]"
             >
                 <TranslationVisual />
             </FeatureSection>

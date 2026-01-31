@@ -57,6 +57,7 @@ const translations = {
         subtitle: "Legal Architecture, not just text",
         description: "Outperforming generic models using structured templates and RAG with real jurisprudence for bulletproof contracts.",
         visual: {
+          draftGenerated: "Draft Generated Successfully.",
           status: "ONLINE",
           components: "COMPONENTS",
           jurisdiction: "Jurisdiction",
@@ -231,6 +232,7 @@ const translations = {
       }
     },
     teams: {
+      matrixTitle: "Organizational Matrix",
       title: "Precision Infrastructure",
       titleHighlight: "Engineered for scale.",
       subtitle: "High-performance tools for the modern enterprise. Transform static agreements into a queryable asset database.",
@@ -348,13 +350,14 @@ const translations = {
         subtitle: "Rechtsarchitektur, nicht nur Text",
         description: "Übertrifft generische Modelle durch strukturierte Vorlagen und RAG mit echter Rechtsprechung für kugelsichere Verträge.",
         visual: {
+          draftGenerated: "Entwurf erfolgreich generiert.",
           status: "ONLINE",
           components: "KOMPONENTEN",
           jurisdiction: "Gerichtsstand",
           liability: "Haftung",
           term: "Laufzeit",
           payment: "Zahlung",
-          engineTitle: "AI Contract Engine",
+          engineTitle: "KI-Vertrags-Engine",
           readyStatus: "Bereit",
           initialStatus: "Wählen Sie eine Komponente, um den Entwurf zu starten.",
           generating: "Generiere Klauselstruktur nach EU-Recht...",
@@ -522,6 +525,7 @@ const translations = {
       }
     },
     teams: {
+      matrixTitle: "Organisationsmatrix",
       title: "Präzisionsinfrastruktur",
       titleHighlight: "Für Skalierung entwickelt.",
       subtitle: "Hochleistungstools für das moderne Unternehmen. Verwandeln Sie statische Vereinbarungen in eine abfragbare Asset-Datenbank.",

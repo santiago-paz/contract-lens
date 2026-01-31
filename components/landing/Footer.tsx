@@ -40,8 +40,8 @@ export function Footer() {
                         <div className="font-mono font-black text-3xl leading-none">S</div>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Split</span>
-                        <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Berlin</span>
+                        <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Herr</span>
+                        <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Contrakt</span>
                     </div>
                 </div>
                 <div className="text-sm font-mono text-black max-w-xs leading-relaxed font-bold uppercase">

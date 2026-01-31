@@ -55,7 +55,7 @@ export function TeamSection() {
             className="inline-flex items-center gap-2 px-3 py-1 border border-[#CCFF00] text-[#CCFF00] mb-6 font-mono text-xs uppercase tracking-widest"
           >
             <span className="w-2 h-2 bg-[#CCFF00] animate-pulse"></span>
-            Organizational Matrix
+            {t.teams.matrixTitle}
           </motion.div>
           
           <motion.h2 
