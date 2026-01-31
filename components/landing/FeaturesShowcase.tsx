@@ -73,7 +73,7 @@ const DeadlinesVisual = () => {
         <div className="w-full h-full flex flex-col p-5 sm:p-8 bg-white relative bg-noise">
             <div className="flex justify-between items-center w-full mb-4 sm:mb-6 shrink-0">
                 <div className="font-mono text-xs font-bold uppercase border border-black px-2 py-1 bg-white">
-                    {t.bauhaus.deadlines.visual.cronJobs}
+                    {t.features.deadlines.visual.cronJobs}
                 </div>
                 <div className="animate-pulse">
                     <div className="w-4 h-4 bg-[var(--accent)] border-2 border-black rounded-full"></div>
@@ -81,9 +81,9 @@ const DeadlinesVisual = () => {
             </div>
             <div className="flex-1 flex flex-col justify-center gap-4 md:gap-8 lg:justify-between lg:gap-0 py-2 md:pb-8">
                 {[
-                    { days: 2, label: t.bauhaus.deadlines.visual.autoRenewal, status: "CRITICAL" },
-                    { days: 15, label: t.bauhaus.deadlines.visual.exitClause, status: "WARNING" },
-                    { days: 45, label: t.bauhaus.deadlines.visual.annualReview, status: "NORMAL" },
+                    { days: 2, label: t.features.deadlines.visual.autoRenewal, status: "CRITICAL" },
+                    { days: 15, label: t.features.deadlines.visual.exitClause, status: "WARNING" },
+                    { days: 45, label: t.features.deadlines.visual.annualReview, status: "NORMAL" },
                 ].map((item, i) => (
                     <motion.div 
                         key={i}
@@ -97,7 +97,7 @@ const DeadlinesVisual = () => {
                             ${item.status === 'CRITICAL' ? 'bg-[var(--accent)] text-black' : 'bg-white text-black'}
                         `}>
                             <span className="text-3xl font-black leading-none">{item.days}</span>
-                            <span className="text-[10px] font-bold uppercase">{t.bauhaus.deadlines.visual.days}</span>
+                            <span className="text-[10px] font-bold uppercase">{t.features.deadlines.visual.days}</span>
                         </div>
                         <div className="flex-1 border-b-2 border-gray-200 pb-4 group-hover:border-black transition-colors relative">
                             <div className="flex justify-between items-center mb-2">
@@ -135,7 +135,7 @@ const TranslationVisual = () => {
             {/* Left: Original */}
             <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-white p-6 sm:p-8 border-b-2 sm:border-b-0 sm:border-r-2 border-black flex flex-col relative">
                 <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-gray-100 pb-2 shrink-0">
-                     <h5 className="text-xs font-bold font-mono uppercase text-gray-400">{t.bauhaus.translation.visual.original}</h5>
+                     <h5 className="text-xs font-bold font-mono uppercase text-gray-400">{t.features.translation.visual.original}</h5>
                      <div className="w-2 h-2 bg-black rounded-full"></div>
                 </div>
                 <div className="space-y-3 opacity-100 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed select-none blur-[0.5px] flex flex-col justify-center">
@@ -174,7 +174,7 @@ const TranslationVisual = () => {
             {/* Right: Translated */}
             <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-gray-50 p-6 sm:p-8 flex flex-col relative">
                 <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-black pb-2 shrink-0">
-                    <h5 className="text-xs font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 border border-black">{t.bauhaus.translation.visual.translated}</h5>
+                    <h5 className="text-xs font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 border border-black">{t.features.translation.visual.translated}</h5>
                 </div>
                 <div className="space-y-3 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed flex flex-col justify-center">
                      {/* Header */}
@@ -253,12 +253,12 @@ const AIDraftVisual = () => {
     const getGeneratedText = (component: string) => {
         // Simplified mapping for visual effect
         const textMap: Record<string, string[]> = {
-            [t.bauhaus.aiDraft.visual.jurisdiction]: t.bauhaus.aiDraft.visual.snippets.jurisdiction,
-            [t.bauhaus.aiDraft.visual.liability]: t.bauhaus.aiDraft.visual.snippets.liability,
-            [t.bauhaus.aiDraft.visual.term]: t.bauhaus.aiDraft.visual.snippets.term,
-            [t.bauhaus.aiDraft.visual.payment]: t.bauhaus.aiDraft.visual.snippets.payment
+            [t.features.aiDraft.visual.jurisdiction]: t.features.aiDraft.visual.snippets.jurisdiction,
+            [t.features.aiDraft.visual.liability]: t.features.aiDraft.visual.snippets.liability,
+            [t.features.aiDraft.visual.term]: t.features.aiDraft.visual.snippets.term,
+            [t.features.aiDraft.visual.payment]: t.features.aiDraft.visual.snippets.payment
         };
-        return textMap[component] || [t.bauhaus.aiDraft.visual.clauseGenerated, t.bauhaus.aiDraft.visual.validated];
+        return textMap[component] || [t.features.aiDraft.visual.clauseGenerated, t.features.aiDraft.visual.validated];
     };
 
     return (
@@ -267,10 +267,10 @@ const AIDraftVisual = () => {
             
             {/* Header */}
             <div className="flex justify-between items-center px-5 py-3 border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm z-20 sticky top-0">
-                <span className="font-bold text-slate-200 text-xs tracking-wide">{t.bauhaus.aiDraft.visual.engineTitle}</span>
+                <span className="font-bold text-slate-200 text-xs tracking-wide">{t.features.aiDraft.visual.engineTitle}</span>
                 <span className="text-[var(--accent)] flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></span>
-                    {t.bauhaus.aiDraft.visual.readyStatus}
+                    {t.features.aiDraft.visual.readyStatus}
                 </span>
             </div>
             
@@ -279,13 +279,13 @@ const AIDraftVisual = () => {
                 {/* Scrollable List */}
                 <div className="flex-1 overflow-y-auto p-5 space-y-2 scrollbar-hide">
                     <div className="text-slate-500 font-bold text-[10px] uppercase tracking-wider mb-2 px-1">
-                        {t.bauhaus.aiDraft.visual.components}
+                        {t.features.aiDraft.visual.components}
                     </div>
                     {[
-                        t.bauhaus.aiDraft.visual.jurisdiction,
-                        t.bauhaus.aiDraft.visual.liability,
-                        t.bauhaus.aiDraft.visual.term,
-                        t.bauhaus.aiDraft.visual.payment
+                        t.features.aiDraft.visual.jurisdiction,
+                        t.features.aiDraft.visual.liability,
+                        t.features.aiDraft.visual.term,
+                        t.features.aiDraft.visual.payment
                     ].map((item, idx) => (
                         <motion.button 
                             key={item}
@@ -335,7 +335,7 @@ const AIDraftVisual = () => {
                                                     exit={{ opacity: 0, y: -10, scale: 0.9 }}
                                                     className="absolute right-0 top-8 bg-[var(--accent)] text-black text-[10px] font-bold uppercase whitespace-nowrap px-3 py-2 rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black z-50 pointer-events-none"
                                                 >
-                                                    {t.bauhaus.aiDraft.visual.copyToast}
+                                                    {t.features.aiDraft.visual.copyToast}
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
@@ -392,7 +392,7 @@ const AIDraftVisual = () => {
                                         <div className="mt-4 pt-4 border-t border-slate-900 font-mono text-[9px] text-slate-500 flex justify-between items-center">
                                             <span className="flex items-center gap-2">
                                                 <span className="text-slate-500">{`>`}</span>
-                                                <span className="text-slate-500 uppercase">{t.bauhaus.aiDraft.visual.module}:</span>
+                                                <span className="text-slate-500 uppercase">{t.features.aiDraft.visual.module}:</span>
                                                 <span className="text-[var(--accent)] font-bold">{activeComponent.toUpperCase()}</span>
                                             </span>
                                             {generationState === 'completed' && (
@@ -401,7 +401,7 @@ const AIDraftVisual = () => {
                                                     animate={{ scale: 1 }}
                                                     className="text-[var(--accent)] font-bold"
                                                 >
-                                                    {t.bauhaus.aiDraft.visual.done}
+                                                    {t.features.aiDraft.visual.done}
                                                 </motion.span>
                                             )}
                                         </div>
@@ -424,7 +424,7 @@ const AIDraftVisual = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     className="text-xs font-bold text-[var(--accent)] truncate"
                                 >
-                                    {t.bauhaus.aiDraft.visual.generating}
+                                    {t.features.aiDraft.visual.generating}
                                 </motion.span>
                             </>
                         ) : generationState === 'completed' ? (
@@ -448,7 +448,7 @@ const AIDraftVisual = () => {
                                 animate={{ opacity: 1 }}
                                 className="text-xs text-slate-400 font-bold"
                             >
-                                {t.bauhaus.aiDraft.visual.initialStatus}
+                                {t.features.aiDraft.visual.initialStatus}
                             </motion.span>
                         )}
                     </div>
@@ -490,7 +490,7 @@ const AnatomyVisual = () => {
                     transition={{ delay: 0.5 }}
                 >
                     <div className="w-6 sm:w-12 h-[2px] bg-black"></div>
-                    <span className="text-[10px] font-black font-mono uppercase bg-black text-white px-2 py-1 shadow-hard-sm transform rotate-2">{t.bauhaus.anatomy.visual.parties}</span>
+                    <span className="text-[10px] font-black font-mono uppercase bg-black text-white px-2 py-1 shadow-hard-sm transform rotate-2">{t.features.anatomy.visual.parties}</span>
                 </motion.div>
 
                 <motion.div 
@@ -500,7 +500,7 @@ const AnatomyVisual = () => {
                     transition={{ delay: 0.7 }}
                 >
                     <div className="w-6 sm:w-12 h-[2px] bg-black"></div>
-                    <span className="text-[10px] font-black font-mono uppercase bg-[var(--accent)] text-black border border-black px-2 py-1 shadow-hard-sm transform -rotate-2">{t.bauhaus.anatomy.visual.obligations}</span>
+                    <span className="text-[10px] font-black font-mono uppercase bg-[var(--accent)] text-black border border-black px-2 py-1 shadow-hard-sm transform -rotate-2">{t.features.anatomy.visual.obligations}</span>
                 </motion.div>
                 
                 <motion.div 
@@ -510,7 +510,7 @@ const AnatomyVisual = () => {
                     transition={{ delay: 0.9 }}
                 >
                     <div className="w-6 sm:w-12 h-[2px] bg-black"></div>
-                    <span className="text-[10px] font-black font-mono uppercase bg-white border border-black text-black px-2 py-1 shadow-hard-sm transform rotate-1">{t.bauhaus.anatomy.visual.termination}</span>
+                    <span className="text-[10px] font-black font-mono uppercase bg-white border border-black text-black px-2 py-1 shadow-hard-sm transform rotate-1">{t.features.anatomy.visual.termination}</span>
                 </motion.div>
              </div>
              
@@ -528,21 +528,21 @@ export function FeaturesShowcase() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-24 max-w-5xl mx-auto text-center">
             <h2 className="text-5xl sm:text-7xl font-black uppercase tracking-tighter mb-8 leading-[1.1] sm:leading-[0.85] break-words hyphens-auto">
-                {t.bauhaus.header.title1} <span className="relative inline-block px-4"><span className="absolute inset-0 bg-[var(--accent)] transform -skew-x-6 border-2 border-black shadow-hard-sm"></span><span className="relative z-10">{t.bauhaus.header.title2}</span></span>
+                {t.features.header.title1} <span className="relative inline-block px-4"><span className="absolute inset-0 bg-[var(--accent)] transform -skew-x-6 border-2 border-black shadow-hard-sm"></span><span className="relative z-10">{t.features.header.title2}</span></span>
                 <br className="hidden md:block" />
-                {t.bauhaus.header.title3} <span className="inline-block border-b-8 border-black pb-2 sm:pb-4 leading-none">{t.bauhaus.header.title4}</span>
+                {t.features.header.title3} <span className="inline-block border-b-8 border-black pb-2 sm:pb-4 leading-none">{t.features.header.title4}</span>
             </h2>
             <p className="text-xl md:text-3xl font-mono text-black/70 max-w-3xl mx-auto leading-relaxed">
-                {t.bauhaus.header.subtitle}
+                {t.features.header.subtitle}
             </p>
         </div>
 
         <div className="space-y-6">
             <FeatureSection
                 index={1}
-                title={t.bauhaus.deadlines.title}
-                subtitle={t.bauhaus.deadlines.subtitle}
-                description={t.bauhaus.deadlines.description}
+                title={t.features.deadlines.title}
+                subtitle={t.features.deadlines.subtitle}
+                description={t.features.deadlines.description}
                 align="left"
             >
                 <DeadlinesVisual />
@@ -550,9 +550,9 @@ export function FeaturesShowcase() {
 
             <FeatureSection
                 index={2}
-                title={t.bauhaus.translation.title}
-                subtitle={t.bauhaus.translation.subtitle}
-                description={t.bauhaus.translation.description}
+                title={t.features.translation.title}
+                subtitle={t.features.translation.subtitle}
+                description={t.features.translation.description}
                 align="right"
                 visualClassName="h-[400px] md:h-[500px] lg:h-auto lg:aspect-[4/3]"
             >
@@ -561,9 +561,9 @@ export function FeaturesShowcase() {
 
             <FeatureSection
                 index={3}
-                title={t.bauhaus.aiDraft.title}
-                subtitle={t.bauhaus.aiDraft.subtitle}
-                description={t.bauhaus.aiDraft.description}
+                title={t.features.aiDraft.title}
+                subtitle={t.features.aiDraft.subtitle}
+                description={t.features.aiDraft.description}
                 align="left"
                 visualClassName="h-[400px] md:h-[500px]"
             >
@@ -572,9 +572,9 @@ export function FeaturesShowcase() {
 
             <FeatureSection
                 index={4}
-                title={t.bauhaus.anatomy.title}
-                subtitle={t.bauhaus.anatomy.subtitle}
-                description={t.bauhaus.anatomy.description}
+                title={t.features.anatomy.title}
+                subtitle={t.features.anatomy.subtitle}
+                description={t.features.anatomy.description}
                 align="right"
             >
                 <AnatomyVisual />
