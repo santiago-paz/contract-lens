@@ -137,7 +137,7 @@ const translations = {
       },
       latency: "Latency",
       liveMonitor: "Live Monitor",
-      target: "Target",
+      target: "File",
       verified: "Verified",
       complete: "Audit Complete",
       detected: "Detected"
