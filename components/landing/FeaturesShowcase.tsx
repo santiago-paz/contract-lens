@@ -520,7 +520,7 @@ const AnatomyVisual = () => {
     );
 };
 
-export function BauhausFeatures() {
+export function FeaturesShowcase() {
   const { t, language } = useLanguage();
   
   return (
