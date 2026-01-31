@@ -289,8 +289,8 @@ const translations = {
     footer: {
       ctaTitle: "Operational failure is a choice.",
       ctaButton: "Secure Your Infrastructure",
-      systemDesc: "Advanced Contract Analysis System Operated by Split Berlin GmbH",
-      copyright: "SPLIT BERLIN. ALL RIGHTS RESERVED.",
+      systemDesc: "Advanced Contract Analysis System Operated by Herr Contrakt GmbH",
+      copyright: "Herr Contrakt. ALL RIGHTS RESERVED.",
       rights: "All rights reserved.",
       privacy: "Privacy Protocol",
       terms: "Terms of Service"
@@ -579,8 +579,8 @@ const translations = {
     footer: {
       ctaTitle: "Operatives Versagen ist eine Wahl.",
       ctaButton: "Infrastruktur sichern",
-      systemDesc: "Fortschrittliches Vertragsanalysesystem betrieben von Split Berlin GmbH",
-      copyright: "SPLIT BERLIN. ALLE RECHTE VORBEHALTEN.",
+      systemDesc: "Fortschrittliches Vertragsanalysesystem betrieben von Herr Contrakt GmbH",
+      copyright: "Herr Contrakt. ALLE RECHTE VORBEHALTEN.",
       rights: "Alle Rechte vorbehalten.",
       privacy: "Datenschutzprotokoll",
       terms: "Nutzungsbedingungen"

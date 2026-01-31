@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Split Berlin | The Enterprise Asset OS",
+  title: "Herr Contrakt | The Enterprise Asset OS",
   description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
   keywords: [
     // English
@@ -37,18 +37,18 @@ export const metadata: Metadata = {
     "Risikomanagement",
     "Rechtssicherheit"
   ],
-  authors: [{ name: "Split Berlin GmbH" }],
+  authors: [{ name: "Herr Contrakt GmbH" }],
   openGraph: {
-    title: "Split Berlin | The Enterprise Asset OS",
+    title: "Herr Contrakt | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
     type: "website",
-    siteName: "Split Berlin",
+    siteName: "Herr Contrakt",
     locale: "en_US",
     alternateLocale: ["de_DE"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Split Berlin | The Enterprise Asset OS",
+    title: "Herr Contrakt | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
   },
   robots: {

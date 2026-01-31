@@ -67,11 +67,22 @@ export function Navbar() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="bg-[#CCFF00] border-2 border-black w-12 h-12 flex items-center justify-center shadow-hard-sm transition-transform hover:rotate-3">
-                 <span className="font-mono font-black text-2xl leading-none text-black">S</span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black">
+                  {/* Handle */}
+                  <path d="M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+                  {/* Main Body (Suitcase/Book) */}
+                  <rect x="4" y="6" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="2.5" />
+                  {/* Spine / Divider */}
+                  <line x1="10" y1="6" x2="10" y2="22" stroke="currentColor" strokeWidth="2.5" />
+                  {/* Pages / Lines hint */}
+                  <line x1="14" y1="10" x2="18" y2="10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+                  <line x1="14" y1="14" x2="18" y2="14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+                  <line x1="14" y1="18" x2="16" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+                </svg>
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black tracking-tighter font-mono uppercase leading-none">
-                  Split Berlin
+                  Herr Contrakt
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 leading-none mt-1">
                   System v1.0
