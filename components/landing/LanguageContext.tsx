@@ -20,7 +20,7 @@ const translations = {
       teams: "Teams",
       security: "Security"
     },
-    bauhaus: {
+    features: {
       header: {
         title1: "Not just another",
         title2: "management tool.",
@@ -311,7 +311,7 @@ const translations = {
       teams: "Teams",
       security: "Sicherheit"
     },
-    bauhaus: {
+    features: {
       header: {
         title1: "Nicht nur ein weiteres",
         title2: "Verwaltungstool.",
