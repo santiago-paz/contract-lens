@@ -19,7 +19,7 @@ import {
   Terminal,
   WrapText
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export default function PlaygroundPage() {
   // Inputs
@@ -115,6 +115,22 @@ export default function PlaygroundPage() {
   const closeErrorPopup = () => {
     setErrorPopup(null);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeErrorPopup();
+      }
+    };
+
+    if (errorPopup?.isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [errorPopup?.isOpen]);
 
   const JsonFormatter = ({ data }: { data: any }) => {
     if (typeof data === 'string') {
