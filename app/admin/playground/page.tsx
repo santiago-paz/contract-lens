@@ -25,7 +25,7 @@ export default function PlaygroundPage() {
   // Inputs
   const [file, setFile] = useState<File | null>(null);
   const [systemPrompt, setSystemPrompt] = useState<string>('');
-  const [model, setModel] = useState<string>('meta/llama-3.1-8b');
+  const [model, setModel] = useState<string>('meta/llama-4-scout');
   const [temperature, setTemperature] = useState<number>(0);
 
   // State
@@ -280,9 +280,9 @@ export default function PlaygroundPage() {
               <div className="relative z-10">
                 <Upload className={`w-8 h-8 mx-auto mb-3 transition-transform group-hover:-translate-y-1 ${file ? 'text-black' : 'text-gray-600'}`} />
                 {file ? (
-                  <div className="font-bold text-black border-b-2 border-black inline-block pb-1">{file.name}</div>
+                  <div className="font-bold text-black border-b-2 border-black inline-block pb-1 line-clamp-1">{file.name}</div>
                 ) : (
-                  <div className="text-xs font-bold text-black uppercase tracking-wide">Drop PDF/DOCX here</div>
+                  <div className="text-xs font-bold text-black uppercase tracking-wide line-clamp-1">Drop PDF/DOCX here</div>
                 )}
               </div>
             </div>
@@ -298,6 +298,7 @@ export default function PlaygroundPage() {
                   onChange={(e) => setModel(e.target.value)}
                   className="w-full p-3 border-2 border-black bg-white text-xs font-bold text-black appearance-none rounded-none shadow-hard-sm focus:shadow-hard transition-all focus:outline-none cursor-pointer"
                 >
+                  <option value="meta/llama-4-scout">Meta Llama 4 Scout</option>
                   <option value="meta/llama-3.1-8b">Meta Llama 3.1 8B</option>
                   <option value="meta/llama-3.1-70b">Meta Llama 3.1 70B</option>
                   <option value="openai/gpt-4o">GPT-4o</option>
