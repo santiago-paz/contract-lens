@@ -21,24 +21,43 @@ export async function hydrateContract(analysis: ContractAnalysis, rawText: strin
         return val || null;
     };
 
-    const contractNumber = analysis.externalReference || `TEST-${Date.now()}`;
+    // Map fields based on contract type
+    let contractOwner: string | null = null;
+    let contractValue: string | null = null;
+    let conditions: string | null = null;
+
+    switch (analysis.contractType) {
+      case 'NDA':
+        contractOwner = analysis.disclosingParty;
+        conditions = `Duration: ${analysis.duration}\nMutual: ${analysis.isMutual ? 'Yes' : 'No'}\nJurisdiction: ${analysis.jurisdiction}`;
+        break;
+      case 'ServiceAgreement':
+        contractOwner = analysis.providerName;
+        contractValue = analysis.totalContractValue;
+        conditions = `Payment: ${analysis.paymentSchedule}\nNotice: ${analysis.terminationNoticePeriod}\nDeliverables: ${analysis.deliverables.join(', ')}`;
+        break;
+      case 'LicenseAgreement':
+        contractOwner = analysis.licensor;
+        conditions = `Territory: ${analysis.territory}\nExclusivity: ${analysis.exclusivity ? 'Yes' : 'No'}\nAudit: ${analysis.auditRights || 'None'}`;
+        break;
+    }
+
+    const contractNumber = `TEST-${Date.now()}`;
 
     const contract = await prisma.contract.create({
       data: {
         title: analysis.title || 'Hydrated Contract',
-        type: analysis.contractType || 'Unknown',
-        status: analysis.status || 'Draft',
+        type: analysis.contractType,
+        status: 'Draft', // Default as it's not in the new schema
         summary: analysis.summary || null,
-        conditions: getString(analysis.conditions),
-        contractOwner: analysis.contractOwner || null,
-        contractManager: analysis.contractManager || null,
-        contractValue: analysis.contractValue || null,
-        startDate: analysis.contractStart || null,
+        conditions: conditions,
+        contractOwner: contractOwner,
+        contractManager: null, // Not in new schema
+        contractValue: contractValue,
+        startDate: null, // Not in new schema
         content: rawText || getString(analysis.summary),
         contractNumber: contractNumber,
         userId: userId,
-        // We don't have the file buffer here easily unless we re-upload or cache it, 
-        // but for "hydration" from text/analysis, we might skip the binary file or add a placeholder.
         fileName: 'hydrated-from-playground.txt',
       }
     });

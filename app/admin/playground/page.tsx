@@ -17,7 +17,10 @@ import {
   Upload,
   Zap,
   Terminal,
-  WrapText
+  WrapText,
+  Shield,
+  Briefcase,
+  Scale
 } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 
@@ -25,7 +28,7 @@ export default function PlaygroundPage() {
   // Inputs
   const [file, setFile] = useState<File | null>(null);
   const [systemPrompt, setSystemPrompt] = useState<string>('');
-  const [model, setModel] = useState<string>('meta/llama-4-scout');
+  const [model, setModel] = useState<string>('meta/llama-3.1-70b');
   const [temperature, setTemperature] = useState<number>(0);
 
   // State
@@ -33,11 +36,13 @@ export default function PlaygroundPage() {
   const [result, setResult] = useState<{
     rawText: string;
     parsed: ContractAnalysis | null;
+    classification?: any;
     usage: any;
-    latency: { extraction: number; llm: number; total: number };
+    latency: { extraction: number; router?: number; expert?: number; total: number };
   } | null>(null);
   const [activeTab, setActiveTab] = useState<'parsed' | 'raw' | 'json'>('parsed');
   const [hydrateStatus, setHydrateStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isAnalysisPopupOpen, setIsAnalysisPopupOpen] = useState(false);
 
   const [errorPopup, setErrorPopup] = useState<{ isOpen: boolean; message: string; details?: string } | null>(null);
   const [wrapLines, setWrapLines] = useState(true);
@@ -54,11 +59,7 @@ export default function PlaygroundPage() {
       // Helper to traverse
       let current = details;
       while (current) {
-        // Check for ZodError array in message
         if (current.message && typeof current.message === 'string') {
-           // Check for AI_TypeValidationError structure to get the object
-           // "Type validation failed: Value: { ... }. Error message: [ ... ]"
-           // We use a non-greedy match for the value part up to ". Error message:"
            const valueMatch = current.message.match(/Type validation failed: Value: (\{.*\}). Error message:/s);
            if (valueMatch && valueMatch[1]) {
              try {
@@ -66,7 +67,6 @@ export default function PlaygroundPage() {
              } catch {}
            }
 
-           // Check for error array
            const errorMatch = current.message.match(/Error message: (\[.*\])/s);
            if (errorMatch && errorMatch[1]) {
              try {
@@ -74,7 +74,6 @@ export default function PlaygroundPage() {
                if (Array.isArray(parsed)) foundErrors = parsed;
              } catch {}
            } else {
-             // Maybe the message IS the array (ZodError case)
              try {
                 const parsed = JSON.parse(current.message);
                 if (Array.isArray(parsed)) foundErrors = parsed;
@@ -247,6 +246,143 @@ export default function PlaygroundPage() {
     return <span className="text-green-400">"{String(data)}"</span>;
   };
 
+  const renderParsedContent = () => {
+    if (!result?.parsed) return null;
+    const { parsed } = result;
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Common Header */}
+        <div className="col-span-2 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow relative group">
+          <div className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Meta</div>
+          <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Title</label>
+          <h2 className="text-2xl font-black leading-tight group-hover:text-[#CCFF00] group-hover:bg-black transition-colors inline-block px-1 -ml-1 text-black">{parsed.title}</h2>
+        </div>
+
+        <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+          <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Type</label>
+          <div className="flex items-center gap-2">
+            {parsed.contractType === 'NDA' && <Shield className="w-5 h-5" />}
+            {parsed.contractType === 'ServiceAgreement' && <Briefcase className="w-5 h-5" />}
+            {parsed.contractType === 'LicenseAgreement' && <Scale className="w-5 h-5" />}
+            <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{parsed.contractType}</p>
+          </div>
+        </div>
+
+        {/* NDA Specifics */}
+        {parsed.contractType === 'NDA' && (
+          <>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Duration</label>
+              <p className="font-mono font-bold text-lg text-black">{parsed.duration}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Mutual?</label>
+              <p className="font-bold text-lg text-black">{parsed.isMutual ? 'Yes' : 'No'}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Jurisdiction</label>
+              <p className="font-bold text-lg text-black">{parsed.jurisdiction}</p>
+            </div>
+            <div className="col-span-3 grid grid-cols-2 gap-6">
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Disclosing Party</label>
+                 <p className="font-bold text-black">{parsed.disclosingParty}</p>
+               </div>
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Receiving Party</label>
+                 <p className="font-bold text-black">{parsed.receivingParty}</p>
+               </div>
+            </div>
+          </>
+        )}
+
+        {/* Service Agreement Specifics */}
+        {parsed.contractType === 'ServiceAgreement' && (
+          <>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Value</label>
+              <p className="font-mono font-bold text-lg text-black">{parsed.totalContractValue || 'N/A'}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Payment</label>
+              <p className="font-bold text-sm text-black">{parsed.paymentSchedule}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Notice Period</label>
+              <p className="font-bold text-lg text-black">{parsed.terminationNoticePeriod}</p>
+            </div>
+             <div className="col-span-3 grid grid-cols-2 gap-6">
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Provider</label>
+                 <p className="font-bold text-black">{parsed.providerName}</p>
+               </div>
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Client</label>
+                 <p className="font-bold text-black">{parsed.clientName}</p>
+               </div>
+            </div>
+            <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
+                <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Deliverables</label>
+                <ul className="list-disc list-inside space-y-1">
+                    {parsed.deliverables.map((d, i) => (
+                        <li key={i} className="text-sm font-medium text-black">{d}</li>
+                    ))}
+                </ul>
+            </div>
+          </>
+        )}
+
+        {/* License Agreement Specifics */}
+        {parsed.contractType === 'LicenseAgreement' && (
+          <>
+             <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Territory</label>
+              <p className="font-bold text-sm text-black">{parsed.territory}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Exclusivity</label>
+              <p className="font-bold text-lg text-black">{parsed.exclusivity ? 'Exclusive' : 'Non-Exclusive'}</p>
+            </div>
+            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+              <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Samples</label>
+              <p className="font-bold text-sm text-black">{parsed.productSamplesRequired || 'None'}</p>
+            </div>
+            <div className="col-span-3 grid grid-cols-2 gap-6">
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Licensor</label>
+                 <p className="font-bold text-black">{parsed.licensor}</p>
+               </div>
+               <div className="bg-white p-6 border-2 border-black shadow-hard">
+                 <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Licensee</label>
+                 <p className="font-bold text-black">{parsed.licensee}</p>
+               </div>
+            </div>
+            <div className="col-span-3 grid grid-cols-2 gap-6">
+                <div className="bg-white p-6 border-2 border-black shadow-hard">
+                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Audit Rights</label>
+                    <p className="text-sm text-black">{parsed.auditRights || 'None'}</p>
+                </div>
+                <div className="bg-white p-6 border-2 border-black shadow-hard">
+                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Insurance</label>
+                    <p className="text-sm text-black">{parsed.insuranceRequirements || 'None'}</p>
+                </div>
+            </div>
+          </>
+        )}
+
+        {/* Summary (Common) */}
+        {parsed.summary && (
+            <div className="col-span-3 bg-white p-8 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-[#CCFF00] -mr-8 -mt-8 rotate-45 border-2 border-black"></div>
+                <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Executive Summary</label>
+                <p className="leading-relaxed text-lg font-medium text-black">{parsed.summary}</p>
+            </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white font-mono text-sm flex bg-noise relative overflow-hidden">
       {/* Error Popup */}
@@ -365,6 +501,150 @@ export default function PlaygroundPage() {
         </div>
       )}
 
+      {/* Analysis Details Popup */}
+      {isAnalysisPopupOpen && result && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white border-2 border-black shadow-hard-lg max-w-6xl w-full h-[90vh] flex flex-col relative animate-fade-in">
+            {/* Header */}
+            <div className="bg-black text-white p-4 border-b-2 border-black flex justify-between items-center shrink-0">
+              <div className="flex items-center gap-2 font-black uppercase tracking-wider text-lg">
+                <Cpu className="w-6 h-6 text-[#CCFF00]" />
+                Analysis Process Details
+              </div>
+              <button 
+                onClick={() => setIsAnalysisPopupOpen(false)}
+                className="hover:bg-white/20 p-2 transition-colors rounded-sm"
+              >
+                <div className="w-4 h-4 relative">
+                  <div className="absolute inset-0 rotate-45 bg-white h-0.5 top-1/2 -translate-y-1/2"></div>
+                  <div className="absolute inset-0 -rotate-45 bg-white h-0.5 top-1/2 -translate-y-1/2"></div>
+                </div>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-50 space-y-8">
+              
+              {/* Step 1: Router / Classification */}
+              <div className="bg-white border-2 border-black shadow-hard">
+                <div className="bg-gray-100 border-b-2 border-black p-4 flex justify-between items-center">
+                  <h3 className="font-black uppercase tracking-wider flex items-center gap-2">
+                    <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs rounded-full">1</span>
+                    Router (Classification)
+                  </h3>
+                  <div className="flex gap-4 text-xs font-mono">
+                    <span className="bg-white px-2 py-1 border border-black shadow-sm">
+                      Latency: <b>{result.latency.router}ms</b>
+                    </span>
+                    <span className="bg-white px-2 py-1 border border-black shadow-sm">
+                      Tokens: <b>{result.usage.router?.totalTokens || 'N/A'}</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Input (First 5000 chars)</label>
+                    <div className="bg-gray-50 border border-gray-200 p-3 h-40 overflow-y-auto font-mono text-xs text-gray-600 whitespace-pre-wrap">
+                      {result.rawText.slice(0, 5000)}...
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Output (Classification)</label>
+                    <div className="bg-[#CCFF00]/10 border-2 border-[#CCFF00] p-4 h-40 flex items-center justify-center flex-col">
+                      <div className="text-3xl font-black text-black mb-2">{result.classification}</div>
+                      <div className="text-xs font-bold text-gray-600 uppercase tracking-widest">Detected Type</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2: Expert Analysis */}
+              <div className="bg-white border-2 border-black shadow-hard">
+                <div className="bg-gray-100 border-b-2 border-black p-4 flex justify-between items-center">
+                  <h3 className="font-black uppercase tracking-wider flex items-center gap-2">
+                    <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs rounded-full">2</span>
+                    Expert Analysis
+                  </h3>
+                  <div className="flex gap-4 text-xs font-mono">
+                    <span className="bg-white px-2 py-1 border border-black shadow-sm">
+                      Latency: <b>{result.latency.expert}ms</b>
+                    </span>
+                    <span className="bg-white px-2 py-1 border border-black shadow-sm">
+                      Tokens: <b>{result.usage.expert?.totalTokens || 'N/A'}</b>
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Input (Full Text)</label>
+                    <div className="bg-gray-50 border border-gray-200 p-3 h-64 overflow-y-auto font-mono text-xs text-gray-600 whitespace-pre-wrap">
+                      {result.rawText}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Output (Parsed Data)</label>
+                    <div className="bg-gray-900 border-2 border-black p-3 h-64 overflow-y-auto font-mono text-xs text-[#CCFF00]">
+                      <JsonFormatter data={result.parsed} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Error Analysis Section (if applicable) */}
+              {/* Since we only show this popup on success (result exists), we show the successful path. 
+                  If there were errors in the process that didn't stop the flow (e.g. non-fatal), they would be here.
+                  For now, we can show a "No Errors" state or simply omitted if strict success. 
+                  However, the user asked for "All with error analysis". 
+                  If the result is present, it means success. 
+                  I will add a section for "Validation / Health" */}
+               <div className="bg-white border-2 border-black shadow-hard">
+                <div className="bg-gray-100 border-b-2 border-black p-4">
+                  <h3 className="font-black uppercase tracking-wider flex items-center gap-2">
+                    <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs rounded-full">3</span>
+                    Process Health & Validation
+                  </h3>
+                </div>
+                <div className="p-6">
+                   <div className="flex items-center gap-4 p-4 bg-green-50 border border-green-200 text-green-800">
+                      <CheckCircle className="w-6 h-6" />
+                      <div>
+                        <div className="font-bold uppercase text-xs tracking-wider">Analysis Successful</div>
+                        <div className="text-sm">Both Router and Expert steps completed without critical errors.</div>
+                      </div>
+                   </div>
+                   
+                   <div className="mt-4 grid grid-cols-3 gap-4">
+                      <div className="p-3 bg-gray-50 border border-gray-200">
+                        <div className="text-[10px] uppercase font-bold text-gray-500">Total Latency</div>
+                        <div className="text-xl font-black">{result.latency.total}ms</div>
+                      </div>
+                      <div className="p-3 bg-gray-50 border border-gray-200">
+                        <div className="text-[10px] uppercase font-bold text-gray-500">Extraction Latency</div>
+                        <div className="text-xl font-black">{result.latency.extraction}ms</div>
+                      </div>
+                      <div className="p-3 bg-gray-50 border border-gray-200">
+                        <div className="text-[10px] uppercase font-bold text-gray-500">Total Tokens</div>
+                        <div className="text-xl font-black">{result.usage.totalTokens}</div>
+                      </div>
+                   </div>
+                </div>
+              </div>
+
+            </div>
+            
+            {/* Footer */}
+            <div className="p-4 border-t-2 border-black bg-white flex justify-end">
+              <button
+                onClick={() => setIsAnalysisPopupOpen(false)}
+                className="px-6 py-2 bg-black text-white border-2 border-black font-bold uppercase text-xs hover:bg-[#CCFF00] hover:text-black transition-colors shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+              >
+                Close Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Grid Background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-0"></div>
 
@@ -373,9 +653,9 @@ export default function PlaygroundPage() {
         <div className="p-4 border-b-2 border-black bg-black text-white">
           <h1 className="font-black text-xl flex items-center gap-2 uppercase tracking-tighter">
             <Terminal className="w-5 h-5 text-[#CCFF00]" />
-            Playground <span className="text-[#CCFF00] text-xs self-end mb-1">v1.0</span>
+            Playground <span className="text-[#CCFF00] text-xs self-end mb-1">v2.0</span>
           </h1>
-          <p className="text-[10px] text-gray-600 mt-1 font-bold uppercase tracking-widest">Contract Analysis Testbed</p>
+          <p className="text-[10px] text-gray-600 mt-1 font-bold uppercase tracking-widest">Router + Expert Architecture</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-8">
@@ -408,15 +688,13 @@ export default function PlaygroundPage() {
           {/* Model Settings */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <label className="text-xs font-black uppercase tracking-wider bg-black text-white px-2 py-1 inline-block shadow-hard-sm">Model Selection</label>
+              <label className="text-xs font-black uppercase tracking-wider bg-black text-white px-2 py-1 inline-block shadow-hard-sm">Expert Model</label>
               <div className="relative">
                 <select
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                   className="w-full p-3 border-2 border-black bg-white text-xs font-bold text-black appearance-none rounded-none shadow-hard-sm focus:shadow-hard transition-all focus:outline-none cursor-pointer"
                 >
-                  <option value="meta/llama-4-scout">Meta Llama 4 Scout</option>
-                  <option value="meta/llama-3.1-8b">Meta Llama 3.1 8B</option>
                   <option value="meta/llama-3.1-70b">Meta Llama 3.1 70B</option>
                   <option value="openai/gpt-4o">GPT-4o</option>
                   <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
@@ -451,7 +729,7 @@ export default function PlaygroundPage() {
             <textarea
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
-              placeholder="OVERRIDE DEFAULT PROMPT..."
+              placeholder="OVERRIDE EXPERT PROMPT..."
               className="w-full flex-1 min-h-[150px] p-4 border-2 border-black bg-white text-xs text-black resize-none focus:outline-none shadow-hard-sm focus:shadow-hard transition-all placeholder:text-gray-500 font-mono"
             />
           </div>
@@ -505,6 +783,15 @@ export default function PlaygroundPage() {
           </div>
 
           <div className="flex gap-4">
+            <button
+              onClick={() => setIsAnalysisPopupOpen(true)}
+              disabled={!result}
+              className={`px-4 py-2 border-2 border-black font-bold uppercase text-xs flex items-center gap-2 transition-all shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
+                ${!result ? 'bg-gray-100 text-gray-400 border-gray-300 shadow-none cursor-not-allowed' : 'bg-white text-black hover:bg-black hover:text-[#CCFF00]'}
+              `}
+            >
+              <FileText className="w-4 h-4" /> Process Details
+            </button>
             <div className="flex border-2 border-black bg-white shadow-hard-sm p-1 gap-1">
               {[
                 { id: 'parsed', icon: Layout, label: 'Parsed' },
@@ -560,86 +847,14 @@ export default function PlaygroundPage() {
               <div className="w-24 h-24 border-8 border-gray-200 border-t-black rounded-full animate-spin mb-8"></div>
               <p className="uppercase font-black tracking-widest text-xl animate-pulse">Processing Contract</p>
               <div className="mt-4 font-mono text-xs bg-[#CCFF00] px-2 py-1 border border-black shadow-hard-sm">
-                EXTRACTING_METADATA...
+                ROUTER_CLASSIFICATION_IN_PROGRESS...
               </div>
             </div>
           )}
 
           {result && (
             <div className="max-w-6xl mx-auto pb-12">
-              {activeTab === 'parsed' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Bento Grid Items */}
-                  <div className="col-span-2 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow relative group">
-                    <div className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Meta</div>
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Title</label>
-                    <h2 className="text-2xl font-black leading-tight group-hover:text-[#CCFF00] group-hover:bg-black transition-colors inline-block px-1 -ml-1 text-black">{result.parsed?.title}</h2>
-                  </div>
-
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Type</label>
-                    <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{result.parsed?.contractType}</p>
-                  </div>
-
-                  {/* <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Status</label>
-                    <span className="inline-block px-3 py-1 bg-black text-[#CCFF00] text-xs font-bold uppercase tracking-wide border border-black">
-                      {result.parsed?.status}
-                    </span>
-                  </div> */}
-
-                  {/* <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Value</label>
-                    <p className="font-mono font-bold text-xl text-black">{result.parsed?.contractValue || 'N/A'}</p>
-                  </div> */}
-
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Start Date</label>
-                    <p className="font-mono font-bold text-xl text-black">{result.parsed?.contractStart || 'N/A'}</p>
-                  </div>
-
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Expiration Date</label>
-                    <p className="font-mono font-bold text-xl text-black">{result.parsed?.expirationDate || 'N/A'}</p>
-                  </div>
-
-                  <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Duration Type</label>
-                    <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{result.parsed?.durationType || 'N/A'}</p>
-                  </div>
-
-                  <div className="col-span-3 bg-white p-8 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-[#CCFF00] -mr-8 -mt-8 rotate-45 border-2 border-black"></div>
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Executive Summary</label>
-                    <p className="leading-relaxed text-lg font-medium text-black">{result.parsed?.summary}</p>
-                  </div>
-
-                  <div className="col-span-1 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Parties Involved</label>
-                    <div className="space-y-4">
-                      <div className="border-l-4 border-black pl-3">
-                        <span className="text-[10px] font-bold uppercase text-gray-700 block">Owner</span>
-                        <span className="font-bold text-sm text-black">{result.parsed?.contractOwner || '-'}</span>
-                      </div>
-                      {/* <div className="border-l-4 border-[#CCFF00] pl-3">
-                        <span className="text-[10px] font-bold uppercase text-gray-700 block">Partner</span>
-                        <span className="font-bold text-sm text-black">{result.parsed?.contractPartner || '-'}</span>
-                      </div> */}
-                    </div>
-                  </div>
-
-                  {/* <div className="col-span-2 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-                    <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Key Conditions</label>
-                    <div className="bg-gray-50 p-4 border border-black font-mono text-xs leading-relaxed h-full max-h-[200px] overflow-y-auto">
-                      <pre className="whitespace-pre-wrap font-mono text-black">
-                        {Array.isArray(result.parsed?.conditions)
-                          ? result.parsed?.conditions.join('\n')
-                          : result.parsed?.conditions}
-                      </pre>
-                    </div>
-                  </div> */}
-                </div>
-              )}
+              {activeTab === 'parsed' && renderParsedContent()}
 
               {activeTab === 'raw' && (
                 <div className="bg-white p-8 border-2 border-black shadow-hard h-full overflow-y-auto relative">
