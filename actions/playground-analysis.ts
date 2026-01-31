@@ -2,6 +2,7 @@
 
 import { extractText } from '@/lib/text-extractor';
 import { ContractSchema } from '@/types/contract-analysis';
+import { CONTRACT_TYPES } from '@/lib/constants';
 import { generateText, Output } from 'ai';
 
 // We'll use the default provider configuration if possible, 
@@ -35,11 +36,38 @@ export async function analyzeContractPlayground(formData: FormData) {
   // 2. Prepare Prompt
   const truncatedText = text.slice(0, 200000); // Token limit safety
 
+  const contractTypesList = CONTRACT_TYPES.join(', ');
+
+  const schemaInstruction = `
+    You must extract the following fields:
+    - title: string
+    - contractType: One of [${contractTypesList}]
+    - contractOwner: string (party initiating)
+    - contractPartner: string (counterparty)
+    - contractManager: string (person in charge)
+    - contractStart: string (YYYY-MM-DD)
+    - expirationDate: string (YYYY-MM-DD)
+    - durationType: One of ["One-time", "Fixed-term", "Indefinite"]
+    - contractValue: string (e.g. "50.000 EUR")
+    - liabilityAmount: string
+    - riskAssessment: One of ["Low", "Medium", "High"]
+    - summary: string (2-3 sentences)
+    - conditions: array of strings (key obligations)
+    - confidentiality: string
+    - externalReference: string
+    - status: One of ["Review", "Draft", "Signed", "Active", "Expired"]
+  `;
+
   // Use override if provided, otherwise default (simplified version of the one in actions.ts)
   const effectivePrompt = systemPromptOverride
     ? `${systemPromptOverride}\n\nIMPORTANT: Return a single JSON object matching the schema, not an array.\n\nContract Text:\n${truncatedText}`
     : `Analyze the provided contract text and extract information according to the schema.
-       IMPORTANT: Return a single JSON object matching the schema, not an array.
+       
+       Schema Definition:
+       ${schemaInstruction}
+
+       IMPORTANT: Return a single JSON object matching the schema exactly. Do not invent new keys.
+       
        Contract Text:
        ${truncatedText}`;
 
