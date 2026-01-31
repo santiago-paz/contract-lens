@@ -48,30 +48,13 @@ export async function analyzeContractPlayground(formData: FormData) {
   try {
     const llmStartTime = performance.now();
 
-    // Define a flexible schema that accepts either the object or an array containing the object
-    // This handles cases where some models return an array even when asked for an object
-    const FlexibleContractSchema = z.union([
-      ContractSchema,
-      z.array(ContractSchema)
-    ]);
-
     // We cast the model string to any to bypass strict type checks if using a generic provider
     const { output, usage } = await generateText({
       model: modelName as any,
-      output: Output.object({ schema: FlexibleContractSchema }),
+      output: Output.object({ schema: ContractSchema }),
       prompt: effectivePrompt,
       temperature: temperature,
     });
-
-    // Normalize output: if it's an array, take the first element
-    let finalOutput = output;
-    if (Array.isArray(output)) {
-      if (output.length > 0) {
-        finalOutput = output[0];
-      } else {
-        throw new Error('Model returned an empty array');
-      }
-    }
 
     const llmEndTime = performance.now();
     const llmLatency = Math.round(llmEndTime - llmStartTime);
@@ -81,7 +64,7 @@ export async function analyzeContractPlayground(formData: FormData) {
       success: true,
       data: {
         rawText: text,
-        parsed: finalOutput,
+        parsed: output,
         usage: usage,
         latency: {
           extraction: extractionLatency,
