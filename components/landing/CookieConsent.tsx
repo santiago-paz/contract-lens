@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cookie, X, Shield } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Shield, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useCookieConsent } from './CookieContext';
+import { useLanguage } from './LanguageContext';
 
 export function CookieConsent() {
   const { t } = useLanguage();
@@ -33,7 +33,7 @@ export function CookieConsent() {
           className="fixed bottom-6 right-6 z-50 max-w-sm w-[calc(100%-3rem)]"
         >
           <div className="bg-white border-2 border-black shadow-[8px_8px_0px_0px_#000] p-0 flex flex-col relative overflow-hidden bg-noise">
-            
+
             {/* Header */}
             <div className="flex items-center justify-between border-b-2 border-black p-3 bg-black text-white">
               <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export function CookieConsent() {
                   SYSTEM_ALERT // COOKIE_POLICY
                 </span>
               </div>
-              <button 
+              <button
                 onClick={declineCookies}
                 className="hover:bg-[#CCFF00] hover:text-black transition-colors p-1 border border-transparent hover:border-black"
               >
@@ -54,7 +54,7 @@ export function CookieConsent() {
             <div className="flex gap-5 p-5">
               <div className="shrink-0 pt-1">
                 <div className="w-10 h-10 border-2 border-black flex items-center justify-center bg-[#CCFF00] shadow-hard-sm">
-                    <Shield className="w-6 h-6 text-black" />
+                  <Shield className="w-6 h-6 text-black" />
                 </div>
               </div>
               <div>
@@ -62,7 +62,7 @@ export function CookieConsent() {
                   {t.cookieConsent.text}
                 </p>
                 <div className="mt-2 text-[10px] font-mono text-gray-500 uppercase">
-                    REF: PRIVACY_DIRECTIVE_2024
+                  REF: PRIVACY_DIRECTIVE_2024
                 </div>
               </div>
             </div>
