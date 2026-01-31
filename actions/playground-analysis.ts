@@ -2,8 +2,7 @@
 
 import { extractText } from '@/lib/text-extractor';
 import { ContractSchema } from '@/types/contract-analysis';
-import { generateObject } from 'ai';
-import { z } from 'zod';
+import { generateText, Output } from 'ai';
 
 // We'll use the default provider configuration if possible, 
 // but we might need to instantiate specific providers if the user wants to switch between them.
@@ -38,8 +37,9 @@ export async function analyzeContractPlayground(formData: FormData) {
 
   // Use override if provided, otherwise default (simplified version of the one in actions.ts)
   const effectivePrompt = systemPromptOverride
-    ? `${systemPromptOverride}\n\nContract Text:\n${truncatedText}`
+    ? `${systemPromptOverride}\n\nIMPORTANT: Return a single JSON object matching the schema, not an array.\n\nContract Text:\n${truncatedText}`
     : `Analyze the provided contract text and extract information according to the schema.
+       IMPORTANT: Return a single JSON object matching the schema, not an array.
        Contract Text:
        ${truncatedText}`;
 
@@ -48,11 +48,9 @@ export async function analyzeContractPlayground(formData: FormData) {
     const llmStartTime = performance.now();
 
     // We cast the model string to any to bypass strict type checks if using a generic provider
-    const { object, usage } = await generateObject({
+    const { output, usage } = await generateText({
       model: modelName as any,
-      schema: ContractSchema,
-      schemaName: 'ContractAnalysis',
-      schemaDescription: 'A detailed analysis of a legal contract including parties, dates, and key terms.',
+      output: Output.object({ schema: ContractSchema }),
       prompt: effectivePrompt,
       temperature: temperature,
     });
@@ -65,7 +63,7 @@ export async function analyzeContractPlayground(formData: FormData) {
       success: true,
       data: {
         rawText: text,
-        parsed: object,
+        parsed: output,
         usage: usage,
         latency: {
           extraction: extractionLatency,

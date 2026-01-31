@@ -27,7 +27,7 @@ export const ContractSchema = z.object({
   // 5. Content analysis (Changed to Array for better handling in UI)
   summary: z.string().describe('A 2-3 sentence overview of the purpose of the contract'),
 
-  // Mantenemos como array puro para que tu UI pueda hacer un .map() fácilmente
+  // 6. Conditions
   conditions: z.array(z.string())
     .describe('List of key obligations, terms, or critical clauses found in the text'),
 
