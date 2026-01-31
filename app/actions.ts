@@ -1,9 +1,9 @@
 'use server';
 
-import { streamText, generateObject } from 'ai';
+import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
 import { ContractSchema } from '@/types/contract-analysis';
-import { CONTRACT_TYPES } from '@/lib/constants';
+import { generateObject } from 'ai';
 
 export async function analyzeContract(formData: FormData) {
   const file = formData.get('file') as File;
