@@ -1,15 +1,15 @@
 'use client';
 
-import { Navbar } from '@/components/landing/Navbar';
-import { Hero } from '@/components/landing/Hero';
-import { BauhausFeatures } from '@/components/landing/BauhausFeatures';
-import { TeamSection } from '@/components/landing/TeamSection';
-import { Security } from '@/components/landing/Security';
 import { ContactForm } from '@/components/landing/ContactForm';
-import { Footer } from '@/components/landing/Footer';
 import { CookieConsent } from '@/components/landing/CookieConsent';
-import { LanguageProvider } from '@/components/landing/LanguageContext';
 import { CookieProvider } from '@/components/landing/CookieContext';
+import { FeaturesShowcase } from '@/components/landing/FeaturesShowcase';
+import { Footer } from '@/components/landing/Footer';
+import { Hero } from '@/components/landing/Hero';
+import { LanguageProvider } from '@/components/landing/LanguageContext';
+import { Navbar } from '@/components/landing/Navbar';
+import { Security } from '@/components/landing/Security';
+import { TeamSection } from '@/components/landing/TeamSection';
 
 export default function LandingPage() {
   return (
@@ -18,7 +18,7 @@ export default function LandingPage() {
         <main className="min-h-screen bg-white text-black selection:bg-[var(--accent)] selection:text-white overflow-x-hidden max-w-[100vw]">
           <Navbar />
           <Hero />
-          <BauhausFeatures />
+          <FeaturesShowcase />
           <TeamSection />
           <Security />
           <ContactForm />

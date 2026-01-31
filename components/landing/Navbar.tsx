@@ -1,11 +1,12 @@
 'use client';
 
-import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import { useLanguage } from './LanguageContext';
+import { Logo } from './Logo';
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
@@ -40,18 +41,16 @@ export function Navbar() {
     <div className="flex border-2 border-black bg-white h-10 items-center shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
       <button
         onClick={() => setLanguage('en')}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${
-          language === 'en' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
-        }`}
+        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'en' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
+          }`}
       >
         EN
       </button>
       <div className="w-0.5 h-full bg-black" />
       <button
         onClick={() => setLanguage('de')}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${
-          language === 'de' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
-        }`}
+        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'de' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
+          }`}
       >
         DE
       </button>
@@ -60,25 +59,13 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 ${
-        scrolled ? 'bg-white border-black py-3 shadow-sm' : 'bg-white/80 backdrop-blur-md border-transparent py-5'
-      }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 ${scrolled ? 'bg-white border-black py-3 shadow-sm' : 'bg-white/80 backdrop-blur-md border-transparent py-5'
+        }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="bg-[#CCFF00] border-2 border-black w-12 h-12 flex items-center justify-center shadow-hard-sm transition-transform hover:rotate-3">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black">
-                  {/* Handle */}
-                  <path d="M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-                  {/* Main Body (Suitcase/Book) */}
-                  <rect x="4" y="6" width="16" height="16" rx="1" stroke="currentColor" strokeWidth="2.5" />
-                  {/* Spine / Divider */}
-                  <line x1="10" y1="6" x2="10" y2="22" stroke="currentColor" strokeWidth="2.5" />
-                  {/* Pages / Lines hint */}
-                  <line x1="14" y1="10" x2="18" y2="10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-                  <line x1="14" y1="14" x2="18" y2="14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-                  <line x1="14" y1="18" x2="16" y2="18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-                </svg>
+                <Logo className="text-black" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black tracking-tighter font-mono uppercase leading-none">
@@ -99,10 +86,10 @@ export function Navbar() {
 
             {/* Desktop Right Section */}
             <div className="hidden md:flex items-center gap-6">
-               <LanguageToggle />
+              <LanguageToggle />
 
-               <Link 
-                href="/login" 
+              <Link
+                href="/login"
                 className="text-sm font-mono font-bold uppercase tracking-wider border-b-2 border-transparent hover:border-[#CCFF00] transition-all"
               >
                 {t.nav.signIn}
@@ -146,12 +133,12 @@ export function Navbar() {
                 <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>
               </div>
-              
+
               <div className="h-0.5 bg-black w-full opacity-20" />
-              
+
               <div className="space-y-4">
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center w-full py-4 text-sm font-mono font-bold uppercase border-2 border-black bg-white hover:bg-[#CCFF00] transition-colors shadow-hard-sm"
                 >
@@ -174,7 +161,7 @@ export function Navbar() {
 
 function NavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       className="relative text-sm font-mono font-bold uppercase tracking-wide group py-1"
     >
@@ -186,7 +173,7 @@ function NavButton({ children, onClick }: { children: React.ReactNode; onClick: 
 
 function MobileNavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       className="w-full text-left text-3xl font-black font-mono uppercase tracking-tighter hover:text-[#CCFF00] hover:translate-x-4 transition-all duration-300 flex items-center gap-4 group"
     >

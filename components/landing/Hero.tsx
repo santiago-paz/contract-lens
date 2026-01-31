@@ -158,7 +158,7 @@ export function Hero() {
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1 shrink-0">
-                                            <div className="px-3 py-1 bg-black text-[#CCFF00] text-xs font-mono uppercase font-bold tracking-wider">Live Monitor</div>
+                                            <div className="px-3 py-1 bg-black text-[#CCFF00] text-xs font-mono uppercase font-bold tracking-wider">{t.hero.liveMonitor}</div>
                                             <span className="text-[10px] font-mono text-gray-400">{t.hero.latency}: 12ms</span>
                                         </div>
                                     </div>
@@ -252,7 +252,7 @@ export function Hero() {
                         </div>
 
                         {/* Decorative Background Elements behind the window */}
-                        <div className="hidden sm:block absolute -z-10 top-6 -right-6 w-full h-full border-2 border-black bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] bg-gray-50 opacity-50"></div>
+                        <div className="hidden sm:block absolute -z-10 top-6 -right-6 w-full h-full border-2 border-black bg-[url('/graphy.png')] bg-gray-50 opacity-50"></div>
                         <div className="sm:hidden absolute -z-10 top-3 -right-3 w-full h-full border-2 border-black bg-gray-100"></div>
                     </motion.div>
                 </div>

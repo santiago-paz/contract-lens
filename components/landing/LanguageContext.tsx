@@ -135,6 +135,7 @@ const translations = {
         complete: "Audit Complete"
       },
       latency: "Latency",
+      liveMonitor: "Live Monitor",
       target: "Target",
       verified: "Verified",
       complete: "Audit Complete",
@@ -425,6 +426,7 @@ const translations = {
         complete: "Audit abgeschlossen"
       },
       latency: "Latenz",
+      liveMonitor: "Live-Monitor",
       target: "Ziel",
       verified: "Verifiziert",
       complete: "Audit abgeschlossen",
