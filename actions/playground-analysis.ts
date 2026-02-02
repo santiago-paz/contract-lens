@@ -96,7 +96,7 @@ export async function analyzeContractPlayground(formData: FormData) {
         break;
       case 'LicenseAgreement':
         schema = LicenseAgreementSchema;
-        systemPrompt = `You are Klausel.ai, an IP Licensing Forensic Expert.
+        systemPrompt = `You are Herr Contrakt, an IP Licensing Forensic Expert.
           - Look for 'Third Party Licensor' definitions (e.g., The LEGO Group).
           - SCAN FOR INTEGERS: specific numbers of samples (e.g., '6 samples'), days for audit notice.
           - TERRITORY: Explicitly list any excluded countries (e.g., Iran, Cuba).`;
