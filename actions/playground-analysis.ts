@@ -1,6 +1,6 @@
 'use server';
 
-import { CONTRACT_TYPES, EXPERT_MODEL, FAST_MODEL } from '@/lib/constants';
+import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
 import {
   LicenseAgreementSchema,
@@ -9,6 +9,8 @@ import {
 } from '@/types/contract-analysis';
 import { generateObject, generateText, Output } from 'ai';
 import { z } from 'zod';
+
+
 
 export async function analyzeContractPlayground(formData: FormData) {
   const startTime = performance.now();
@@ -44,9 +46,9 @@ export async function analyzeContractPlayground(formData: FormData) {
     ${text.slice(0, 5000)}`;
 
     const { object: routerResult, usage: routerUsage } = await generateObject({
-      model: FAST_MODEL as any, // Using the fast model
+      model: 'meta/llama-3.1-8b' as any, // Using the fast model
       schema: z.object({
-        classification: z.enum(['NDA', 'ServiceAgreement', 'LicenseAgreement', 'Other']),
+        classification: z.enum(CONTRACT_TYPES),
       }),
       prompt: routerPrompt,
       temperature: 0, // Deterministic
@@ -109,7 +111,7 @@ export async function analyzeContractPlayground(formData: FormData) {
 
     const expertStartTime = performance.now();
     const { text: expertResult, usage: expertUsage } = await generateText({
-      model: EXPERT_MODEL as any,
+      model: expertModelName as any,
       output: Output.text(),
       system: finalSystemPrompt,
       prompt: `Analyze the full document text and extract the required information.\n\nDocument Text:\n${text}`,

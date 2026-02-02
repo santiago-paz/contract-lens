@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { UploadStep } from './wizard/UploadStep';
-import { AnalysisStep } from './wizard/AnalysisStep';
-import { TypeSelectionStep } from './wizard/TypeSelectionStep';
-import { EditorLayout } from './wizard/EditorLayout';
 import { ContractAnalysis } from '@/types/contract-analysis';
+import { useState } from 'react';
+import { AnalysisStep } from './wizard/AnalysisStep';
+import { EditorLayout } from './wizard/EditorLayout';
+import { TypeSelectionStep } from './wizard/TypeSelectionStep';
+import { UploadStep } from './wizard/UploadStep';
 
 type WizardStep = 'upload' | 'analyzing' | 'type-selection' | 'editor';
 
 export default function ContractCreator() {
-  
+
   // Wizard State
   const [step, setStep] = useState<WizardStep>('upload');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -39,9 +39,9 @@ export default function ContractCreator() {
   const handleBackToDashboard = () => {
     // Navigate back or reset
     if (confirm('Are you sure you want to cancel the process?')) {
-        setStep('upload');
-        setUploadedFile(null);
-        setSelectedType('');
+      setStep('upload');
+      setUploadedFile(null);
+      setSelectedType('');
     }
   };
 
@@ -52,31 +52,31 @@ export default function ContractCreator() {
 
   if (step === 'analyzing' && uploadedFile) {
     return (
-        <AnalysisStep 
-            file={uploadedFile} 
-            onComplete={handleAnalysisComplete}
-            onCancel={() => setStep('upload')}
-        />
+      <AnalysisStep
+        file={uploadedFile}
+        onComplete={handleAnalysisComplete}
+        onCancel={() => setStep('upload')}
+      />
     );
   }
 
   if (step === 'type-selection') {
     return (
-        <TypeSelectionStep 
-            onSelect={handleTypeSelect}
-            onBack={() => setStep('analyzing')}
-            suggestedType={analysisResult?.contractType}
-        />
+      <TypeSelectionStep
+        onSelect={handleTypeSelect}
+        onBack={() => setStep('analyzing')}
+        suggestedType={analysisResult?.contractType}
+      />
     );
   }
 
   return (
-    <EditorLayout 
-        fileName={uploadedFile?.name || 'New Contract'} 
-        contractType={selectedType}
-        onBack={handleBackToDashboard}
-        uploadedFile={uploadedFile}
-        initialData={analysisResult}
+    <EditorLayout
+      fileName={uploadedFile?.name || 'New Contract'}
+      contractType={selectedType}
+      onBack={handleBackToDashboard}
+      uploadedFile={uploadedFile}
+      initialData={analysisResult}
     />
   );
 }

@@ -1,9 +1,9 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
-import { revalidatePath } from 'next/cache';
+import { prisma } from '@/lib/prisma';
 import { ContractAnalysis } from '@/types/contract-analysis';
+import { revalidatePath } from 'next/cache';
 
 export async function hydrateContract(analysis: ContractAnalysis, rawText: string) {
   const session = await getSession();

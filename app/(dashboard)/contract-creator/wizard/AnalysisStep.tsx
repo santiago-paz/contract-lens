@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Check, FileText, Loader2, AlertCircle, Bug, Terminal } from 'lucide-react';
-import { analyzeContract } from '@/app/actions';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { DebugOverlay } from './DebugOverlay';
 
@@ -52,7 +51,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
         const formData = new FormData();
         formData.append('file', file);
         
-        const result = await analyzeContract(formData);
+        const result = await analyzeContractPlayground(formData);
         
         if (mounted) {
           clearInterval(interval);
