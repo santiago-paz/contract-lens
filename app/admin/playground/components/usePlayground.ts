@@ -52,6 +52,7 @@ export function usePlayground() {
 
       if (res.success && res.data) {
         setResult(res.data as AnalysisResult);
+        setIsAnalysisPopupOpen(true);
       } else {
         console.error(res.error);
         setErrorPopup({
