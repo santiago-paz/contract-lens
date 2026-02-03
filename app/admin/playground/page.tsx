@@ -90,7 +90,7 @@ export default function PlaygroundPage() {
 
           {result && (
             <div className="max-w-6xl mx-auto pb-12">
-              {activeTab === 'parsed' && <ParsedContent parsed={result.parsed} />}
+              {activeTab === 'parsed' && <ParsedContent parsed={result.parsed} contractType={result.classification} />}
 
               {activeTab === 'raw' && (
                 <div className="bg-white p-8 border-2 border-black shadow-hard h-full overflow-y-auto relative">
