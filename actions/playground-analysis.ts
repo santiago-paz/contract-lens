@@ -2,7 +2,7 @@
 
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
-import { generateObject } from 'ai';
+import { generateText, Output } from 'ai';
 import { z } from 'zod';
 import { ContractType, extractContractData } from './extract-contract-data';
 
@@ -92,10 +92,12 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     
     ${text.slice(0, 5000)}`;
 
-    const { object: routerResult, usage: routerUsage } = await generateObject({
+    const { output: routerResult, usage: routerUsage } = await generateText({
       model: 'meta/llama-3.1-8b' as any, // Using the fast model
-      schema: z.object({
-        classification: z.enum(CONTRACT_TYPES),
+      output: Output.object({
+        schema: z.object({
+          classification: z.enum(CONTRACT_TYPES),
+        }),
       }),
       prompt: routerPrompt,
       temperature: 0, // Deterministic
