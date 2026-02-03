@@ -13,6 +13,20 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
   // Helper to safely access properties since parsed is a union type
   const data = parsed as any; 
 
+  const renderComplexField = (value: string | Record<string, string> | null | undefined) => {
+    if (!value) return 'N/A';
+    if (typeof value === 'string') return value;
+    return (
+      <ul className="list-disc pl-4 space-y-1 mt-1">
+        {Object.entries(value).map(([k, v]) => (
+          <li key={k} className="text-sm">
+            <span className="font-semibold capitalize">{k.replace(/([A-Z])/g, ' $1').trim()}:</span> {v}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Common Header */}
@@ -95,7 +109,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
             </div>
             <div className="bg-white p-6 border-2 border-black shadow-hard">
               <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">IP Ownership</label>
-              <p className="font-bold text-black">{data.ipOwnership}</p>
+              <div className="font-bold text-black">{renderComplexField(data.ipOwnership)}</div>
             </div>
           </div>
 
@@ -154,6 +168,14 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
                     {data.auditRights?.penaltyClause || 'None'}
                   </span>
                </div>
+               {data.auditRights?.usageLimits && (
+                 <div className="col-span-2">
+                    <span className="text-xs text-gray-500 block">Usage Limits</span>
+                    <div className="font-mono text-sm bg-gray-50 p-2 border border-gray-200 block mt-1">
+                      {renderComplexField(data.auditRights.usageLimits)}
+                    </div>
+                 </div>
+               )}
             </div>
           </div>
         </>

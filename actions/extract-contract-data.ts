@@ -1,4 +1,4 @@
-import { generateObject } from 'ai';
+import { generateText, Output } from 'ai';
 import { z } from 'zod';
 
 // --- Types ---
@@ -33,7 +33,7 @@ export const ServiceAgreementSchema = z.object({
   effectiveDate: z.string().nullable().optional().describe('ISO date or exact text found'),
   termDuration: z.string().nullable().optional().describe('Contract length, e.g., "1 year", "auto-renewing"'),
   paymentTerms: z.string().nullable().optional().describe('e.g., "Net 30", "Net 60", "Upon receipt"'),
-  ipOwnership: z.string().nullable().optional().describe('Who owns the created IP (e.g. Client, Provider, Mixed)'),
+  ipOwnership: z.union([z.string(), z.record(z.string(), z.string())]).nullable().optional().describe('Who owns the created IP (e.g. Client, Provider, Mixed) or object with details'),
   terminationNoticePeriod: z.string().nullable().optional().describe('e.g., "30 days"'),
   liabilityCap: z.string().nullable().optional().describe('Specific amount OR formula (e.g., "12 months of fees")'),
   governingLaw: z.string().nullable().optional().describe('Jurisdiction or governing law'),
@@ -52,7 +52,7 @@ export const LicenseAgreementSchema = z.object({
     noticePeriod: z.string().nullable().optional().describe('Notice period for audit, e.g., "10 days prior notice"'),
     penaltyClause: z.string().nullable().optional().describe('e.g., "User pays costs if >5% error"'),
     liabilityCap: z.string().nullable().optional(),
-    usageLimits: z.string().nullable().optional().describe('Summary of seats, cores, or users'),
+    usageLimits: z.union([z.string(), z.record(z.string(), z.string())]).nullable().optional().describe('Summary of seats, cores, or users'),
   }).nullable().optional(),
 });
 
@@ -148,17 +148,18 @@ export async function extractContractData(
   }
 
   try {
-    const result = await generateObject({
+    const result = await generateText({
       model: modelName as any, // Cast to any to handle custom/new model strings
       system: systemPrompt,
       prompt: `Analyze the following contract text and extract the data according to the schema:\n\n${text}`,
-      schema: schema,
-      mode: 'json',
+      output: Output.object({
+        schema: schema,
+      }),
       temperature: temperature,
     });
 
     return {
-      object: result.object,
+      object: result.output,
       usage: result.usage
     };
   } catch (error) {
