@@ -2,27 +2,65 @@
 
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
-import {
-  LicenseAgreementSchema,
-  NDASchema,
-  ServiceAgreementSchema
-} from '@/types/contract-analysis';
-import { generateObject, generateText, Output } from 'ai';
+import { generateObject } from 'ai';
 import { z } from 'zod';
+import { ContractType, extractContractData } from './extract-contract-data';
 
+// Zod schema for form validation
+const AnalysisFormSchema = z.object({
+  file: z.instanceof(File, { message: 'Un archivo es requerido.' })
+    .refine((file) => file.size > 0, 'El archivo no puede estar vacío.')
+    .refine((file) => file.size < 10 * 1024 * 1024, 'El archivo debe ser menor a 10MB.'), // Example limit
+  systemPrompt: z.string().optional(),
+  model: z.string().optional(),
+  temperature: z.string().optional().transform((val) => val ? parseFloat(val) : undefined),
+});
 
+export type AnalysisResult = {
+  success: boolean;
+  data?: {
+    rawText: string;
+    parsed: any;
+    classification: string;
+    usage?: any;
+    latency: {
+      extraction: number;
+      router?: number;
+      expert?: number;
+      total: number;
+    };
+  };
+  error?: string;
+  errors?: Record<string, string[]>; // Validation errors
+  errorDetails?: string;
+};
 
-export async function analyzeContractPlayground(formData: FormData) {
+export async function analyzeContractPlayground(formData: FormData): Promise<AnalysisResult> {
   const startTime = performance.now();
 
-  const file = formData.get('file') as File;
-  const systemPromptOverride = formData.get('systemPrompt') as string;
-  const expertModelName = formData.get('model') as string || 'meta/llama-3.1-70b'; // Default to a stronger model if not provided
-  const temperature = parseFloat(formData.get('temperature') as string) || 0;
+  // Validate form data
+  const validatedFields = AnalysisFormSchema.safeParse({
+    file: formData.get('file'),
+    systemPrompt: formData.get('systemPrompt'),
+    model: formData.get('model'),
+    temperature: formData.get('temperature'),
+  });
 
-  if (!file) {
-    throw new Error('No file provided');
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      error: 'Error de validación',
+      errors: validatedFields.error.flatten().fieldErrors,
+      data: {
+        rawText: '',
+        parsed: null,
+        classification: 'Unknown',
+        latency: { extraction: 0, total: 0 }
+      }
+    };
   }
+
+  const { file, systemPrompt, model: expertModelName, temperature } = validatedFields.data;
 
   // 1. Extract Text
   let text: string;
@@ -30,7 +68,16 @@ export async function analyzeContractPlayground(formData: FormData) {
     text = await extractText(file);
   } catch (error) {
     console.error('Text extraction failed:', error);
-    throw new Error('Failed to extract text from file');
+    return {
+      success: false,
+      error: 'Falló la extracción de texto del archivo.',
+      data: {
+        rawText: '',
+        parsed: null,
+        classification: 'Unknown',
+        latency: { extraction: 0, total: Math.round(performance.now() - startTime) }
+      }
+    };
   }
 
   const textExtractionTime = performance.now();
@@ -59,7 +106,7 @@ export async function analyzeContractPlayground(formData: FormData) {
     const routerEndTime = performance.now();
     const routerLatency = Math.round(routerEndTime - routerStartTime);
 
-    // Handle "Other" or low confidence if needed (though user said "IF 'Other': Return specific error")
+    // Handle "Other" or low confidence if needed
     if (classification === 'Other') {
       return {
         success: false,
@@ -69,7 +116,7 @@ export async function analyzeContractPlayground(formData: FormData) {
           parsed: null,
           latency: {
             extraction: extractionLatency,
-            llm: routerLatency,
+            router: routerLatency,
             total: Math.round(performance.now() - startTime)
           },
           classification // Return classification details for debugging if needed
@@ -77,46 +124,21 @@ export async function analyzeContractPlayground(formData: FormData) {
       };
     }
 
-    // --- Step 2: Expert Analysis ---
-    let schema;
-    let systemPrompt;
-
-    switch (classification) {
-      case 'NDA':
-        schema = NDASchema;
-        systemPrompt = `You are a Confidentiality Expert.
-        - Focus on DURATION: How long does the obligation last?
-        - Focus on SCOPE: What is defined as Confidential Information?`;
-        break;
-      case 'ServiceAgreement':
-        schema = ServiceAgreementSchema;
-        systemPrompt = `You are a Commercial Auditor.
-        - Focus on FINANCIALS: Exact amounts, currency, and payment triggers.
-        - Focus on DATES: Start date, end date, and notice periods.`;
-        break;
-      case 'LicenseAgreement':
-        schema = LicenseAgreementSchema;
-        systemPrompt = `You are Herr Contrakt, an IP Licensing Forensic Expert.
-          - Look for 'Third Party Licensor' definitions (e.g., The LEGO Group).
-          - SCAN FOR INTEGERS: specific numbers of samples (e.g., '6 samples'), days for audit notice.
-          - TERRITORY: Explicitly list any excluded countries (e.g., Iran, Cuba).`;
-        break;
-      default:
-        // Should be caught by the 'Other' check above, but for safety:
-        throw new Error(`Unexpected contract type: ${classification}`);
-    }
-
-    // Allow override to replace the expert prompt if provided
-    const finalSystemPrompt = systemPromptOverride || systemPrompt;
-
+    // --- Step 2: Expert Analysis (using new extractContractData) ---
     const expertStartTime = performance.now();
-    const { text: expertResult, usage: expertUsage } = await generateText({
-      model: expertModelName as any,
-      output: Output.text(),
-      system: finalSystemPrompt,
-      prompt: `Analyze the full document text and extract the required information.\n\nDocument Text:\n${text}`,
-      temperature: temperature,
-    });
+
+    // Call the new extraction function with options
+    // We cast classification to ContractType because CONTRACT_TYPES in constants might be slightly different or just string[]
+    const { object: expertResult, usage: expertUsage } = await extractContractData(
+      text,
+      classification as ContractType,
+      {
+        model: expertModelName,
+        temperature: temperature,
+        systemPromptOverride: systemPrompt
+      }
+    );
+
     const expertEndTime = performance.now();
     const expertLatency = Math.round(expertEndTime - expertStartTime);
 
@@ -146,14 +168,14 @@ export async function analyzeContractPlayground(formData: FormData) {
     console.error('Playground analysis failed:', error);
     return {
       success: false,
-      error: error.message,
+      error: error.message || 'Error desconocido durante el análisis.',
       errorDetails: JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
       data: {
         rawText: text,
         parsed: null,
+        classification: 'Unknown',
         latency: {
           extraction: extractionLatency,
-          llm: 0,
           total: Math.round(performance.now() - startTime)
         }
       }

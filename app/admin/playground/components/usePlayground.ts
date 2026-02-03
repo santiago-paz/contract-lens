@@ -78,7 +78,7 @@ export function usePlayground() {
 
     setHydrateStatus('loading');
     try {
-      const res = await hydrateContract(result.parsed, result.rawText);
+      const res = await hydrateContract(result.parsed, result.classification, result.rawText);
       if (res.success) {
         setHydrateStatus('success');
       } else {
