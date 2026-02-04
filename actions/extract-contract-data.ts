@@ -67,7 +67,7 @@ export const GeneralContractSchema = z.object({
 });
 
 // Union Type for Return
-export type ContractData = 
+export type ContractData =
   | z.infer<typeof NDASchema>
   | z.infer<typeof ServiceAgreementSchema>
   | z.infer<typeof LicenseAgreementSchema>
@@ -91,24 +91,24 @@ IMPORTANT: You must generate a single JSON object that strictly matches the prov
       return `${basePrompt}
 ${structureWarning}
 Focus on confidentiality terms, duration, and specific risk flags like non-solicit and non-compete clauses.`;
-    
+
     case 'ServiceAgreement':
       return `${basePrompt}
 ${structureWarning}
 Focus on commercial terms, IP ownership, liability caps, and termination rights.
 Pay special attention to the Liability Cap - extract the exact wording if it's a formula.`;
-    
+
     case 'LicenseAgreement':
       return `${basePrompt}
 ${structureWarning}
 Focus on licensing terms, exclusivity, audit rights, and usage limits.
 Identify the Licensor and Licensee clearly.`;
-    
+
     case 'Other':
       return `${basePrompt}
 ${structureWarning}
 Extract general contract metadata including parties, dates, and governing law.`;
-      
+
     default:
       return basePrompt;
   }
@@ -117,8 +117,8 @@ Extract general contract metadata including parties, dates, and governing law.`;
 // --- Main Extraction Function ---
 
 export async function extractContractData(
-  text: string, 
-  contractType: ContractType, 
+  text: string,
+  contractType: ContractType,
   options: ExtractionOptions = {}
 ) {
   // Use options or defaults
@@ -153,7 +153,7 @@ export async function extractContractData(
       system: systemPrompt,
       prompt: `Analyze the following contract text and extract the data according to the schema:\n\n${text}`,
       output: Output.object({
-        schema: schema,
+        schema: schema as any, // Cast to any to handle the schema type
       }),
       temperature: temperature,
     });
