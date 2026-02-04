@@ -8,9 +8,9 @@ import { ContractType, extractContractData } from './extract-contract-data';
 
 // Zod schema for form validation
 const AnalysisFormSchema = z.object({
-  file: z.instanceof(File, { message: 'Un archivo es requerido.' })
-    .refine((file) => file.size > 0, 'El archivo no puede estar vacío.')
-    .refine((file) => file.size < 10 * 1024 * 1024, 'El archivo debe ser menor a 10MB.'), // Example limit
+  file: z.instanceof(File, { message: 'A file is required' })
+    .refine((file) => file.size > 0, 'The file cannot be empty.')
+    .refine((file) => file.size < 10 * 1024 * 1024, 'The file must be less than 10MB.'), // Example limit
   systemPrompt: z.string().optional(),
   model: z.string().optional(),
   temperature: z.string().optional().transform((val) => val ? parseFloat(val) : undefined),
@@ -49,7 +49,7 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
   if (!validatedFields.success) {
     return {
       success: false,
-      error: 'Error de validación',
+      error: 'Validation error',
       errors: validatedFields.error.flatten().fieldErrors,
       data: {
         rawText: '',
@@ -70,7 +70,7 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     console.error('Text extraction failed:', error);
     return {
       success: false,
-      error: 'Falló la extracción de texto del archivo.',
+      error: 'Failed to extract text from the file.',
       data: {
         rawText: '',
         parsed: null,
@@ -112,7 +112,7 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     if (classification === 'Other') {
       return {
         success: false,
-        error: "No pudimos definir el tipo de contrato automáticamente.",
+        error: "We couldn't automatically define the contract type.",
         data: {
           rawText: text,
           parsed: null,
@@ -170,7 +170,7 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     console.error('Playground analysis failed:', error);
     return {
       success: false,
-      error: error.message || 'Error desconocido durante el análisis.',
+      error: error.message || 'Unknown error during analysis.',
       errorDetails: JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
       data: {
         rawText: text,
