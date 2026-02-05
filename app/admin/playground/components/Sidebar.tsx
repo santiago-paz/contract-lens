@@ -75,10 +75,6 @@ export const Sidebar = ({
                 onChange={(e) => setModel(e.target.value)}
                 className="w-full p-3 border-2 border-black bg-white text-xs font-bold text-black appearance-none rounded-none shadow-hard-sm focus:shadow-hard transition-all focus:outline-none cursor-pointer"
               >
-                <option value="meta/llama-3.1-70b">Meta Llama 3.1 70B</option>
-                <option value="openai/gpt-4o">GPT-4o</option>
-                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</option>
                 <option value="deepseek/deepseek-r1">deepseek/deepseek-r1</option>
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">

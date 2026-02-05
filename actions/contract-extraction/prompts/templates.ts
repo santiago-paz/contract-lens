@@ -23,11 +23,52 @@ STRING FIELDS:
 - parties: Array of full legal entity names
 - effectiveDate/expirationDate: Format as YYYY-MM-DD if possible`,
 
-  ServiceAgreement: `Focus on the service relationship:
-- autoRenewal: Return boolean true if contract auto-renews, false if explicitly one-time.
-- indemnification: Map to enum value based on who protects whom.
-- liabilityCap: Extract the EXACT wording, do not calculate or convert.
-- paymentTerms: Extract method, timing, and currency as separate fields.`,
+  ServiceAgreement: `Focus on the service relationship. FIELD-BY-FIELD GUIDANCE:
+
+PARTIES:
+- Extract full legal entity names, e.g., ["ACME Corporation", "Tech Services LLC"]
+- First element = Client (the party receiving services)
+- Second element = Provider (the party providing services)
+
+DATES:
+- effectiveDate: The date the agreement becomes effective. Extract as written.
+- terminationDate: Only extract if there's a FIXED end date. Return null for ongoing contracts.
+
+AUTO-RENEWAL (boolean):
+- true = Contract contains explicit auto-renewal language like "shall automatically renew", "will renew for successive periods"
+- false = Contract explicitly states it does NOT auto-renew, OR is explicitly a one-time/single-project engagement
+- null = Contract is ongoing/indefinite with termination on notice, but NO mention of auto-renewal. Most MSAs are terminable on notice without being "auto-renewal" - these should return null.
+
+PAYMENT TERMS (object with 3 fields):
+- method: The mechanism of payment (Bank Transfer, Wire, ACH, Credit Card, Check). Return null if not specified.
+- timing: When payment is due (Net 30, Net 60, Monthly, Upon receipt, etc.). Extract if mentioned.
+- currency: ONLY extract if explicitly stated as "USD", "EUR", etc. Do NOT infer from currency symbols.
+- Return the object with null for missing individual fields. Only return null for the entire object if no payment info at all.
+
+IP OWNERSHIP (enum):
+- "client" = All work product/deliverables are assigned to client
+- "provider" = Provider retains all IP
+- "joint" = Explicit shared/joint ownership
+- "split" = Mixed ownership (e.g., client owns deliverables BUT provider retains pre-existing tools/IP)
+- "other" = Complex or unclear arrangement
+- null = Not addressed in contract
+
+TERMINATION NOTICE PERIOD:
+- Extract the notice period for TERMINATION FOR CONVENIENCE (without cause)
+- Ignore cure periods for breach/cause (those are NOT notice periods)
+- Format: "30 days", "90 days", "60 days written notice"
+
+LIABILITY CAP:
+- Extract the EXACT text describing the cap
+- Do NOT calculate, convert currencies, or paraphrase
+- Include the full limitation description
+
+INDEMNIFICATION (enum):
+- "mutual" = BOTH parties have indemnification obligations to each other
+- "provider_indemnifies" = Only provider indemnifies client (e.g., for IP infringement)
+- "client_indemnifies" = Only client indemnifies provider (rare)
+- "none" = Contract explicitly excludes indemnification
+- null = No indemnification clauses present`,
 
   LicenseAgreement: `Focus on the licensing model:
 - licenseType: Map to enum value. "Annual/Monthly/Recurring" → "subscription", "Perpetual/Lifetime" → "perpetual", "Trial/Demo" → "evaluation".

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle, Cpu, Brain, ChevronDown, ChevronRight } from 'lucide-react';
+import { CheckCircle, Cpu, Brain, ChevronDown, ChevronRight, Copy, Check } from 'lucide-react';
 import { JsonFormatter } from './JsonFormatter';
 
 interface AnalysisPopupProps {
@@ -10,6 +10,15 @@ interface AnalysisPopupProps {
 
 export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) => {
   const [isReasoningExpanded, setIsReasoningExpanded] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyReasoning = async () => {
+    if (result?.modelReasoning) {
+      await navigator.clipboard.writeText(result.modelReasoning);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -136,8 +145,30 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
                         {isReasoningExpanded ? 'Hide' : 'Show'} Chain of Thought ({result.modelReasoning.length.toLocaleString()} chars)
                       </span>
                     </div>
-                    <div className="text-[10px] text-purple-500 font-mono">
-                      DeepSeek Reasoning Mode
+                    <div className="flex items-center gap-3">
+                      <div className="text-[10px] text-purple-500 font-mono">
+                        DeepSeek Reasoning Mode
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCopyReasoning();
+                        }}
+                        className="flex items-center gap-1 px-2 py-1 text-[10px] font-bold uppercase tracking-wider bg-purple-100 hover:bg-purple-200 text-purple-700 border border-purple-300 rounded transition-colors"
+                        title="Copy reasoning to clipboard"
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            Copy
+                          </>
+                        )}
+                      </button>
                     </div>
                   </button>
                   
