@@ -75,7 +75,7 @@ export const ServiceAgreementSchema = z.object({
     .string()
     .nullable()
     .describe(
-      'Maximum liability amount. Extract the EXACT text as written in the contract. Examples: "fees paid in last 12 months", "total amounts paid under the applicable SOW", "€1,000,000", "shall not exceed $50,000". Do NOT calculate, summarize, or paraphrase.'
+      'Maximum liability amount. Extract the text content exactly as written. Normalize whitespace (replace line breaks/multiple spaces with single spaces). Examples: "fees paid in last 12 months", "total amounts paid under the applicable SOW". Do NOT calculate, summarize, or paraphrase.'
     )
     .default(null),
   indemnification: z

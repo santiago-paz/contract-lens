@@ -23,7 +23,13 @@ STRING FIELDS:
 - parties: Array of full legal entity names
 - effectiveDate/expirationDate: Format as YYYY-MM-DD if possible`,
 
-  ServiceAgreement: `Focus on the service relationship. FIELD-BY-FIELD GUIDANCE:
+  ServiceAgreement: `Focus on the service relationship.
+
+GENERAL FORMATTING RULES:
+- For all string extraction, replace line breaks (newlines) and multiple spaces with a single space.
+- Do NOT preserve original line breaks in the JSON output.
+
+FIELD-BY-FIELD GUIDANCE:
 
 PARTIES:
 - Extract full legal entity names, e.g., ["ACME Corporation", "Tech Services LLC"]
@@ -59,7 +65,8 @@ TERMINATION NOTICE PERIOD:
 - Format: "30 days", "90 days", "60 days written notice"
 
 LIABILITY CAP:
-- Extract the EXACT text describing the cap
+- Extract the EXACT wording describing the cap
+- Normalize whitespace (single spaces only)
 - Do NOT calculate, convert currencies, or paraphrase
 - Include the full limitation description
 
