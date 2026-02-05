@@ -90,13 +90,15 @@ INDEMNIFICATION (enum):
 - null = No indemnification clauses present`,
 
   LicenseAgreement: `Focus on the licensing model:
-- licenseType: Map to enum value. "Annual/Monthly/Recurring" → "subscription", "Perpetual/Lifetime" → "perpetual", "Trial/Demo" → "evaluation".
+- licenseType: Map to enum value. "Annual/Monthly/Recurring" → "subscription", "Perpetual/Lifetime" → "perpetual", "Trial/Demo" → "evaluation", "Open Source" → "open_source".
+  * APP STORE/ONE-TIME PURCHASE RULE: If the software is a "one-time purchase" (e.g., App Store apps like Logic Pro, Final Cut), map to "perpetual".
 - exclusivity: Return boolean true if "exclusive", false if "non-exclusive".
   * CRITICAL: Do NOT infer the main license exclusivity from "Sell-Off", "Survival", or "Termination" clauses (e.g., "sell-off on a non-exclusive basis"). These describe a post-term state.
   * If a "Reservation of Rights" clause reserves specific rights to the Licensor, do NOT assume the license is Non-Exclusive (it often implies Exclusivity elsewhere).
   * If the main license grant is not explicitly in the text, return null.
 - auditRights.canAudit: Return boolean true if licensor has audit/inspection rights.
-- usageLimits: Extract the limit value (e.g., "50 users", "Unlimited").
+- usageLimits: Extract the limit value (e.g., "50 users", "Unlimited", "1 device per user").
+  * DEVICE LIMIT RULE: If the license allows installation on "Mac computers owned or controlled by you", explicitly extract that limit phrase. Do not return null just because it's not a number.
 - Territory: Geographic restrictions (e.g., "Worldwide").`,
 
   Other: `Focus on general contract metadata:
