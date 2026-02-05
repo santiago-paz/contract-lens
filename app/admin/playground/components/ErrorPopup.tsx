@@ -54,14 +54,14 @@ export const ErrorPopup = ({ isOpen, message, details, onClose }: ErrorPopupProp
       let current = parsedDetails;
       while (current) {
         if (current.message && typeof current.message === 'string') {
-          const valueMatch = current.message.match(/Type validation failed: Value: (\{.*\}). Error message:/s);
+          const valueMatch = current.message.match(/Type validation failed: Value: (\{[\s\S]*}). Error message:/);
           if (valueMatch && valueMatch[1]) {
             try {
               foundObject = JSON.parse(valueMatch[1]);
             } catch { }
           }
 
-          const errorMatch = current.message.match(/Error message: (\[.*\])/s);
+          const errorMatch = current.message.match(/Error message: (\[[\s\S]*])/);
           if (errorMatch && errorMatch[1]) {
             try {
               const parsed = JSON.parse(errorMatch[1]);

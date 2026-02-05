@@ -178,7 +178,7 @@ export async function extractContractData(
     const finalObject = stripToSchema(extractedObject, schema);
 
     return {
-      object: finalObject,
+      object: finalObject as ContractData,
       usage: usage,
       modelReasoning,
     };

@@ -29,14 +29,14 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     title: contract.title,
     summary: contract.summary || '',
     status: contract.status as any,
-    conditions: contract.conditions,
+    conditions: contract.conditions || undefined,
     contractOwner: contract.contractOwner,
     deputy: contract.deputy,
     contractManager: contract.contractManager,
     contractValue: contract.contractValue,
     // Add other fields mapping
     contractStart: contract.startDate || null,
-    comments: null, // We might need to map comments if stored
+    comments: undefined, // We might need to map comments if stored
     riskAssessment: null,
     liabilityAmount: null,
     externalReference: contract.contractNumber,
@@ -44,7 +44,7 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     confidentiality: null,
     contractPartner: null,
     durationType: 'Fixed-term', // Default
-  };
+  } as unknown as ContractAnalysis;
 
   // Prepare serializable contract object for client
   const serializableContract = {
