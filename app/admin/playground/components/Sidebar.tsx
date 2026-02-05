@@ -79,6 +79,7 @@ export const Sidebar = ({
                 <option value="openai/gpt-4o">GPT-4o</option>
                 <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
                 <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</option>
+                <option value="deepseek/deepseek-r1">deepseek/deepseek-r1</option>
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <div className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-black"></div>

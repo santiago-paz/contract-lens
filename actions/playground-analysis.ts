@@ -21,12 +21,16 @@ export type AnalysisResult = {
   data?: {
     rawText: string;
     parsed: any;
+    draft?: any; // Added draft field
     classification: string;
     usage?: any;
+    wasRepaired?: boolean; // Added flag
     latency: {
       extraction: number;
       router?: number;
       expert?: number;
+      expertExtraction?: number;
+      expertRepair?: number;
       total: number;
     };
   };
@@ -131,7 +135,7 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
 
     // Call the new extraction function with options
     // We cast classification to ContractType because CONTRACT_TYPES in constants might be slightly different or just string[]
-    const { object: expertResult, usage: expertUsage } = await extractContractData(
+    const expertResultRaw = await extractContractData(
       text,
       classification as ContractType,
       {
@@ -144,23 +148,44 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     const expertEndTime = performance.now();
     const expertLatency = Math.round(expertEndTime - expertStartTime);
 
+    // Deconstruct the extended result
+    const { 
+      object: expertParsedData, 
+      extractionUsage, 
+      repairUsage, 
+      wasRepaired, 
+      repairLatency,
+      draftObject
+    } = expertResultRaw;
+
+    const expertExtractionLatency = expertLatency - repairLatency;
+
     const totalLatency = Math.round(performance.now() - startTime);
+
+    const totalTokens = (routerUsage.totalTokens || 0) + 
+                        (extractionUsage?.totalTokens || 0) + 
+                        (repairUsage?.totalTokens || 0);
 
     return {
       success: true,
       data: {
         rawText: text,
-        parsed: expertResult,
+        parsed: expertParsedData,
+        draft: draftObject, // Pass the draft
         classification, // Include classification metadata
         usage: {
           router: routerUsage,
-          expert: expertUsage,
-          totalTokens: (routerUsage.totalTokens || 0) + (expertUsage.totalTokens || 0)
+          extraction: extractionUsage,
+          repair: repairUsage,
+          totalTokens: totalTokens
         },
+        wasRepaired,
         latency: {
-          extraction: extractionLatency,
+          extraction: extractionLatency, // Text Extraction
           router: routerLatency,
-          expert: expertLatency,
+          expert: expertLatency, // Total Expert Time
+          expertExtraction: expertExtractionLatency,
+          expertRepair: repairLatency,
           total: totalLatency
         }
       }
