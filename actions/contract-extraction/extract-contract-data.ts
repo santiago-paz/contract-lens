@@ -105,7 +105,7 @@ export async function extractContractData(
   options: ExtractionOptions = {}
 ): Promise<ExtractionResult<ContractData>> {
   // Use options or defaults
-  const modelName = options.model || 'meta/llama-3.1-70b';
+  const modelName = options.model || 'deepseek/deepseek-r1';
   const temperature = options.temperature ?? 0;
 
   // Get schema configuration for this contract type
@@ -142,7 +142,15 @@ export async function extractContractData(
       // Try to extract it from various possible locations
       const resultAny = result as any;
       if (resultAny.reasoning) {
-        modelReasoning = resultAny.reasoning;
+        // AI SDK returns reasoning as an array of { type: 'text', text: string }
+        if (Array.isArray(resultAny.reasoning)) {
+          modelReasoning = resultAny.reasoning
+            .filter((r: any) => r.type === 'text' && r.text)
+            .map((r: any) => r.text)
+            .join('\n');
+        } else if (typeof resultAny.reasoning === 'string') {
+          modelReasoning = resultAny.reasoning;
+        }
       } else if (resultAny.reasoningContent) {
         modelReasoning = resultAny.reasoningContent;
       } else if (resultAny.text) {

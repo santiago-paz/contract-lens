@@ -25,7 +25,7 @@ export function usePlayground() {
   // Inputs
   const [file, setFile] = useState<File | null>(null);
   const [systemPrompt, setSystemPrompt] = useState<string>('');
-  const [model, setModel] = useState<string>('meta/llama-3.1-70b');
+  const [model, setModel] = useState<string>('deepseek/deepseek-r1');
   const [temperature, setTemperature] = useState<number>(0);
 
   // State

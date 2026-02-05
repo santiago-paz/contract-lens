@@ -95,7 +95,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Payment Terms</label>
-            <p className="font-bold text-sm text-black">{data.paymentTerms || 'N/A'}</p>
+            <div className="font-bold text-sm text-black">{renderComplexField(data.paymentTerms)}</div>
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Termination Notice</label>
