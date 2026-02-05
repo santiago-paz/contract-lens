@@ -23,7 +23,7 @@ RISK FLAGS (boolean):
   • Do NOT return null for missing clauses; use false.
 
 STRING FIELDS:
-- confidentialityDuration: Extract verbatim, e.g., "2 years after termination", "5 years", "perpetual"
+- confidentialityDuration: Extract verbatim duration, including start/end triggers if present (e.g., "5 years from Effective Date", "3 years after termination", "Perpetual").
 - jurisdiction: The governing law location, e.g., "State of California", "New York"
 - parties: Array of full legal entity names
 - effectiveDate/expirationDate: Format as YYYY-MM-DD if possible`,
