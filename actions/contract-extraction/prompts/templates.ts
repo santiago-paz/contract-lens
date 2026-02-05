@@ -7,15 +7,20 @@ import type { ContractType } from '../types';
 export const PROMPT_TEMPLATES: Record<ContractType, string> = {
   NDA: `Focus on NDA-specific fields:
 
-BOOLEAN FIELDS (return true, false, or null):
-- isMutual: 
-  • true = "Mutual NDA", "bilateral", both parties disclose AND receive confidential info
-  • false = "Unilateral", "one-way", only one party discloses to the other
-  • null = cannot determine from the contract text
+GENERAL FORMATTING RULES:
+- For all string extraction, replace line breaks (newlines) and multiple spaces with a single space.
+- Do NOT preserve original line breaks in the JSON output.
 
-- riskFlags.nonSolicit: true if there's a non-solicitation clause (restricting hiring each other's employees)
-- riskFlags.nonCompete: true if there's a non-compete clause (restricting competitive business activities)  
-- riskFlags.liquidatedDamages: true if there's a predetermined damages amount for breach
+BOOLEAN FIELDS (isMutual):
+- true = "Mutual NDA", "bilateral", both parties disclose AND receive confidential info
+- false = "Unilateral", "one-way", only one party discloses to the other
+- null = cannot determine from the contract text
+
+RISK FLAGS (boolean):
+- For nonSolicit, nonCompete, and liquidatedDamages:
+  • Return true ONLY if the clause is explicitly present.
+  • Return false if the clause is NOT mentioned or absent.
+  • Do NOT return null for missing clauses; use false.
 
 STRING FIELDS:
 - confidentialityDuration: Extract verbatim, e.g., "2 years after termination", "5 years", "perpetual"

@@ -42,20 +42,26 @@ export const NDASchema = z.object({
       nonSolicit: z
         .boolean()
         .nullable()
-        .describe('BOOLEAN: Return true if a non-solicitation clause exists.')
+        .describe(
+          'BOOLEAN: Return true if a non-solicitation clause exists. Return false if NOT found.'
+        )
         .default(null),
       nonCompete: z
         .boolean()
         .nullable()
-        .describe('BOOLEAN: Return true if a non-compete clause exists.')
+        .describe('BOOLEAN: Return true if a non-compete clause exists. Return false if NOT found.')
         .default(null),
       liquidatedDamages: z
         .boolean()
         .nullable()
-        .describe('BOOLEAN: Return true if a liquidated damages clause exists.')
+        .describe(
+          'BOOLEAN: Return true if a liquidated damages clause exists. Return false if NOT found.'
+        )
         .default(null),
     })
     .nullable()
-    .describe('Risk flags found in the contract. Return null if none of these clauses exist.')
+    .describe(
+      'Risk flags object. Return { nonSolicit: false, nonCompete: false, liquidatedDamages: false } if no flags are found. Only return null if the entire section is impossible to evaluate.'
+    )
     .default(null),
 });
