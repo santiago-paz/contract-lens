@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { CheckCircle, Cpu } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { CheckCircle, Cpu, Brain, ChevronDown, ChevronRight } from 'lucide-react';
 import { JsonFormatter } from './JsonFormatter';
 
 interface AnalysisPopupProps {
@@ -9,6 +9,8 @@ interface AnalysisPopupProps {
 }
 
 export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) => {
+  const [isReasoningExpanded, setIsReasoningExpanded] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -83,79 +85,69 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
             <div className="bg-gray-100 border-b-2 border-black p-4 flex justify-between items-center">
               <h3 className="text-black font-black uppercase tracking-wider flex items-center gap-2">
                 <span className="bg-black text-white w-6 h-6 flex items-center justify-center text-xs rounded-full">2</span>
-                Expert Analysis
+                Expert Analysis (DeepSeek)
               </h3>
               <div className="flex gap-4 text-xs font-mono">
                 <span className="text-black bg-white px-2 py-1 border border-black shadow-sm">
                   Latency: <b>{result.latency.expert}ms ({(result.latency.expert / 1000).toFixed(2)}s)</b>
                 </span>
                 <span className="text-black bg-white px-2 py-1 border border-black shadow-sm">
-                  Tokens: <b>{result.usage.totalTokens - (result.usage.router?.totalTokens || 0)}</b>
+                  Tokens: <b>{result.usage.expert?.totalTokens || 'N/A'}</b>
                 </span>
               </div>
             </div>
             
             <div className="p-6 space-y-6">
-              {/* Sub-step 2.1: Initial Extraction */}
-              <div className="border border-gray-200 bg-gray-50 p-4 relative">
-                <div className="absolute -top-3 left-4 bg-white border border-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
-                  Step 2.1: Initial Extraction
-                </div>
-                <div className="flex justify-between items-center mb-4">
-                  <div className="text-xs text-gray-500 font-mono">
-                     Latency: <b>{result.latency.expertExtraction || result.latency.expert}ms ({((result.latency.expertExtraction || result.latency.expert) / 1000).toFixed(2)}s)</b> | Tokens: <b>{result.usage.extraction?.totalTokens || 'N/A'}</b>
+              {/* Extraction Result */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Input (Contract Text)</label>
+                  <div className="bg-gray-50 border border-gray-200 p-3 h-48 overflow-y-auto font-mono text-xs text-gray-600 whitespace-pre-wrap">
+                    {result.rawText}
                   </div>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <div>
-                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Input (Full Text)</label>
-                    <div className="bg-white border border-gray-200 p-3 h-40 overflow-y-auto font-mono text-xs text-gray-600 whitespace-pre-wrap">
-                      {result.rawText}
-                    </div>
-                  </div>
-                  <div>
-                    {/* If repaired, this was the draft. If not, this is final. */}
-                    <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">
-                      {result.wasRepaired ? 'Draft Output (Pre-Repair)' : 'Final Output'}
-                    </label>
-                    <div className={`border-2 p-3 h-40 overflow-y-auto font-mono text-xs ${result.wasRepaired ? 'bg-yellow-50 border-yellow-200 text-black' : 'bg-gray-900 border-black text-[#CCFF00]'}`}>
-                       <JsonFormatter data={result.wasRepaired && result.draft ? result.draft : result.parsed} theme={result.wasRepaired ? 'light' : 'dark'} />
-                    </div>
+                <div>
+                  <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Extracted Data</label>
+                  <div className="bg-gray-900 border-2 border-black p-3 h-48 overflow-y-auto font-mono text-xs text-[#CCFF00]">
+                    <JsonFormatter data={result.parsed} />
                   </div>
                 </div>
               </div>
 
-              {/* Sub-step 2.2: Repair / Refinement */}
-              {result.wasRepaired && (
-                <div className="border border-[#CCFF00] bg-[#CCFF00]/5 p-4 relative animate-fade-in">
-                  <div className="absolute -top-3 left-4 bg-[#CCFF00] border border-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
-                    Step 2.2: Refinement & Repair
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="text-xs text-black font-mono">
-                       Latency: <b>{result.latency.expertRepair}ms ({(result.latency.expertRepair / 1000).toFixed(2)}s)</b> | Tokens: <b>{result.usage.repair?.totalTokens || 'N/A'}</b>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs font-bold bg-[#CCFF00] text-black px-2 py-1 rounded-sm">
-                      <div className="w-2 h-2 bg-black rounded-full animate-pulse"></div>
-                      REPAIR TRIGGERED
-                    </div>
+              {/* Model Reasoning (from <think> tags) */}
+              {result.modelReasoning && (
+                <div className="border border-purple-300 bg-purple-50/50 p-4 relative animate-fade-in">
+                  <div className="absolute -top-3 left-4 bg-purple-500 border border-purple-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white flex items-center gap-1">
+                    <Brain className="w-3 h-3" />
+                    Model Reasoning
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="flex items-center justify-center p-6 border-2 border-dashed border-black/20 bg-white/50">
-                       <div className="text-center">
-                          <p className="text-xs font-bold text-black uppercase mb-2">Reason</p>
-                          <p className="text-sm font-medium text-black">Schema Mismatch / Extra Keys Detected</p>
-                       </div>
+                  <button
+                    onClick={() => setIsReasoningExpanded(!isReasoningExpanded)}
+                    className="w-full flex items-center justify-between p-2 hover:bg-purple-100 rounded transition-colors mt-2"
+                  >
+                    <div className="flex items-center gap-2">
+                      {isReasoningExpanded ? (
+                        <ChevronDown className="w-4 h-4 text-purple-600" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-purple-600" />
+                      )}
+                      <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+                        {isReasoningExpanded ? 'Hide' : 'Show'} Chain of Thought ({result.modelReasoning.length.toLocaleString()} chars)
+                      </span>
                     </div>
-                    <div>
-                      <label className="text-[10px] uppercase font-black text-gray-500 mb-2 block tracking-wider">Final Output (Repaired)</label>
-                      <div className="bg-gray-900 border-2 border-black p-3 h-40 overflow-y-auto font-mono text-xs text-[#CCFF00]">
-                        <JsonFormatter data={result.parsed} />
-                      </div>
+                    <div className="text-[10px] text-purple-500 font-mono">
+                      DeepSeek Reasoning Mode
                     </div>
-                  </div>
+                  </button>
+                  
+                  {isReasoningExpanded && (
+                    <div className="mt-3 bg-white border border-purple-200 p-4 max-h-96 overflow-y-auto">
+                      <pre className="text-xs text-gray-700 whitespace-pre-wrap font-mono leading-relaxed">
+                        {result.modelReasoning}
+                      </pre>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -178,18 +170,26 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
                 </div>
               </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-4">
+              <div className="mt-4 grid grid-cols-4 gap-4">
                 <div className="p-3 bg-gray-50 border border-gray-200">
                   <div className="text-[10px] uppercase font-bold text-gray-500">Total Latency</div>
-                  <div className="text-black text-xl font-black">{result.latency.total}ms ({(result.latency.total / 1000).toFixed(2)}s)</div>
+                  <div className="text-black text-xl font-black">{result.latency.total}ms</div>
+                  <div className="text-[10px] text-gray-400">{(result.latency.total / 1000).toFixed(2)}s</div>
                 </div>
                 <div className="p-3 bg-gray-50 border border-gray-200">
-                  <div className="text-[10px] uppercase font-bold text-gray-500">Extraction Latency</div>
-                  <div className="text-black text-xl font-black">{result.latency.extraction}ms ({(result.latency.extraction / 1000).toFixed(2)}s)</div>
+                  <div className="text-[10px] uppercase font-bold text-gray-500">Router</div>
+                  <div className="text-black text-xl font-black">{result.latency.router}ms</div>
+                  <div className="text-[10px] text-gray-400">{result.usage.router?.totalTokens || 0} tokens</div>
+                </div>
+                <div className="p-3 bg-gray-50 border border-gray-200">
+                  <div className="text-[10px] uppercase font-bold text-gray-500">Expert</div>
+                  <div className="text-black text-xl font-black">{result.latency.expert}ms</div>
+                  <div className="text-[10px] text-gray-400">{result.usage.expert?.totalTokens || 0} tokens</div>
                 </div>
                 <div className="p-3 bg-gray-50 border border-gray-200">
                   <div className="text-[10px] uppercase font-bold text-gray-500">Total Tokens</div>
                   <div className="text-black text-xl font-black">{result.usage.totalTokens}</div>
+                  <div className="text-[10px] text-gray-400">all steps</div>
                 </div>
               </div>
             </div>

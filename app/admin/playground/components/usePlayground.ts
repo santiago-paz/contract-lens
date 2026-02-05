@@ -10,6 +10,7 @@ export interface AnalysisResult {
   classification?: any;
   usage: any;
   wasRepaired?: boolean; // Added flag
+  modelReasoning?: string | null; // <think>...</think> content from reasoning models
   latency: { 
     extraction: number; 
     router?: number; 

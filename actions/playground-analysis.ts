@@ -21,16 +21,13 @@ export type AnalysisResult = {
   data?: {
     rawText: string;
     parsed: any;
-    draft?: any; // Added draft field
     classification: string;
     usage?: any;
-    wasRepaired?: boolean; // Added flag
+    modelReasoning?: string | null; // <think>...</think> content from reasoning models (DeepSeek, etc.)
     latency: {
       extraction: number;
       router?: number;
       expert?: number;
-      expertExtraction?: number;
-      expertRepair?: number;
       total: number;
     };
   };
@@ -148,44 +145,34 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
     const expertEndTime = performance.now();
     const expertLatency = Math.round(expertEndTime - expertStartTime);
 
-    // Deconstruct the extended result
+    // Deconstruct the result
     const { 
       object: expertParsedData, 
-      extractionUsage, 
-      repairUsage, 
-      wasRepaired, 
-      repairLatency,
-      draftObject
+      usage: expertUsage,
+      modelReasoning
     } = expertResultRaw;
-
-    const expertExtractionLatency = expertLatency - repairLatency;
 
     const totalLatency = Math.round(performance.now() - startTime);
 
     const totalTokens = (routerUsage.totalTokens || 0) + 
-                        (extractionUsage?.totalTokens || 0) + 
-                        (repairUsage?.totalTokens || 0);
+                        (expertUsage?.totalTokens || 0);
 
     return {
       success: true,
       data: {
         rawText: text,
         parsed: expertParsedData,
-        draft: draftObject, // Pass the draft
         classification, // Include classification metadata
         usage: {
           router: routerUsage,
-          extraction: extractionUsage,
-          repair: repairUsage,
+          expert: expertUsage,
           totalTokens: totalTokens
         },
-        wasRepaired,
+        modelReasoning, // <think>...</think> content from reasoning models
         latency: {
           extraction: extractionLatency, // Text Extraction
           router: routerLatency,
-          expert: expertLatency, // Total Expert Time
-          expertExtraction: expertExtractionLatency,
-          expertRepair: repairLatency,
+          expert: expertLatency, // Expert Analysis Time
           total: totalLatency
         }
       }
