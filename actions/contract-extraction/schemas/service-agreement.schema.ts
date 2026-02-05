@@ -7,7 +7,9 @@ import { z } from 'zod';
 export const ServiceAgreementSchema = z.object({
   parties: z
     .array(z.string())
-    .describe('Full legal names of the parties. First element = Client, Second element = Provider.')
+    .describe(
+      'Full legal names of the parties. First element = Client, Second element = Provider. PRO TIP: If a party is generic, use the Defined Term. If Provider varies by region, include BOTH separated by " / ".'
+    )
     .default([])
     .nullable(),
   effectiveDate: z
@@ -21,7 +23,7 @@ export const ServiceAgreementSchema = z.object({
     .string()
     .nullable()
     .describe(
-      'Fixed end date of the agreement. Return null if: (a) contract is ongoing/indefinite, (b) terminable on notice, (c) auto-renewing, or (d) not specified.'
+      'Fixed end date OR initial term duration. Extract the date (e.g., "December 31, 2025") OR the duration text (e.g., "1 year", "12 months") if explicitly stated. Return null if contract is indefinite/ongoing from the start (e.g., "until terminated").'
     )
     .default(null),
   autoRenewal: z
@@ -75,7 +77,7 @@ export const ServiceAgreementSchema = z.object({
     .string()
     .nullable()
     .describe(
-      'Maximum liability amount. Extract the text content exactly as written. Normalize whitespace (replace line breaks/multiple spaces with single spaces). Examples: "fees paid in last 12 months", "total amounts paid under the applicable SOW". Do NOT calculate, summarize, or paraphrase.'
+      'Maximum liability amount. Extract the text content exactly as written. Normalize whitespace. If cap differs by region, concatenate both separated by " | ".'
     )
     .default(null),
   indemnification: z

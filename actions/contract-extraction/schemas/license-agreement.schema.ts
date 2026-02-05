@@ -37,7 +37,7 @@ export const LicenseAgreementSchema = z.object({
     .boolean()
     .nullable()
     .describe(
-      'BOOLEAN: Return true if the license is "exclusive" (only this licensee can use it). Return false if "non-exclusive". Return null if not mentioned.'
+      'BOOLEAN: Return true if the license is "exclusive". Return false if "non-exclusive". Return null if not mentioned or if inferred only from "Sell-Off" or "Survival" clauses.'
     ),
   renewalDate: z
     .string()
