@@ -6,9 +6,18 @@ import { ContractAnalysis } from '@/types/contract-analysis';
 export interface AnalysisResult {
   rawText: string;
   parsed: ContractAnalysis | null;
+  draft?: any; // Added draft
   classification?: any;
   usage: any;
-  latency: { extraction: number; router?: number; expert?: number; total: number };
+  wasRepaired?: boolean; // Added flag
+  latency: { 
+    extraction: number; 
+    router?: number; 
+    expert?: number; 
+    expertExtraction?: number; // Added
+    expertRepair?: number;     // Added
+    total: number;
+  };
 }
 
 export function usePlayground() {
