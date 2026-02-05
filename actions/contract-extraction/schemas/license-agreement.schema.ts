@@ -17,6 +17,9 @@ export const LicenseAgreementSchema = z.object({
     .describe(
       'The user/buyer of the software (the party receiving the license). Return null if not explicitly stated.'
     ),
+  summary: z
+    .string()
+    .describe('A 2-sentence explanation of what this contract is about.'),
   softwareName: z
     .string()
     .nullable()

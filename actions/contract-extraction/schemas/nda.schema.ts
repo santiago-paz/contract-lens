@@ -10,6 +10,10 @@ export const NDASchema = z.object({
     .describe('Full legal names of the entities involved.')
     .default([])
     .nullable(),
+  summary: z
+    .string()
+    .describe('A 2-sentence explanation of what this contract is about.')
+    .default(''),
   effectiveDate: z
     .string()
     .nullable()

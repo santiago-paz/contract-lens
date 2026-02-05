@@ -41,12 +41,18 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
       <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
         <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Type</label>
         <div className="flex items-center gap-2">
-          {contractType === 'NDA' && <Shield className="w-5 h-5" />}
-          {contractType === 'ServiceAgreement' && <Briefcase className="w-5 h-5" />}
-          {contractType === 'LicenseAgreement' && <Scale className="w-5 h-5" />}
-          {contractType === 'Other' && <FileText className="w-5 h-5" />}
+          {contractType === 'NDA' && <Shield className="w-5 h-5 text-black stroke-[2.5]" />}
+          {contractType === 'ServiceAgreement' && <Briefcase className="w-5 h-5 text-black stroke-[2.5]" />}
+          {contractType === 'LicenseAgreement' && <Scale className="w-5 h-5 text-black stroke-[2.5]" />}
+          {contractType === 'Other' && <FileText className="w-5 h-5 text-black stroke-[2.5]" />}
           <p className="font-bold text-lg border-b-4 border-[#CCFF00] inline-block text-black">{contractType}</p>
         </div>
+      </div>
+
+      {/* Common Summary */}
+      <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+        <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Summary</label>
+        <p className="text-sm text-black leading-relaxed">{data.summary || 'No summary available.'}</p>
       </div>
 
       {/* NDA Specifics */}
@@ -58,29 +64,46 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Mutual?</label>
-            <p className="font-bold text-lg text-black">{data.isMutual ? 'Yes' : 'No'}</p>
+            <p className="font-bold text-lg text-black">{data.isMutual === true ? 'Yes' : data.isMutual === false ? 'No' : 'Unclear'}</p>
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Jurisdiction</label>
             <p className="font-bold text-lg text-black">{data.jurisdiction || 'Not specified'}</p>
           </div>
           
-          {/* Risk Flags */}
+           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Effective Date</label>
+            <p className="font-mono font-bold text-lg text-black">{data.effectiveDate || 'N/A'}</p>
+          </div>
+          <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Expiration Date</label>
+            <p className="font-mono font-bold text-lg text-black">{data.expirationDate || 'N/A'}</p>
+          </div>
+
           <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Risk Flags</label>
             <div className="grid grid-cols-3 gap-4">
-              <div className={`p-4 border border-black ${data.riskFlags?.hasNonSolicit ? 'bg-red-50' : 'bg-green-50'}`}>
+              <div className={`p-4 border border-black ${data.riskFlags?.nonSolicit ? 'bg-red-50' : 'bg-green-50'}`}>
                 <span className="text-xs font-bold block mb-1">Non-Solicit</span>
-                <span className="font-mono">{data.riskFlags?.hasNonSolicit ? 'PRESENT' : 'None'}</span>
+                <span className="font-mono">{data.riskFlags?.nonSolicit ? 'PRESENT' : 'None'}</span>
               </div>
-              <div className={`p-4 border border-black ${data.riskFlags?.noIpTransfer ? 'bg-red-50' : 'bg-green-50'}`}>
-                <span className="text-xs font-bold block mb-1">No IP Transfer</span>
-                <span className="font-mono">{data.riskFlags?.noIpTransfer ? 'YES' : 'No'}</span>
+              <div className={`p-4 border border-black ${data.riskFlags?.liquidatedDamages ? 'bg-red-50' : 'bg-green-50'}`}>
+                <span className="text-xs font-bold block mb-1">Liquidated Damages</span>
+                <span className="font-mono">{data.riskFlags?.liquidatedDamages ? 'PRESENT' : 'None'}</span>
               </div>
               <div className={`p-4 border border-black ${data.riskFlags?.nonCompete ? 'bg-red-50' : 'bg-green-50'}`}>
                 <span className="text-xs font-bold block mb-1">Non-Compete</span>
                 <span className="font-mono">{data.riskFlags?.nonCompete ? 'PRESENT' : 'None'}</span>
               </div>
+            </div>
+          </div>
+
+          <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Parties</label>
+            <div className="flex flex-wrap gap-2">
+              {data.parties?.map((p: string, i: number) => (
+                <span key={i} className="px-3 py-1 bg-gray-100 border border-black text-sm font-medium">{p}</span>
+              ))}
             </div>
           </div>
         </>
@@ -90,9 +113,18 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
       {contractType === 'ServiceAgreement' && (
         <>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Term</label>
-            <p className="font-mono font-bold text-lg text-black">{data.termDuration || 'N/A'}</p>
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Term / Termination Date</label>
+            <p className="font-mono font-bold text-lg text-black">{data.terminationDate || 'N/A'}</p>
           </div>
+          <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Effective Date</label>
+            <p className="font-mono font-bold text-lg text-black">{data.effectiveDate || 'N/A'}</p>
+          </div>
+           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Auto Renewal</label>
+            <p className="font-bold text-lg text-black">{data.autoRenewal === true ? 'Yes' : data.autoRenewal === false ? 'No' : 'N/A'}</p>
+          </div>
+
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Payment Terms</label>
             <div className="font-bold text-sm text-black">{renderComplexField(data.paymentTerms)}</div>
@@ -109,8 +141,13 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
             </div>
             <div className="bg-white p-6 border-2 border-black shadow-hard">
               <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">IP Ownership</label>
-              <div className="font-bold text-black">{renderComplexField(data.ipOwnership)}</div>
+              <div className="font-bold text-black">{data.ipOwnership || 'N/A'}</div>
             </div>
+          </div>
+
+          <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
+             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Indemnification</label>
+             <p className="font-bold text-lg text-black">{data.indemnification || 'N/A'}</p>
           </div>
 
           <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
@@ -133,11 +170,19 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Exclusivity</label>
-            <p className="font-bold text-lg text-black">{data.exclusivity}</p>
+            <p className="font-bold text-lg text-black">{data.exclusivity === true ? 'Yes' : data.exclusivity === false ? 'No' : 'N/A'}</p>
           </div>
           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Software</label>
             <p className="font-bold text-sm text-black">{data.softwareName || 'Not specified'}</p>
+          </div>
+          <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Renewal Date</label>
+            <p className="font-bold text-sm text-black">{data.renewalDate || 'N/A'}</p>
+          </div>
+           <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Territory</label>
+            <p className="font-bold text-sm text-black">{data.territory || 'N/A'}</p>
           </div>
           
           <div className="col-span-3 grid grid-cols-2 gap-6">
@@ -150,32 +195,23 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
               <p className="font-bold text-black">{data.licensee || 'N/A'}</p>
             </div>
           </div>
+          
+          <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
+             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Usage Limits</label>
+             <p className="font-mono text-base font-bold text-black bg-gray-50 p-3 border border-gray-200">{data.usageLimits || 'None'}</p>
+          </div>
 
           <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Audit Rights</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <div>
-                  <span className="text-xs text-gray-500 block">Can Audit?</span>
-                  <span className="font-bold">{data.auditRights?.canAudit ? 'YES' : 'No'}</span>
+               <div className="bg-gray-50 p-3 border border-gray-200">
+                  <span className="text-[10px] uppercase font-black text-gray-600 block mb-1 tracking-wider">Can Audit?</span>
+                  <span className="font-bold text-lg text-black">{data.auditRights?.canAudit === true ? 'YES' : data.auditRights?.canAudit === false ? 'No' : 'N/A'}</span>
                </div>
-               <div>
-                  <span className="text-xs text-gray-500 block">Notice Period</span>
-                  <span className="font-bold">{data.auditRights?.noticePeriod || 'N/A'}</span>
+               <div className="bg-gray-50 p-3 border border-gray-200">
+                  <span className="text-[10px] uppercase font-black text-gray-600 block mb-1 tracking-wider">Notice Period</span>
+                  <span className="font-bold text-lg text-black">{data.auditRights?.noticePeriod || 'N/A'}</span>
                </div>
-               <div className="col-span-2">
-                  <span className="text-xs text-gray-500 block">Penalty Clause</span>
-                  <span className="font-mono text-sm bg-gray-50 p-2 border border-gray-200 block mt-1">
-                    {data.auditRights?.penaltyClause || 'None'}
-                  </span>
-               </div>
-               {data.auditRights?.usageLimits && (
-                 <div className="col-span-2">
-                    <span className="text-xs text-gray-500 block">Usage Limits</span>
-                    <div className="font-mono text-sm bg-gray-50 p-2 border border-gray-200 block mt-1">
-                      {renderComplexField(data.auditRights.usageLimits)}
-                    </div>
-                 </div>
-               )}
             </div>
           </div>
         </>
@@ -185,13 +221,25 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
       {contractType === 'Other' && (
         <>
            <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Effective Date</label>
-            <p className="font-mono font-bold text-lg text-black">{data.effectiveDate || 'N/A'}</p>
+            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Governing Law</label>
+            <p className="font-mono font-bold text-lg text-black">{data.governingLaw || 'N/A'}</p>
           </div>
-          <div className="bg-white p-6 border-2 border-black shadow-hard hover:shadow-hard-lg transition-shadow">
-            <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Renewal</label>
-            <p className="font-bold text-lg text-black">{data.hasRenewalClause ? 'Yes' : 'No'}</p>
+          
+          <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
+             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Key Dates</label>
+             {data.keyDates && data.keyDates.length > 0 ? (
+               <ul className="list-disc pl-4 space-y-1">
+                 {data.keyDates.map((dateObj: any, idx: number) => (
+                   <li key={idx} className="text-sm">
+                     <span className="font-semibold">{dateObj.label}:</span> {dateObj.date}
+                   </li>
+                 ))}
+               </ul>
+             ) : (
+               <p className="text-sm">No key dates found.</p>
+             )}
           </div>
+
           <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Parties</label>
             <div className="flex flex-wrap gap-2">
