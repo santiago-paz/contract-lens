@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Check, FileText, Loader2, AlertCircle, Bug, Terminal } from 'lucide-react';
 import { ContractAnalysis } from '@/types/contract-analysis';
+import { analyzeContractPlayground } from '@/actions/playground-analysis';
 import { DebugOverlay } from './DebugOverlay';
 
 interface AnalysisStepProps {
@@ -61,7 +62,14 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
           // Wait a bit to show 100% completion before moving on
           setTimeout(() => {
             if (mounted) {
-                onComplete(result);
+              if (result.success && result.data) {
+                onComplete({
+                  ...result.data.parsed,
+                  contractType: result.data.classification,
+                });
+              } else {
+                setError(result.error || 'Analysis failed');
+              }
             }
           }, 800);
         }
@@ -134,7 +142,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                               riskAssessment: null,
                               liabilityAmount: null,
                               comments: null
-                            });
+                            } as any);
                         }} 
                         className="px-6 py-3 bg-black text-[#CCFF00] border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] uppercase font-bold text-sm transition-all"
                     >

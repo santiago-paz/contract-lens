@@ -71,7 +71,7 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         contractOwner: contractOwner,
         contractManager: null,
         contractValue: contractValue,
-        startDate: (data.effectiveDate && !isNaN(Date.parse(data.effectiveDate))) ? new Date(data.effectiveDate) : null,
+        startDate: (data.effectiveDate && !isNaN(Date.parse(data.effectiveDate))) ? new Date(data.effectiveDate).toISOString() : null,
         content: rawText,
         contractNumber: contractNumber,
         userId: userId,

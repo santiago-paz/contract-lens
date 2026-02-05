@@ -15,4 +15,23 @@ export type ClassificationResult = z.infer<typeof ClassificationSchema>;
 export type { ContractData } from '@/actions/extract-contract-data';
 
 // Alias for backward compatibility
-export type ContractAnalysis = ContractData;
+export type ContractAnalysis = ContractData & {
+  contractType?: string;
+  title?: string;
+  status?: string;
+  summary?: string;
+  conditions?: string;
+  comments?: string;
+  contractOwner?: string | null;
+  deputy?: string | null;
+  contractManager?: string | null;
+  externalReference?: string | null;
+  organizationalUnit?: string | null;
+  contractValue?: string | null;
+  confidentiality?: string | null;
+  contractPartner?: string | null;
+  durationType?: string | null;
+  contractStart?: string | null;
+  riskAssessment?: string | null;
+  liabilityAmount?: string | null;
+};
