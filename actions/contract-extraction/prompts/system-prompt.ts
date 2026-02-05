@@ -40,9 +40,12 @@ TYPE LEGEND:
 3. **When Information is Missing**:
    - For nullable fields: return null
    - For boolean fields: return null if truly unclear (don't guess)
-   - NEVER make up information that isn't in the contract
+   - NEVER make up information that isn't in the contract (EXCEPTION: For the "summary" field, you MUST generate a summary).
 
-4. **Schema Compliance**:
+4. **Special Fields**:
+   - **summary**: This is a GENERATED field. Synthesize a 2-sentence explanation of what this contract is about based on the full text. Do not look for a section named "Summary".
+
+5. **Schema Compliance**:
    - Return exactly the fields shown in the schema
    - Do not add extra fields
    - For nested objects: return a valid JSON object, not a string

@@ -131,9 +131,17 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
                     Model Reasoning
                   </div>
                   
-                  <button
+                  <div
                     onClick={() => setIsReasoningExpanded(!isReasoningExpanded)}
-                    className="w-full flex items-center justify-between p-2 hover:bg-purple-100 rounded transition-colors mt-2"
+                    className="w-full flex items-center justify-between p-2 hover:bg-purple-100 rounded transition-colors mt-2 cursor-pointer"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setIsReasoningExpanded(!isReasoningExpanded);
+                      }
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       {isReasoningExpanded ? (
@@ -170,7 +178,7 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
                         )}
                       </button>
                     </div>
-                  </button>
+                  </div>
                   
                   {isReasoningExpanded && (
                     <div className="mt-3 bg-white border border-purple-200 p-4 max-h-96 overflow-y-auto">
