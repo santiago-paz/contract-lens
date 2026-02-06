@@ -1,5 +1,6 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
@@ -42,6 +43,9 @@ export async function saveContract(formData: FormData) {
         return val || null;
     };
 
+    // Prisma requires DbNull instead of null for Json? fields
+    const jsonOrNull = (val: unknown) => val ?? Prisma.DbNull;
+
     const commonData = {
         title: metadata.title || 'Untitled Contract',
         type: metadata.contractType || 'Unknown',
@@ -68,17 +72,17 @@ export async function saveContract(formData: FormData) {
         renewalDate: metadata.renewalDate || null,
 
         // ── Parties ──────────────────────────────────────────────────────
-        parties: metadata.parties || null,
+        parties: jsonOrNull(metadata.parties),
 
         // ── NDA-specific ─────────────────────────────────────────────────
         confidentialityDuration: metadata.confidentialityDuration || null,
         isMutual: metadata.isMutual ?? null,
         jurisdiction: metadata.jurisdiction || null,
-        riskFlags: metadata.riskFlags || null,
+        riskFlags: jsonOrNull(metadata.riskFlags),
 
         // ── Service Agreement-specific ───────────────────────────────────
         autoRenewal: metadata.autoRenewal ?? null,
-        paymentTerms: metadata.paymentTerms || null,
+        paymentTerms: jsonOrNull(metadata.paymentTerms),
         ipOwnership: metadata.ipOwnership || null,
         terminationNoticePeriod: metadata.terminationNoticePeriod || null,
         liabilityCap: metadata.liabilityCap || null,
@@ -91,12 +95,12 @@ export async function saveContract(formData: FormData) {
         licenseType: metadata.licenseType || null,
         usageLimits: metadata.usageLimits || null,
         exclusivity: metadata.exclusivity ?? null,
-        auditRights: metadata.auditRights || null,
+        auditRights: jsonOrNull(metadata.auditRights),
         territory: metadata.territory || null,
 
         // ── General / Other ──────────────────────────────────────────────
         governingLaw: metadata.governingLaw || null,
-        keyDates: metadata.keyDates || null,
+        keyDates: jsonOrNull(metadata.keyDates),
 
         // ── Content ──────────────────────────────────────────────────────
         content: content || getString(metadata.summary), 
