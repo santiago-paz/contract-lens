@@ -8,6 +8,10 @@ interface TypeSelectionStepProps {
   suggestedType?: string;
 }
 
+/** Insert a space before each uppercase letter that follows a lowercase letter */
+function formatTypeName(type: string): string {
+  return type.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
 
 export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelectionStepProps) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,47 +57,56 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                 </div>
 
                 <div className="mb-6">
-                    <h3 className="text-xs font-bold text-black uppercase tracking-widest mb-4 flex items-center gap-2 border-b-2 border-black pb-2 inline-block">
-                        <FileText className="w-4 h-4" />
-                        Available Definitions
-                    </h3>
+                    <div className="mb-4">
+                        <h3 className="text-xs font-bold text-black uppercase tracking-widest pb-2 border-b-2 border-black flex items-center gap-2">
+                            <FileText className="w-4 h-4 shrink-0" />
+                            Available Definitions
+                        </h3>
+                    </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {filteredTypes.map((type) => {
                             const isSuggested = type === suggestedType;
+                            const isSelected = selectedType === type;
                             return (
                             <div 
                                 key={type}
                                 onClick={() => setSelectedType(type)}
                                 className={`
                                     group flex items-center justify-between p-4 cursor-pointer transition-all border-2
-                                    ${selectedType === type 
-                                        ? 'bg-black text-[#CCFF00] border-black shadow-hard-sm scale-[1.01]' 
+                                    ${isSelected 
+                                        ? 'bg-black text-white border-black shadow-hard-sm scale-[1.01]' 
                                         : isSuggested
                                             ? 'bg-[#CCFF00]/20 border-black text-black hover:bg-[#CCFF00] hover:shadow-hard-sm'
                                             : 'bg-white border-gray-200 text-gray-500 hover:border-black hover:text-black hover:shadow-hard-sm'
                                     }
                                 `}
                             >
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-3 min-w-0">
                                     {isSuggested ? (
-                                        <Sparkles className={`w-4 h-4 ${selectedType === type ? 'text-[#CCFF00]' : 'text-black'}`} />
+                                        <Sparkles className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#CCFF00]' : 'text-black'}`} />
                                     ) : (
-                                        <FileText className={`w-4 h-4 ${selectedType === type ? 'text-[#CCFF00]' : 'text-gray-400 group-hover:text-black'}`} />
+                                        <FileText className={`w-4 h-4 shrink-0 ${isSelected ? 'text-gray-400' : 'text-gray-400 group-hover:text-black'}`} />
                                     )}
-                                    <span className="font-bold text-sm uppercase">
-                                        {type}
-                                        {isSuggested && <span className={`ml-2 text-[10px] px-1.5 py-0.5 border uppercase tracking-wide font-bold ${selectedType === type ? 'bg-[#CCFF00] text-black border-black' : 'bg-black text-white border-black'}`}>Suggested</span>}
-                                    </span>
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <span className="font-bold text-sm uppercase truncate">
+                                            {formatTypeName(type)}
+                                        </span>
+                                        {isSuggested && (
+                                            <span className={`shrink-0 text-[10px] px-1.5 py-0.5 border uppercase tracking-wide font-bold ${isSelected ? 'bg-[#CCFF00] text-black border-[#CCFF00]' : 'bg-black text-white border-black'}`}>
+                                                Suggested
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                                 
-                                {selectedType === type && (
+                                {isSelected && (
                                     <button 
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             onSelect(type);
                                         }}
-                                        className="px-2 py-1 bg-[#CCFF00] text-black border border-black text-xs font-bold uppercase hover:bg-white transition-colors flex items-center gap-1 animate-fade-in"
+                                        className="shrink-0 ml-3 px-3 py-1 bg-white text-black border-2 border-black text-xs font-bold uppercase hover:bg-[#CCFF00] transition-colors flex items-center gap-1 animate-fade-in"
                                     >
                                         Next
                                         <ChevronRight className="w-3 h-3" />
