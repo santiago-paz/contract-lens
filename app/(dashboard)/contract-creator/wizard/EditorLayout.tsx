@@ -39,6 +39,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  const [contractTitle, setContractTitle] = useState(initialData?.title || fileName.replace(/\.[^/.]+$/, ""));
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [conditions, setConditions] = useState(initialData?.conditions || "");
   const [comments, setComments] = useState(initialData?.comments || "");
@@ -58,17 +59,17 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
       }
 
       const metadata = {
-        title: fileName,
+        ...initialData, // Include all analysis data as base
+        title: contractTitle,
         contractType,
         contractOwner: contractOwner[0] || null,
         deputy: deputy[0] || null,
         contractManager: contractManager[0] || null,
-        ...initialData, // Include other initial analysis data
         // Overwrite with current state
         summary: summary,
         conditions: conditions,
         comments: comments,
-        status: status, // Ensure status is spread last
+        status: status,
       };
 
       formData.append('metadata', JSON.stringify(metadata));
@@ -226,6 +227,8 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             initialData={initialData}
             fileName={fileName}
             contractType={contractType}
+            contractTitle={contractTitle}
+            setContractTitle={setContractTitle}
             contractOwner={contractOwner}
             setContractOwner={setContractOwner}
             deputy={deputy}

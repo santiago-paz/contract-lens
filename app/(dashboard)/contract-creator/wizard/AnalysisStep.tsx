@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { FileText, AlertCircle, Bug, Terminal } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { FileText, AlertCircle, Bug, CheckCircle2, Circle, ArrowRight, XCircle } from 'lucide-react';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { DebugOverlay } from './DebugOverlay';
 
@@ -15,37 +15,42 @@ interface AnalysisStepProps {
 
 type LineVariant = 'system' | 'info' | 'success' | 'error' | 'dim';
 
-interface TerminalLine {
+interface LogEntry {
   id: number;
   text: string;
   variant: LineVariant;
-  timestamp: string;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function getTimestamp(): string {
-  const now = new Date();
-  return now.toLocaleTimeString('en-US', {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
-}
-
-const VARIANT_STYLES: Record<LineVariant, { prefix: string; className: string }> = {
-  system: { prefix: 'INIT', className: 'text-white font-bold' },
-  info: { prefix: '>>>>', className: 'text-[#CCFF00]' },
-  success: { prefix: ' [OK]', className: 'text-white' },
-  error: { prefix: 'FAIL', className: 'text-red-400 font-bold' },
-  dim: { prefix: '----', className: 'text-[#CCFF00]/40' },
+const VARIANT_CONFIG: Record<LineVariant, { icon: 'circle' | 'arrow' | 'check' | 'x' | 'dot'; className: string }> = {
+  system: { icon: 'circle', className: 'text-white font-medium' },
+  info: { icon: 'arrow', className: 'text-[#CCFF00]' },
+  success: { icon: 'check', className: 'text-white' },
+  error: { icon: 'x', className: 'text-red-400 font-medium' },
+  dim: { icon: 'dot', className: 'text-[#CCFF00]/40' },
 };
+
+function VariantIcon({ icon }: { icon: string }) {
+  const base = 'w-3.5 h-3.5 shrink-0 mt-[1px]';
+  switch (icon) {
+    case 'check':
+      return <CheckCircle2 className={`${base} text-[#CCFF00]`} />;
+    case 'arrow':
+      return <ArrowRight className={`${base} text-[#CCFF00]/60`} />;
+    case 'x':
+      return <XCircle className={`${base} text-red-400`} />;
+    case 'circle':
+      return <Circle className={`${base} text-white/60`} />;
+    default:
+      return <span className={`${base} text-[#CCFF00]/30 inline-block text-center`}>·</span>;
+  }
+}
 
 // ── Component ────────────────────────────────────────────────────────────────
 
 export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) {
-  const [logLines, setLogLines] = useState<TerminalLine[]>([]);
+  const [logLines, setLogLines] = useState<LogEntry[]>([]);
   const [completedSteps, setCompletedSteps] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +63,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
   const logRef = useRef<HTMLDivElement>(null);
   const lineIdRef = useRef(0);
   const startTimeRef = useRef(Date.now());
-  const totalSteps = 5;
+  const totalSteps = 2;
 
   // ── Elapsed timer ──────────────────────────────────────────────────────────
 
@@ -78,9 +83,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
     }
   }, [logLines]);
 
-  // ── Stable PID (generated once) ───────────────────────────────────────────
-
-  const [pid] = useState(() => Math.floor(Math.random() * 99999));
+  // (pid removed — not needed for simplified UI)
 
   // ── Stream consumer ────────────────────────────────────────────────────────
 
@@ -94,9 +97,8 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
     setLogLines([
       {
         id: bootId,
-        text: 'Initializing analysis pipeline...',
+        text: 'Starting document analysis…',
         variant: 'system',
-        timestamp: getTimestamp(),
       },
     ]);
 
@@ -142,7 +144,6 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                         id: lineIdRef.current++,
                         text: event.text,
                         variant: (event.variant as LineVariant) || 'info',
-                        timestamp: getTimestamp(),
                       },
                     ]);
                   }
@@ -161,9 +162,33 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                       // Brief delay so user sees the final log lines
                       setTimeout(() => {
                         if (mounted) {
+                          const parsed = event.data.parsed ?? {};
+                          const classification = event.data.classification;
+
+                          // Build counterparty string from parties or licensor/licensee
+                          const counterparty =
+                            parsed.parties?.filter(Boolean).join(' & ') ||
+                            [parsed.licensor, parsed.licensee].filter(Boolean).join(' & ') ||
+                            null;
+
+                          // Derive duration type from parsed data
+                          let durationType: string | null = null;
+                          if (parsed.terminationDate || parsed.expirationDate) {
+                            durationType = 'Fixed-term';
+                          } else if (parsed.autoRenewal === true) {
+                            durationType = 'Indefinite';
+                          }
+
                           onComplete({
-                            ...event.data.parsed,
-                            contractType: event.data.classification,
+                            // Spread all raw schema fields so the sidebar can access them
+                            ...parsed,
+                            contractType: classification,
+                            // Map schema fields → sidebar standard names
+                            title: parsed.suggestedTitle || parsed.documentTitle || null,
+                            contractPartner: counterparty,
+                            contractStart: parsed.effectiveDate || null,
+                            liabilityAmount: parsed.liabilityCap || null,
+                            durationType,
                           });
                         }
                       }, 1200);
@@ -292,9 +317,9 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
       <div className="mb-6">
         <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
           <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
-            <Terminal className="w-6 h-6" />
+            <FileText className="w-6 h-6" />
           </div>
-          System Processing
+          Analyzing Document
         </h2>
       </div>
 
@@ -303,7 +328,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
         <div className="w-1/3 border-r-2 border-black p-8 bg-gray-50 flex flex-col">
           <div className="mb-8">
             <span className="text-[10px] font-bold uppercase text-gray-500 block mb-2">
-              Target File
+              Document
             </span>
             <div className="p-4 bg-white border-2 border-black shadow-hard-sm">
               <FileText className="w-8 h-8 text-black mb-2" />
@@ -329,7 +354,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
             </div>
             <div className="flex justify-between mt-1">
               <span className="text-[10px] font-bold text-black uppercase">
-                {completedSteps}/{totalSteps}
+                Step {completedSteps} of {totalSteps}
               </span>
               <span className="text-[10px] font-bold text-gray-500 uppercase">
                 {progressPct}%
@@ -343,7 +368,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                 <>
                   <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse" />
                   <span className="text-xs font-bold uppercase text-black">
-                    Processing...
+                    Processing…
                   </span>
                 </>
               ) : (
@@ -359,54 +384,40 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
               onClick={onCancel}
               className="text-xs font-bold text-red-600 hover:text-red-700 uppercase hover:underline"
             >
-              Abort Operation
+              Cancel
             </button>
           </div>
         </div>
 
-        {/* Right: Terminal Output */}
+        {/* Right: Activity Log */}
         <div className="w-2/3 p-0 bg-black text-[#CCFF00] font-mono relative overflow-hidden flex flex-col">
-          {/* CRT Effect Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
-
           {/* Header */}
-          <div className="px-6 pt-6 pb-3 relative z-20 border-b border-[#CCFF00]/30 flex justify-between items-end shrink-0">
+          <div className="px-6 pt-6 pb-3 border-b border-[#CCFF00]/20 shrink-0">
             <h3 className="text-sm font-bold uppercase tracking-widest text-[#CCFF00]">
-              Analysis Protocol v2.4
+              Activity Log
             </h3>
-            <span className="text-[10px] opacity-70">PID: {pid}</span>
           </div>
 
           {/* Log area */}
           <div
             ref={logRef}
-            className="flex-1 overflow-y-auto px-6 py-4 relative z-20 scrollbar-thin scrollbar-thumb-[#CCFF00]/20 scrollbar-track-transparent"
+            className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin scrollbar-thumb-[#CCFF00]/20 scrollbar-track-transparent"
           >
-            <div className="space-y-1">
+            <div className="space-y-2">
               {logLines.map((line) => {
-                const style = VARIANT_STYLES[line.variant];
+                const config = VARIANT_CONFIG[line.variant];
                 return (
-                  <div key={line.id} className="flex gap-2 text-xs leading-relaxed animate-fade-in">
-                    <span className="text-[#CCFF00]/30 shrink-0 select-none">
-                      [{line.timestamp}]
-                    </span>
-                    <span className="text-[#CCFF00]/50 shrink-0 w-10 text-right select-none">
-                      {style.prefix}
-                    </span>
-                    <span className={style.className}>{line.text}</span>
+                  <div key={line.id} className="flex items-start gap-2.5 text-xs leading-relaxed animate-fade-in">
+                    <VariantIcon icon={config.icon} />
+                    <span className={config.className}>{line.text}</span>
                   </div>
                 );
               })}
 
               {/* Blinking cursor */}
               {isRunning && (
-                <div className="flex gap-2 text-xs leading-relaxed">
-                  <span className="text-[#CCFF00]/30 shrink-0 select-none">
-                    [{getTimestamp()}]
-                  </span>
-                  <span className="text-[#CCFF00]/50 shrink-0 w-10 text-right select-none">
-                    {'>>>>'}
-                  </span>
+                <div className="flex items-start gap-2.5 text-xs leading-relaxed">
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0 mt-[1px] text-[#CCFF00]/40" />
                   <span className="text-[#CCFF00] animate-pulse">█</span>
                 </div>
               )}
@@ -414,10 +425,9 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-3 relative z-20 border-t border-[#CCFF00]/30 text-[10px] text-[#CCFF00]/50 uppercase flex justify-between shrink-0">
-            <span>Steps: {completedSteps}/{totalSteps}</span>
-            <span>Elapsed: {elapsedSec}s</span>
-            <span>Core: {isRunning ? 'Active' : 'Idle'}</span>
+          <div className="px-6 py-3 border-t border-[#CCFF00]/20 text-[10px] text-[#CCFF00]/40 uppercase flex justify-between shrink-0">
+            <span>Step {completedSteps} of {totalSteps}</span>
+            <span>{elapsedSec}s elapsed</span>
           </div>
         </div>
       </div>

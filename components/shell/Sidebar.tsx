@@ -23,6 +23,7 @@ type NavItem = {
   label: string;
   href: string;
   icon: React.ElementType;
+  comingSoon?: boolean;
 };
 
 type NavSection = {
@@ -36,19 +37,19 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
       { label: 'Contracts', href: '/contracts', icon: FileText },
-      { label: 'Alerts', href: '/alerts', icon: Bell },
-      { label: 'Tasks', href: '/tasks', icon: CheckSquare },
-      { label: 'Created by me', href: '/created-by-me', icon: User },
-      { label: 'Expiring Contracts', href: '/expiring-contracts', icon: Clock },
+      { label: 'Alerts', href: '/alerts', icon: Bell, comingSoon: true },
+      { label: 'Tasks', href: '/tasks', icon: CheckSquare, comingSoon: true },
+      { label: 'Created by me', href: '/created-by-me', icon: User, comingSoon: true },
+      { label: 'Expiring Contracts', href: '/expiring-contracts', icon: Clock, comingSoon: true },
     ],
   },
   {
     title: 'ORGANISATION',
     items: [
-      { label: 'All Contracts', href: '/all-contracts', icon: Files },
-      { label: 'Recently created', href: '/recently-created', icon: FileText },
-      { label: 'All Expiring Contracts', href: '/all-expiring', icon: Clock },
-      { label: 'Partners', href: '/partners', icon: Users },
+      { label: 'All Contracts', href: '/all-contracts', icon: Files, comingSoon: true },
+      { label: 'Recently created', href: '/recently-created', icon: FileText, comingSoon: true },
+      { label: 'All Expiring Contracts', href: '/all-expiring', icon: Clock, comingSoon: true },
+      { label: 'Partners', href: '/partners', icon: Users, comingSoon: true },
     ],
   },
 ];
@@ -101,7 +102,31 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             )}
             <div className="space-y-2">
               {section.items.map((item) => {
-                const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+                const isActive = !item.comingSoon && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)));
+
+                if (item.comingSoon) {
+                  return (
+                    <div
+                      key={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2.5 font-mono border border-transparent text-gray-300 cursor-default select-none",
+                        isCollapsed && "justify-center px-2"
+                      )}
+                      title={isCollapsed ? `${item.label} — Coming Soon` : undefined}
+                    >
+                      <item.icon className="w-4 h-4 shrink-0 text-gray-300" />
+                      {!isCollapsed && (
+                        <span className="truncate text-xs uppercase tracking-wide">{item.label}</span>
+                      )}
+                      {!isCollapsed && (
+                        <span className="ml-auto text-[9px] font-mono uppercase tracking-wider text-gray-400 border border-gray-200 px-1.5 py-0.5 leading-none whitespace-nowrap">
+                          Soon
+                        </span>
+                      )}
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={item.href}
