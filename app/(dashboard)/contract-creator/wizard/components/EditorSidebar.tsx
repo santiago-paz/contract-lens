@@ -186,6 +186,22 @@ export function EditorSidebar({
               </button>
             </div>
 
+            {/* Parties — read-only chips from extraction */}
+            {initialData?.parties && initialData.parties.length > 0 && (
+              <div>
+                <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                  Extracted Parties
+                </label>
+                <div className="flex flex-wrap gap-1.5">
+                  {initialData.parties.map((party, i) => (
+                    <span key={i} className="px-2 py-1 bg-gray-100 border border-gray-200 text-[11px] font-medium text-black rounded-sm">
+                      {party}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Summary — always visible */}
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Summary</label>
@@ -488,7 +504,7 @@ export function EditorSidebar({
               <div className="relative">
                 <input 
                   type="date"
-                  defaultValue={initialData?.contractStart || ""}
+                  defaultValue={initialData?.contractStart || initialData?.effectiveDate || ""}
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                 />
               </div>

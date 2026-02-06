@@ -35,21 +35,61 @@ model Contract {
   id              String   @id @default(cuid())
   contractNumber  String   @unique // displayed ID e.g. "10023"
   title           String
-  type            String // e.g. "Sponsorship Contract", "License Contract"
+  type            String // e.g. "NDA", "ServiceAgreement", "LicenseAgreement", "Other"
   status          String   @default("Draft") // e.g. "Active", "Review", "Draft"
   
-  // Metadata fields
+  // ── Core metadata ──────────────────────────────────────────────────────
   summary         String?  @db.Text
   conditions      String?  @db.Text
+  comments        String?  @db.Text
   contractOwner   String?
   deputy          String?
   contractManager String?
+  contractPartner String?
   contractValue   String?
-  startDate       String?
-  endDate         String?
+  confidentiality String?
+  durationType    String?
+  organizationalUnit String?
+  riskAssessment  String?
+  liabilityAmount String?
+
+  // ── Dates ──────────────────────────────────────────────────────────────
+  startDate       String?  // effectiveDate / contractStart
+  endDate         String?  // expirationDate / terminationDate
   renewalDate     String?
-  
-  // File/Content fields
+
+  // ── Parties ────────────────────────────────────────────────────────────
+  parties         Json?    // String[] — full legal names from extraction
+
+  // ── NDA-specific ───────────────────────────────────────────────────────
+  confidentialityDuration String?
+  isMutual        Boolean?
+  jurisdiction    String?
+  riskFlags       Json?    // { nonSolicit, nonCompete, liquidatedDamages }
+
+  // ── Service Agreement-specific ─────────────────────────────────────────
+  autoRenewal     Boolean?
+  paymentTerms    Json?    // { method, timing, currency }
+  ipOwnership     String?
+  terminationNoticePeriod String?
+  liabilityCap    String?
+  indemnification String?
+
+  // ── License Agreement-specific ─────────────────────────────────────────
+  licensor        String?
+  licensee        String?
+  softwareName    String?
+  licenseType     String?
+  usageLimits     String?
+  exclusivity     Boolean?
+  auditRights     Json?    // { canAudit, noticePeriod }
+  territory       String?
+
+  // ── General / Other ────────────────────────────────────────────────────
+  governingLaw    String?
+  keyDates        Json?    // [{ label, date }]
+
+  // ── File / Content ─────────────────────────────────────────────────────
   fileName        String?
   content         String?  @db.Text // Extracted text or editor content
   fileData        Bytes?   // Actual file content if needed
