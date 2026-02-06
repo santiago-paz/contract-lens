@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ContractData } from '@/actions/extract-contract-data';
 
 // --- Router Schema ---
 export const ClassificationSchema = z.object({

@@ -38,6 +38,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
 
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [savedContractId, setSavedContractId] = useState<string | undefined>(contractId);
 
   const [contractTitle, setContractTitle] = useState(initialData?.title || fileName.replace(/\.[^/.]+$/, ""));
   const [summary, setSummary] = useState(initialData?.summary || "");
@@ -77,16 +78,17 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
       // If we had editable content text, we would append it here
       // formData.append('content', content);
 
-      if (contractId) {
-        formData.append('contractId', contractId);
+      if (savedContractId) {
+        formData.append('contractId', savedContractId);
       }
 
       const result = await saveContract(formData);
 
       if (result.success) {
         setIsSaved(true);
-        // Optional: Redirect or show success
-        // router.push('/dashboard/contracts');
+        if (result.contractId) {
+          setSavedContractId(result.contractId);
+        }
       } else {
         console.error('Save failed:', result.error);
         alert('Failed to save contract: ' + result.error);
@@ -203,9 +205,22 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           )}
           {isSaved && (
             <div className="flex items-center gap-3">
-              <button className="px-4 py-2 bg-black text-white text-xs font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2">
-                <Save className="w-4 h-4" />
-                Update
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="px-4 py-2 bg-black text-white text-xs font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    Update
+                  </>
+                )}
               </button>
               <button className="px-3 py-2 bg-white border border-gray-200 text-gray-600 text-xs font-bold uppercase hover:bg-gray-50 hover:text-black transition-colors rounded-sm shadow-sm">
                 Actions

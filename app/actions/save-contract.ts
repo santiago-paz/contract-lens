@@ -46,13 +46,59 @@ export async function saveContract(formData: FormData) {
         title: metadata.title || 'Untitled Contract',
         type: metadata.contractType || 'Unknown',
         status: metadata.status || 'Draft',
+
+        // ── Core metadata ────────────────────────────────────────────────
         summary: metadata.summary || null,
         conditions: getString(metadata.conditions),
+        comments: getString(metadata.comments),
         contractOwner: metadata.contractOwner || null,
         deputy: metadata.deputy || null,
         contractManager: metadata.contractManager || null,
+        contractPartner: metadata.contractPartner || null,
         contractValue: metadata.contractValue || null,
-        startDate: metadata.contractStart || null,
+        confidentiality: metadata.confidentiality || null,
+        durationType: metadata.durationType || null,
+        organizationalUnit: metadata.organizationalUnit || null,
+        riskAssessment: metadata.riskAssessment || null,
+        liabilityAmount: metadata.liabilityAmount || null,
+
+        // ── Dates ────────────────────────────────────────────────────────
+        startDate: metadata.contractStart || metadata.effectiveDate || null,
+        endDate: metadata.expirationDate || metadata.terminationDate || null,
+        renewalDate: metadata.renewalDate || null,
+
+        // ── Parties ──────────────────────────────────────────────────────
+        parties: metadata.parties || null,
+
+        // ── NDA-specific ─────────────────────────────────────────────────
+        confidentialityDuration: metadata.confidentialityDuration || null,
+        isMutual: metadata.isMutual ?? null,
+        jurisdiction: metadata.jurisdiction || null,
+        riskFlags: metadata.riskFlags || null,
+
+        // ── Service Agreement-specific ───────────────────────────────────
+        autoRenewal: metadata.autoRenewal ?? null,
+        paymentTerms: metadata.paymentTerms || null,
+        ipOwnership: metadata.ipOwnership || null,
+        terminationNoticePeriod: metadata.terminationNoticePeriod || null,
+        liabilityCap: metadata.liabilityCap || null,
+        indemnification: metadata.indemnification || null,
+
+        // ── License Agreement-specific ───────────────────────────────────
+        licensor: metadata.licensor || null,
+        licensee: metadata.licensee || null,
+        softwareName: metadata.softwareName || null,
+        licenseType: metadata.licenseType || null,
+        usageLimits: metadata.usageLimits || null,
+        exclusivity: metadata.exclusivity ?? null,
+        auditRights: metadata.auditRights || null,
+        territory: metadata.territory || null,
+
+        // ── General / Other ──────────────────────────────────────────────
+        governingLaw: metadata.governingLaw || null,
+        keyDates: metadata.keyDates || null,
+
+        // ── Content ──────────────────────────────────────────────────────
         content: content || getString(metadata.summary), 
     };
 

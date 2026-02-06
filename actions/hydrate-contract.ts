@@ -15,67 +15,64 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
   const userId = session.id as string;
 
   try {
-    // Helper to format string or join array
-    const getString = (val: string | string[] | null | undefined) => {
-        if (Array.isArray(val)) return val.join(', ');
-        return val || null;
-    };
-
-    // Map fields based on contract type
-    let contractOwner: string | null = null;
-    let contractValue: string | null = null;
-    let conditions: string | null = null;
-    let title = 'Hydrated Contract';
-    let summary: string | null = null;
-
     // Use 'any' to access properties that might be specific to certain types
     const data = analysis as any;
 
-    // Common fields
-    if (data.documentTitle) title = data.documentTitle;
-    if (data.title) title = data.title; // Fallback if title exists in some schemas
-
-    switch (contractType) {
-      case 'NDA':
-        contractOwner = data.parties?.[0] || null;
-        conditions = `Duration: ${data.confidentialityDuration || 'N/A'}\nMutual: ${data.isMutual ? 'Yes' : 'No'}\nJurisdiction: ${data.jurisdiction || 'N/A'}`;
-        break;
-      
-      case 'ServiceAgreement':
-        contractOwner = data.parties?.[0] || null;
-        // No direct totalContractValue in new schema, maybe use paymentTerms as value description
-        contractValue = data.paymentTerms || null;
-        conditions = `Term: ${data.termDuration || 'N/A'}\nNotice: ${data.terminationNoticePeriod || 'N/A'}\nLiability Cap: ${data.liabilityCap || 'N/A'}`;
-        break;
-      
-      case 'LicenseAgreement':
-        contractOwner = data.licensor || null;
-        conditions = `Software: ${data.softwareName || 'N/A'}\nExclusivity: ${data.exclusivity}\nAudit Rights: ${data.auditRights?.canAudit ? 'Yes' : 'No'}`;
-        break;
-      
-      case 'Other':
-        contractOwner = data.parties?.[0] || null;
-        conditions = `Effective Date: ${data.effectiveDate || 'N/A'}\nGoverning Law: ${data.governingLaw || 'N/A'}`;
-        break;
-    }
+    // Resolve title from various possible fields
+    const title = data.suggestedTitle || data.documentTitle || data.title || 'Hydrated Contract';
 
     const contractNumber = `TEST-${Date.now()}`;
 
     const contract = await prisma.contract.create({
       data: {
-        title: title,
+        title,
         type: contractType,
         status: 'Draft',
-        summary: summary,
-        conditions: conditions,
-        contractOwner: contractOwner,
-        contractManager: null,
-        contractValue: contractValue,
-        startDate: (data.effectiveDate && !isNaN(Date.parse(data.effectiveDate))) ? new Date(data.effectiveDate).toISOString() : null,
-        content: rawText,
-        contractNumber: contractNumber,
-        userId: userId,
+        contractNumber,
+        userId,
         fileName: 'hydrated-from-playground.txt',
+        content: rawText,
+
+        // ── Core metadata ────────────────────────────────────────────────
+        summary: data.summary || null,
+        contractOwner: data.parties?.[0] || data.licensor || null,
+        contractPartner: data.parties?.[1] || data.licensee || null,
+
+        // ── Dates ────────────────────────────────────────────────────────
+        startDate: data.effectiveDate || null,
+        endDate: data.expirationDate || data.terminationDate || null,
+        renewalDate: data.renewalDate || null,
+
+        // ── Parties ──────────────────────────────────────────────────────
+        parties: data.parties || null,
+
+        // ── NDA-specific ─────────────────────────────────────────────────
+        confidentialityDuration: data.confidentialityDuration || null,
+        isMutual: data.isMutual ?? null,
+        jurisdiction: data.jurisdiction || null,
+        riskFlags: data.riskFlags || null,
+
+        // ── Service Agreement-specific ───────────────────────────────────
+        autoRenewal: data.autoRenewal ?? null,
+        paymentTerms: data.paymentTerms || null,
+        ipOwnership: data.ipOwnership || null,
+        terminationNoticePeriod: data.terminationNoticePeriod || null,
+        liabilityCap: data.liabilityCap || null,
+        indemnification: data.indemnification || null,
+
+        // ── License Agreement-specific ───────────────────────────────────
+        licensor: data.licensor || null,
+        licensee: data.licensee || null,
+        softwareName: data.softwareName || null,
+        licenseType: data.licenseType || null,
+        usageLimits: data.usageLimits || null,
+        exclusivity: data.exclusivity ?? null,
+        auditRights: data.auditRights || null,
+        territory: data.territory || null,
+
+        // ── General / Other ──────────────────────────────────────────────
+        governingLaw: data.governingLaw || null,
+        keyDates: data.keyDates || null,
       }
     });
 
