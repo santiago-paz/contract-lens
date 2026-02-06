@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clock, Zap, FileText, Layout, Code, Database, CheckCircle, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Clock, Zap, FileText, Layout, Code, Database, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
 
 interface PlaygroundHeaderProps {
   result: any;
@@ -76,7 +77,7 @@ export const PlaygroundHeader = ({
         </div>
       </div>
 
-      <div>
+      <div className="flex items-center gap-3">
         <button
           onClick={onHydrate}
           disabled={!result?.parsed || hydrateStatus === 'loading' || hydrateStatus === 'success'}
@@ -91,6 +92,12 @@ export const PlaygroundHeader = ({
           {hydrateStatus === 'idle' && <Database className="w-4 h-4" />}
           {hydrateStatus === 'success' ? 'Hydrated' : 'Hydrate DB'}
         </button>
+        <Link
+          href="/dashboard"
+          className="px-6 py-2.5 border-2 border-black font-bold uppercase text-xs flex items-center gap-2 transition-all shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none bg-black text-[#CCFF00] hover:bg-[#CCFF00] hover:text-black"
+        >
+          Dashboard <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </div>
   );

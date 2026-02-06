@@ -128,6 +128,43 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             </div>
           </div>
         ))}
+
+        {/* Admin section — only visible when NEXT_PUBLIC_DEBUG is enabled */}
+        {process.env.NEXT_PUBLIC_DEBUG === 'true' && (
+          <div className="px-4">
+            {!isCollapsed && (
+              <h3 className="text-[10px] font-bold font-mono text-black uppercase tracking-widest mb-4 px-2 border-b border-dashed border-red-400 pb-1 inline-block">
+                Admin
+              </h3>
+            )}
+            <div className="space-y-2">
+              {(() => {
+                const isActive = pathname.startsWith('/admin/playground');
+                return (
+                  <Link
+                    href="/admin/playground"
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 transition-all group border border-transparent",
+                      isActive
+                        ? "bg-[#CCFF00] text-black font-bold font-mono border-black shadow-hard-sm"
+                        : "text-gray-500 font-mono hover:text-black hover:border-black hover:translate-x-1",
+                      isCollapsed && "justify-center px-2"
+                    )}
+                    title={isCollapsed ? "Playground" : undefined}
+                  >
+                    <Terminal className={cn(
+                      "w-4 h-4 shrink-0",
+                      isActive ? "text-black" : "text-gray-400 group-hover:text-black"
+                    )} />
+                    {!isCollapsed && (
+                      <span className="truncate text-xs uppercase tracking-wide">Playground</span>
+                    )}
+                  </Link>
+                );
+              })()}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer/User */}

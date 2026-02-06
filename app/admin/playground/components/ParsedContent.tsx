@@ -83,17 +83,17 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
           <div className="col-span-3 bg-white p-6 border-2 border-black shadow-hard">
             <label className="text-[10px] uppercase font-black text-gray-600 mb-4 block tracking-wider">Risk Flags</label>
             <div className="grid grid-cols-3 gap-4">
-              <div className={`p-4 border border-black ${data.riskFlags?.nonSolicit ? 'bg-red-50' : 'bg-green-50'}`}>
-                <span className="text-xs font-bold block mb-1">Non-Solicit</span>
-                <span className="font-mono">{data.riskFlags?.nonSolicit ? 'PRESENT' : 'None'}</span>
+              <div className={`p-4 border-2 ${data.riskFlags?.nonSolicit ? 'border-red-700 bg-red-100 text-red-900' : 'border-emerald-700 bg-emerald-100 text-emerald-900'}`}>
+                <span className="text-xs font-bold block mb-1 uppercase tracking-wider opacity-70">Non-Solicit</span>
+                <span className="font-mono font-bold text-sm">{data.riskFlags?.nonSolicit ? '⚠ PRESENT' : '✓ None'}</span>
               </div>
-              <div className={`p-4 border border-black ${data.riskFlags?.liquidatedDamages ? 'bg-red-50' : 'bg-green-50'}`}>
-                <span className="text-xs font-bold block mb-1">Liquidated Damages</span>
-                <span className="font-mono">{data.riskFlags?.liquidatedDamages ? 'PRESENT' : 'None'}</span>
+              <div className={`p-4 border-2 ${data.riskFlags?.liquidatedDamages ? 'border-red-700 bg-red-100 text-red-900' : 'border-emerald-700 bg-emerald-100 text-emerald-900'}`}>
+                <span className="text-xs font-bold block mb-1 uppercase tracking-wider opacity-70">Liquidated Damages</span>
+                <span className="font-mono font-bold text-sm">{data.riskFlags?.liquidatedDamages ? '⚠ PRESENT' : '✓ None'}</span>
               </div>
-              <div className={`p-4 border border-black ${data.riskFlags?.nonCompete ? 'bg-red-50' : 'bg-green-50'}`}>
-                <span className="text-xs font-bold block mb-1">Non-Compete</span>
-                <span className="font-mono">{data.riskFlags?.nonCompete ? 'PRESENT' : 'None'}</span>
+              <div className={`p-4 border-2 ${data.riskFlags?.nonCompete ? 'border-red-700 bg-red-100 text-red-900' : 'border-emerald-700 bg-emerald-100 text-emerald-900'}`}>
+                <span className="text-xs font-bold block mb-1 uppercase tracking-wider opacity-70">Non-Compete</span>
+                <span className="font-mono font-bold text-sm">{data.riskFlags?.nonCompete ? '⚠ PRESENT' : '✓ None'}</span>
               </div>
             </div>
           </div>
