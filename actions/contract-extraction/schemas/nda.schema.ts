@@ -10,6 +10,12 @@ export const NDASchema = z.object({
     .describe('Full legal names of the entities involved.')
     .default([])
     .nullable(),
+  suggestedTitle: z
+    .string()
+    .describe(
+      'A clear, generated title based on the contract content (e.g., "Mutual NDA - Company A & Company B").'
+    )
+    .default(''),
   summary: z
     .string()
     .describe('A 2-sentence explanation of what this contract is about.')

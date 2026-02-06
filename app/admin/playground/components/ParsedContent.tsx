@@ -34,7 +34,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
         <div className="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Meta</div>
         <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Title</label>
         <h2 className="text-2xl font-black leading-tight group-hover:text-[#CCFF00] group-hover:bg-black transition-colors inline-block px-1 -ml-1 text-black">
-          {data.documentTitle || data.title || 'Untitled Document'}
+          {data.suggestedTitle || data.documentTitle || data.title || 'Untitled Document'}
         </h2>
       </div>
 
@@ -102,7 +102,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Parties</label>
             <div className="flex flex-wrap gap-2">
               {data.parties?.map((p: string, i: number) => (
-                <span key={i} className="px-3 py-1 bg-gray-100 border border-black text-sm font-medium">{p}</span>
+                <span key={i} className="px-3 py-1 bg-black text-white border border-black text-sm font-bold">{p}</span>
               ))}
             </div>
           </div>
@@ -154,7 +154,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Parties</label>
             <div className="flex flex-wrap gap-2">
               {data.parties?.map((p: string, i: number) => (
-                <span key={i} className="px-3 py-1 bg-gray-100 border border-black text-sm font-medium">{p}</span>
+                <span key={i} className="px-3 py-1 bg-black text-white border border-black text-sm font-bold">{p}</span>
               ))}
             </div>
           </div>
@@ -244,7 +244,7 @@ export const ParsedContent = ({ parsed, contractType }: ParsedContentProps) => {
             <label className="text-[10px] uppercase font-black text-gray-600 mb-2 block tracking-wider">Parties</label>
             <div className="flex flex-wrap gap-2">
               {data.parties?.map((p: string, i: number) => (
-                <span key={i} className="px-3 py-1 bg-gray-100 border border-black text-sm font-medium">{p}</span>
+                <span key={i} className="px-3 py-1 bg-black text-white border border-black text-sm font-bold">{p}</span>
               ))}
             </div>
           </div>

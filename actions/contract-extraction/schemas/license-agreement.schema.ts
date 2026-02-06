@@ -11,6 +11,11 @@ export const LicenseAgreementSchema = z.object({
     .describe(
       'The owner/seller of the software (the party granting the license). Return null if not explicitly stated.'
     ),
+  suggestedTitle: z
+    .string()
+    .describe(
+      'A clear, generated title based on the contract content (e.g., "Software License Agreement - Microsoft").'
+    ),
   licensee: z
     .string()
     .nullable()
@@ -19,7 +24,9 @@ export const LicenseAgreementSchema = z.object({
     ),
   summary: z
     .string()
-    .describe('A 2-sentence explanation of what this contract is about.'),
+    .describe(
+      'Exactly 2 concise sentences: (1) what the contract grants or its main purpose, (2) key restrictions or other provisions. Write directly; do not show reasoning or revisions.'
+    ),
   softwareName: z
     .string()
     .nullable()
