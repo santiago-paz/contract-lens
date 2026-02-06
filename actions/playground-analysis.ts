@@ -1,46 +1,31 @@
 'use server';
 
-import { CONTRACT_TYPES } from '@/lib/constants';
-import { extractText } from '@/lib/text-extractor';
-import { generateText, Output } from 'ai';
 import { z } from 'zod';
-import { ContractType, extractContractData } from './extract-contract-data';
+import { analyzeContract } from './analyze-contract';
+import type { PlaygroundAnalysisResult } from './analyze-contract.types';
 
-// Zod schema for form validation
-const AnalysisFormSchema = z.object({
+// Zod schema for playground-specific form validation
+const PlaygroundFormSchema = z.object({
   file: z.instanceof(File, { message: 'A file is required' })
     .refine((file) => file.size > 0, 'The file cannot be empty.')
-    .refine((file) => file.size < 10 * 1024 * 1024, 'The file must be less than 10MB.'), // Example limit
+    .refine((file) => file.size < 10 * 1024 * 1024, 'The file must be less than 10MB.'),
   systemPrompt: z.string().optional(),
   model: z.string().optional(),
   temperature: z.string().optional().transform((val) => val ? parseFloat(val) : undefined),
 });
 
-export type AnalysisResult = {
-  success: boolean;
-  data?: {
-    rawText: string;
-    parsed: any;
-    classification: string;
-    usage?: any;
-    modelReasoning?: string | null; // <think>...</think> content from reasoning models (DeepSeek, etc.)
-    latency: {
-      extraction: number;
-      router?: number;
-      expert?: number;
-      total: number;
-    };
-  };
-  error?: string;
-  errors?: Record<string, string[]>; // Validation errors
-  errorDetails?: string;
-};
-
-export async function analyzeContractPlayground(formData: FormData): Promise<AnalysisResult> {
-  const startTime = performance.now();
-
-  // Validate form data
-  const validatedFields = AnalysisFormSchema.safeParse({
+/**
+ * Playground-specific wrapper around analyzeContract.
+ *
+ * Adds:
+ * - FormData parsing & validation (system prompt, model, temperature overrides)
+ * - Validation error reporting
+ *
+ * The core analysis pipeline lives in `analyze-contract.ts`.
+ */
+export async function analyzeContractPlayground(formData: FormData): Promise<PlaygroundAnalysisResult> {
+  // Validate playground-specific form data
+  const validatedFields = PlaygroundFormSchema.safeParse({
     file: formData.get('file'),
     systemPrompt: formData.get('systemPrompt'),
     model: formData.get('model'),
@@ -56,143 +41,17 @@ export async function analyzeContractPlayground(formData: FormData): Promise<Ana
         rawText: '',
         parsed: null,
         classification: 'Unknown',
-        latency: { extraction: 0, total: 0 }
-      }
+        latency: { extraction: 0, total: 0 },
+      },
     };
   }
 
-  const { file, systemPrompt, model: expertModelName, temperature } = validatedFields.data;
+  const { file, systemPrompt, model, temperature } = validatedFields.data;
 
-  // 1. Extract Text
-  let text: string;
-  try {
-    text = await extractText(file);
-  } catch (error) {
-    console.error('Text extraction failed:', error);
-    return {
-      success: false,
-      error: 'Failed to extract text from the file.',
-      data: {
-        rawText: '',
-        parsed: null,
-        classification: 'Unknown',
-        latency: { extraction: 0, total: Math.round(performance.now() - startTime) }
-      }
-    };
-  }
-
-  const textExtractionTime = performance.now();
-  const extractionLatency = Math.round(textExtractionTime - startTime);
-
-  try {
-    // --- Step 1: Router (Classification) ---
-    const routerStartTime = performance.now();
-    const routerPrompt = `Analyze the first 5000 chars of the document. Classify strictly into: ${CONTRACT_TYPES.join(', ')}. If unclear, choose Other.
-
-    Document Text (First 5000 chars):
-    
-    ${text.slice(0, 5000)}`;
-
-    const { output: routerResult, usage: routerUsage } = await generateText({
-      model: 'meta/llama-3.1-8b' as any, // Using the fast model
-      output: Output.object({
-        schema: z.object({
-          classification: z.enum(CONTRACT_TYPES),
-        }),
-      }),
-      prompt: routerPrompt,
-      temperature: 0, // Deterministic
-    });
-
-    const classification = routerResult.classification;
-
-    const routerEndTime = performance.now();
-    const routerLatency = Math.round(routerEndTime - routerStartTime);
-
-    // Handle "Other" or low confidence if needed
-    if (classification === 'Other') {
-      return {
-        success: false,
-        error: "We couldn't automatically define the contract type.",
-        data: {
-          rawText: text,
-          parsed: null,
-          latency: {
-            extraction: extractionLatency,
-            router: routerLatency,
-            total: Math.round(performance.now() - startTime)
-          },
-          classification // Return classification details for debugging if needed
-        }
-      };
-    }
-
-    // --- Step 2: Expert Analysis (using new extractContractData) ---
-    const expertStartTime = performance.now();
-
-    // Call the new extraction function with options
-    // We cast classification to ContractType because CONTRACT_TYPES in constants might be slightly different or just string[]
-    const expertResultRaw = await extractContractData(
-      text,
-      classification as ContractType,
-      {
-        model: expertModelName,
-        temperature: temperature,
-        systemPromptOverride: systemPrompt
-      }
-    );
-
-    const expertEndTime = performance.now();
-    const expertLatency = Math.round(expertEndTime - expertStartTime);
-
-    // Deconstruct the result
-    const { 
-      object: expertParsedData, 
-      usage: expertUsage,
-      modelReasoning
-    } = expertResultRaw;
-
-    const totalLatency = Math.round(performance.now() - startTime);
-
-    const totalTokens = (routerUsage.totalTokens || 0) + 
-                        (expertUsage?.totalTokens || 0);
-
-    return {
-      success: true,
-      data: {
-        rawText: text,
-        parsed: expertParsedData,
-        classification, // Include classification metadata
-        usage: {
-          router: routerUsage,
-          expert: expertUsage,
-          totalTokens: totalTokens
-        },
-        modelReasoning, // <think>...</think> content from reasoning models
-        latency: {
-          extraction: extractionLatency, // Text Extraction
-          router: routerLatency,
-          expert: expertLatency, // Expert Analysis Time
-          total: totalLatency
-        }
-      }
-    };
-
-  } catch (error: any) {
-    console.error('Playground analysis failed:', error);
-    return {
-      success: false,
-      error: error.message || 'Unknown error during analysis.',
-      errorDetails: JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
-      data: {
-        rawText: text,
-        parsed: null,
-        classification: 'Unknown',
-        latency: {
-          extraction: extractionLatency,
-          total: Math.round(performance.now() - startTime)
-        }
-      }
-    };
-  }
+  // Delegate to the shared pipeline with playground overrides
+  return analyzeContract(file, {
+    model: model || undefined,
+    temperature,
+    systemPromptOverride: systemPrompt || undefined,
+  });
 }
