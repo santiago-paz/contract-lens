@@ -39,22 +39,21 @@ export async function POST(request: Request) {
       };
 
       try {
-        // ── Step 1: Text extraction ─────────────────────────────────────────
+        // ── Text extraction (pre-processing, not a tracked step) ────────────
 
         emit({
           type: 'log',
-          text: `Loading target: ${file.name}`,
+          text: `Opening document: ${file.name}`,
           variant: 'system',
         });
         emit({
           type: 'log',
-          text: `Size: ${(file.size / 1024).toFixed(1)}KB | Type: ${file.type.split('/').pop()?.toUpperCase() ?? 'UNKNOWN'}`,
+          text: `${(file.size / 1024).toFixed(1)} KB · ${file.type.split('/').pop()?.toUpperCase() ?? 'UNKNOWN'}`,
           variant: 'dim',
         });
-        emit({ type: 'step', id: 'document', status: 'running' });
         emit({
           type: 'log',
-          text: 'Parsing document structure...',
+          text: 'Reading document content…',
           variant: 'info',
         });
 
@@ -62,10 +61,9 @@ export async function POST(request: Request) {
         try {
           text = await extractText(file);
         } catch {
-          emit({ type: 'step', id: 'document', status: 'error' });
           emit({
             type: 'log',
-            text: 'ERR: Failed to extract text from document',
+            text: 'Could not extract text from this document',
             variant: 'error',
           });
           emit({
@@ -77,25 +75,19 @@ export async function POST(request: Request) {
         }
 
         const extractionMs = Math.round(performance.now() - startTime);
-        emit({ type: 'step', id: 'document', status: 'done' });
         emit({
           type: 'log',
-          text: `Text extracted: ${text.length.toLocaleString()} chars (${extractionMs}ms)`,
+          text: 'Document content extracted successfully',
           variant: 'success',
         });
 
-        // ── Step 2: Classification ──────────────────────────────────────────
+        // ── Step 1: Classification ──────────────────────────────────────────
 
-        emit({ type: 'step', id: 'partner', status: 'running' });
+        emit({ type: 'step', id: 'classification', status: 'running' });
         emit({
           type: 'log',
-          text: 'Identifying contract type...',
+          text: 'Identifying contract type…',
           variant: 'info',
-        });
-        emit({
-          type: 'log',
-          text: 'Model: llama-3.1-8b | Mode: classification',
-          variant: 'dim',
         });
 
         const routerStart = performance.now();
@@ -120,10 +112,10 @@ export async function POST(request: Request) {
         const classification = routerResult.classification;
         const routerMs = Math.round(performance.now() - routerStart);
 
-        emit({ type: 'step', id: 'partner', status: 'done' });
+        emit({ type: 'step', id: 'classification', status: 'done' });
         emit({
           type: 'log',
-          text: `Classified: ${classification} (${routerMs}ms)`,
+          text: `Contract type: ${classification}`,
           variant: 'success',
         });
 
@@ -147,18 +139,13 @@ export async function POST(request: Request) {
           return;
         }
 
-        // ── Step 3: Expert analysis ─────────────────────────────────────────
+        // ── Step 2: Expert analysis ─────────────────────────────────────────
 
-        emit({ type: 'step', id: 'dates', status: 'running' });
+        emit({ type: 'step', id: 'analysis', status: 'running' });
         emit({
           type: 'log',
-          text: 'Initializing expert extraction...',
+          text: 'Extracting contract details…',
           variant: 'info',
-        });
-        emit({
-          type: 'log',
-          text: 'Model: deepseek-r1 | Mode: structured output',
-          variant: 'dim',
         });
 
         const expertStart = performance.now();
@@ -176,21 +163,14 @@ export async function POST(request: Request) {
           modelReasoning,
         } = expertResultRaw;
 
-        emit({ type: 'step', id: 'dates', status: 'done' });
+        emit({ type: 'step', id: 'analysis', status: 'done' });
         emit({
           type: 'log',
-          text: `Expert analysis complete (${(expertMs / 1000).toFixed(1)}s)`,
+          text: 'Contract analysis complete',
           variant: 'success',
         });
 
-        // ── Step 4: Metadata compilation ────────────────────────────────────
-
-        emit({ type: 'step', id: 'metadata', status: 'running' });
-        emit({
-          type: 'log',
-          text: 'Compiling extracted metadata...',
-          variant: 'info',
-        });
+        // ── Finalize (log-only, not a tracked step) ─────────────────────────
 
         const fieldCount = expertParsedData
           ? Object.values(expertParsedData).filter(
@@ -198,28 +178,17 @@ export async function POST(request: Request) {
             ).length
           : 0;
 
-        emit({ type: 'step', id: 'metadata', status: 'done' });
         emit({
           type: 'log',
-          text: `${fieldCount} fields populated from document`,
+          text: `${fieldCount} data fields extracted from document`,
           variant: 'success',
-        });
-
-        // ── Step 5: Finalize ────────────────────────────────────────────────
-
-        emit({ type: 'step', id: 'finish', status: 'running' });
-        emit({
-          type: 'log',
-          text: 'Compiling results object...',
-          variant: 'info',
         });
 
         const totalMs = Math.round(performance.now() - startTime);
 
-        emit({ type: 'step', id: 'finish', status: 'done' });
         emit({
           type: 'log',
-          text: `Pipeline complete (${(totalMs / 1000).toFixed(1)}s)`,
+          text: 'Done — all steps complete',
           variant: 'success',
         });
 
@@ -254,7 +223,7 @@ export async function POST(request: Request) {
           error instanceof Error ? error.message : 'Unknown error during analysis';
         emit({
           type: 'log',
-          text: `ERR: ${message}`,
+          text: message,
           variant: 'error',
         });
         emit({ type: 'error', message });

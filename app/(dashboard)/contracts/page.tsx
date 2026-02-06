@@ -51,10 +51,10 @@ export default async function ContractsPage() {
         </div>
         <Link 
           href="/contract-creator" 
-          className="inline-flex items-center justify-center gap-2 bg-black text-white px-5 py-2.5 hover:bg-[#CCFF00] hover:text-black transition-colors font-bold uppercase text-xs shadow-sm rounded-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
         >
-          <Plus className="w-4 h-4" />
-          New Contract
+          <Plus className="w-4 h-4 group-active:text-black" />
+          <span className="text-xs font-bold font-mono uppercase">New Contract</span>
         </Link>
       </div>
 
@@ -139,10 +139,10 @@ export default async function ContractsPage() {
             <p className="text-gray-500 mb-6 max-w-xs text-xs">Create your first contract to get started with tracking and management.</p>
             <Link 
               href="/contract-creator" 
-              className="inline-flex items-center justify-center gap-2 bg-black text-white px-5 py-2 rounded-sm hover:bg-[#CCFF00] hover:text-black transition-colors font-bold uppercase text-xs shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
             >
-              <Plus className="w-4 h-4" />
-              Create Contract
+              <Plus className="w-4 h-4 group-active:text-black" />
+              <span className="text-xs font-bold font-mono uppercase">Create Contract</span>
             </Link>
           </div>
         )}

@@ -104,10 +104,10 @@ export default async function Overview() {
         </div>
         <Link 
             href="/contract-creator"
-            className="group flex items-center gap-2 px-6 py-3 bg-black text-white hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm"
+            className="group flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
         >
-            <span className="font-bold uppercase text-sm">Initiate Contract</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <span className="text-xs font-bold font-mono uppercase">Initiate Contract</span>
+            <ArrowRight className="w-4 h-4 group-active:text-black" />
         </Link>
       </div>
 

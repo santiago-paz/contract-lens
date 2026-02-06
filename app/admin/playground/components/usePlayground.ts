@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { hydrateContract } from '@/actions/hydrate-contract';
 import { analyzeContractPlayground } from '@/actions/playground-analysis';
-import { ContractAnalysis } from '@/types/contract-analysis';
+import { ContractAnalysis, ContractData } from '@/types/contract-analysis';
 
 export interface AnalysisResult {
   rawText: string;
@@ -88,7 +88,7 @@ export function usePlayground() {
 
     setHydrateStatus('loading');
     try {
-      const res = await hydrateContract(result.parsed, result.classification, result.rawText);
+      const res = await hydrateContract(result.parsed as ContractData, result.classification, result.rawText);
       if (res.success) {
         setHydrateStatus('success');
       } else {
