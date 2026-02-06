@@ -6,7 +6,6 @@ interface PlaygroundHeaderProps {
   result: any;
   activeTab: 'parsed' | 'raw' | 'json';
   setActiveTab: (tab: 'parsed' | 'raw' | 'json') => void;
-  onOpenAnalysisPopup: () => void;
   onHydrate: () => void;
   hydrateStatus: 'idle' | 'loading' | 'success' | 'error';
 }
@@ -15,7 +14,6 @@ export const PlaygroundHeader = ({
   result,
   activeTab,
   setActiveTab,
-  onOpenAnalysisPopup,
   onHydrate,
   hydrateStatus
 }: PlaygroundHeaderProps) => {
@@ -48,15 +46,6 @@ export const PlaygroundHeader = ({
       </div>
 
       <div className="flex gap-3 items-center">
-        <button
-          onClick={onOpenAnalysisPopup}
-          disabled={!result}
-          className={`px-3 py-1.5 border font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm
-            ${!result ? 'bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:border-black hover:text-black'}
-          `}
-        >
-          <FileText className="w-3.5 h-3.5" /> Process Details
-        </button>
         <div className="flex border border-gray-200 bg-gray-50 rounded-sm p-0.5 gap-0.5">
           {[
             { id: 'parsed', icon: Layout, label: 'Parsed' },
