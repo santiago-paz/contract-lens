@@ -93,25 +93,25 @@ export default function PlaygroundPage() {
               {activeTab === 'parsed' && <ParsedContent parsed={result.parsed} contractType={result.classification} />}
 
               {activeTab === 'raw' && (
-                <div className="bg-white p-8 border-2 border-black shadow-hard h-full overflow-y-auto relative">
-                  <div className="absolute top-0 left-0 bg-[#CCFF00] text-black text-[10px] font-bold px-3 py-1 border-r-2 border-b-2 border-black uppercase">
+                <div className="bg-white p-8 border border-gray-200 shadow-sm rounded-sm h-full overflow-y-auto relative">
+                  <div className="text-[10px] font-bold text-gray-400 uppercase mb-4">
                     Raw Text Extraction
                   </div>
-                  <pre className="whitespace-pre-wrap text-xs text-gray-600 leading-relaxed font-mono mt-4">
+                  <pre className="whitespace-pre-wrap text-xs text-gray-600 leading-relaxed font-mono">
                     {result.rawText}
                   </pre>
                 </div>
               )}
 
               {activeTab === 'json' && (
-                <div className="bg-[#1a1a1a] p-8 border-2 border-black shadow-hard h-full overflow-y-auto relative group">
+                <div className="bg-[#1a1a1a] p-8 border border-gray-800 shadow-sm rounded-sm h-full overflow-y-auto relative group">
                   <button
                     onClick={() => copyToClipboard(JSON.stringify(result, null, 2))}
-                    className="absolute top-4 right-4 p-2 bg-black text-[#CCFF00] border border-[#CCFF00] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#CCFF00] hover:text-black"
+                    className="absolute top-4 right-4 p-2 bg-gray-800 text-gray-400 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-700 hover:text-white"
                   >
                     <Copy className="w-4 h-4" />
                   </button>
-                  <pre className="text-xs text-[#CCFF00] font-mono">
+                  <pre className="text-xs text-green-400 font-mono">
                     {JSON.stringify(result, null, 2)}
                   </pre>
                 </div>
