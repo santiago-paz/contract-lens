@@ -6,7 +6,7 @@ import { ErrorPopup } from './components/ErrorPopup';
 import { ParsedContent } from './components/ParsedContent';
 import { PlaygroundHeader } from './components/PlaygroundHeader';
 import { Sidebar } from './components/Sidebar';
-import { EmptyState, LoadingState } from './components/States';
+import { EmptyState, StreamingState } from './components/States';
 import { usePlayground } from './components/usePlayground';
 
 export default function PlaygroundPage() {
@@ -29,12 +29,24 @@ export default function PlaygroundPage() {
     handleFileChange,
     handleExecute,
     handleHydrate,
-    closeErrorPopup
+    closeErrorPopup,
+    // Streaming state
+    streamPhase,
+    streamMessage,
+    reasoning,
+    classification,
   } = usePlayground();
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
   };
+
+  // Show streaming UI when actively processing (not idle, not done, not error)
+  const isStreaming =
+    isLoading &&
+    streamPhase !== 'idle' &&
+    streamPhase !== 'done' &&
+    streamPhase !== 'error';
 
   return (
     <div className="min-h-screen bg-white font-mono text-sm flex bg-noise relative overflow-hidden">
@@ -86,7 +98,14 @@ export default function PlaygroundPage() {
         <div className="flex-1 overflow-y-auto p-8 relative">
           {!result && !isLoading && <EmptyState />}
 
-          {isLoading && <LoadingState />}
+          {isStreaming && (
+            <StreamingState
+              phase={streamPhase}
+              message={streamMessage}
+              reasoning={reasoning}
+              classification={classification}
+            />
+          )}
 
           {result && (
             <div className="max-w-6xl mx-auto pb-12">

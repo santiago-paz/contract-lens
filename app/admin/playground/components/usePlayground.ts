@@ -1,25 +1,32 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { hydrateContract } from '@/actions/hydrate-contract';
-import { analyzeContractPlayground } from '@/actions/playground-analysis';
 import { ContractAnalysis, ContractData } from '@/types/contract-analysis';
 
 export interface AnalysisResult {
   rawText: string;
   parsed: ContractAnalysis | null;
-  draft?: any; // Added draft
+  draft?: any;
   classification?: any;
   usage: any;
-  wasRepaired?: boolean; // Added flag
-  modelReasoning?: string | null; // <think>...</think> content from reasoning models
-  latency: { 
-    extraction: number; 
-    router?: number; 
-    expert?: number; 
-    expertExtraction?: number; // Added
-    expertRepair?: number;     // Added
+  wasRepaired?: boolean;
+  modelReasoning?: string | null;
+  latency: {
+    extraction: number;
+    router?: number;
+    expert?: number;
+    expertExtraction?: number;
+    expertRepair?: number;
     total: number;
   };
 }
+
+export type StreamPhase =
+  | 'idle'
+  | 'extracting'
+  | 'classifying'
+  | 'analyzing'
+  | 'done'
+  | 'error';
 
 export function usePlayground() {
   // Inputs
@@ -36,20 +43,38 @@ export function usePlayground() {
   const [isAnalysisPopupOpen, setIsAnalysisPopupOpen] = useState(false);
   const [errorPopup, setErrorPopup] = useState<{ isOpen: boolean; message: string; details?: string } | null>(null);
 
+  // Streaming state
+  const [streamPhase, setStreamPhase] = useState<StreamPhase>('idle');
+  const [streamMessage, setStreamMessage] = useState<string>('');
+  const [reasoning, setReasoning] = useState<string>('');
+  const [classification, setClassification] = useState<string | null>(null);
+
+  // Ref for accumulating reasoning (avoids stale closure issues)
+  const reasoningRef = useRef('');
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
       setResult(null);
       setHydrateStatus('idle');
+      setStreamPhase('idle');
+      setReasoning('');
+      setClassification(null);
     }
   };
 
-  const handleExecute = async () => {
+  const handleExecute = useCallback(async () => {
     if (!file) return;
 
+    // Reset state
     setIsLoading(true);
     setResult(null);
     setHydrateStatus('idle');
+    setStreamPhase('extracting');
+    setStreamMessage('Reading document…');
+    setReasoning('');
+    setClassification(null);
+    reasoningRef.current = '';
 
     try {
       const formData = new FormData();
@@ -58,30 +83,94 @@ export function usePlayground() {
       formData.append('model', model);
       formData.append('temperature', temperature.toString());
 
-      const res = await analyzeContractPlayground(formData);
+      const response = await fetch('/api/playground-stream', {
+        method: 'POST',
+        body: formData,
+      });
 
-      if (res.success && res.data) {
-        setResult(res.data as AnalysisResult);
-        setIsAnalysisPopupOpen(true);
-      } else {
-        console.error(res.error);
-        setErrorPopup({
-          isOpen: true,
-          message: 'Analysis failed: ' + res.error,
-          details: (res as any).errorDetails
-        });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('No response body');
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        // Process complete lines (NDJSON)
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+
+          let event: any;
+          try {
+            event = JSON.parse(line);
+          } catch {
+            console.warn('Failed to parse stream event:', line);
+            continue;
+          }
+
+          switch (event.type) {
+            case 'status':
+              setStreamPhase(event.phase || 'extracting');
+              setStreamMessage(event.message || '');
+              break;
+
+            case 'classification':
+              setClassification(event.result);
+              setStreamMessage(`Contract type: ${event.result}`);
+              break;
+
+            case 'reasoning':
+              reasoningRef.current += event.text;
+              setReasoning(reasoningRef.current);
+              break;
+
+            case 'result':
+              if (event.success && event.data) {
+                setResult(event.data as AnalysisResult);
+                setStreamPhase('done');
+                setIsAnalysisPopupOpen(true);
+              } else {
+                setStreamPhase('error');
+                setErrorPopup({
+                  isOpen: true,
+                  message: 'Analysis failed: ' + (event.error || 'Unknown error'),
+                });
+              }
+              break;
+
+            case 'error':
+              setStreamPhase('error');
+              setErrorPopup({
+                isOpen: true,
+                message: event.message || 'Unknown error',
+              });
+              break;
+          }
+        }
       }
     } catch (err) {
       console.error(err);
+      setStreamPhase('error');
       setErrorPopup({
         isOpen: true,
         message: 'An unexpected error occurred.',
-        details: JSON.stringify(err, Object.getOwnPropertyNames(err), 2)
+        details: JSON.stringify(err, Object.getOwnPropertyNames(err as Error), 2),
       });
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [file, systemPrompt, model, temperature]);
 
   const handleHydrate = async () => {
     if (!result?.parsed || !result.rawText) return;
@@ -126,6 +215,11 @@ export function usePlayground() {
     handleFileChange,
     handleExecute,
     handleHydrate,
-    closeErrorPopup
+    closeErrorPopup,
+    // Streaming state
+    streamPhase,
+    streamMessage,
+    reasoning,
+    classification,
   };
 }
