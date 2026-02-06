@@ -95,17 +95,19 @@ export default async function ContractsPage() {
                 {contracts.map((contract) => {
                   const statusColor = getStatusColor(contract.status);
                   return (
-                    <tr key={contract.id} className="hover:bg-gray-50 transition-colors group">
+                    <tr key={contract.id} className="hover:bg-gray-50 transition-colors group relative cursor-pointer">
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
+                        <Link href={`/contracts/${contract.id}`} className="flex items-center gap-3 after:absolute after:inset-0 after:content-['']">
                           <div className="p-2 bg-gray-100 rounded-sm text-gray-600 group-hover:bg-black group-hover:text-[#CCFF00] transition-colors">
                             <FileText className="w-4 h-4" />
                           </div>
                           <div>
                             <div className="font-bold text-black text-xs uppercase leading-snug">{contract.title}</div>
-                            <div className="text-[10px] text-gray-400 font-mono mt-0.5">ID: {contract.contractNumber}</div>
+                            {!contract.contractNumber.startsWith('CNT-') && (
+                              <div className="text-[10px] text-gray-400 font-mono mt-0.5">REF: {contract.contractNumber}</div>
+                            )}
                           </div>
-                        </div>
+                        </Link>
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-[10px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-sm uppercase border border-gray-200">
@@ -121,7 +123,7 @@ export default async function ContractsPage() {
                       <td className="px-6 py-4 text-xs font-medium text-gray-500 uppercase">
                         {new Date(contract.updatedAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-4 text-right relative z-10">
                         <ContractActions contractId={contract.id} />
                       </td>
                     </tr>
