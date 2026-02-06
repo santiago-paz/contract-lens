@@ -90,6 +90,9 @@ INDEMNIFICATION (enum):
 - null = No indemnification clauses present`,
 
   LicenseAgreement: `Focus on the licensing model:
+
+SUMMARY: Write 2 sentences only—no reasoning, no alternatives, no revisions. Output the summary directly in the JSON.
+
 - licenseType: Map to enum value. "Annual/Monthly/Recurring" → "subscription", "Perpetual/Lifetime" → "perpetual", "Trial/Demo" → "evaluation", "Open Source" → "open_source".
   * APP STORE/ONE-TIME PURCHASE RULE: If the software is a "one-time purchase" (e.g., App Store apps like Logic Pro, Final Cut), map to "perpetual".
 - exclusivity: Return boolean true if "exclusive", false if "non-exclusive".

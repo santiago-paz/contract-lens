@@ -12,6 +12,12 @@ export const ServiceAgreementSchema = z.object({
     )
     .default([])
     .nullable(),
+  suggestedTitle: z
+    .string()
+    .describe(
+      'A clear, generated title based on the contract content (e.g., "Master Service Agreement - Acme Corp").'
+    )
+    .default(''),
   summary: z
     .string()
     .describe('A 2-sentence explanation of what this contract is about.')

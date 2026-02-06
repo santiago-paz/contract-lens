@@ -43,7 +43,8 @@ TYPE LEGEND:
    - NEVER make up information that isn't in the contract (EXCEPTION: For the "summary" field, you MUST generate a summary).
 
 4. **Special Fields**:
-   - **summary**: This is a GENERATED field. Synthesize a 2-sentence explanation of what this contract is about based on the full text. Do not look for a section named "Summary".
+   - **summary**: This is a GENERATED field. Write exactly 2 concise sentences describing what the contract does (license grant / main purpose, then key restrictions or provisions). Do not revise, elaborate, or show alternatives—output the final summary once. Do not look for a section named "Summary".
+   - **suggestedTitle**: This is a GENERATED field. Create a clear, descriptive title based on the contract type and parties. Format: "[Contract Type] - [Main Party/Subject]".
 
 5. **Schema Compliance**:
    - Return exactly the fields shown in the schema
@@ -57,7 +58,8 @@ ${specificInstructions}
 
 <output_format>
 CRITICAL OUTPUT REQUIREMENTS:
-- Return ONLY valid JSON. No markdown, no code blocks, no explanations.
+- Return ONLY valid JSON. No markdown, no code blocks, no explanations, and NO reasoning or step-by-step analysis before or after the JSON.
+- Do not output any text before the opening { or after the closing }. No "Steps:", "Note:", or revision/alternative text.
 - Start response with { and end with }
 - Boolean values: true or false (lowercase, NO quotes)
 - Null values: null (NO quotes)
