@@ -1,5 +1,6 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { ContractData } from '@/actions/extract-contract-data';
@@ -17,6 +18,9 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
   try {
     // Use 'any' to access properties that might be specific to certain types
     const data = analysis as any;
+
+    // Prisma requires DbNull instead of null for Json? fields
+    const jsonOrNull = (val: unknown) => val ?? Prisma.DbNull;
 
     // Resolve title from various possible fields
     const title = data.suggestedTitle || data.documentTitle || data.title || 'Hydrated Contract';
@@ -44,17 +48,17 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         renewalDate: data.renewalDate || null,
 
         // ── Parties ──────────────────────────────────────────────────────
-        parties: data.parties || null,
+        parties: jsonOrNull(data.parties),
 
         // ── NDA-specific ─────────────────────────────────────────────────
         confidentialityDuration: data.confidentialityDuration || null,
         isMutual: data.isMutual ?? null,
         jurisdiction: data.jurisdiction || null,
-        riskFlags: data.riskFlags || null,
+        riskFlags: jsonOrNull(data.riskFlags),
 
         // ── Service Agreement-specific ───────────────────────────────────
         autoRenewal: data.autoRenewal ?? null,
-        paymentTerms: data.paymentTerms || null,
+        paymentTerms: jsonOrNull(data.paymentTerms),
         ipOwnership: data.ipOwnership || null,
         terminationNoticePeriod: data.terminationNoticePeriod || null,
         liabilityCap: data.liabilityCap || null,
@@ -67,12 +71,12 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         licenseType: data.licenseType || null,
         usageLimits: data.usageLimits || null,
         exclusivity: data.exclusivity ?? null,
-        auditRights: data.auditRights || null,
+        auditRights: jsonOrNull(data.auditRights),
         territory: data.territory || null,
 
         // ── General / Other ──────────────────────────────────────────────
         governingLaw: data.governingLaw || null,
-        keyDates: data.keyDates || null,
+        keyDates: jsonOrNull(data.keyDates),
       }
     });
 
