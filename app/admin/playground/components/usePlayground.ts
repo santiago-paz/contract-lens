@@ -40,7 +40,6 @@ export function usePlayground() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [activeTab, setActiveTab] = useState<'parsed' | 'raw' | 'json'>('parsed');
   const [hydrateStatus, setHydrateStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [isAnalysisPopupOpen, setIsAnalysisPopupOpen] = useState(false);
   const [errorPopup, setErrorPopup] = useState<{ isOpen: boolean; message: string; details?: string } | null>(null);
 
   // Streaming state
@@ -48,6 +47,8 @@ export function usePlayground() {
   const [streamMessage, setStreamMessage] = useState<string>('');
   const [reasoning, setReasoning] = useState<string>('');
   const [classification, setClassification] = useState<string | null>(null);
+  /** When true, user has clicked "Next" after reasoning and we show Parsed/Raw/JSON */
+  const [hasAcknowledgedReasoning, setHasAcknowledgedReasoning] = useState(false);
 
   // Ref for accumulating reasoning (avoids stale closure issues)
   const reasoningRef = useRef('');
@@ -60,6 +61,7 @@ export function usePlayground() {
       setStreamPhase('idle');
       setReasoning('');
       setClassification(null);
+      setHasAcknowledgedReasoning(false);
     }
   };
 
@@ -74,6 +76,7 @@ export function usePlayground() {
     setStreamMessage('Reading document…');
     setReasoning('');
     setClassification(null);
+    setHasAcknowledgedReasoning(false);
     reasoningRef.current = '';
 
     try {
@@ -139,7 +142,6 @@ export function usePlayground() {
               if (event.success && event.data) {
                 setResult(event.data as AnalysisResult);
                 setStreamPhase('done');
-                setIsAnalysisPopupOpen(true);
               } else {
                 setStreamPhase('error');
                 setErrorPopup({
@@ -208,8 +210,6 @@ export function usePlayground() {
     activeTab,
     setActiveTab,
     hydrateStatus,
-    isAnalysisPopupOpen,
-    setIsAnalysisPopupOpen,
     errorPopup,
     setErrorPopup,
     handleFileChange,
@@ -221,5 +221,7 @@ export function usePlayground() {
     streamMessage,
     reasoning,
     classification,
+    hasAcknowledgedReasoning,
+    handleContinueAfterReasoning: () => setHasAcknowledgedReasoning(true),
   };
 }

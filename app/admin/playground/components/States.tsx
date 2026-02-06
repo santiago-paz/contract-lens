@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Cpu, Brain, FileSearch, Tag, Sparkles } from 'lucide-react';
+import { Cpu, Brain, FileSearch, Tag, Sparkles, ArrowRight } from 'lucide-react';
 import type { StreamPhase } from './usePlayground';
 
 export const EmptyState = () => (
@@ -52,6 +52,8 @@ interface StreamingStateProps {
   message: string;
   reasoning: string;
   classification: string | null;
+  /** When phase is 'done', called when user clicks "Next" to go to results */
+  onContinue?: () => void;
 }
 
 export const StreamingState = ({
@@ -59,6 +61,7 @@ export const StreamingState = ({
   message,
   reasoning,
   classification,
+  onContinue,
 }: StreamingStateProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +73,8 @@ export const StreamingState = ({
   }, [reasoning]);
 
   const isAnalyzing = phase === 'analyzing';
+  const isDone = phase === 'done';
+  const showReasoningPanel = isAnalyzing || isDone;
   const phaseConfig =
     phase !== 'idle' && phase !== 'done' && phase !== 'error'
       ? PHASE_CONFIG[phase]
@@ -94,15 +99,15 @@ export const StreamingState = ({
             </div>
           )}
         </div>
-        {isAnalyzing && reasoning && (
+        {(isAnalyzing || isDone) && reasoning && (
           <div className="text-[10px] font-mono text-gray-400">
             {reasoning.length.toLocaleString()} chars
           </div>
         )}
       </div>
 
-      {/* Status message for non-analyzing phases */}
-      {!isAnalyzing && (
+      {/* Status message for extracting/classifying only (not analyzing, not done) */}
+      {!showReasoningPanel && (
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-6"></div>
           <p className="uppercase font-bold tracking-widest text-sm text-black animate-pulse">
@@ -115,13 +120,13 @@ export const StreamingState = ({
         </div>
       )}
 
-      {/* Reasoning stream */}
-      {isAnalyzing && (
-        <div className="flex-1 flex flex-col min-h-0">
+      {/* Reasoning stream (analyzing = live stream, done = full text + Next) */}
+      {showReasoningPanel && (
+        <div className="flex-1 flex flex-col min-h-0 gap-4">
           {/* Reasoning content area */}
           <div
             ref={scrollRef}
-            className="flex-1 bg-[#1a1a1a] border border-gray-800 rounded-sm overflow-y-auto relative"
+            className="flex-1 bg-[#1a1a1a] border border-gray-800 rounded-sm overflow-y-auto relative min-h-0"
           >
             {/* Header bar */}
             <div className="sticky top-0 bg-[#1a1a1a] border-b border-gray-800 px-4 py-2 flex items-center justify-between z-10">
@@ -132,8 +137,14 @@ export const StreamingState = ({
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
-                <span className="text-[10px] font-mono text-gray-500">streaming…</span>
+                {isAnalyzing ? (
+                  <>
+                    <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
+                    <span className="text-[10px] font-mono text-gray-500">streaming…</span>
+                  </>
+                ) : (
+                  <span className="text-[10px] font-mono text-green-500/80">complete</span>
+                )}
               </div>
             </div>
 
@@ -142,7 +153,9 @@ export const StreamingState = ({
               {reasoning ? (
                 <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
                   {reasoning}
-                  <span className="inline-block w-2 h-4 bg-purple-400 ml-0.5 animate-pulse align-middle" />
+                  {isAnalyzing && (
+                    <span className="inline-block w-2 h-4 bg-purple-400 ml-0.5 animate-pulse align-middle" />
+                  )}
                 </pre>
               ) : (
                 <div className="flex items-center gap-2 text-gray-500">
@@ -152,6 +165,20 @@ export const StreamingState = ({
               )}
             </div>
           </div>
+
+          {/* Next button when reasoning is done */}
+          {isDone && onContinue && (
+            <div className="flex justify-end shrink-0">
+              <button
+                type="button"
+                onClick={onContinue}
+                className="px-6 py-3 bg-black text-white border border-black font-bold uppercase text-sm tracking-wider flex items-center gap-2 rounded-sm hover:bg-[#CCFF00] hover:text-black active:translate-y-[1px] transition-colors"
+              >
+                Next
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

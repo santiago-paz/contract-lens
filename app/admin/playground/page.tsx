@@ -1,7 +1,6 @@
 'use client';
 
 import { Copy } from 'lucide-react';
-import { AnalysisPopup } from './components/AnalysisPopup';
 import { ErrorPopup } from './components/ErrorPopup';
 import { ParsedContent } from './components/ParsedContent';
 import { PlaygroundHeader } from './components/PlaygroundHeader';
@@ -23,8 +22,6 @@ export default function PlaygroundPage() {
     activeTab,
     setActiveTab,
     hydrateStatus,
-    isAnalysisPopupOpen,
-    setIsAnalysisPopupOpen,
     errorPopup,
     handleFileChange,
     handleExecute,
@@ -35,6 +32,8 @@ export default function PlaygroundPage() {
     streamMessage,
     reasoning,
     classification,
+    hasAcknowledgedReasoning,
+    handleContinueAfterReasoning,
   } = usePlayground();
 
   const copyToClipboard = (text: string) => {
@@ -48,6 +47,9 @@ export default function PlaygroundPage() {
     streamPhase !== 'done' &&
     streamPhase !== 'error';
 
+  // After stream ends: keep showing reasoning panel until user clicks "Next"
+  const showReasoningPanelAfterDone = result && !hasAcknowledgedReasoning;
+
   return (
     <div className="min-h-screen bg-white font-mono text-sm flex bg-noise relative overflow-hidden">
       {/* Error Popup */}
@@ -56,13 +58,6 @@ export default function PlaygroundPage() {
         message={errorPopup?.message || ''}
         details={errorPopup?.details}
         onClose={closeErrorPopup}
-      />
-
-      {/* Analysis Details Popup */}
-      <AnalysisPopup
-        isOpen={isAnalysisPopupOpen}
-        result={result}
-        onClose={() => setIsAnalysisPopupOpen(false)}
       />
 
       {/* Grid Background */}
@@ -89,7 +84,6 @@ export default function PlaygroundPage() {
           result={result}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          onOpenAnalysisPopup={() => setIsAnalysisPopupOpen(true)}
           onHydrate={handleHydrate}
           hydrateStatus={hydrateStatus}
         />
@@ -98,16 +92,17 @@ export default function PlaygroundPage() {
         <div className="flex-1 overflow-y-auto p-8 relative">
           {!result && !isLoading && <EmptyState />}
 
-          {isStreaming && (
+          {(isStreaming || showReasoningPanelAfterDone) && (
             <StreamingState
-              phase={streamPhase}
+              phase={showReasoningPanelAfterDone ? 'done' : streamPhase}
               message={streamMessage}
               reasoning={reasoning}
               classification={classification}
+              onContinue={showReasoningPanelAfterDone ? handleContinueAfterReasoning : undefined}
             />
           )}
 
-          {result && (
+          {result && hasAcknowledgedReasoning && (
             <div className="max-w-6xl mx-auto pb-12">
               {activeTab === 'parsed' && <ParsedContent parsed={result.parsed} contractType={result.classification} />}
 
