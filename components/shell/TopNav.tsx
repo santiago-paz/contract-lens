@@ -40,7 +40,8 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
 
         <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors relative">
           <Bell className="w-5 h-5" />
-          <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#CCFF00] border border-black"></span>
+          {/* TODO: Uncomment when notification system is implemented */}
+          {/* <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#CCFF00] border border-black"></span> */}
         </button>
 
         <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors">

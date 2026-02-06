@@ -76,9 +76,11 @@ export default async function Overview() {
 
   const contracts = user.contracts.map(contract => {
     const style = getStatusStyle(contract.status);
+    // Only show contractNumber if it's a real external reference (not auto-generated)
+    const hasRealReference = !contract.contractNumber.startsWith('CNT-');
     return {
       id: contract.id,
-      contractNumber: contract.contractNumber,
+      contractNumber: hasRealReference ? contract.contractNumber : null,
       title: contract.title,
       type: contract.type,
       status: contract.status,
@@ -213,23 +215,25 @@ export default async function Overview() {
               <Link 
                 href={`/contracts/${contract.id}`} 
                 key={contract.id} 
-                className="group block bg-white border border-gray-200 hover:border-black shadow-sm transition-all rounded-sm overflow-hidden"
+                className="group flex flex-col bg-white border border-gray-200 hover:border-black shadow-sm transition-all rounded-sm overflow-hidden"
               >
                 {/* Header Strip */}
-                <div className="h-7 bg-gray-50 flex items-center justify-between px-3 border-b border-gray-200 group-hover:bg-black transition-colors">
-                    <span className="text-[10px] font-mono font-bold text-gray-500 group-hover:text-white uppercase truncate">{contract.contractNumber}</span>
+                <div className="h-7 bg-gray-50 flex items-center justify-between px-3 border-b border-gray-200 group-hover:bg-black transition-colors shrink-0">
+                    <span className="text-[10px] font-mono font-bold text-gray-500 group-hover:text-white uppercase truncate">
+                      {contract.contractNumber ? `REF ${contract.contractNumber}` : contract.type}
+                    </span>
                     <div className="w-1.5 h-1.5 bg-gray-300 group-hover:bg-[#CCFF00] rounded-full"></div>
                 </div>
 
-                <div className="p-4">
-                    <div className="h-20 flex items-center justify-center border border-dashed border-gray-200 mb-3 bg-white group-hover:border-gray-300 transition-colors relative overflow-hidden rounded-sm">
+                <div className="p-4 flex-1 flex flex-col">
+                    <div className="h-20 flex items-center justify-center border border-dashed border-gray-200 mb-3 bg-white group-hover:border-gray-300 transition-colors relative overflow-hidden rounded-sm shrink-0">
                         <FileText className="w-6 h-6 text-gray-300 group-hover:text-black transition-colors" />
                     </div>
 
-                    <div className="space-y-2">
-                        <h3 className="font-bold text-black text-xs uppercase truncate leading-tight group-hover:underline decoration-1 underline-offset-2" title={contract.title}>{contract.title}</h3>
+                    <div className="flex-1 flex flex-col">
+                        <h3 className="font-bold text-black text-xs uppercase truncate leading-tight group-hover:underline decoration-1 underline-offset-2 mb-2" title={contract.title}>{contract.title}</h3>
                         
-                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100 mt-auto">
                             <span className="text-[10px] text-gray-400 uppercase">{contract.type}</span>
                             <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 border ${contract.style.bg === 'bg-white' ? 'bg-white' : contract.style.bg} ${contract.style.text} ${contract.style.border} rounded-sm`}>
                                 {contract.status}
