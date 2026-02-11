@@ -107,14 +107,26 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
       formData.append('file', file);
 
       try {
+        // Do not set Content-Type: fetch will set multipart/form-data with boundary automatically
         const response = await fetch('/api/analyze-contract', {
           method: 'POST',
           body: formData,
           signal: abortController.signal,
         });
 
-        if (!response.ok || !response.body) {
-          throw new Error(`Server error: ${response.status}`);
+        if (!response.ok) {
+          let message = `Server error: ${response.status}`;
+          try {
+            const body = await response.json();
+            if (body?.error) message = body.error;
+            if (body?.detail) message += ` — ${body.detail}`;
+          } catch {
+            // ignore
+          }
+          throw new Error(message);
+        }
+        if (!response.body) {
+          throw new Error('No response body');
         }
 
         const reader = response.body.getReader();
@@ -216,7 +228,9 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
         }
         if (mounted) {
           setIsRunning(false);
-          setError('Failed to analyze contract. Please try again or skip.');
+          const message =
+            err instanceof Error ? err.message : 'Failed to analyze contract. Please try again or skip.';
+          setError(message);
         }
       }
     };

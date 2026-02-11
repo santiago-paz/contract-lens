@@ -37,19 +37,19 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
       { label: 'Contracts', href: '/contracts', icon: FileText },
-      { label: 'Alerts', href: '/alerts', icon: Bell, comingSoon: true },
-      { label: 'Tasks', href: '/tasks', icon: CheckSquare, comingSoon: true },
-      { label: 'Created by me', href: '/created-by-me', icon: User, comingSoon: true },
-      { label: 'Expiring Contracts', href: '/expiring-contracts', icon: Clock, comingSoon: true },
+      { label: 'Alerts', href: '/alerts', icon: Bell, comingSoon: false },
+      { label: 'Tasks', href: '/tasks', icon: CheckSquare, comingSoon: false },
+      { label: 'Created by me', href: '/created-by-me', icon: User, comingSoon: false },
+      { label: 'Expiring Contracts', href: '/expiring-contracts', icon: Clock, comingSoon: false },
     ],
   },
   {
     title: 'ORGANISATION',
     items: [
-      { label: 'All Contracts', href: '/all-contracts', icon: Files, comingSoon: true },
-      { label: 'Recently created', href: '/recently-created', icon: FileText, comingSoon: true },
-      { label: 'All Expiring Contracts', href: '/all-expiring', icon: Clock, comingSoon: true },
-      { label: 'Partners', href: '/partners', icon: Users, comingSoon: true },
+      { label: 'All Contracts', href: '/all-contracts', icon: Files, comingSoon: false },
+      { label: 'Recently created', href: '/recently-created', icon: FileText, comingSoon: false },
+      { label: 'All Expiring Contracts', href: '/all-expiring', icon: Clock, comingSoon: false },
+      { label: 'Partners', href: '/partners', icon: Users, comingSoon: false },
     ],
   },
 ];
@@ -79,7 +79,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             <div className="w-6 h-6 bg-[#CCFF00] border border-white flex items-center justify-center">
                <span className="text-black font-mono font-bold text-xs leading-none">S</span>
             </div>
-            <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Herr Contrakt</span>
+            <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Blackletter</span>
           </div>
         )}
         <button

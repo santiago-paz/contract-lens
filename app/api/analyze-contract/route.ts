@@ -18,7 +18,31 @@ function createLine(data: StreamEvent): string {
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
+  const contentType = request.headers.get('content-type') ?? '';
+  if (!contentType.includes('multipart/form-data')) {
+    return Response.json(
+      {
+        error: 'Content-Type must be multipart/form-data. Do not set Content-Type manually when sending FormData.',
+      },
+      { status: 400 }
+    );
+  }
+
+  let formData: FormData;
+  try {
+    formData = await request.formData();
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : 'Failed to parse body as FormData';
+    return Response.json(
+      {
+        error: 'Invalid multipart body. Ensure the request is sent as FormData without custom headers.',
+        detail: message,
+      },
+      { status: 400 }
+    );
+  }
+
   const file = formData.get('file') as File | null;
 
   if (!file) {

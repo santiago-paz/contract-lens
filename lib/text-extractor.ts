@@ -3,6 +3,7 @@ const pdf = require('pdf-parse/lib/pdf-parse.js');
 import mammoth from 'mammoth';
 
 export async function extractText(file: File): Promise<string> {
+  // Use Buffer.from (not deprecated); any Buffer() deprecation warning comes from pdf-parse/pdf.js
   const buffer = Buffer.from(await file.arrayBuffer());
   
   if (file.type === 'application/pdf') {
