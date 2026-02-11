@@ -27,6 +27,33 @@
     ]
   },
   {
+    "email": "info@santiagopaz.com",
+    "password": "password123",
+    "name": "Santiago Paz",
+    "equipo": "Legal",
+    "contracts": [],
+    "tasks": [
+      {
+        "title": "Review Vendor Agreement",
+        "status": "Open",
+        "type": "Vendor Agreement",
+        "dueDate": "2026-01-29T12:00:00Z"
+      }
+    ],
+    "activities": [
+      {
+        "description": "Vendor Agreement 2026",
+        "action": "updated",
+        "timestamp": "2026-01-28T19:45:00Z"
+      },
+      {
+        "description": "Vendor Agreement template",
+        "action": "created",
+        "timestamp": "2026-01-27T10:00:00Z"
+      }
+    ]
+  },
+  {
     "email": "max.mustermann@example.com",
     "password": "password123",
     "name": "Max Mustermann",

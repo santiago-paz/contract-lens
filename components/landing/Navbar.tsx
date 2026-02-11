@@ -69,7 +69,7 @@ export function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black tracking-tighter font-mono uppercase leading-none">
-                  Herr Contrakt
+                  Blackletter
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 leading-none mt-1">
                   System v1.0
