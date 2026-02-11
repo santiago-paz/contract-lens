@@ -4,7 +4,6 @@ import { useActionState, useState } from 'react'
 import { login } from '@/app/actions/auth'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Loader2, Terminal, ShieldCheck } from 'lucide-react'
-import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const [state, action, isPending] = useActionState(login, null)
@@ -24,10 +23,8 @@ export default function LoginPage() {
         <span className="text-xs font-bold font-mono text-black uppercase tracking-wide">Return to Base</span>
       </Link>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md relative z-10"
+      <div 
+        className="w-full max-w-md relative z-10 animate-fade-in-up"
       >
         <div className="bg-white border-2 border-black shadow-hard">
             {/* Header */}
@@ -142,7 +139,7 @@ export default function LoginPage() {
                  </div>
             </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }

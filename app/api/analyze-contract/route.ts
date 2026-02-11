@@ -1,8 +1,16 @@
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
-import { generateText, Output } from 'ai';
+import { generateText, streamText, Output } from 'ai';
 import { z } from 'zod';
-import { extractContractData } from '@/actions/contract-extraction';
+import {
+  getSystemPrompt,
+  NDASchema,
+  ServiceAgreementSchema,
+  LicenseAgreementSchema,
+  GeneralContractSchema,
+  stripThinkingTags,
+  stripToSchema,
+} from '@/actions/contract-extraction';
 import type { ContractType } from '@/actions/contract-extraction';
 
 export const maxDuration = 120; // Allow up to 2 minutes for the full pipeline
@@ -13,6 +21,24 @@ type StreamEvent = Record<string, unknown>;
 
 function createLine(data: StreamEvent): string {
   return JSON.stringify(data) + '\n';
+}
+
+/**
+ * Returns the Zod schema for the given contract type.
+ */
+function getSchemaForType(contractType: ContractType) {
+  switch (contractType) {
+    case 'NDA':
+      return NDASchema;
+    case 'ServiceAgreement':
+      return ServiceAgreementSchema;
+    case 'LicenseAgreement':
+      return LicenseAgreementSchema;
+    case 'Other':
+      return GeneralContractSchema;
+    default:
+      throw new Error(`Unsupported contract type: ${contractType}`);
+  }
 }
 
 // ── POST handler ─────────────────────────────────────────────────────────────
@@ -163,7 +189,7 @@ export async function POST(request: Request) {
           return;
         }
 
-        // ── Step 2: Expert analysis ─────────────────────────────────────────
+        // ── Step 2: Expert analysis (streaming) ────────────────────────────
 
         emit({ type: 'step', id: 'analysis', status: 'running' });
         emit({
@@ -172,20 +198,123 @@ export async function POST(request: Request) {
           variant: 'info',
         });
 
+        const schema = getSchemaForType(classification as ContractType);
+        const systemPrompt = getSystemPrompt(classification as ContractType, schema);
+
         const expertStart = performance.now();
 
-        const expertResultRaw = await extractContractData(
-          text,
-          classification as ContractType,
-          {}
-        );
+        const streamResult = streamText({
+          model: 'deepseek/deepseek-r1' as any,
+          system: systemPrompt,
+          prompt: `Analyze the following contract text and extract the data according to the schema:\n\n<contract_text>\n${text}\n</contract_text>`,
+          temperature: 0,
+        });
+
+        let fullText = '';
+        let fullReasoning = '';
+        let reasoningStarted = false;
+        let textStarted = false;
+        let lastProgressEmit = 0;
+
+        for await (const part of streamResult.fullStream) {
+          if (part.type === 'reasoning-delta') {
+            fullReasoning += part.text;
+
+            if (!reasoningStarted) {
+              reasoningStarted = true;
+              emit({
+                type: 'log',
+                text: 'Model is reasoning…',
+                variant: 'info',
+              });
+              lastProgressEmit = performance.now();
+            }
+
+            // Emit periodic progress updates every ~3 seconds
+            const now = performance.now();
+            if (now - lastProgressEmit > 3000) {
+              lastProgressEmit = now;
+              const elapsed = Math.round((now - expertStart) / 1000);
+              emit({
+                type: 'log',
+                text: `Still analyzing… (${elapsed}s)`,
+                variant: 'dim',
+              });
+            }
+          } else if (part.type === 'text-delta') {
+            fullText += part.text;
+
+            if (!textStarted) {
+              textStarted = true;
+              emit({
+                type: 'log',
+                text: 'Generating structured output…',
+                variant: 'info',
+              });
+            }
+          }
+        }
 
         const expertMs = Math.round(performance.now() - expertStart);
-        const {
-          object: expertParsedData,
-          usage: expertUsage,
-          modelReasoning,
-        } = expertResultRaw;
+
+        // Parse the text output as JSON
+        let expertParsedData: any = null;
+        const textToParse = fullText || '';
+        const cleanedText = stripThinkingTags(textToParse);
+
+        try {
+          expertParsedData = JSON.parse(cleanedText);
+        } catch (parseError) {
+          console.error('Failed to parse expert output as JSON:', parseError);
+          console.error('Raw text (first 500 chars):', textToParse.substring(0, 500));
+          console.error('Cleaned text (first 500 chars):', cleanedText.substring(0, 500));
+        }
+
+        // Extract reasoning from <think> tags if not captured from stream
+        let modelReasoning: string | null = fullReasoning || null;
+        if (!fullReasoning && textToParse) {
+          const thinkMatch = textToParse.match(/<think>([\s\S]*?)<\/think>/i);
+          if (thinkMatch && thinkMatch[1]) {
+            modelReasoning = thinkMatch[1].trim();
+          }
+        }
+
+        // Strip extra keys to match schema
+        const finalObject = expertParsedData
+          ? stripToSchema(expertParsedData, schema)
+          : null;
+
+        // Get usage from the completed stream
+        const expertUsage = await streamResult.usage;
+
+        // If JSON parsing failed, treat as an error
+        if (!finalObject) {
+          emit({ type: 'step', id: 'analysis', status: 'done' });
+          emit({
+            type: 'log',
+            text: 'Failed to parse model output as valid JSON',
+            variant: 'error',
+          });
+          emit({
+            type: 'result',
+            success: false,
+            error: 'The model did not produce valid structured output. Please try again.',
+            data: {
+              rawText: text,
+              parsed: null,
+              classification,
+              modelReasoning,
+              latency: {
+                extraction: extractionMs,
+                router: routerMs,
+                expert: expertMs,
+                total: Math.round(performance.now() - startTime),
+              },
+            },
+          });
+          controller.close();
+          return;
+        }
 
         emit({ type: 'step', id: 'analysis', status: 'done' });
         emit({
@@ -196,8 +325,8 @@ export async function POST(request: Request) {
 
         // ── Finalize (log-only, not a tracked step) ─────────────────────────
 
-        const fieldCount = expertParsedData
-          ? Object.values(expertParsedData).filter(
+        const fieldCount = finalObject
+          ? Object.values(finalObject).filter(
               (v) => v !== null && v !== undefined && v !== ''
             ).length
           : 0;
@@ -226,7 +355,7 @@ export async function POST(request: Request) {
           success: true,
           data: {
             rawText: text,
-            parsed: expertParsedData,
+            parsed: finalObject,
             classification,
             usage: {
               router: routerUsage,
