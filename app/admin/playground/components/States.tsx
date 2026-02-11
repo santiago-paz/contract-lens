@@ -172,7 +172,7 @@ export const StreamingState = ({
               <button
                 type="button"
                 onClick={onContinue}
-                className="px-6 py-3 bg-black text-white border border-black font-bold uppercase text-sm tracking-wider flex items-center gap-2 rounded-sm hover:bg-[#CCFF00] hover:text-black active:translate-y-[1px] transition-colors"
+                className="px-6 py-3 bg-black text-white border border-black font-bold uppercase text-sm tracking-wider flex items-center gap-2 rounded-sm hover:bg-[#00D4FF] hover:text-black active:translate-y-[1px] transition-colors"
               >
                 Next
                 <ArrowRight className="w-4 h-4" />

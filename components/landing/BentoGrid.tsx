@@ -57,7 +57,7 @@ export function BentoGrid() {
           <h2 className="text-5xl sm:text-7xl font-black text-black tracking-tighter mb-8 uppercase leading-[0.9]">
             {t.bento.title}
           </h2>
-          <p className="text-2xl font-mono text-black leading-relaxed border-l-4 border-[#CCFF00] pl-8 bg-white/80 inline-block pr-8 py-4 backdrop-blur-sm shadow-hard-sm border-y-2 border-r-2 border-black">
+          <p className="text-2xl font-mono text-black leading-relaxed border-l-4 border-[#00D4FF] pl-8 bg-white/80 inline-block pr-8 py-4 backdrop-blur-sm shadow-hard-sm border-y-2 border-r-2 border-black">
             {t.bento.subtitle}
           </p>
         </div>
@@ -76,7 +76,7 @@ export function BentoGrid() {
             
             <div className="relative z-10 flex flex-col h-full">
                 <div className="mb-10">
-                    <div className="w-14 h-14 bg-[#CCFF00] border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
+                    <div className="w-14 h-14 bg-[#00D4FF] border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
                         <Zap className="w-8 h-8 text-black" />
                     </div>
                     <h3 className="text-3xl font-black font-mono text-black mb-4 uppercase tracking-tight">{t.bento.ingestion.title}</h3>
@@ -90,11 +90,11 @@ export function BentoGrid() {
                     {/* Header bar */}
                     <div className="absolute top-0 left-0 right-0 h-10 bg-black flex items-center px-4 justify-between">
                          <span className="text-white font-mono text-[10px] uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-[#CCFF00] animate-pulse"></span>
+                            <span className="w-2 h-2 rounded-full bg-[#00D4FF] animate-pulse"></span>
                             DATA_INGESTION_STREAM
                          </span>
                          <div className="flex gap-1.5">
-                             <div className="w-3 h-3 bg-[#CCFF00] border border-white/20"></div>
+                             <div className="w-3 h-3 bg-[#00D4FF] border border-white/20"></div>
                              <div className="w-3 h-3 bg-white border border-white/20"></div>
                          </div>
                     </div>
@@ -120,7 +120,7 @@ export function BentoGrid() {
                                         </div>
                                     </div>
                                     <span className={`text-[10px] font-bold font-mono px-3 py-1 border-2 border-black uppercase ${
-                                        currentStep === 3 ? 'bg-[#CCFF00] text-black shadow-[2px_2px_0px_0px_#000]' : 'bg-white text-black'
+                                        currentStep === 3 ? 'bg-[#00D4FF] text-black shadow-[2px_2px_0px_0px_#000]' : 'bg-white text-black'
                                     }`}>
                                         {currentStep === 3 ? 'VERIFIED' : 'ANALYZING...'}
                                     </span>
@@ -140,8 +140,8 @@ export function BentoGrid() {
                                                     )}
                                                     <div className={`
                                                         w-5 h-5 flex items-center justify-center border-2 border-black transition-all duration-0
-                                                        ${status === 'done' ? 'bg-black text-[#CCFF00]' : 
-                                                        status === 'loading' ? 'bg-[#CCFF00] shadow-[2px_2px_0px_0px_#000]' : 'bg-white'}
+                                                        ${status === 'done' ? 'bg-black text-[#00D4FF]' : 
+                                                        status === 'loading' ? 'bg-[#00D4FF] shadow-[2px_2px_0px_0px_#000]' : 'bg-white'}
                                                     `}>
                                                         {status === 'done' && <Check className="w-3 h-3" />}
                                                     </div>
@@ -159,7 +159,7 @@ export function BentoGrid() {
                                 exit={{ opacity: 0 }}
                                 className="space-y-5"
                             >
-                                <div className="flex items-center gap-3 mb-4 bg-[#CCFF00] px-4 py-2 border-2 border-black w-fit shadow-hard-sm transform -rotate-1">
+                                <div className="flex items-center gap-3 mb-4 bg-[#00D4FF] px-4 py-2 border-2 border-black w-fit shadow-hard-sm transform -rotate-1">
                                     <Check className="w-5 h-5 text-black" />
                                     <span className="text-xs font-black font-mono uppercase tracking-wide text-black">{t.bento.ingestion.results.title}</span>
                                 </div>
@@ -170,7 +170,7 @@ export function BentoGrid() {
                                         <span className="text-sm font-bold font-mono text-black uppercase bg-black text-white px-1">{t.bento.ingestion.results.vendor}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-lg font-mono font-bold text-black border-b-2 border-[#CCFF00]">{t.bento.ingestion.results.value}</span>
+                                        <span className="text-lg font-mono font-bold text-black border-b-2 border-[#00D4FF]">{t.bento.ingestion.results.value}</span>
                                     </div>
                                 </div>
                                 <div className="p-5 bg-white border-2 border-black border-dashed">
@@ -192,17 +192,17 @@ export function BentoGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="md:col-span-2 bg-black text-white p-8 sm:p-12 relative overflow-hidden group border-2 border-black shadow-hard hover:shadow-[8px_8px_0px_0px_#CCFF00] transition-all duration-300"
+            className="md:col-span-2 bg-black text-white p-8 sm:p-12 relative overflow-hidden group border-2 border-black shadow-hard hover:shadow-[8px_8px_0px_0px_#00D4FF] transition-all duration-300"
           >
-             <div className="absolute top-0 right-0 w-32 h-32 bg-[#CCFF00] opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#00D4FF] opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
              
              <div className="relative z-10 flex flex-col h-full">
                 <div className="mb-10">
                     <div className="w-14 h-14 bg-white/10 border border-white/20 flex items-center justify-center mb-6 backdrop-blur-md">
-                        <Shield className="w-8 h-8 text-[#CCFF00]" />
+                        <Shield className="w-8 h-8 text-[#00D4FF]" />
                     </div>
                     <h3 className="text-3xl font-black font-mono text-white mb-4 uppercase tracking-tight">{t.bento.guard.title}</h3>
-                    <p className="text-gray-400 font-mono text-xs leading-relaxed uppercase border-l-2 border-[#CCFF00] pl-4">
+                    <p className="text-gray-400 font-mono text-xs leading-relaxed uppercase border-l-2 border-[#00D4FF] pl-4">
                         {t.bento.guard.description}
                     </p>
                 </div>
@@ -210,7 +210,7 @@ export function BentoGrid() {
                 <div className="mt-auto space-y-4 relative">
                     {/* Alert 1 */}
                     <div className="relative group/alert">
-                        <div className="bg-white/5 border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-white/10 hover:translate-x-1 hover:border-[#CCFF00]/50">
+                        <div className="bg-white/5 border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-white/10 hover:translate-x-1 hover:border-[#00D4FF]/50">
                             <div className="w-10 h-10 bg-red-500/20 flex items-center justify-center shrink-0 border border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]">
                                 <Bell className="w-5 h-5 text-red-500 fill-red-500" />
                             </div>
@@ -260,7 +260,7 @@ export function BentoGrid() {
           >
              <div className="grid md:grid-cols-2 gap-20 items-center relative z-10">
                 <div>
-                     <div className="w-14 h-14 bg-black flex items-center justify-center mb-8 shadow-[4px_4px_0px_0px_#CCFF00]">
+                     <div className="w-14 h-14 bg-black flex items-center justify-center mb-8 shadow-[4px_4px_0px_0px_#00D4FF]">
                         <Users className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-4xl font-black font-mono text-black mb-6 uppercase tracking-tighter">{t.bento.collab.title}</h3>
@@ -270,7 +270,7 @@ export function BentoGrid() {
                     
                     <div className="flex flex-wrap gap-4">
                         {t.bento.collab.list.map((item, i) => (
-                            <span key={i} className="inline-flex items-center gap-3 bg-[#CCFF00] px-5 py-3 border-2 border-black text-sm font-bold font-mono text-black uppercase shadow-hard-sm hover:-translate-y-1 transition-transform cursor-default">
+                            <span key={i} className="inline-flex items-center gap-3 bg-[#00D4FF] px-5 py-3 border-2 border-black text-sm font-bold font-mono text-black uppercase shadow-hard-sm hover:-translate-y-1 transition-transform cursor-default">
                                 <Check className="w-4 h-4 text-black stroke-[3]" />
                                 {item}
                             </span>
@@ -294,7 +294,7 @@ export function BentoGrid() {
                                 </div>
                                 <div className="h-3 w-full bg-gray-100 border-2 border-black relative overflow-hidden">
                                     <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
-                                    <div className="h-full bg-[#CCFF00] w-3/4 border-r-2 border-black"></div>
+                                    <div className="h-full bg-[#00D4FF] w-3/4 border-r-2 border-black"></div>
                                 </div>
                             </div>
                             
@@ -322,7 +322,7 @@ export function BentoGrid() {
                                     </div>
                                 </div>
                                 <div className="flex gap-2 text-xs">
-                                     <span className="bg-[#CCFF00]/20 border border-[#CCFF00] text-black px-2 py-1 font-bold font-mono uppercase flex items-center gap-1">
+                                     <span className="bg-[#00D4FF]/20 border border-[#00D4FF] text-black px-2 py-1 font-bold font-mono uppercase flex items-center gap-1">
                                         <Zap className="w-3 h-3" />
                                         Auto-Renew
                                      </span>
@@ -333,7 +333,7 @@ export function BentoGrid() {
                              <div className="bg-gray-50 p-6 border-2 border-black opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
                                 <div className="flex items-center justify-between mb-3">
                                    <div className="flex -space-x-2">
-                                       <div className="w-8 h-8 bg-[#CCFF00] border-2 border-black rounded-full"></div>
+                                       <div className="w-8 h-8 bg-[#00D4FF] border-2 border-black rounded-full"></div>
                                        <div className="w-8 h-8 bg-white border-2 border-black rounded-full"></div>
                                    </div>
                                    <span className="text-[10px] font-black font-mono text-orange-600 uppercase border border-orange-600 px-2 py-0.5 bg-orange-50">{t.bento.collab.taskCard2.due}</span>

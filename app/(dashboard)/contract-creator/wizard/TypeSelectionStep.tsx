@@ -32,7 +32,7 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
     <div className="w-full max-w-5xl mx-auto animate-fade-in font-mono">
         <div className="mb-6">
             <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
-            <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+            <div className="p-2 bg-black text-[#00D4FF] border-2 border-black">
                 <FileText className="w-6 h-6" />
             </div>
             Classify Contract
@@ -49,7 +49,7 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                     <input 
                         type="text"
                         placeholder="SEARCH CONTRACT TYPES..."
-                        className="w-full pl-10 pr-4 py-4 bg-white border-2 border-black font-bold uppercase focus:outline-none focus:bg-[#CCFF00] transition-all placeholder:text-gray-400"
+                        className="w-full pl-10 pr-4 py-4 bg-white border-2 border-black font-bold uppercase focus:outline-none focus:bg-[#00D4FF] transition-all placeholder:text-gray-400"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         autoFocus
@@ -77,14 +77,14 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                                     ${isSelected 
                                         ? 'bg-black text-white border-black shadow-hard-sm scale-[1.01]' 
                                         : isSuggested
-                                            ? 'bg-[#CCFF00]/20 border-black text-black hover:bg-[#CCFF00] hover:shadow-hard-sm'
+                                            ? 'bg-[#00D4FF]/20 border-black text-black hover:bg-[#00D4FF] hover:shadow-hard-sm'
                                             : 'bg-white border-gray-200 text-gray-500 hover:border-black hover:text-black hover:shadow-hard-sm'
                                     }
                                 `}
                             >
                                 <div className="flex items-center gap-3 min-w-0">
                                     {isSuggested ? (
-                                        <Sparkles className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#CCFF00]' : 'text-black'}`} />
+                                        <Sparkles className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#00D4FF]' : 'text-black'}`} />
                                     ) : (
                                         <FileText className={`w-4 h-4 shrink-0 ${isSelected ? 'text-gray-400' : 'text-gray-400 group-hover:text-black'}`} />
                                     )}
@@ -93,7 +93,7 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                                             {formatTypeName(type)}
                                         </span>
                                         {isSuggested && (
-                                            <span className={`shrink-0 text-[10px] px-1.5 py-0.5 border uppercase tracking-wide font-bold ${isSelected ? 'bg-[#CCFF00] text-black border-[#CCFF00]' : 'bg-black text-white border-black'}`}>
+                                            <span className={`shrink-0 text-[10px] px-1.5 py-0.5 border uppercase tracking-wide font-bold ${isSelected ? 'bg-[#00D4FF] text-black border-[#00D4FF]' : 'bg-black text-white border-black'}`}>
                                                 Suggested
                                             </span>
                                         )}
@@ -106,7 +106,7 @@ export function TypeSelectionStep({ onSelect, onBack, suggestedType }: TypeSelec
                                             e.stopPropagation();
                                             onSelect(type);
                                         }}
-                                        className="shrink-0 ml-3 px-3 py-1 bg-white text-black border-2 border-black text-xs font-bold uppercase hover:bg-[#CCFF00] transition-colors flex items-center gap-1 animate-fade-in"
+                                        className="shrink-0 ml-3 px-3 py-1 bg-white text-black border-2 border-black text-xs font-bold uppercase hover:bg-[#00D4FF] transition-colors flex items-center gap-1 animate-fade-in"
                                     >
                                         Next
                                         <ChevronRight className="w-3 h-3" />

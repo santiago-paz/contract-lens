@@ -109,7 +109,7 @@ export function EditorSidebar({
   const getStatusColor = (currentStatus: string) => {
     switch (currentStatus) {
       case 'Draft': return 'bg-yellow-400';
-      case 'Active': return 'bg-[#CCFF00]';
+      case 'Active': return 'bg-[#00D4FF]';
       case 'Signed': return 'bg-blue-400';
       case 'Expired': return 'bg-red-500';
       case 'Review': return 'bg-orange-400';
@@ -124,16 +124,16 @@ export function EditorSidebar({
     <div className={`w-96 bg-white flex flex-col overflow-y-auto transition-all duration-300 font-mono h-full ${isOpen ? 'translate-x-0' : '-translate-x-full absolute z-10'}`}>
       <div className="p-3 border-b border-gray-200 flex items-center justify-between bg-white">
         <div className="flex gap-4">
-          <button className="pb-1 border-b-2 border-[#CCFF00] text-[10px] font-bold uppercase text-black">Metadata</button>
+          <button className="pb-1 border-b-2 border-[#00D4FF] text-[10px] font-bold uppercase text-black">Metadata</button>
           <button className="pb-1 border-b-2 border-transparent text-[10px] font-bold uppercase text-gray-400 hover:text-black transition-colors">Relations</button>
         </div>
       </div>
 
       <div className="p-4 space-y-6">
         {!isSaved && (
-           <div className="bg-[#CCFF00]/10 border border-[#CCFF00]/50 p-4 flex items-start gap-3 rounded-sm">
+           <div className="bg-[#00D4FF]/10 border border-[#00D4FF]/50 p-4 flex items-start gap-3 rounded-sm">
              <div className="mt-0.5 text-black">
-               <div className="w-4 h-4 flex items-center justify-center bg-[#CCFF00] rounded-full">
+               <div className="w-4 h-4 flex items-center justify-center bg-[#00D4FF] rounded-full">
                  <span className="text-[10px] font-bold">✓</span>
                </div>
              </div>

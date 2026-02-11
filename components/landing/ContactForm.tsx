@@ -41,18 +41,18 @@ export function ContactForm() {
                     
                     <div className="relative z-10">
                         <div className="flex items-center gap-3 mb-4">
-                             <div className="bg-[#CCFF00] text-black w-8 h-8 flex items-center justify-center border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]">
+                             <div className="bg-[#00D4FF] text-black w-8 h-8 flex items-center justify-center border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]">
                                 <span className="font-black font-mono text-sm leading-none">S</span>
                              </div>
                              <div className="flex flex-col">
                                 <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Blackletter</span>
-                                <span className="text-[10px] font-mono text-[#CCFF00] uppercase tracking-wider">{t.contact.secureChannel}</span>
+                                <span className="text-[10px] font-mono text-[#00D4FF] uppercase tracking-wider">{t.contact.secureChannel}</span>
                              </div>
                         </div>
                         <h2 className="text-3xl sm:text-4xl font-black font-mono text-white tracking-tighter uppercase mb-2">{t.contact.headerTitle}</h2>
                         <div className="inline-flex items-center gap-2 border border-white/30 px-2 py-1 bg-white/5 backdrop-blur-sm">
-                            <span className="w-2 h-2 rounded-full bg-[#CCFF00] animate-pulse"></span>
-                            <p className="text-[#CCFF00] text-xs font-mono uppercase tracking-widest">{t.contact.refCode}-{(new Date()).getFullYear()}-001</p>
+                            <span className="w-2 h-2 rounded-full bg-[#00D4FF] animate-pulse"></span>
+                            <p className="text-[#00D4FF] text-xs font-mono uppercase tracking-widest">{t.contact.refCode}-{(new Date()).getFullYear()}-001</p>
                         </div>
                     </div>
                     
@@ -84,7 +84,7 @@ export function ContactForm() {
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: "spring", delay: 0.2 }}
-                                    className="w-24 h-24 bg-[#CCFF00] flex items-center justify-center mb-8 border-2 border-black shadow-hard"
+                                    className="w-24 h-24 bg-[#00D4FF] flex items-center justify-center mb-8 border-2 border-black shadow-hard"
                                 >
                                     <CheckCircle2 className="w-12 h-12 text-black" />
                                 </motion.div>
@@ -95,7 +95,7 @@ export function ContactForm() {
                                 
                                 <button 
                                     onClick={() => setSuccess(false)}
-                                    className="px-8 py-3 bg-black text-white text-sm font-bold font-mono uppercase hover:bg-[#CCFF00] hover:text-black border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                                    className="px-8 py-3 bg-black text-white text-sm font-bold font-mono uppercase hover:bg-[#00D4FF] hover:text-black border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
                                 >
                                     {t.contact.sendAnother}
                                 </button>
@@ -127,7 +127,7 @@ export function ContactForm() {
                                                 required
                                                 onFocus={() => setFocusedField('name')}
                                                 onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
+                                                className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#00D4FF] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
                                                 placeholder={t.contact.enterFullName}
                                             />
                                         </div>
@@ -141,7 +141,7 @@ export function ContactForm() {
                                                 required
                                                 onFocus={() => setFocusedField('email')}
                                                 onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
+                                                className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#00D4FF] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
                                                 placeholder={t.contact.enterEmail}
                                             />
                                         </div>
@@ -165,7 +165,7 @@ export function ContactForm() {
                                             rows={5}
                                             onFocus={() => setFocusedField('message')}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed uppercase shadow-sm focus:shadow-hard-sm"
+                                            className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#00D4FF] focus:outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed uppercase shadow-sm focus:shadow-hard-sm"
                                             placeholder={t.contact.describeInquiry}
                                         />
                                     </div>
@@ -181,7 +181,7 @@ export function ContactForm() {
                                         <button
                                             type="submit"
                                             disabled={loading}
-                                            className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-4 bg-black text-white text-sm font-bold font-mono uppercase border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#CCFF00] hover:text-black transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                                            className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-4 bg-black text-white text-sm font-bold font-mono uppercase border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#00D4FF] hover:text-black transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                                         >
                                             {loading ? (
                                                 <span className="flex items-center gap-2">

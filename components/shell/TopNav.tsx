@@ -19,7 +19,7 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
           <input
             type="text"
             placeholder="SEARCH SYSTEM..."
-            className="w-full pl-10 pr-4 py-2 bg-white border border-black text-sm font-mono focus:outline-none focus:bg-[#CCFF00] focus:placeholder-black/50 transition-all placeholder:text-gray-400 uppercase"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-black text-sm font-mono focus:outline-none focus:bg-[#00D4FF] focus:placeholder-black/50 transition-all placeholder:text-gray-400 uppercase"
           />
         </div>
       </div>
@@ -29,7 +29,7 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
         {/* New Contract Button */}
         <Link
           href="/contract-creator"
-          className="hidden sm:flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
+          className="hidden sm:flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black group"
         >
           <Plus className="w-4 h-4 group-active:text-black" />
           <span className="text-xs font-bold font-mono uppercase">New Contract</span>
@@ -38,19 +38,19 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
         {/* Icons */}
         <div className="h-6 w-px bg-black mx-2" />
 
-        <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors relative">
+        <button className="p-2 text-black hover:bg-[#00D4FF] border border-transparent hover:border-black transition-colors relative">
           <Bell className="w-5 h-5" />
           {/* TODO: Uncomment when notification system is implemented */}
-          {/* <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#CCFF00] border border-black"></span> */}
+          {/* <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#00D4FF] border border-black"></span> */}
         </button>
 
-        <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors">
+        <button className="p-2 text-black hover:bg-[#00D4FF] border border-transparent hover:border-black transition-colors">
           <HelpCircle className="w-5 h-5" />
         </button>
 
         {/* User Profile */}
         <button className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
-          <div className="w-8 h-8 bg-black text-[#CCFF00] flex items-center justify-center font-mono font-bold text-xs border border-black shadow-hard-sm">
+          <div className="w-8 h-8 bg-black text-[#00D4FF] flex items-center justify-center font-mono font-bold text-xs border border-black shadow-hard-sm">
             {initials}
           </div>
           <span className="text-xs font-bold font-mono text-black uppercase hidden md:block">{displayName}</span>

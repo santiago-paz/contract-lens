@@ -25,25 +25,25 @@ interface LogEntry {
 
 const VARIANT_CONFIG: Record<LineVariant, { icon: 'circle' | 'arrow' | 'check' | 'x' | 'dot'; className: string }> = {
   system: { icon: 'circle', className: 'text-white font-medium' },
-  info: { icon: 'arrow', className: 'text-[#CCFF00]' },
+  info: { icon: 'arrow', className: 'text-[#00D4FF]' },
   success: { icon: 'check', className: 'text-white' },
   error: { icon: 'x', className: 'text-red-400 font-medium' },
-  dim: { icon: 'dot', className: 'text-[#CCFF00]/40' },
+  dim: { icon: 'dot', className: 'text-[#00D4FF]/40' },
 };
 
 function VariantIcon({ icon }: { icon: string }) {
   const base = 'w-3.5 h-3.5 shrink-0 mt-[1px]';
   switch (icon) {
     case 'check':
-      return <CheckCircle2 className={`${base} text-[#CCFF00]`} />;
+      return <CheckCircle2 className={`${base} text-[#00D4FF]`} />;
     case 'arrow':
-      return <ArrowRight className={`${base} text-[#CCFF00]/60`} />;
+      return <ArrowRight className={`${base} text-[#00D4FF]/60`} />;
     case 'x':
       return <XCircle className={`${base} text-red-400`} />;
     case 'circle':
       return <Circle className={`${base} text-white/60`} />;
     default:
-      return <span className={`${base} text-[#CCFF00]/30 inline-block text-center`}>·</span>;
+      return <span className={`${base} text-[#00D4FF]/30 inline-block text-center`}>·</span>;
   }
 }
 
@@ -257,7 +257,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
 
         <div className="mb-6">
           <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
-            <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+            <div className="p-2 bg-black text-[#00D4FF] border-2 border-black">
               <FileText className="w-6 h-6" />
             </div>
             Analysis Failed
@@ -301,7 +301,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
                   comments: null,
                 } as any);
               }}
-              className="px-6 py-3 bg-black text-[#CCFF00] border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] uppercase font-bold text-sm transition-all"
+              className="px-6 py-3 bg-black text-[#00D4FF] border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] uppercase font-bold text-sm transition-all"
             >
               Continue Manually
             </button>
@@ -330,7 +330,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
     <div className="w-full max-w-5xl mx-auto animate-fade-in font-mono">
       <div className="mb-6">
         <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
-          <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+          <div className="p-2 bg-black text-[#00D4FF] border-2 border-black">
             <FileText className="w-6 h-6" />
           </div>
           Analyzing Document
@@ -362,7 +362,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
             </span>
             <div className="w-full bg-gray-200 border border-black h-3">
               <div
-                className="bg-[#CCFF00] border-r border-black h-full transition-all duration-500 ease-out"
+                className="bg-[#00D4FF] border-r border-black h-full transition-all duration-500 ease-out"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -380,7 +380,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
             <div className="flex items-center gap-2 mb-4">
               {isRunning ? (
                 <>
-                  <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-[#00D4FF] rounded-full animate-pulse" />
                   <span className="text-xs font-bold uppercase text-black">
                     Processing…
                   </span>
@@ -404,10 +404,10 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
         </div>
 
         {/* Right: Activity Log */}
-        <div className="w-2/3 p-0 bg-black text-[#CCFF00] font-mono relative overflow-hidden flex flex-col">
+        <div className="w-2/3 p-0 bg-black text-[#00D4FF] font-mono relative overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="px-6 pt-6 pb-3 border-b border-[#CCFF00]/20 shrink-0">
-            <h3 className="text-sm font-bold uppercase tracking-widest text-[#CCFF00]">
+          <div className="px-6 pt-6 pb-3 border-b border-[#00D4FF]/20 shrink-0">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-[#00D4FF]">
               Activity Log
             </h3>
           </div>
@@ -415,7 +415,7 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
           {/* Log area */}
           <div
             ref={logRef}
-            className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin scrollbar-thumb-[#CCFF00]/20 scrollbar-track-transparent"
+            className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin scrollbar-thumb-[#00D4FF]/20 scrollbar-track-transparent"
           >
             <div className="space-y-2">
               {logLines.map((line) => {
@@ -431,15 +431,15 @@ export function AnalysisStep({ file, onComplete, onCancel }: AnalysisStepProps) 
               {/* Blinking cursor */}
               {isRunning && (
                 <div className="flex items-start gap-2.5 text-xs leading-relaxed">
-                  <ArrowRight className="w-3.5 h-3.5 shrink-0 mt-[1px] text-[#CCFF00]/40" />
-                  <span className="text-[#CCFF00] animate-pulse">█</span>
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0 mt-[1px] text-[#00D4FF]/40" />
+                  <span className="text-[#00D4FF] animate-pulse">█</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-3 border-t border-[#CCFF00]/20 text-[10px] text-[#CCFF00]/40 uppercase flex justify-between shrink-0">
+          <div className="px-6 py-3 border-t border-[#00D4FF]/20 text-[10px] text-[#00D4FF]/40 uppercase flex justify-between shrink-0">
             <span>Step {completedSteps} of {totalSteps}</span>
             <span>{elapsedSec}s elapsed</span>
           </div>

@@ -193,7 +193,7 @@ export const ErrorPopup = ({ isOpen, message, details, onClose }: ErrorPopupProp
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-black text-white border border-black font-bold uppercase text-xs rounded-sm hover:bg-[#CCFF00] hover:text-black transition-colors"
+              className="px-4 py-2 bg-black text-white border border-black font-bold uppercase text-xs rounded-sm hover:bg-[#00D4FF] hover:text-black transition-colors"
             >
               Close
             </button>

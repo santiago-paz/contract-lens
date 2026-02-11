@@ -237,7 +237,7 @@ export const AnalysisPopup = ({ isOpen, result, onClose }: AnalysisPopupProps) =
         <div className="p-4 border-t border-gray-200 bg-white flex justify-end rounded-b-sm">
           <button
             onClick={onClose}
-            className="px-5 py-2 bg-black text-white border border-black font-bold uppercase text-xs rounded-sm hover:bg-[#CCFF00] hover:text-black transition-colors"
+            className="px-5 py-2 bg-black text-white border border-black font-bold uppercase text-xs rounded-sm hover:bg-[#00D4FF] hover:text-black transition-colors"
           >
             Close Details
           </button>

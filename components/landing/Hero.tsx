@@ -55,7 +55,7 @@ export function Hero() {
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="inline-flex max-w-full items-center gap-3 px-4 py-2 bg-[#CCFF00] border-2 border-black shadow-hard-sm mb-8 hover:-translate-y-1 transition-transform cursor-default"
+                            className="inline-flex max-w-full items-center gap-3 px-4 py-2 bg-[#00D4FF] border-2 border-black shadow-hard-sm mb-8 hover:-translate-y-1 transition-transform cursor-default"
                         >
                             <Terminal className="w-4 h-4 text-black shrink-0" />
                             <span className="text-sm font-mono font-bold text-black uppercase tracking-wide truncate sm:whitespace-normal sm:overflow-visible">{t.hero.badge}</span>
@@ -81,7 +81,7 @@ export function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="text-xl md:text-2xl font-mono text-black mb-12 max-w-lg leading-relaxed border-l-4 border-[#CCFF00] pl-6"
+                            className="text-xl md:text-2xl font-mono text-black mb-12 max-w-lg leading-relaxed border-l-4 border-[#00D4FF] pl-6"
                         >
                             {t.hero.subtitle}
                         </motion.p>
@@ -97,12 +97,12 @@ export function Hero() {
                                     const contactForm = document.getElementById('contact-form');
                                     contactForm?.scrollIntoView({ behavior: 'smooth' });
                                 }}
-                                className="group inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
+                                className="group inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black"
                             >
                                 {t.hero.cta}
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <button className="group inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide text-black bg-white border-2 border-black shadow-hard hover:bg-black hover:text-[#CCFF00] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <button className="group inline-flex items-center justify-center px-8 py-4 text-base font-bold font-mono uppercase tracking-wide text-black bg-white border-2 border-black shadow-hard hover:bg-black hover:text-[#00D4FF] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 {t.hero.seeSystem}
                                 <Command className="ml-2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </button>
@@ -121,11 +121,11 @@ export function Hero() {
                             {/* Title Bar */}
                             <div className="h-12 bg-black flex items-center justify-between px-4 border-b-2 border-black">
                                 <div className="flex gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-[#CCFF00] border border-black hover:bg-red-500 transition-colors cursor-pointer"></div>
+                                    <div className="w-3 h-3 rounded-full bg-[#00D4FF] border border-black hover:bg-red-500 transition-colors cursor-pointer"></div>
                                     <div className="w-3 h-3 rounded-full bg-white border border-black hover:bg-yellow-400 transition-colors cursor-pointer"></div>
                                 </div>
                                 <div className="flex flex-col items-center">
-                                    <div className="text-[#CCFF00] font-mono text-xs uppercase tracking-widest font-bold">ASSET_OS_KERNEL</div>
+                                    <div className="text-[#00D4FF] font-mono text-xs uppercase tracking-widest font-bold">ASSET_OS_KERNEL</div>
                                     <div className="text-gray-500 font-mono text-[9px] uppercase tracking-wider">PID: 8821 // ROOT</div>
                                 </div>
                                 <div className="w-8"></div>
@@ -143,7 +143,7 @@ export function Hero() {
                                                 <FileText className="w-8 h-8 text-black" />
                                                 {!showResults && (
                                                     <motion.div
-                                                        className="absolute top-0 left-0 w-full h-1 bg-[#CCFF00] shadow-[0_0_15px_4px_rgba(204,255,0,0.5)] z-10"
+                                                        className="absolute top-0 left-0 w-full h-1 bg-[#00D4FF] shadow-[0_0_15px_4px_rgba(0,212,255,0.5)] z-10"
                                                         animate={{ top: ['0%', '100%', '0%'] }}
                                                         transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
                                                     />
@@ -158,7 +158,7 @@ export function Hero() {
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1 shrink-0">
-                                            <div className="px-3 py-1 bg-black text-[#CCFF00] text-xs font-mono uppercase font-bold tracking-wider">{t.hero.liveMonitor}</div>
+                                            <div className="px-3 py-1 bg-black text-[#00D4FF] text-xs font-mono uppercase font-bold tracking-wider">{t.hero.liveMonitor}</div>
                                             <span className="text-[10px] font-mono text-gray-400">{t.hero.latency}: 12ms</span>
                                         </div>
                                     </div>
@@ -174,8 +174,8 @@ export function Hero() {
                                                 <div key={step} className="flex items-center gap-5 group">
                                                     <div className={`
                                                     w-8 h-8 border-2 border-black flex items-center justify-center transition-all duration-300
-                                                    ${status === 'done' ? 'bg-black text-[#CCFF00]' :
-                                                            status === 'loading' ? 'bg-[#CCFF00] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]' : 'bg-white text-gray-300'}
+                                                    ${status === 'done' ? 'bg-black text-[#00D4FF]' :
+                                                            status === 'loading' ? 'bg-[#00D4FF] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]' : 'bg-white text-gray-300'}
                                                 `}>
                                                         <AnimatePresence mode="wait">
                                                             {status === 'done' ? (
@@ -224,7 +224,7 @@ export function Hero() {
                                             <motion.div
                                                 initial={{ opacity: 0, height: 0 }}
                                                 animate={{ opacity: 1, height: 'auto' }}
-                                                className="bg-[#CCFF00] border-2 border-black p-4 mt-4 relative overflow-hidden"
+                                                className="bg-[#00D4FF] border-2 border-black p-4 mt-4 relative overflow-hidden"
                                             >
                                                 <div className="absolute top-0 right-0 p-1 opacity-20">
                                                     <AlertCircle className="w-16 h-16" />

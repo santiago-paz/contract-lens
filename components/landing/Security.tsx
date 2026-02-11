@@ -19,7 +19,7 @@ export function Security() {
                 whileInView={{ opacity: 1, y: 0 }}
                 className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white mb-8 border-2 border-black shadow-hard-sm"
             >
-                <Shield className="w-5 h-5 text-[#CCFF00]" />
+                <Shield className="w-5 h-5 text-[#00D4FF]" />
                 <span className="text-base font-bold font-mono uppercase tracking-widest">{t.security.defenseProtocol}</span>
             </motion.div>
             
@@ -39,7 +39,7 @@ export function Security() {
                 <div className="absolute top-0 left-0 bg-black text-white text-[10px] font-mono px-2 py-1 uppercase">SEC_LAYER_01</div>
                 
                 <div className="mb-8 relative mt-4">
-                    <div className="w-20 h-20 bg-[#CCFF00] border-2 border-black flex items-center justify-center shadow-hard-sm group-hover:rotate-6 transition-transform">
+                    <div className="w-20 h-20 bg-[#00D4FF] border-2 border-black flex items-center justify-center shadow-hard-sm group-hover:rotate-6 transition-transform">
                         <Lock className="w-10 h-10 text-black" />
                     </div>
                 </div>
@@ -56,9 +56,9 @@ export function Security() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="group relative flex flex-col items-center text-center p-10 bg-black border-2 border-black shadow-hard hover:shadow-[8px_8px_0px_0px_#CCFF00] hover:-translate-y-1 transition-all duration-300"
+                className="group relative flex flex-col items-center text-center p-10 bg-black border-2 border-black shadow-hard hover:shadow-[8px_8px_0px_0px_#00D4FF] hover:-translate-y-1 transition-all duration-300"
             >
-                <div className="absolute top-0 left-0 bg-[#CCFF00] text-black text-[10px] font-mono px-2 py-1 uppercase font-bold">SEC_LAYER_02</div>
+                <div className="absolute top-0 left-0 bg-[#00D4FF] text-black text-[10px] font-mono px-2 py-1 uppercase font-bold">SEC_LAYER_02</div>
 
                 <div className="mb-8 relative mt-4">
                     <div className="w-20 h-20 bg-white border-2 border-white flex items-center justify-center shadow-hard-sm group-hover:-rotate-6 transition-transform">

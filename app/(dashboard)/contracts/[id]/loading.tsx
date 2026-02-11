@@ -82,7 +82,7 @@ export default function ContractLoading() {
         <div className="flex-1 flex flex-col min-w-0 relative z-10">
           {/* Tabs */}
           <div className="bg-white border-b border-gray-200 px-6 pt-2 flex items-center gap-1">
-            <div className="px-4 py-2 border-b-2 border-[#CCFF00]">
+            <div className="px-4 py-2 border-b-2 border-[#00D4FF]">
               <div className="h-4 w-28 bg-gray-200 rounded-sm" />
             </div>
             <div className="px-4 py-2 border-b-2 border-transparent">

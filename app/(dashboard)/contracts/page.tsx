@@ -8,7 +8,7 @@ import { ContractActions } from './ContractActions';
 function getStatusColor(status: string) {
   const s = status.toLowerCase();
   if (s === 'active' || s === 'completed' || s === 'approved') {
-    return { text: 'text-black', dot: 'bg-[#CCFF00]', bg: 'bg-[#CCFF00]/20', border: 'border-[#CCFF00]' };
+    return { text: 'text-black', dot: 'bg-[#00D4FF]', bg: 'bg-[#00D4FF]/20', border: 'border-[#00D4FF]' };
   }
   if (s === 'review' || s === 'pending' || s === 'in_progress' || s === 'draft') {
     return { text: 'text-black', dot: 'bg-yellow-400', bg: 'bg-yellow-50', border: 'border-yellow-200' };
@@ -51,7 +51,7 @@ export default async function ContractsPage() {
         </div>
         <Link 
           href="/contract-creator" 
-          className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black group"
         >
           <Plus className="w-4 h-4 group-active:text-black" />
           <span className="text-xs font-bold font-mono uppercase">New Contract</span>
@@ -98,7 +98,7 @@ export default async function ContractsPage() {
                     <tr key={contract.id} className="hover:bg-gray-50 transition-colors group relative cursor-pointer">
                       <td className="px-6 py-4">
                         <Link href={`/contracts/${contract.id}`} className="flex items-center gap-3 after:absolute after:inset-0 after:content-['']">
-                          <div className="p-2 bg-gray-100 rounded-sm text-gray-600 group-hover:bg-black group-hover:text-[#CCFF00] transition-colors">
+                          <div className="p-2 bg-gray-100 rounded-sm text-gray-600 group-hover:bg-black group-hover:text-[#00D4FF] transition-colors">
                             <FileText className="w-4 h-4" />
                           </div>
                           <div>
@@ -141,7 +141,7 @@ export default async function ContractsPage() {
             <p className="text-gray-500 mb-6 max-w-xs text-xs">Create your first contract to get started with tracking and management.</p>
             <Link 
               href="/contract-creator" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black group"
             >
               <Plus className="w-4 h-4 group-active:text-black" />
               <span className="text-xs font-bold font-mono uppercase">Create Contract</span>

@@ -219,7 +219,7 @@ const TranslationVisual = () => {
                 animate={{ top: ["-20%", "120%"] }}
                 transition={{ duration: 3, ease: "linear", repeat: Infinity }}
             >
-                <div className="w-full h-[2px] bg-[var(--accent)] shadow-[0_0_15px_2px_rgba(204,255,0,0.8)]"></div>
+                <div className="w-full h-[2px] bg-[var(--accent)] shadow-[0_0_15px_2px_rgba(0,212,255,0.8)]"></div>
             </motion.div>
         </div>
     );

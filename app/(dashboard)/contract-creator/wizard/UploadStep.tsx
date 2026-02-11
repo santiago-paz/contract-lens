@@ -19,7 +19,7 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
     <div className="w-full max-w-6xl mx-auto animate-fade-in font-mono">
       <div className="mb-8">
         <h2 className="text-2xl font-black text-black flex items-center gap-3 uppercase tracking-tighter">
-          <div className="p-2 bg-black text-[#CCFF00] border-2 border-black">
+          <div className="p-2 bg-black text-[#00D4FF] border-2 border-black">
             <FileText className="w-6 h-6" />
           </div>
           Initialize Contract
@@ -31,7 +31,7 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Main Document Upload */}
-        <div className="border-2 border-dashed border-black bg-white p-12 flex flex-col items-center justify-center text-center hover:bg-[#CCFF00]/10 transition-colors relative group">
+        <div className="border-2 border-dashed border-black bg-white p-12 flex flex-col items-center justify-center text-center hover:bg-[#00D4FF]/10 transition-colors relative group">
           <input 
             type="file" 
             ref={fileInputRef}
@@ -40,7 +40,7 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
             accept={ACCEPTED_EXTENSIONS}
           />
           
-          <div className="absolute top-0 right-0 border-l-2 border-b-2 border-black bg-black text-[#CCFF00] text-xs font-bold px-3 py-1 uppercase">Step 01</div>
+          <div className="absolute top-0 right-0 border-l-2 border-b-2 border-black bg-black text-[#00D4FF] text-xs font-bold px-3 py-1 uppercase">Step 01</div>
           
           <div className="w-48 h-48 mb-6 relative flex items-center justify-center">
              <div className="w-32 h-32 border-2 border-black flex items-center justify-center bg-white group-hover:shadow-hard transition-all">
@@ -56,7 +56,7 @@ export function UploadStep({ onFileSelect }: UploadStepProps) {
           
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="px-6 py-4 bg-black text-[#CCFF00] font-bold text-sm uppercase rounded-none border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#CCFF00] hover:text-black transition-all flex items-center gap-2"
+            className="px-6 py-4 bg-black text-[#00D4FF] font-bold text-sm uppercase rounded-none border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none hover:bg-[#00D4FF] hover:text-black transition-all flex items-center gap-2"
           >
             <Upload className="w-4 h-4" />
             Upload File

@@ -26,7 +26,7 @@ function getTimeAgo(date: Date) {
 function getStatusStyle(status: string) {
   const s = status.toLowerCase();
   if (s === 'active' || s === 'completed' || s === 'approved') {
-    return { bg: 'bg-[#CCFF00]', text: 'text-black', border: 'border-black' };
+    return { bg: 'bg-[#00D4FF]', text: 'text-black', border: 'border-black' };
   }
   if (s === 'review' || s === 'pending' || s === 'in_progress') {
     return { bg: 'bg-white', text: 'text-black', border: 'border-gray-300' };
@@ -96,7 +96,7 @@ export default async function Overview() {
       <div className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-sm">
         <div>
            <div className="flex items-center gap-2 mb-2">
-                <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-[#00D4FF] rounded-full animate-pulse"></div>
                 <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">System Online</span>
            </div>
            <h1 className="text-3xl font-black font-sans uppercase tracking-tighter text-black">
@@ -106,7 +106,7 @@ export default async function Overview() {
         </div>
         <Link 
             href="/contract-creator"
-            className="group flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
+            className="group flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black"
         >
             <span className="text-xs font-bold font-mono uppercase">Initiate Contract</span>
             <ArrowRight className="w-4 h-4 group-active:text-black" />
@@ -140,7 +140,7 @@ export default async function Overview() {
                   <div key={activity.id} className="relative flex gap-4 group">
                     <div className="w-24 text-gray-400 shrink-0 pt-0.5 text-right uppercase">{activity.time}</div>
                     <div className="relative">
-                         <div className="w-1.5 h-1.5 bg-gray-300 mt-1 z-10 relative group-hover:bg-[#CCFF00] transition-colors rounded-full"></div>
+                         <div className="w-1.5 h-1.5 bg-gray-300 mt-1 z-10 relative group-hover:bg-[#00D4FF] transition-colors rounded-full"></div>
                          {idx !== activities.length - 1 && (
                             <div className="absolute top-2.5 left-[2.5px] w-px h-[calc(100%+24px)] bg-gray-100 -z-0"></div>
                          )}
@@ -222,7 +222,7 @@ export default async function Overview() {
                     <span className="text-[10px] font-mono font-bold text-gray-500 group-hover:text-white uppercase truncate">
                       {contract.contractNumber ? `REF ${contract.contractNumber}` : contract.type}
                     </span>
-                    <div className="w-1.5 h-1.5 bg-gray-300 group-hover:bg-[#CCFF00] rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-gray-300 group-hover:bg-[#00D4FF] rounded-full"></div>
                 </div>
 
                 <div className="p-4 flex-1 flex flex-col">

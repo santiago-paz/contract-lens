@@ -52,9 +52,9 @@ export function TeamSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 border border-[#CCFF00] text-[#CCFF00] mb-6 font-mono text-xs uppercase tracking-widest"
+            className="inline-flex items-center gap-2 px-3 py-1 border border-[#00D4FF] text-[#00D4FF] mb-6 font-mono text-xs uppercase tracking-widest"
           >
-            <span className="w-2 h-2 bg-[#CCFF00] animate-pulse"></span>
+            <span className="w-2 h-2 bg-[#00D4FF] animate-pulse"></span>
             {t.teams.matrixTitle}
           </motion.div>
           
@@ -66,7 +66,7 @@ export function TeamSection() {
             className="text-5xl sm:text-7xl md:text-8xl font-black mb-8 uppercase tracking-tighter leading-[0.95] break-words hyphens-auto"
           >
             {t.teams.title} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#CCFF00] to-green-700" style={{ WebkitTextStroke: '2px #CCFF00', color: 'transparent' }}>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#00D4FF] to-green-700" style={{ WebkitTextStroke: '2px #00D4FF', color: 'transparent' }}>
               {t.teams.titleHighlight}
             </span>
           </motion.h2>
@@ -75,7 +75,7 @@ export function TeamSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-2xl text-gray-400 font-mono max-w-2xl mx-auto border-l-4 border-[#CCFF00] pl-6 text-left md:text-center md:border-l-0 md:pl-0"
+            className="text-2xl text-gray-400 font-mono max-w-2xl mx-auto border-l-4 border-[#00D4FF] pl-6 text-left md:text-center md:border-l-0 md:pl-0"
           >
             {t.teams.subtitle}
           </motion.p>
@@ -89,7 +89,7 @@ export function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-black border-2 border-white p-8 hover:bg-[#CCFF00] hover:text-black hover:border-black transition-all duration-300 group relative hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_#FFF]"
+              className="bg-black border-2 border-white p-8 hover:bg-[#00D4FF] hover:text-black hover:border-black transition-all duration-300 group relative hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_#FFF]"
             >
               <div className="absolute top-4 right-4 text-[10px] font-mono text-gray-600 group-hover:text-black uppercase">
                  SYS_MOD_{index + 1}
@@ -99,7 +99,7 @@ export function TeamSection() {
                 <team.icon className="w-7 h-7 stroke-[1.5]" />
               </div>
               <h3 className="text-2xl font-black font-mono mb-4 uppercase tracking-tighter group-hover:tracking-normal transition-all">{team.title}</h3>
-              <div className="w-8 h-1 bg-[#CCFF00] mb-4 group-hover:bg-black transition-colors"></div>
+              <div className="w-8 h-1 bg-[#00D4FF] mb-4 group-hover:bg-black transition-colors"></div>
               <p className="text-gray-400 font-mono text-sm leading-relaxed group-hover:text-black font-medium">
                 {team.desc}
               </p>
@@ -119,7 +119,7 @@ export function TeamSection() {
                 const contactForm = document.getElementById('contact-form');
                 contactForm?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-10 py-5 text-lg font-bold font-mono uppercase rounded-none text-black bg-[#CCFF00] border-2 border-[#CCFF00] hover:bg-white hover:text-black hover:border-white transition-all shadow-[4px_4px_0px_0px_#FFF] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+              className="inline-flex items-center justify-center px-10 py-5 text-lg font-bold font-mono uppercase rounded-none text-black bg-[#00D4FF] border-2 border-[#00D4FF] hover:bg-white hover:text-black hover:border-white transition-all shadow-[4px_4px_0px_0px_#FFF] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
             >
               {t.teams.cta}
             </button>

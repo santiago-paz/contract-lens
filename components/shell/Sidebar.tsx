@@ -76,7 +76,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
       )}>
         {!isCollapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#CCFF00] border border-white flex items-center justify-center">
+            <div className="w-6 h-6 bg-[#00D4FF] border border-white flex items-center justify-center">
                <span className="text-black font-mono font-bold text-xs leading-none">S</span>
             </div>
             <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Blackletter</span>
@@ -84,7 +84,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         )}
         <button
           onClick={toggleSidebar}
-          className="p-1 hover:bg-[#CCFF00] hover:text-black rounded-none border border-transparent hover:border-white transition-colors text-white"
+          className="p-1 hover:bg-[#00D4FF] hover:text-black rounded-none border border-transparent hover:border-white transition-colors text-white"
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
@@ -134,7 +134,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 transition-all group border border-transparent",
                       isActive
-                        ? "bg-[#CCFF00] text-black font-bold font-mono border-black shadow-hard-sm"
+                        ? "bg-[#00D4FF] text-black font-bold font-mono border-black shadow-hard-sm"
                         : "text-gray-500 font-mono hover:text-black hover:border-black hover:translate-x-1",
                       isCollapsed && "justify-center px-2"
                     )}
@@ -171,7 +171,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 transition-all group border border-transparent",
                       isActive
-                        ? "bg-[#CCFF00] text-black font-bold font-mono border-black shadow-hard-sm"
+                        ? "bg-[#00D4FF] text-black font-bold font-mono border-black shadow-hard-sm"
                         : "text-gray-500 font-mono hover:text-black hover:border-black hover:translate-x-1",
                       isCollapsed && "justify-center px-2"
                     )}
