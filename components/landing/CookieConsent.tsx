@@ -37,14 +37,14 @@ export function CookieConsent() {
             {/* Header */}
             <div className="flex items-center justify-between border-b-2 border-black p-3 bg-black text-white">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#CCFF00] rounded-full animate-pulse"></div>
-                <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#CCFF00]">
+                <div className="w-2 h-2 bg-[#00D4FF] rounded-full animate-pulse"></div>
+                <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#00D4FF]">
                   SYSTEM_ALERT // COOKIE_POLICY
                 </span>
               </div>
               <button
                 onClick={declineCookies}
-                className="hover:bg-[#CCFF00] hover:text-black transition-colors p-1 border border-transparent hover:border-black"
+                className="hover:bg-[#00D4FF] hover:text-black transition-colors p-1 border border-transparent hover:border-black"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -53,7 +53,7 @@ export function CookieConsent() {
             {/* Content */}
             <div className="flex gap-5 p-5">
               <div className="shrink-0 pt-1">
-                <div className="w-10 h-10 border-2 border-black flex items-center justify-center bg-[#CCFF00] shadow-hard-sm">
+                <div className="w-10 h-10 border-2 border-black flex items-center justify-center bg-[#00D4FF] shadow-hard-sm">
                   <Shield className="w-6 h-6 text-black" />
                 </div>
               </div>
@@ -77,7 +77,7 @@ export function CookieConsent() {
               </button>
               <button
                 onClick={acceptCookies}
-                className="flex-1 bg-[#CCFF00] text-black font-mono text-xs font-bold uppercase py-3 px-4 hover:bg-black hover:text-[#CCFF00] transition-colors"
+                className="flex-1 bg-[#00D4FF] text-black font-mono text-xs font-bold uppercase py-3 px-4 hover:bg-black hover:text-[#00D4FF] transition-colors"
               >
                 {t.cookieConsent.accept}
               </button>

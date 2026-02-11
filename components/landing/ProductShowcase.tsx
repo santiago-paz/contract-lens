@@ -16,7 +16,7 @@ export function ProductShowcase() {
           <h2 className="text-4xl sm:text-6xl font-black text-black tracking-tighter mb-6 uppercase">
             {t.showcase.title}
           </h2>
-          <p className="text-xl font-mono text-black max-w-2xl mx-auto border-l-4 border-[#CCFF00] pl-4">
+          <p className="text-xl font-mono text-black max-w-2xl mx-auto border-l-4 border-[#00D4FF] pl-4">
              {t.showcase.subtitle}
           </p>
         </div>
@@ -31,7 +31,7 @@ export function ProductShowcase() {
              {/* Window Controls Mockup */}
             <div className="h-10 bg-black flex items-center justify-between px-4 border-b-2 border-black">
                 <div className="flex gap-2">
-                    <div className="w-4 h-4 bg-[#CCFF00] border border-white hover:bg-white cursor-pointer transition-colors"></div>
+                    <div className="w-4 h-4 bg-[#00D4FF] border border-white hover:bg-white cursor-pointer transition-colors"></div>
                     <div className="w-4 h-4 bg-transparent border border-white hover:bg-white cursor-pointer transition-colors"></div>
                     <div className="w-4 h-4 bg-transparent border border-white hover:bg-white cursor-pointer transition-colors"></div>
                 </div>

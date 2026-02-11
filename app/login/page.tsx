@@ -31,12 +31,12 @@ export default function LoginPage() {
             <div className="bg-black text-white p-6 border-b-2 border-black">
                 <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-2">
-                        <div className="bg-[#CCFF00] text-black w-8 h-8 flex items-center justify-center border border-white">
+                        <div className="bg-[#00D4FF] text-black w-8 h-8 flex items-center justify-center border border-white">
                             <span className="font-bold font-mono text-lg leading-none">S</span>
                         </div>
                         <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Blackletter</span>
                     </div>
-                    <div className="flex items-center gap-1 px-2 py-1 bg-[#CCFF00] text-black text-[10px] font-bold font-mono uppercase">
+                    <div className="flex items-center gap-1 px-2 py-1 bg-[#00D4FF] text-black text-[10px] font-bold font-mono uppercase">
                         <ShieldCheck className="w-3 h-3" />
                         SECURE
                     </div>
@@ -44,8 +44,8 @@ export default function LoginPage() {
                 
                 <h2 className="text-2xl font-bold font-mono text-white tracking-tight uppercase">System Access</h2>
                 <div className="flex items-center gap-2 mt-2">
-                    <Terminal className="w-3 h-3 text-[#CCFF00]" />
-                    <p className="text-[#CCFF00] text-xs font-mono uppercase">AUTHENTICATION_PROTOCOL_V2</p>
+                    <Terminal className="w-3 h-3 text-[#00D4FF]" />
+                    <p className="text-[#00D4FF] text-xs font-mono uppercase">AUTHENTICATION_PROTOCOL_V2</p>
                 </div>
             </div>
 
@@ -68,7 +68,7 @@ export default function LoginPage() {
                                 required
                                 onFocus={() => setFocusedField('email')}
                                 onBlur={() => setFocusedField(null)}
-                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#00D4FF] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
                                 placeholder="ENTER IDENTIFIER..."
                             />
                         </div>
@@ -91,7 +91,7 @@ export default function LoginPage() {
                                 required
                                 onFocus={() => setFocusedField('password')}
                                 onBlur={() => setFocusedField(null)}
-                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
+                                className="w-full bg-white border-2 border-black px-3 py-3 text-black text-sm font-mono focus:bg-[#00D4FF] focus:outline-none transition-all placeholder:text-gray-400 uppercase"
                                 placeholder="ENTER KEY..."
                             />
                         </div>

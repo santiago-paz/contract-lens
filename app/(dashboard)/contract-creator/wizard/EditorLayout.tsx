@@ -159,7 +159,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                 { id: 'completed', label: 'Completed', status: 'upcoming' },
               ].map((step, index, array) => (
                 <div key={step.id} className="flex items-center">
-                  <div className={`px-3 py-1 text-xs font-bold uppercase rounded-sm transition-colors ${step.status === 'current' ? 'bg-[#CCFF00] text-black' :
+                  <div className={`px-3 py-1 text-xs font-bold uppercase rounded-sm transition-colors ${step.status === 'current' ? 'bg-[#00D4FF] text-black' :
                       step.status === 'completed' ? 'text-gray-900' : 'text-gray-400'
                     }`}>
                     {step.label}
@@ -188,7 +188,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-6 py-2 bg-black text-white text-sm font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-black text-white text-sm font-bold uppercase hover:bg-[#00D4FF] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isSaving ? (
                 <>
@@ -208,7 +208,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="px-4 py-2 bg-black text-white text-xs font-bold uppercase hover:bg-[#CCFF00] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-black text-white text-xs font-bold uppercase hover:bg-[#00D4FF] hover:text-black transition-all shadow-sm rounded-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSaving ? (
                   <>
@@ -266,7 +266,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
           {/* Tabs */}
           <div className="bg-white border-b border-gray-200 px-6 pt-2 flex items-center gap-1">
             <button
-              className="px-4 py-2 text-xs font-bold uppercase border-b-2 border-[#CCFF00] text-black"
+              className="px-4 py-2 text-xs font-bold uppercase border-b-2 border-[#00D4FF] text-black"
             >
               <div className="flex items-center gap-2">
                 <FileText className="w-3 h-3" />

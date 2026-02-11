@@ -71,7 +71,7 @@ export const PlaygroundHeader = ({
           onClick={onHydrate}
           disabled={!result?.parsed || hydrateStatus === 'loading' || hydrateStatus === 'success'}
           className={`px-4 py-1.5 border font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm
-             ${hydrateStatus === 'success' ? 'bg-[#CCFF00] text-black border-[#CCFF00]' :
+             ${hydrateStatus === 'success' ? 'bg-[#00D4FF] text-black border-[#00D4FF]' :
               !result?.parsed ? 'bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:border-black hover:text-black'}
            `}
         >
@@ -83,7 +83,7 @@ export const PlaygroundHeader = ({
         </button>
         <Link
           href="/dashboard"
-          className="px-4 py-1.5 border border-black font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm bg-black text-white hover:bg-[#CCFF00] hover:text-black hover:border-black"
+          className="px-4 py-1.5 border border-black font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm bg-black text-white hover:bg-[#00D4FF] hover:text-black hover:border-black"
         >
           Dashboard <ArrowRight className="w-3.5 h-3.5" />
         </Link>

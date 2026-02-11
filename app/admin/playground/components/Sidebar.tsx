@@ -120,7 +120,7 @@ export const Sidebar = ({
           className={`w-full py-3 px-4 font-bold uppercase text-sm tracking-wider flex items-center justify-center gap-3 transition-all rounded-sm
             ${!file || isLoading
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
-              : 'bg-black text-white border border-black hover:bg-[#CCFF00] hover:text-black active:translate-y-[1px]'
+              : 'bg-black text-white border border-black hover:bg-[#00D4FF] hover:text-black active:translate-y-[1px]'
             }`}
         >
           {isLoading ? <Clock className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}

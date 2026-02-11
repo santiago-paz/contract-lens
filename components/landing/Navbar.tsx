@@ -41,7 +41,7 @@ export function Navbar() {
     <div className="flex border-2 border-black bg-white h-10 items-center shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
       <button
         onClick={() => setLanguage('en')}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'en' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
+        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'en' ? 'bg-black text-[#00D4FF]' : 'text-black hover:bg-gray-100'
           }`}
       >
         EN
@@ -49,7 +49,7 @@ export function Navbar() {
       <div className="w-0.5 h-full bg-black" />
       <button
         onClick={() => setLanguage('de')}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'de' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
+        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'de' ? 'bg-black text-[#00D4FF]' : 'text-black hover:bg-gray-100'
           }`}
       >
         DE
@@ -64,7 +64,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="bg-[#CCFF00] border-2 border-black w-12 h-12 flex items-center justify-center shadow-hard-sm transition-transform hover:rotate-3">
+              <div className="bg-[#00D4FF] border-2 border-black w-12 h-12 flex items-center justify-center shadow-hard-sm transition-transform hover:rotate-3">
                 <Logo className="text-black" />
               </div>
               <div className="flex flex-col">
@@ -90,13 +90,13 @@ export function Navbar() {
 
               <Link
                 href="/login"
-                className="text-sm font-mono font-bold uppercase tracking-wider border-b-2 border-transparent hover:border-[#CCFF00] transition-all"
+                className="text-sm font-mono font-bold uppercase tracking-wider border-b-2 border-transparent hover:border-[#00D4FF] transition-all"
               >
                 {t.nav.signIn}
               </Link>
               <button
                 onClick={() => scrollToSection('contact-form')}
-                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
+                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#00D4FF] active:text-black"
               >
                 {t.nav.getStarted}
               </button>
@@ -140,7 +140,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center w-full py-4 text-sm font-mono font-bold uppercase border-2 border-black bg-white hover:bg-[#CCFF00] transition-colors shadow-hard-sm"
+                  className="flex items-center justify-center w-full py-4 text-sm font-mono font-bold uppercase border-2 border-black bg-white hover:bg-[#00D4FF] transition-colors shadow-hard-sm"
                 >
                   {t.nav.signIn}
                 </Link>
@@ -166,7 +166,7 @@ function NavButton({ children, onClick }: { children: React.ReactNode; onClick: 
       className="relative text-sm font-mono font-bold uppercase tracking-wide group py-1"
     >
       <span className="relative z-10">{children}</span>
-      <span className="absolute bottom-0 left-0 w-0 h-2 bg-[#CCFF00] transition-all duration-300 group-hover:w-full -z-0 opacity-70"></span>
+      <span className="absolute bottom-0 left-0 w-0 h-2 bg-[#00D4FF] transition-all duration-300 group-hover:w-full -z-0 opacity-70"></span>
     </button>
   );
 }
@@ -175,9 +175,9 @@ function MobileNavButton({ children, onClick }: { children: React.ReactNode; onC
   return (
     <button
       onClick={onClick}
-      className="w-full text-left text-3xl font-black font-mono uppercase tracking-tighter hover:text-[#CCFF00] hover:translate-x-4 transition-all duration-300 flex items-center gap-4 group"
+      className="w-full text-left text-3xl font-black font-mono uppercase tracking-tighter hover:text-[#00D4FF] hover:translate-x-4 transition-all duration-300 flex items-center gap-4 group"
     >
-      <span className="w-2 h-2 bg-black group-hover:bg-[#CCFF00] transition-colors" />
+      <span className="w-2 h-2 bg-black group-hover:bg-[#00D4FF] transition-colors" />
       {children}
     </button>
   );
