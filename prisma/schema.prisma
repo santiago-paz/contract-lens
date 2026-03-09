@@ -103,6 +103,8 @@ model Contract {
   updatedAt       DateTime @updatedAt
   tasks           Task[]
   alerts          Alert[]
+
+  @@index([userId, updatedAt(sort: Desc)], map: "idx_contract_user_updated")
 }
 
 model Task {

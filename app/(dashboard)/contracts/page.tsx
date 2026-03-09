@@ -51,21 +51,21 @@ export default async function ContractsPage({
     };
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.id as string },
-    include: {
-      contracts: {
-        where: whereClause,
-        orderBy: { updatedAt: 'desc' },
-      },
-    }
+  const contracts = await prisma.contract.findMany({
+    where: {
+      userId: session.id as string,
+      ...whereClause,
+    },
+    orderBy: { updatedAt: 'desc' },
+    select: {
+      id: true,
+      title: true,
+      contractNumber: true,
+      type: true,
+      status: true,
+      updatedAt: true,
+    },
   });
-
-  if (!user) {
-    redirect('/login');
-  }
-
-  const contracts = user.contracts;
 
   return (
     <div className="space-y-8">
