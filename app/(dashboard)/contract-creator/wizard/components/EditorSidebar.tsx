@@ -113,6 +113,8 @@ export function EditorSidebar({
       case 'Signed': return 'bg-blue-400';
       case 'Expired': return 'bg-red-500';
       case 'Review': return 'bg-orange-400';
+      case 'Completed': return 'bg-green-500';
+      case 'Archived': return 'bg-gray-500';
       default: return 'bg-gray-400';
     }
   };
@@ -477,7 +479,9 @@ export function EditorSidebar({
                   <option value="Draft">Draft</option>
                   <option value="Signed">Signed</option>
                   <option value="Active">Active</option>
+                  <option value="Completed">Completed</option>
                   <option value="Expired">Expired</option>
+                  <option value="Archived">Archived</option>
                 </select>
                 <ChevronDown className="w-4 h-4 text-gray-400 pointer-events-none flex-shrink-0" />
               </div>
