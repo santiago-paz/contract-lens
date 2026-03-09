@@ -61,6 +61,8 @@ interface EditorSidebarProps {
   // Form State
   contractTitle: string;
   setContractTitle: (val: string) => void;
+  contractPartner: string[];
+  setContractPartner: (val: string[]) => void;
   contractOwner: string[];
   setContractOwner: (val: string[]) => void;
   deputy: string[];
@@ -87,6 +89,8 @@ export function EditorSidebar({
   contractType,
   contractTitle,
   setContractTitle,
+  contractPartner,
+  setContractPartner,
   contractOwner,
   setContractOwner,
   deputy,
@@ -174,18 +178,11 @@ export function EditorSidebar({
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Counterparty
               </label>
-              <div className="relative mb-2">
-                <input 
-                  type="text"
-                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
-                  defaultValue={initialData?.contractPartner || ""}
-                  placeholder="No counterparty detected"
-                />
-              </div>
-              <button className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-black font-bold border border-gray-200 rounded-sm px-2 py-1 bg-white hover:border-black uppercase transition-all">
-                <Plus className="w-3 h-3" />
-                Add Entity
-              </button>
+              <PillInput 
+                value={contractPartner}
+                onChange={setContractPartner}
+                placeholder="Add Counterparty..."
+              />
             </div>
 
             {/* Parties — read-only chips from extraction */}
@@ -289,9 +286,8 @@ export function EditorSidebar({
                   <div className="relative">
                     <select 
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      defaultValue={initialData?.organizationalUnit || "Swiss GRC AG"}
+                      defaultValue={initialData?.organizationalUnit || "Legal"}
                     >
-                      <option value="Swiss GRC AG">Swiss GRC AG</option>
                       <option value="Sales">Sales</option>
                       <option value="Legal">Legal</option>
                     </select>
@@ -475,12 +471,10 @@ export function EditorSidebar({
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
                 >
-                  <option value="Review">Review</option>
                   <option value="Draft">Draft</option>
-                  <option value="Signed">Signed</option>
+                  <option value="Review">Review</option>
                   <option value="Active">Active</option>
                   <option value="Completed">Completed</option>
-                  <option value="Expired">Expired</option>
                   <option value="Archived">Archived</option>
                 </select>
                 <ChevronDown className="w-4 h-4 text-gray-400 pointer-events-none flex-shrink-0" />

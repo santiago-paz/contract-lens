@@ -36,14 +36,13 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     contractValue: contract.contractValue,
     // Add other fields mapping
     contractStart: contract.startDate || null,
-    comments: undefined, // We might need to map comments if stored
-    riskAssessment: null,
-    liabilityAmount: null,
-    externalReference: contract.contractNumber,
-    organizationalUnit: null,
-    confidentiality: null,
-    contractPartner: null,
-    durationType: 'Fixed-term', // Default
+    contractPartner: contract.contractPartner,
+    durationType: contract.durationType || 'Fixed-term',
+    organizationalUnit: contract.organizationalUnit,
+    confidentiality: contract.confidentiality,
+    riskAssessment: contract.riskAssessment,
+    liabilityAmount: contract.liabilityAmount,
+    comments: contract.comments || undefined,
   } as unknown as ContractAnalysis;
 
   // Prepare serializable contract object for client

@@ -58,7 +58,7 @@ export default async function Overview() {
       },
       activities: {
         orderBy: { timestamp: 'desc' },
-        take: 7
+        take: 20
       }
     }
   });
@@ -67,12 +67,34 @@ export default async function Overview() {
     redirect('/login');
   }
 
-  const activities = user.activities.map(activity => ({
-    id: activity.id,
-    text: `${activity.description} was ${activity.action}`,
-    time: getTimeAgo(activity.timestamp),
-    active: true 
-  }));
+  // Group consecutive activities
+  const groupedActivities = user.activities.reduce((acc, activity) => {
+    const last = acc[acc.length - 1];
+    
+    // Check if same description and action, and action is 'updated'
+    // We only group 'updated' actions to avoid hiding distinct creations/deletions
+    if (last && 
+        last.originalDescription === activity.description && 
+        last.originalAction === activity.action && 
+        activity.action === 'updated') {
+      
+      last.count = (last.count || 1) + 1;
+      // We keep the time of the most recent one (the first one encountered)
+      return acc;
+    }
+    
+    acc.push({
+      id: activity.id,
+      originalDescription: activity.description,
+      originalAction: activity.action,
+      text: `${activity.description} was ${activity.action}`,
+      time: getTimeAgo(activity.timestamp),
+      active: true,
+      count: 1
+    });
+    
+    return acc;
+  }, [] as any[]).slice(0, 7); // Take top 7 after grouping
 
   const contracts = user.contracts.map(contract => {
     const style = getStatusStyle(contract.status);
@@ -134,19 +156,26 @@ export default async function Overview() {
                 </div>
              </div>
              
-            {activities.length > 0 ? (
+            {groupedActivities.length > 0 ? (
               <div className="p-6 font-mono text-xs space-y-6">
-                {activities.map((activity, idx) => (
+                {groupedActivities.map((activity, idx) => (
                   <div key={activity.id} className="relative flex gap-4 group">
                     <div className="w-24 text-gray-400 shrink-0 pt-0.5 text-right uppercase">{activity.time}</div>
                     <div className="relative">
                          <div className="w-1.5 h-1.5 bg-gray-300 mt-1 z-10 relative group-hover:bg-[#CCFF00] transition-colors rounded-full"></div>
-                         {idx !== activities.length - 1 && (
+                         {idx !== groupedActivities.length - 1 && (
                             <div className="absolute top-2.5 left-[2.5px] w-px h-[calc(100%+24px)] bg-gray-100 -z-0"></div>
                          )}
                     </div>
                     <div className="flex-1 pb-1 border-b border-gray-50 group-last:border-0">
-                      <p className="text-gray-700 uppercase leading-relaxed">{activity.text}</p>
+                      <p className="text-gray-700 uppercase leading-relaxed">
+                        {activity.text}
+                        {activity.count > 1 && (
+                           <span className="ml-2 inline-flex items-center justify-center bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
+                             ×{activity.count}
+                           </span>
+                        )}
+                      </p>
                     </div>
                   </div>
                 ))}
