@@ -9,18 +9,21 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(cuid())
-  email      String     @unique
-  password   String
-  name       String?
-  avatar     String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  teamId     String?
-  team       Team?      @relation(fields: [teamId], references: [id])
-  contracts  Contract[]
-  tasks      Task[]
-  activities Activity[]
+  id              String          @id @default(cuid())
+  email           String          @unique
+  password        String
+  name            String?
+  avatar          String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  teamId          String?
+  team            Team?           @relation(fields: [teamId], references: [id])
+  contracts       Contract[]
+  tasks           Task[]
+  activities      Activity[]
+  alertsCreated   Alert[]         @relation("AlertsCreated")
+  alertResponses  AlertResponse[] @relation("AlertResponses")
+  alertEvents     AlertEvent[]    @relation("AlertEvents")
 }
 
 model Team {
@@ -99,6 +102,7 @@ model Contract {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   tasks           Task[]
+  alerts          Alert[]
 }
 
 model Task {
@@ -123,4 +127,52 @@ model Activity {
   timestamp   DateTime @default(now())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+}
+
+// ── Alerts / Alarms ────────────────────────────────────────────────────────────
+
+model Alert {
+  id            String          @id @default(cuid())
+  alarmDate     DateTime        @default(now())
+  deadline      DateTime?
+  deadlineLabel String?         // "Enddatum", "Verlängerung", etc.
+  status        String          @default("open_no_answer") // open_no_answer | open_with_answer | escalating | closed
+  note          String?         @db.Text
+
+  contractId    String
+  contract      Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  createdById   String
+  createdBy     User            @relation("AlertsCreated", fields: [createdById], references: [id])
+
+  response      AlertResponse?
+  events        AlertEvent[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model AlertResponse {
+  id            String   @id @default(cuid())
+  responseType  String   // "continue" | "terminate" | "question"
+  comment       String?  @db.Text
+
+  alertId       String   @unique
+  alert         Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  respondedById String
+  respondedBy   User     @relation("AlertResponses", fields: [respondedById], references: [id])
+
+  createdAt     DateTime @default(now())
+}
+
+model AlertEvent {
+  id          String   @id @default(cuid())
+  eventType   String   // "alarmed" | "responded" | "escalated" | "closed"
+  description String?
+
+  alertId     String
+  alert       Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation("AlertEvents", fields: [userId], references: [id])
+
+  createdAt   DateTime @default(now())
 }
