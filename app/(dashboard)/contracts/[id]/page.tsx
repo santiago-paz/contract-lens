@@ -15,8 +15,26 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
   const contract = await prisma.contract.findUnique({
     where: { 
       id: resolvedParams.id,
-      userId: session.id as string // Ensure user owns the contract
-    }
+      userId: session.id as string
+    },
+    include: {
+      alerts: {
+        include: {
+          response: {
+            include: {
+              respondedBy: { select: { id: true, name: true } },
+            },
+          },
+          events: {
+            include: {
+              user: { select: { id: true, name: true } },
+            },
+            orderBy: { createdAt: 'desc' as const },
+          },
+        },
+        orderBy: { alarmDate: 'desc' as const },
+      },
+    },
   });
 
   if (!contract) {
@@ -45,11 +63,30 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     comments: contract.comments || undefined,
   } as unknown as ContractAnalysis;
 
+  // Serialize alerts
+  const serializedAlerts = contract.alerts.map((alert) => ({
+    ...alert,
+    alarmDate: alert.alarmDate.toISOString(),
+    deadline: alert.deadline?.toISOString() ?? null,
+    createdAt: alert.createdAt.toISOString(),
+    updatedAt: alert.updatedAt.toISOString(),
+    response: alert.response
+      ? {
+          ...alert.response,
+          createdAt: alert.response.createdAt.toISOString(),
+        }
+      : null,
+    events: alert.events.map((event) => ({
+      ...event,
+      createdAt: event.createdAt.toISOString(),
+    })),
+  }));
+
   // Prepare serializable contract object for client
   const serializableContract = {
     ...contract,
-    fileData: null, // Don't pass raw Buffer
-    // fileBase64 removed - we fetch via API
+    alerts: undefined,
+    fileData: null,
     createdAt: contract.createdAt.toISOString(),
     updatedAt: contract.updatedAt.toISOString(),
   };
@@ -57,7 +94,8 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
   return (
     <ClientEditorWrapper 
       contract={serializableContract} 
-      initialData={initialData} 
+      initialData={initialData}
+      alerts={serializedAlerts}
     />
   );
 }

@@ -4,7 +4,7 @@ import { EditorLayout } from '@/app/(dashboard)/contract-creator/wizard/EditorLa
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export function ClientEditorWrapper({ contract, initialData }: { contract: any, initialData: any }) {
+export function ClientEditorWrapper({ contract, initialData, alerts = [] }: { contract: any, initialData: any, alerts?: any[] }) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
 
@@ -43,6 +43,7 @@ export function ClientEditorWrapper({ contract, initialData }: { contract: any, 
       uploadedFile={file}
       initialData={initialData}
       contractId={contract.id}
+      alerts={alerts}
     >
       <div className="p-8 prose max-w-none">
          {/* Display content if available (fallback if file preview fails or is not supported) */}

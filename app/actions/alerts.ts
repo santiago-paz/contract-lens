@@ -4,6 +4,59 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 
+export async function createAlert(
+  contractId: string,
+  data: {
+    deadline?: string;
+    deadlineLabel?: string;
+    note?: string;
+  }
+) {
+  const session = await getSession();
+  if (!session || !session.id) {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  const userId = session.id as string;
+
+  try {
+    const contract = await prisma.contract.findUnique({
+      where: { id: contractId },
+      select: { userId: true },
+    });
+
+    if (!contract || contract.userId !== userId) {
+      return { success: false, error: 'Contract not found or unauthorized' };
+    }
+
+    const alert = await prisma.alert.create({
+      data: {
+        contractId,
+        createdById: userId,
+        deadline: data.deadline ? new Date(data.deadline) : null,
+        deadlineLabel: data.deadlineLabel || null,
+        note: data.note || null,
+        status: 'open_no_answer',
+      },
+    });
+
+    await prisma.alertEvent.create({
+      data: {
+        eventType: 'alarmed',
+        alertId: alert.id,
+        userId,
+      },
+    });
+
+    revalidatePath('/alerts');
+    revalidatePath(`/contracts/${contractId}`);
+    return { success: true, alertId: alert.id };
+  } catch (error) {
+    console.error('Error creating alert:', error);
+    return { success: false, error: 'Failed to create alert' };
+  }
+}
+
 export async function respondToAlert(
   alertId: string,
   responseType: string,
@@ -57,6 +110,7 @@ export async function respondToAlert(
     ]);
 
     revalidatePath('/alerts');
+    revalidatePath(`/contracts/${alert.contractId}`);
     return { success: true };
   } catch (error) {
     console.error('Error responding to alert:', error);
@@ -97,6 +151,7 @@ export async function closeAlert(alertId: string) {
     ]);
 
     revalidatePath('/alerts');
+    revalidatePath(`/contracts/${alert.contractId}`);
     return { success: true };
   } catch (error) {
     console.error('Error closing alert:', error);
