@@ -372,8 +372,8 @@ export function AlertsClient({ alerts }: { alerts: SerializedAlert[] }) {
                         key={alert.id}
                         onClick={() => setSelectedAlert(isSelected ? null : alert)}
                         className={cn(
-                          'hover:bg-gray-50 transition-colors cursor-pointer group',
-                          isSelected && 'bg-gray-50 border-l-2 border-l-black'
+                          'hover:bg-gray-50 transition-colors cursor-pointer group border-l-2 border-transparent',
+                          isSelected && 'bg-gray-50 border-l-black'
                         )}
                       >
                         <td className="px-5 py-4 text-xs font-medium text-black font-mono">
@@ -533,7 +533,7 @@ function DetailPanel({
   };
 
   return (
-    <div className="w-80 shrink-0 border border-gray-200 border-l-0 bg-white overflow-y-auto animate-fade-in-fast">
+    <div className="w-80 shrink-0 border border-gray-200 border-l-0 bg-white overflow-y-auto animate-slide-in-right">
       {/* Panel Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h3 className="text-xs font-bold uppercase tracking-wider text-black">Details</h3>
