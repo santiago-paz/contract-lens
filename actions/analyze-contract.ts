@@ -8,6 +8,8 @@ import { extractContractData } from './contract-extraction';
 import type { ContractType } from './contract-extraction';
 import type { AnalysisOptions, AnalysisResult } from './analyze-contract.types';
 
+import { getSession } from '@/lib/auth';
+
 // ── Core pipeline ──────────────────────────────────────────────────────────────
 
 /**
@@ -23,6 +25,34 @@ export async function analyzeContract(
   file: File,
   options: AnalysisOptions = {}
 ): Promise<AnalysisResult> {
+  const session = await getSession();
+  if (!session) {
+    return {
+      success: false,
+      error: 'Unauthorized',
+      data: {
+        rawText: '',
+        parsed: null,
+        classification: 'Unknown',
+        latency: { extraction: 0, total: 0 },
+      },
+    };
+  }
+
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  if (file.size > MAX_FILE_SIZE) {
+    return {
+      success: false,
+      error: 'File too large (max 10MB)',
+      data: {
+        rawText: '',
+        parsed: null,
+        classification: 'Unknown',
+        latency: { extraction: 0, total: 0 },
+      },
+    };
+  }
+
   const startTime = performance.now();
 
   // ── Step 0: Text extraction ──────────────────────────────────────────────

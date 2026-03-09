@@ -13,7 +13,10 @@ import {
 } from '@/actions/contract-extraction';
 import type { ContractType } from '@/actions/contract-extraction';
 
+import { getSession } from '@/lib/auth';
+
 export const maxDuration = 120; // Allow up to 2 minutes for the full pipeline
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -44,6 +47,11 @@ function getSchemaForType(contractType: ContractType) {
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
   const contentType = request.headers.get('content-type') ?? '';
   if (!contentType.includes('multipart/form-data')) {
     return Response.json(
@@ -73,6 +81,10 @@ export async function POST(request: Request) {
 
   if (!file) {
     return Response.json({ error: 'No file provided' }, { status: 400 });
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    return Response.json({ error: 'File too large (max 10MB)' }, { status: 413 });
   }
 
   const encoder = new TextEncoder();

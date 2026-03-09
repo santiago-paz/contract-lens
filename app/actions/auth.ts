@@ -1,12 +1,21 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { encrypt } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function login(prevState: any, formData: FormData) {
+  // Rate limiting: 5 attempts per minute per IP
+  const ip = (await headers()).get('x-forwarded-for') || 'unknown'
+  const isAllowed = checkRateLimit(ip, 5, 60 * 1000)
+  
+  if (!isAllowed) {
+    return { message: 'Too many login attempts. Please try again in a minute.' }
+  }
+
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
