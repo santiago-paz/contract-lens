@@ -48,6 +48,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [contractOwner, setContractOwner] = useState<string[]>(splitString(initialData?.contractOwner));
   const [deputy, setDeputy] = useState<string[]>(splitString(initialData?.deputy));
   const [contractManager, setContractManager] = useState<string[]>(splitString(initialData?.contractManager));
+  const [contractPartner, setContractPartner] = useState<string[]>(splitString(initialData?.contractPartner));
   const [status, setStatus] = useState<string>(initialData?.status || "Review");
 
   const handleSave = async () => {
@@ -67,6 +68,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         contractOwner: contractOwner.length > 0 ? contractOwner.join(', ') : null,
         deputy: deputy.length > 0 ? deputy.join(', ') : null,
         contractManager: contractManager.length > 0 ? contractManager.join(', ') : null,
+        contractPartner: contractPartner.length > 0 ? contractPartner.join(', ') : null,
         // Overwrite with current state
         summary: summary,
         conditions: conditions,
@@ -245,6 +247,8 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             contractType={contractType}
             contractTitle={contractTitle}
             setContractTitle={setContractTitle}
+            contractPartner={contractPartner}
+            setContractPartner={setContractPartner}
             contractOwner={contractOwner}
             setContractOwner={setContractOwner}
             deputy={deputy}
