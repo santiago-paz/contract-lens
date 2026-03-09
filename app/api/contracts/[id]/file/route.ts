@@ -37,7 +37,7 @@ export async function GET(
 
   const decryptedData = decryptBuffer(contract.fileData);
 
-  return new NextResponse(decryptedData, {
+  return new NextResponse(decryptedData as any, {
     headers: {
       'Content-Type': contentType,
       'Content-Disposition': `attachment; filename="${contract.fileName || 'document'}"`,
