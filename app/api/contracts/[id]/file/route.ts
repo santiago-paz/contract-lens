@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { decryptBuffer } from '@/lib/encryption';
 
 export async function GET(
   request: NextRequest,
@@ -34,7 +35,9 @@ export async function GET(
   if (ext === 'pdf') contentType = 'application/pdf';
   if (ext === 'docx') contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-  return new NextResponse(contract.fileData, {
+  const decryptedData = decryptBuffer(contract.fileData);
+
+  return new NextResponse(decryptedData, {
     headers: {
       'Content-Type': contentType,
       'Content-Disposition': `attachment; filename="${contract.fileName || 'document'}"`,

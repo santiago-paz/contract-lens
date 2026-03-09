@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { ClientEditorWrapper } from './ClientEditorWrapper';
+import { decrypt } from '@/lib/encryption';
 
 export default async function ContractEditPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -45,9 +46,9 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
   const initialData: ContractAnalysis = {
     contractType: contract.type as any, // Type assertion as enum might differ
     title: contract.title,
-    summary: contract.summary || '',
+    summary: decrypt(contract.summary || ''),
     status: contract.status as any,
-    conditions: contract.conditions || undefined,
+    conditions: decrypt(contract.conditions || '') || undefined,
     contractOwner: contract.contractOwner,
     deputy: contract.deputy,
     contractManager: contract.contractManager,
@@ -85,6 +86,9 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
   // Prepare serializable contract object for client
   const serializableContract = {
     ...contract,
+    summary: decrypt(contract.summary || ''),
+    conditions: decrypt(contract.conditions || ''),
+    content: decrypt(contract.content || ''),
     alerts: undefined,
     fileData: null,
     createdAt: contract.createdAt.toISOString(),

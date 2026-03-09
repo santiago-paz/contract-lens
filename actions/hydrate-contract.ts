@@ -5,6 +5,7 @@ import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { ContractData } from '@/actions/extract-contract-data';
 import { revalidatePath } from 'next/cache';
+import { encrypt } from '@/lib/encryption';
 
 export async function hydrateContract(analysis: ContractData, contractType: string, rawText: string) {
   const session = await getSession();
@@ -35,10 +36,10 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         contractNumber,
         userId,
         fileName: 'hydrated-from-playground.txt',
-        content: rawText,
+        content: encrypt(rawText),
 
         // ── Core metadata ────────────────────────────────────────────────
-        summary: data.summary || null,
+        summary: data.summary ? encrypt(data.summary) : null,
         contractOwner: data.parties?.[0] || data.licensor || null,
         contractPartner: data.parties?.[1] || data.licensee || null,
 
