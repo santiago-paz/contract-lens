@@ -260,3 +260,60 @@ export async function getContractAlerts(contractId: string) {
     return { success: false, error: 'Failed to fetch alerts' };
   }
 }
+
+export async function getUserNotifications() {
+  const session = await getSession();
+  if (!session || !session.id) {
+    return { success: false, error: 'Unauthorized' };
+  }
+
+  const userId = session.id as string;
+
+  try {
+    // Find alerts for contracts owned by the user, that are not closed
+    const alerts = await prisma.alert.findMany({
+      where: {
+        contract: {
+          userId: userId
+        },
+        status: {
+          not: 'closed'
+        }
+      },
+      include: {
+        contract: {
+          select: {
+            id: true,
+            title: true,
+            contractNumber: true
+          }
+        },
+        createdBy: {
+            select: {
+                name: true
+            }
+        }
+      },
+      orderBy: {
+        alarmDate: 'asc' // Soonest first
+      }
+    });
+
+    const serializedAlerts = alerts.map(alert => ({
+      id: alert.id,
+      alarmDate: alert.alarmDate.toISOString(),
+      deadline: alert.deadline?.toISOString() ?? null,
+      status: alert.status,
+      contractId: alert.contractId,
+      contractTitle: alert.contract.title,
+      contractNumber: alert.contract.contractNumber,
+      createdByName: alert.createdBy.name,
+      createdAt: alert.createdAt.toISOString()
+    }));
+
+    return { success: true, notifications: serializedAlerts };
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    return { success: false, error: 'Failed to fetch notifications' };
+  }
+}
