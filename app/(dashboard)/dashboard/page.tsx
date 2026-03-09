@@ -46,19 +46,40 @@ export default async function Overview() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.id as string },
-    include: {
+    select: {
+      name: true,
       contracts: {
         orderBy: { updatedAt: 'desc' },
-        take: 4
+        take: 4,
+        select: {
+          id: true,
+          contractNumber: true,
+          title: true,
+          type: true,
+          status: true,
+        }
       },
       tasks: {
         where: { status: 'Open' },
         orderBy: { dueDate: 'asc' },
-        take: 5
+        take: 5,
+        select: {
+          id: true,
+          title: true,
+          dueDate: true,
+          status: true,
+          type: true,
+        }
       },
       activities: {
         orderBy: { timestamp: 'desc' },
-        take: 20
+        take: 20,
+        select: {
+          id: true,
+          description: true,
+          action: true,
+          timestamp: true,
+        }
       }
     }
   });
