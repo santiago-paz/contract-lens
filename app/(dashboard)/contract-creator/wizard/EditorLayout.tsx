@@ -55,6 +55,14 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [contractPartner, setContractPartner] = useState<string[]>(splitString(initialData?.contractPartner));
   const [status, setStatus] = useState<string>(initialData?.status || "Review");
 
+  // Additional controlled fields
+  const [contractValue, setContractValue] = useState(initialData?.contractValue || initialData?.liabilityCap || "");
+  const [confidentiality, setConfidentiality] = useState(initialData?.confidentiality || "");
+  const [durationType, setDurationType] = useState(initialData?.durationType || "Once-off");
+  const [contractStart, setContractStart] = useState(initialData?.contractStart || initialData?.effectiveDate || "");
+  const [riskAssessment, setRiskAssessment] = useState(initialData?.riskAssessment || "");
+  const [organizationalUnit, setOrganizationalUnit] = useState(initialData?.organizationalUnit || "Legal");
+
   const handleSave = async () => {
     setIsSaving(true);
 
@@ -78,6 +86,12 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         conditions: conditions,
         comments: comments,
         status: status,
+        contractValue,
+        confidentiality,
+        durationType,
+        contractStart,
+        riskAssessment,
+        organizationalUnit,
       };
 
       formData.append('metadata', JSON.stringify(metadata));
@@ -267,6 +281,18 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             setComments={setComments}
             status={status}
             setStatus={setStatus}
+            contractValue={contractValue}
+            setContractValue={setContractValue}
+            confidentiality={confidentiality}
+            setConfidentiality={setConfidentiality}
+            durationType={durationType}
+            setDurationType={setDurationType}
+            contractStart={contractStart}
+            setContractStart={setContractStart}
+            riskAssessment={riskAssessment}
+            setRiskAssessment={setRiskAssessment}
+            organizationalUnit={organizationalUnit}
+            setOrganizationalUnit={setOrganizationalUnit}
           />
         </div>
 
