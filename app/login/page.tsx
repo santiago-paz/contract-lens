@@ -135,7 +135,7 @@ export default function LoginPage() {
             <div className="bg-gray-50 px-8 py-4 border-t-2 border-black">
                  <div className="flex justify-between items-center text-[10px] font-mono uppercase text-gray-500">
                     <span>SECURE CONNECTION</span>
-                    <span>ENCRYPTED_SHA256</span>
+                    <span>AUTH_SECURE_BCRYPT</span>
                  </div>
             </div>
         </div>
