@@ -1,14 +1,32 @@
 'use client';
 
-import { Bell, ChevronDown, HelpCircle, Plus, Search, Terminal } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
+import { Bell, ChevronDown, HelpCircle, LogOut, Plus, Search, User } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { logout } from '@/app/actions/auth';
 
 export function TopNav({ user }: { user?: { name: string | null; email: string } | null }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const initials = user?.name 
     ? user.name.split(' ').map((n) => n[0]).join('').substring(0, 2).toUpperCase() 
     : user?.email?.substring(0, 2).toUpperCase() || '??';
 
   const displayName = user?.name || user?.email || 'User';
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
 
   return (
     <header className="h-16 bg-white border-b border-black px-6 flex items-center justify-between sticky top-0 z-10">
@@ -48,14 +66,48 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
           <HelpCircle className="w-5 h-5" />
         </button>
 
-        {/* User Profile */}
-        <button className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
-          <div className="w-8 h-8 bg-black text-[#CCFF00] flex items-center justify-center font-mono font-bold text-xs border border-black shadow-hard-sm">
-            {initials}
-          </div>
-          <span className="text-xs font-bold font-mono text-black uppercase hidden md:block">{displayName}</span>
-          <ChevronDown className="w-4 h-4 text-black hidden md:block" />
-        </button>
+        {/* User Profile Dropdown */}
+        <div className="relative ml-2 pl-2 border-l border-gray-200" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen((open) => !open)}
+            className="flex items-center gap-2 text-left w-full cursor-pointer"
+            aria-expanded={dropdownOpen}
+            aria-haspopup="true"
+            aria-label="User menu"
+          >
+            <div className="w-8 h-8 bg-black text-[#CCFF00] flex items-center justify-center font-mono font-bold text-xs border border-black shadow-hard-sm">
+              {initials}
+            </div>
+            <span className="text-xs font-bold font-mono text-black uppercase hidden md:block">{displayName}</span>
+            <ChevronDown className={cn('w-4 h-4 text-black hidden md:block transition-transform', dropdownOpen && 'rotate-180')} />
+          </button>
+          {dropdownOpen && (
+            <div
+              className="absolute right-0 top-full mt-2 w-48 bg-white border border-black shadow-hard py-1 z-50 animate-fade-in-fast"
+              role="menu"
+            >
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold uppercase text-black hover:bg-[#CCFF00] transition-colors cursor-pointer"
+                role="menuitem"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <User className="w-4 h-4" />
+                Profile
+              </Link>
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="flex w-full items-center gap-2 px-4 py-2 text-xs font-mono font-bold uppercase text-black hover:bg-[#CCFF00] transition-colors cursor-pointer"
+                role="menuitem"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign out
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
