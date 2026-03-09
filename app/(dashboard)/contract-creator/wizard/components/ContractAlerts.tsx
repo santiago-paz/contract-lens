@@ -198,7 +198,7 @@ export function ContractAlerts({
                       key={alert.id}
                       onClick={() => setSelectedAlert(isSelected ? null : alert)}
                       className={cn(
-                        'hover:bg-gray-50 transition-colors cursor-pointer',
+                        'bg-white hover:bg-gray-50 transition-colors cursor-pointer',
                         isSelected && 'bg-gray-50'
                       )}
                     >
