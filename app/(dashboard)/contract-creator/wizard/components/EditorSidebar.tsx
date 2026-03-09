@@ -77,6 +77,20 @@ interface EditorSidebarProps {
   setComments: (val: string) => void;
   status: string;
   setStatus: (val: string) => void;
+  
+  // Additional fields
+  contractValue: string;
+  setContractValue: (val: string) => void;
+  confidentiality: string;
+  setConfidentiality: (val: string) => void;
+  durationType: string;
+  setDurationType: (val: string) => void;
+  contractStart: string;
+  setContractStart: (val: string) => void;
+  riskAssessment: string;
+  setRiskAssessment: (val: string) => void;
+  organizationalUnit: string;
+  setOrganizationalUnit: (val: string) => void;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -104,7 +118,19 @@ export function EditorSidebar({
   comments,
   setComments,
   status,
-  setStatus
+  setStatus,
+  contractValue,
+  setContractValue,
+  confidentiality,
+  setConfidentiality,
+  durationType,
+  setDurationType,
+  contractStart,
+  setContractStart,
+  riskAssessment,
+  setRiskAssessment,
+  organizationalUnit,
+  setOrganizationalUnit
 }: EditorSidebarProps) {
 
   // The analysis contract type (determines which schema fields are available)
@@ -286,7 +312,8 @@ export function EditorSidebar({
                   <div className="relative">
                     <select 
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      defaultValue={initialData?.organizationalUnit || "Legal"}
+                      value={organizationalUnit}
+                      onChange={(e) => setOrganizationalUnit(e.target.value)}
                     >
                       <option value="Sales">Sales</option>
                       <option value="Legal">Legal</option>
@@ -424,7 +451,8 @@ export function EditorSidebar({
                 <input 
                   type="text"
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
-                  defaultValue={initialData?.contractValue || initialData?.liabilityCap || ""}
+                  value={contractValue}
+                  onChange={(e) => setContractValue(e.target.value)}
                   placeholder="Not specified"
                 />
               </div>
@@ -437,7 +465,8 @@ export function EditorSidebar({
               <div className="relative">
                 <select 
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                  defaultValue={initialData?.confidentiality || ""}
+                  value={confidentiality}
+                  onChange={(e) => setConfidentiality(e.target.value)}
                 >
                   <option value="">Select...</option>
                   <option value="None">None</option>
@@ -487,7 +516,8 @@ export function EditorSidebar({
               </label>
               <select 
                 className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
-                defaultValue={initialData?.durationType || "Once-off"}
+                value={durationType}
+                onChange={(e) => setDurationType(e.target.value)}
               >
                 <option value="Once-off">Once-off</option>
                 <option value="Fixed-term">Fixed-term</option>
@@ -502,7 +532,8 @@ export function EditorSidebar({
               <div className="relative">
                 <input 
                   type="date"
-                  defaultValue={initialData?.contractStart || initialData?.effectiveDate || ""}
+                  value={contractStart}
+                  onChange={(e) => setContractStart(e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                 />
               </div>
@@ -558,7 +589,8 @@ export function EditorSidebar({
                   <div className="relative">
                     <select 
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium uppercase text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      defaultValue={initialData?.riskAssessment || ""}
+                      value={riskAssessment}
+                      onChange={(e) => setRiskAssessment(e.target.value)}
                     >
                       <option value="">Select...</option>
                       <option value="Low">Low</option>
