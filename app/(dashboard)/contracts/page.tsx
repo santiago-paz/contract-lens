@@ -1,9 +1,10 @@
-import { FileIcon, FileText, Plus, Search, Filter } from 'lucide-react';
+import { FileIcon, FileText, Plus } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ContractActions } from './ContractActions';
+import { ContractFilters } from './ContractFilters';
 
 function getStatusColor(status: string) {
   const s = status.toLowerCase();
@@ -19,17 +20,42 @@ function getStatusColor(status: string) {
   return { text: 'text-gray-600', dot: 'bg-gray-400', bg: 'bg-gray-50', border: 'border-gray-200' };
 }
 
-export default async function ContractsPage() {
+export default async function ContractsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const session = await getSession();
 
   if (!session || !session.id) {
     redirect('/login');
   }
 
+  const resolvedSearchParams = await searchParams;
+  const q = typeof resolvedSearchParams.q === 'string' ? resolvedSearchParams.q : undefined;
+  const status = typeof resolvedSearchParams.status === 'string' ? resolvedSearchParams.status : undefined;
+
+  const whereClause: any = {};
+
+  if (q) {
+    whereClause.title = {
+      contains: q,
+      mode: 'insensitive',
+    };
+  }
+
+  if (status) {
+    whereClause.status = {
+      equals: status,
+      mode: 'insensitive',
+    };
+  }
+
   const user = await prisma.user.findUnique({
     where: { id: session.id as string },
     include: {
       contracts: {
+        where: whereClause,
         orderBy: { updatedAt: 'desc' },
       },
     }
@@ -59,23 +85,7 @@ export default async function ContractsPage() {
       </div>
 
       {/* Filters & Search */}
-      <div className="bg-white p-1 rounded-sm shadow-sm border border-gray-200 flex flex-col sm:flex-row gap-2 justify-between items-center">
-        <div className="relative w-full sm:w-96">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-2.5 border-0 bg-transparent text-sm focus:ring-0 placeholder:text-gray-400 placeholder:uppercase placeholder:text-xs font-medium"
-            placeholder="Search contracts..."
-          />
-        </div>
-        <div className="h-6 w-px bg-gray-200 hidden sm:block"></div>
-        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-black hover:bg-gray-50 transition-colors text-xs font-bold uppercase w-full sm:w-auto justify-center rounded-sm">
-          <Filter className="w-3 h-3" />
-          Filters
-        </button>
-      </div>
+      <ContractFilters />
 
       {/* Contracts List */}
       <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
@@ -137,15 +147,30 @@ export default async function ContractsPage() {
             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
               <FileIcon className="w-6 h-6 text-gray-300" />
             </div>
-            <h3 className="text-sm font-bold text-black uppercase mb-1">No contracts yet</h3>
-            <p className="text-gray-500 mb-6 max-w-xs text-xs">Create your first contract to get started with tracking and management.</p>
-            <Link 
-              href="/contract-creator" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
-            >
-              <Plus className="w-4 h-4 group-active:text-black" />
-              <span className="text-xs font-bold font-mono uppercase">Create Contract</span>
-            </Link>
+            {q || status ? (
+              <>
+                <h3 className="text-sm font-bold text-black uppercase mb-1">No results found</h3>
+                <p className="text-gray-500 mb-6 max-w-xs text-xs">No contracts match your current filters.</p>
+                <Link 
+                  href="/contracts" 
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-black border border-gray-200 hover:border-black shadow-sm hover:shadow-md transition-all rounded-sm"
+                >
+                  <span className="text-xs font-bold font-mono uppercase">Clear Filters</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                <h3 className="text-sm font-bold text-black uppercase mb-1">No contracts yet</h3>
+                <p className="text-gray-500 mb-6 max-w-xs text-xs">Create your first contract to get started with tracking and management.</p>
+                <Link 
+                  href="/contract-creator" 
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white border border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black group"
+                >
+                  <Plus className="w-4 h-4 group-active:text-black" />
+                  <span className="text-xs font-bold font-mono uppercase">Create Contract</span>
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
