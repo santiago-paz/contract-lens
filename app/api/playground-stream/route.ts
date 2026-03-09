@@ -12,7 +12,10 @@ import {
 import type { ContractType } from '@/actions/contract-extraction';
 import { stripThinkingTags, stripToSchema } from '@/actions/contract-extraction';
 
+import { getSession } from '@/lib/auth';
+
 export const maxDuration = 120; // Allow up to 2 minutes for the full pipeline
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -43,6 +46,11 @@ function getSchemaForType(contractType: ContractType) {
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
   const formData = await request.formData();
   const file = formData.get('file') as File | null;
   const systemPromptOverride = formData.get('systemPrompt') as string | null;
@@ -51,6 +59,10 @@ export async function POST(request: Request) {
 
   if (!file) {
     return Response.json({ error: 'No file provided' }, { status: 400 });
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    return Response.json({ error: 'File too large (max 10MB)' }, { status: 413 });
   }
 
   const temperature = temperatureStr ? parseFloat(temperatureStr) : 0;

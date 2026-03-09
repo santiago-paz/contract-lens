@@ -1,7 +1,10 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
-const secretKey = process.env.JWT_SECRET || 'your-secret-key-change-it-in-prod'
+const secretKey = process.env.JWT_SECRET
+if (!secretKey) {
+  throw new Error('FATAL: JWT_SECRET is not defined.')
+}
 const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: any) {

@@ -37,7 +37,8 @@ export async function GET(
   return new NextResponse(contract.fileData, {
     headers: {
       'Content-Type': contentType,
-      'Content-Disposition': `inline; filename="${contract.fileName || 'document'}"`,
+      'Content-Disposition': `attachment; filename="${contract.fileName || 'document'}"`,
+      'X-Content-Type-Options': 'nosniff',
     },
   });
 }
