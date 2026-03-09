@@ -56,11 +56,12 @@ export function decrypt(text: string): string {
   }
 }
 
-export function encryptBuffer(buffer: Buffer): Buffer {
+export function encryptBuffer(buffer: Uint8Array): Buffer {
   try {
+    const buf = Buffer.from(buffer);
     const iv = randomBytes(12);
     const cipher = createCipheriv(ALGORITHM, KEY, iv);
-    const encrypted = Buffer.concat([cipher.update(buffer), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(buf), cipher.final()]);
     const authTag = cipher.getAuthTag();
     // Format: IV (12) + AuthTag (16) + EncryptedData
     return Buffer.concat([iv, authTag, encrypted]);
@@ -70,22 +71,23 @@ export function encryptBuffer(buffer: Buffer): Buffer {
   }
 }
 
-export function decryptBuffer(buffer: Buffer): Buffer {
+export function decryptBuffer(buffer: Uint8Array): Buffer {
+  const buf = Buffer.from(buffer);
   // Check minimum length (IV + Tag = 28 bytes)
-  if (buffer.length < 28) {
-    return buffer; // Too short to be encrypted by us
+  if (buf.length < 28) {
+    return buf; // Too short to be encrypted by us
   }
 
   try {
-    const iv = buffer.subarray(0, 12);
-    const authTag = buffer.subarray(12, 28);
-    const encrypted = buffer.subarray(28);
+    const iv = buf.subarray(0, 12);
+    const authTag = buf.subarray(12, 28);
+    const encrypted = buf.subarray(28);
     
     const decipher = createDecipheriv(ALGORITHM, KEY, iv);
     decipher.setAuthTag(authTag);
     return Buffer.concat([decipher.update(encrypted), decipher.final()]);
   } catch (e) {
     console.error('Buffer decryption failed:', e);
-    return buffer; // Return original if fail
+    return buf; // Return original if fail
   }
 }
