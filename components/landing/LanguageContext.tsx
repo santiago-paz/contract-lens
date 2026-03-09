@@ -219,12 +219,12 @@ const translations = {
       titlePart1: "Enterprise-Grade",
       titlePart2: "Fortification",
       encryption: {
-        title: "Military-Grade Encryption",
-        desc: "AES-256 at rest and in transit. Zero-compromise data protection."
+        title: "AES-256-GCM Encryption",
+        desc: "Authenticated encryption at rest. TLS 1.3 in transit. Cryptographically isolated storage."
       },
       ai: {
-        title: "Zero-Retention Architecture",
-        desc: "Ephemeral processing. Your IP never leaves your control."
+        title: "Stateless AI Pipeline",
+        desc: "Ephemeral processing. Data is encrypted immediately post-ingestion. No model training."
       },
       hosting: {
         title: "Sovereign Infrastructure",
@@ -512,12 +512,12 @@ const translations = {
       titlePart1: "Unternehmensweite",
       titlePart2: "Absicherung",
       encryption: {
-        title: "Militärstandard-Verschlüsselung",
-        desc: "AES-256 in Ruhe und Übertragung. Kompromissloser Datenschutz."
+        title: "AES-256-GCM Verschlüsselung",
+        desc: "Authentifizierte Verschlüsselung in Ruhe. TLS 1.3 bei Übertragung. Kryptographisch isolierter Speicher."
       },
       ai: {
-        title: "Zero-Retention-Architektur",
-        desc: "Ephemere Verarbeitung. Ihr geistiges Eigentum verlässt nie Ihre Kontrolle."
+        title: "Zustandslose KI-Pipeline",
+        desc: "Ephemere Verarbeitung. Daten werden sofort nach Erfassung verschlüsselt. Kein Modelltraining."
       },
       hosting: {
         title: "Sovereign Infrastruktur",

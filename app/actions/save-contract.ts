@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { ContractAnalysis } from '@/types/contract-analysis';
+import { encrypt, encryptBuffer } from '@/lib/encryption';
 
 export async function saveContract(formData: FormData) {
   const session = await getSession();
@@ -43,6 +44,13 @@ export async function saveContract(formData: FormData) {
         return val || null;
     };
 
+    // Helper to encrypt string if present
+    const encryptIfPresent = (val: string | string[] | null | undefined) => {
+        const str = getString(val);
+        if (!str) return null;
+        return encrypt(str);
+    };
+
     // Prisma requires DbNull instead of null for Json? fields
     const jsonOrNull = (val: unknown) => val ?? Prisma.DbNull;
 
@@ -52,9 +60,9 @@ export async function saveContract(formData: FormData) {
         status: metadata.status || 'Draft',
 
         // ── Core metadata ────────────────────────────────────────────────
-        summary: metadata.summary || null,
-        conditions: getString(metadata.conditions),
-        comments: getString(metadata.comments),
+        summary: encryptIfPresent(metadata.summary),
+        conditions: encryptIfPresent(metadata.conditions),
+        comments: getString(metadata.comments), // Comments might be searched? Let's leave plaintext or encrypt? User didn't specify. Let's leave comments plaintext for now as they are "meta".
         contractOwner: metadata.contractOwner || null,
         deputy: metadata.deputy || null,
         contractManager: metadata.contractManager || null,
@@ -103,7 +111,7 @@ export async function saveContract(formData: FormData) {
         keyDates: jsonOrNull(metadata.keyDates),
 
         // ── Content ──────────────────────────────────────────────────────
-        content: content || getString(metadata.summary), 
+        content: encryptIfPresent(content || getString(metadata.summary)), 
     };
 
     // If updating existing contract
@@ -121,7 +129,7 @@ export async function saveContract(formData: FormData) {
         const updateData: any = { ...commonData };
         // Only update file fields if a new file was provided
         if (fileData) {
-            updateData.fileData = fileData as any;
+            updateData.fileData = encryptBuffer(fileData) as any;
             updateData.fileName = fileName;
         }
 
@@ -151,7 +159,7 @@ export async function saveContract(formData: FormData) {
             data: {
                 ...commonData,
                 contractNumber: contractNumber,
-                fileData: fileData as any,
+                fileData: fileData ? encryptBuffer(fileData) as any : null,
                 fileName: fileName,
                 userId: userId
             }
