@@ -5,10 +5,13 @@ import { Bell, ChevronDown, HelpCircle, LogOut, Plus, Search, User } from 'lucid
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { logout } from '@/app/actions/auth';
+import { NotificationsDropdown } from './NotificationsDropdown';
 
 export function TopNav({ user }: { user?: { name: string | null; email: string } | null }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
   const initials = user?.name 
     ? user.name.split(' ').map((n) => n[0]).join('').substring(0, 2).toUpperCase() 
@@ -21,12 +24,15 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setNotificationsOpen(false);
+      }
     }
-    if (dropdownOpen) {
+    if (dropdownOpen || notificationsOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [dropdownOpen]);
+  }, [dropdownOpen, notificationsOpen]);
 
   return (
     <header className="h-16 bg-white border-b border-black px-6 flex items-center justify-between sticky top-0 z-10">
@@ -56,11 +62,21 @@ export function TopNav({ user }: { user?: { name: string | null; email: string }
         {/* Icons */}
         <div className="h-6 w-px bg-black mx-2" />
 
-        <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors relative">
-          <Bell className="w-5 h-5" />
-          {/* TODO: Uncomment when notification system is implemented */}
-          {/* <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#CCFF00] border border-black"></span> */}
-        </button>
+        <div className="relative" ref={notificationsRef}>
+          <button
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+            className={cn(
+              "p-2 text-black border border-transparent transition-colors relative",
+              notificationsOpen ? "bg-[#CCFF00] border-black" : "hover:bg-[#CCFF00] hover:border-black"
+            )}
+          >
+            <Bell className="w-5 h-5" />
+          </button>
+          <NotificationsDropdown 
+            isOpen={notificationsOpen} 
+            onClose={() => setNotificationsOpen(false)} 
+          />
+        </div>
 
         <button className="p-2 text-black hover:bg-[#CCFF00] border border-transparent hover:border-black transition-colors">
           <HelpCircle className="w-5 h-5" />
