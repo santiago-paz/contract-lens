@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import {
   Bell,
   BellPlus,
@@ -9,7 +9,7 @@ import {
   ArrowUp,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { createAlert, respondToAlert, closeAlert } from '@/app/actions/alerts';
+import { createAlert, respondToAlert, closeAlert, getContractAlerts } from '@/app/actions/alerts';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -124,13 +124,26 @@ export function ContractAlerts({
   contractId: string;
   alerts: ContractAlert[];
 }) {
+  const [localAlerts, setLocalAlerts] = useState<ContractAlert[]>(alerts);
   const [selectedAlert, setSelectedAlert] = useState<ContractAlert | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showResponseDialog, setShowResponseDialog] = useState(false);
   const [respondingAlert, setRespondingAlert] = useState<ContractAlert | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
-  const sorted = [...alerts].sort((a, b) => {
+  // Update local alerts when props change
+  useEffect(() => {
+    setLocalAlerts(alerts);
+  }, [alerts]);
+
+  const refreshAlerts = async () => {
+    const result = await getContractAlerts(contractId);
+    if (result.success && result.alerts) {
+      setLocalAlerts(result.alerts as unknown as ContractAlert[]);
+    }
+  };
+
+  const sorted = [...localAlerts].sort((a, b) => {
     const aTime = new Date(a.alarmDate).getTime();
     const bTime = new Date(b.alarmDate).getTime();
     return sortDir === 'asc' ? aTime - bTime : bTime - aTime;
@@ -148,7 +161,7 @@ export function ContractAlerts({
         {/* Toolbar */}
         <div className="flex items-center justify-between px-6 py-3 border-b border-gray-200 bg-white shrink-0">
           <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-            {alerts.length} alert{alerts.length !== 1 ? 's' : ''}
+            {localAlerts.length} alert{localAlerts.length !== 1 ? 's' : ''}
           </div>
           <button
             onClick={() => setShowCreateDialog(true)}
@@ -260,6 +273,7 @@ export function ContractAlerts({
           alert={selectedAlert}
           onClose={() => setSelectedAlert(null)}
           onRespond={() => openResponse(selectedAlert)}
+          onRefresh={refreshAlerts}
         />
       )}
 
@@ -268,6 +282,7 @@ export function ContractAlerts({
         <CreateAlertDialog
           contractId={contractId}
           onClose={() => setShowCreateDialog(false)}
+          onRefresh={refreshAlerts}
         />
       )}
 
@@ -279,6 +294,7 @@ export function ContractAlerts({
             setShowResponseDialog(false);
             setRespondingAlert(null);
           }}
+          onRefresh={refreshAlerts}
         />
       )}
     </div>
@@ -291,10 +307,12 @@ function AlertDetailPanel({
   alert,
   onClose,
   onRespond,
+  onRefresh,
 }: {
   alert: ContractAlert;
   onClose: () => void;
   onRespond: () => void;
+  onRefresh: () => void;
 }) {
   const [isPending, startTransition] = useTransition();
   const statusColor = getStatusColor(alert.status);
@@ -302,6 +320,7 @@ function AlertDetailPanel({
   const handleClose = () => {
     startTransition(async () => {
       await closeAlert(alert.id);
+      onRefresh();
     });
   };
 
@@ -426,9 +445,11 @@ function AlertDetailPanel({
 function CreateAlertDialog({
   contractId,
   onClose,
+  onRefresh,
 }: {
   contractId: string;
   onClose: () => void;
+  onRefresh: () => void;
 }) {
   const [deadline, setDeadline] = useState('');
   const [deadlineLabel, setDeadlineLabel] = useState('');
@@ -446,6 +467,7 @@ function CreateAlertDialog({
         note: note || undefined,
       });
       if (result.success) {
+        onRefresh();
         onClose();
       } else {
         window.alert(result.error || 'Failed to create alert');
@@ -555,9 +577,11 @@ function CreateAlertDialog({
 function ResponseDialog({
   alert,
   onClose,
+  onRefresh,
 }: {
   alert: ContractAlert;
   onClose: () => void;
+  onRefresh: () => void;
 }) {
   const [responseType, setResponseType] = useState('');
   const [comment, setComment] = useState('');
@@ -577,6 +601,7 @@ function ResponseDialog({
     startTransition(async () => {
       const result = await respondToAlert(alert.id, responseType, comment || undefined);
       if (result.success) {
+        onRefresh();
         onClose();
       } else {
         window.alert(result.error || 'Failed to respond');
