@@ -2,13 +2,38 @@
 
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { extractText } from '@/lib/text-extractor';
-import { generateText, Output } from 'ai';
+import { generateText, NoObjectGeneratedError, Output } from 'ai';
 import { z } from 'zod';
 import { extractContractData } from './contract-extraction';
 import type { ContractType } from './contract-extraction';
 import type { AnalysisOptions, AnalysisResult } from './analyze-contract.types';
 
 import { getSession } from '@/lib/auth';
+
+// Helper to parse router classification from raw text
+function parseRouterClassification(text: string): string | null {
+  // Try to extract JSON from the text
+  const jsonMatch = text.match(/\{[\s\S]*?\}/);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (parsed.classification && CONTRACT_TYPES.includes(parsed.classification)) {
+        return parsed.classification;
+      }
+    } catch {
+      // Fall through to text matching
+    }
+  }
+  
+  // Try to find contract type mentioned in text
+  for (const type of CONTRACT_TYPES) {
+    if (text.includes(type)) {
+      return type;
+    }
+  }
+  
+  return null;
+}
 
 // ── Core pipeline ──────────────────────────────────────────────────────────────
 
@@ -81,24 +106,51 @@ export async function analyzeContract(
     // ── Step 1: Router (classification) ──────────────────────────────────
 
     const routerStartTime = performance.now();
-    const routerPrompt = `Analyze the first 5000 chars of the document. Classify strictly into: ${CONTRACT_TYPES.join(', ')}. If unclear, choose Other.
-
-    Document Text (First 5000 chars):
+    const routerPrompt = `Analyze the first 5000 chars of the document. Classify strictly into one of these types: ${CONTRACT_TYPES.join(', ')}.
     
-    ${text.slice(0, 5000)}`;
+Respond with ONLY a JSON object in this exact format: {"classification": "<TYPE>"}
 
-    const { output: routerResult, usage: routerUsage } = await generateText({
-      model: 'meta/llama-3.1-8b' as any,
-      output: Output.object({
-        schema: z.object({
-          classification: z.enum(CONTRACT_TYPES),
+If unclear or the document doesn't match any specific type, respond with: {"classification": "Other"}
+
+Document Text (First 5000 chars):
+
+${text.slice(0, 5000)}`;
+
+    let classification: string;
+    let routerUsage: any = { totalTokens: 0 };
+
+    try {
+      const routerResponse = await generateText({
+        model: 'meta/llama-3.1-8b' as any,
+        output: Output.object({
+          schema: z.object({
+            classification: z.enum(CONTRACT_TYPES),
+          }),
         }),
-      }),
-      prompt: routerPrompt,
-      temperature: 0,
-    });
-
-    const classification = routerResult.classification;
+        prompt: routerPrompt,
+        temperature: 0,
+      });
+      
+      classification = routerResponse.output.classification;
+      routerUsage = routerResponse.usage;
+    } catch (routerError: unknown) {
+      // Handle case where model output doesn't match schema
+      if (NoObjectGeneratedError.isInstance(routerError)) {
+        console.warn('Router classification failed to match schema, attempting fallback parse:', routerError.text?.substring(0, 200));
+        
+        const fallbackClassification = parseRouterClassification(routerError.text || '');
+        if (fallbackClassification) {
+          classification = fallbackClassification;
+          routerUsage = routerError.usage || { totalTokens: 0 };
+        } else {
+          // Default to "Other" if we can't parse the classification
+          console.warn('Fallback parse failed, defaulting to Other');
+          classification = 'Other';
+        }
+      } else {
+        throw routerError;
+      }
+    }
 
     const routerEndTime = performance.now();
     const routerLatency = Math.round(routerEndTime - routerStartTime);
