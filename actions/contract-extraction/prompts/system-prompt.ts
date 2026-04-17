@@ -1,18 +1,49 @@
 import { z } from 'zod';
 import type { ContractType } from '../types';
 import { zodSchemaToPromptString } from '../utils';
-import { PROMPT_TEMPLATES } from './templates';
+import { loadPromptConfig, type PromptConfig } from './loader';
+
+// Cache the default config in memory
+let defaultConfig: PromptConfig | null = null;
+
+function getDefaultConfig(): PromptConfig {
+  if (!defaultConfig) {
+    defaultConfig = loadPromptConfig('v1');
+  }
+  return defaultConfig;
+}
 
 /**
  * Generates a system prompt for the LLM based on the contract type and schema.
- * Includes the schema structure and type-specific extraction instructions.
+ * Reads base prompt and template instructions from the JSON config.
+ *
+ * @param contractType - The type of contract being analyzed
+ * @param schema - The Zod schema for structured output
+ * @param version - Optional prompt config version (defaults to 'v1')
  */
-export function getSystemPrompt(contractType: ContractType, schema: z.ZodObject<any>): string {
-  const specificInstructions = PROMPT_TEMPLATES[contractType] || PROMPT_TEMPLATES.Other;
+export function getSystemPrompt(
+  contractType: ContractType,
+  schema: z.ZodObject<any>,
+  version?: string
+): string {
+  const config = version ? loadPromptConfig(version) : getDefaultConfig();
+  const template = config.templates[contractType] || config.templates.Other;
   const schemaString = zodSchemaToPromptString(schema);
 
-  return `You are a Senior Legal AI specialized in contract analysis.
-Your goal is to extract structured data from the provided contract text.
+  // Build the specific instructions block
+  let contractTypeFocus = template.instructions;
+
+  // Append examples if any exist
+  if (template.examples && template.examples.length > 0) {
+    contractTypeFocus += '\n\nEXAMPLES:\n' + template.examples.join('\n\n');
+  }
+
+  // Append notes if present
+  if (template.notes) {
+    contractTypeFocus += '\n\nADDITIONAL NOTES:\n' + template.notes;
+  }
+
+  return `${config.base.role}
 
 <target_schema>
 Extract data into this exact JSON structure. The type after each field name is the expected JSON type:
@@ -22,58 +53,18 @@ ${schemaString}
 }
 
 TYPE LEGEND:
-- "boolean (true/false)": Return JSON boolean: true or false (no quotes)
-- "string": Return a JSON string in double quotes
-- "null": Return JSON null (no quotes) when information is not found
-- "enum: [...]": Return one of the listed values as a string
+${config.base.typeLegend}
 </target_schema>
 
 <extraction_rules>
-1. **Input**: Contract text is in <contract_text> tags. Search only within these tags.
-
-2. **Type Mapping** (CRITICAL - follow exactly):
-   - Fields marked "boolean (true/false)" → Return JSON boolean: true or false
-   - Fields marked "string" → Return a quoted string
-   - Fields marked "(nullable)" → Return null (not the string "null") if not found
-   - Fields marked "enum: [...]" → Return one of the exact enum values as a string
-
-3. **When Information is Missing**:
-   - For nullable fields: return null
-   - For boolean fields: return null if truly unclear (don't guess)
-   - NEVER make up information that isn't in the contract (EXCEPTION: For the "summary" field, you MUST generate a summary).
-
-4. **Special Fields**:
-   - **summary**: This is a GENERATED field. Write exactly 2 concise sentences describing what the contract does (license grant / main purpose, then key restrictions or provisions). Do not revise, elaborate, or show alternatives—output the final summary once. Do not look for a section named "Summary".
-   - **suggestedTitle**: This is a GENERATED field. Create a clear, descriptive title based on the contract type and parties. Format: "[Contract Type] - [Main Party/Subject]".
-
-5. **Schema Compliance**:
-   - Return exactly the fields shown in the schema
-   - Do not add extra fields
-   - For nested objects: return a valid JSON object, not a string
+${config.base.extractionRules}
 </extraction_rules>
 
 <contract_type_focus>
-${specificInstructions}
+${contractTypeFocus}
 </contract_type_focus>
 
 <output_format>
-CRITICAL OUTPUT REQUIREMENTS:
-- Return ONLY valid JSON. No markdown, no code blocks, no explanations, and NO reasoning or step-by-step analysis before or after the JSON.
-- Do not output any text before the opening { or after the closing }. No "Steps:", "Note:", or revision/alternative text.
-- Start response with { and end with }
-- Boolean values: true or false (lowercase, NO quotes)
-- Null values: null (NO quotes)
-- String values: "text" (WITH quotes)
-
-EXAMPLE OUTPUT STRUCTURE:
-{
-  "someBoolean": true,
-  "someString": "extracted text",
-  "missingField": null,
-  "nestedObject": {
-    "innerBoolean": false,
-    "innerString": null
-  }
-}
+${config.base.outputFormat}
 </output_format>`;
 }

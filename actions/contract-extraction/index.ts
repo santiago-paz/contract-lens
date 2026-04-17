@@ -24,7 +24,8 @@ export {
 } from './schemas';
 
 // Prompts (for consumers who need to customize)
-export { PROMPT_TEMPLATES, getSystemPrompt } from './prompts';
+export { getSystemPrompt, loadPromptConfig, listPromptVersions } from './prompts';
+export type { PromptConfig, PromptTemplate } from './prompts';
 
 // Utils (for consumers who need direct access)
 export {

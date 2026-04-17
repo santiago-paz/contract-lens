@@ -28,8 +28,11 @@ export {
   GeneralContractSchema,
 
   // Prompts
-  PROMPT_TEMPLATES,
   getSystemPrompt,
+  loadPromptConfig,
+  listPromptVersions,
+  type PromptConfig,
+  type PromptTemplate,
 
   // Utils
   zodSchemaToPromptString,
