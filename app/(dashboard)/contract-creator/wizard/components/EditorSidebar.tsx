@@ -1,22 +1,16 @@
-import { useState } from 'react';
-import { 
-  FileText, 
-  Calendar, 
-  Shield, 
-  ChevronDown, 
-  Search,
-  Plus,
-  Info,
+import {
+  FileText,
+  Calendar,
+  Shield,
+  ChevronDown,
   Layers,
-  Scale,
   Check,
   X
 } from 'lucide-react';
-import RichEditor from '@/components/RichEditor';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { CONTRACT_TYPES } from '@/lib/constants';
 import { PillInput } from './PillInput';
-import { Tooltip } from '@/components/Tooltip';
+import type { ContractFormData } from '../hooks/use-contract-form';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -38,19 +32,37 @@ function EditableField({ label, value, onChange, placeholder }: { label: string;
   );
 }
 
-/** Boolean flag display (true/false/null) */
-function BooleanFlag({ label, value }: { label: string; value: boolean | null | undefined }) {
-  if (value === null || value === undefined) return null;
+/** Toggleable boolean flag */
+function BooleanToggle({ label, value, onChange }: { label: string; value: boolean | null; onChange: (val: boolean) => void }) {
+  if (value === null) return null;
   return (
-    <div className="flex items-center justify-between py-1">
+    <button
+      type="button"
+      onClick={() => onChange(!value)}
+      className="flex items-center justify-between py-1 w-full group"
+    >
       <span className="text-[10px] font-bold text-gray-500 uppercase">{label}</span>
-      <span className={`flex items-center gap-1 text-[10px] font-bold uppercase ${value ? 'text-green-600' : 'text-gray-400'}`}>
+      <span className={`flex items-center gap-1 text-[10px] font-bold uppercase transition-colors group-hover:opacity-70 ${value ? 'text-green-600' : 'text-gray-400'}`}>
         {value ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
         {value ? 'Yes' : 'No'}
       </span>
-    </div>
+    </button>
   );
 }
+
+// ── Helpers for field keys ────────────────────────────────────────────────────
+
+type StringKey = {
+  [K in keyof ContractFormData]: ContractFormData[K] extends string ? K : never;
+}[keyof ContractFormData];
+
+type ArrayKey = {
+  [K in keyof ContractFormData]: ContractFormData[K] extends string[] ? K : never;
+}[keyof ContractFormData];
+
+type BooleanKey = {
+  [K in keyof ContractFormData]: ContractFormData[K] extends boolean | null ? K : never;
+}[keyof ContractFormData];
 
 // ── Props ──────────────────────────────────────────────────────────────────────
 
@@ -60,74 +72,10 @@ interface EditorSidebarProps {
   initialData?: ContractAnalysis | null;
   fileName: string;
   contractType: string;
-  
-  // Form State
-  contractTitle: string;
-  setContractTitle: (val: string) => void;
-  contractPartner: string[];
-  setContractPartner: (val: string[]) => void;
-  contractOwner: string[];
-  setContractOwner: (val: string[]) => void;
-  deputy: string[];
-  setDeputy: (val: string[]) => void;
-  contractManager: string[];
-  setContractManager: (val: string[]) => void;
-  summary: string;
-  setSummary: (val: string) => void;
-  conditions: string;
-  setConditions: (val: string) => void;
-  comments: string;
-  setComments: (val: string) => void;
-  status: string;
-  setStatus: (val: string) => void;
-  
-  // Additional fields
-  contractValue: string;
-  setContractValue: (val: string) => void;
-  confidentiality: string;
-  setConfidentiality: (val: string) => void;
-  durationType: string;
-  setDurationType: (val: string) => void;
-  contractStart: string;
-  setContractStart: (val: string) => void;
-  riskAssessment: string;
-  setRiskAssessment: (val: string) => void;
-  organizationalUnit: string;
-  setOrganizationalUnit: (val: string) => void;
-
-  // Contract Details (editable)
-  paymentMethod: string;
-  setPaymentMethod: (val: string) => void;
-  paymentTiming: string;
-  setPaymentTiming: (val: string) => void;
-  paymentCurrency: string;
-  setPaymentCurrency: (val: string) => void;
-  ipOwnership: string;
-  setIpOwnership: (val: string) => void;
-  indemnification: string;
-  setIndemnification: (val: string) => void;
-  liabilityCap: string;
-  setLiabilityCap: (val: string) => void;
-  terminationNoticePeriod: string;
-  setTerminationNoticePeriod: (val: string) => void;
-  confidentialityDuration: string;
-  setConfidentialityDuration: (val: string) => void;
-  jurisdiction: string;
-  setJurisdiction: (val: string) => void;
-  softwareName: string;
-  setSoftwareName: (val: string) => void;
-  licenseType: string;
-  setLicenseType: (val: string) => void;
-  licensor: string;
-  setLicensor: (val: string) => void;
-  licensee: string;
-  setLicensee: (val: string) => void;
-  usageLimits: string;
-  setUsageLimits: (val: string) => void;
-  territory: string;
-  setTerritory: (val: string) => void;
-  governingLaw: string;
-  setGoverningLaw: (val: string) => void;
+  formData: ContractFormData;
+  updateField: (key: StringKey, value: string) => void;
+  updateArrayField: (key: ArrayKey, value: string[]) => void;
+  updateBooleanField: (key: BooleanKey, value: boolean | null) => void;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -138,72 +86,12 @@ export function EditorSidebar({
   initialData,
   fileName,
   contractType,
-  contractTitle,
-  setContractTitle,
-  contractPartner,
-  setContractPartner,
-  contractOwner,
-  setContractOwner,
-  deputy,
-  setDeputy,
-  contractManager,
-  setContractManager,
-  summary,
-  setSummary,
-  conditions,
-  setConditions,
-  comments,
-  setComments,
-  status,
-  setStatus,
-  contractValue,
-  setContractValue,
-  confidentiality,
-  setConfidentiality,
-  durationType,
-  setDurationType,
-  contractStart,
-  setContractStart,
-  riskAssessment,
-  setRiskAssessment,
-  organizationalUnit,
-  setOrganizationalUnit,
-  // Contract Details
-  paymentMethod,
-  setPaymentMethod,
-  paymentTiming,
-  setPaymentTiming,
-  paymentCurrency,
-  setPaymentCurrency,
-  ipOwnership,
-  setIpOwnership,
-  indemnification,
-  setIndemnification,
-  liabilityCap,
-  setLiabilityCap,
-  terminationNoticePeriod,
-  setTerminationNoticePeriod,
-  confidentialityDuration,
-  setConfidentialityDuration,
-  jurisdiction,
-  setJurisdiction,
-  softwareName,
-  setSoftwareName,
-  licenseType,
-  setLicenseType,
-  licensor,
-  setLicensor,
-  licensee,
-  setLicensee,
-  usageLimits,
-  setUsageLimits,
-  territory,
-  setTerritory,
-  governingLaw,
-  setGoverningLaw
+  formData,
+  updateField,
+  updateArrayField,
+  updateBooleanField,
 }: EditorSidebarProps) {
 
-  // The analysis contract type (determines which schema fields are available)
   const analysisType = initialData?.contractType;
 
   const getStatusColor = (currentStatus: string) => {
@@ -219,8 +107,26 @@ export function EditorSidebar({
     }
   };
 
-  // Expiration / termination date (varies by contract type)
   const endDate = initialData?.expirationDate || initialData?.terminationDate || initialData?.renewalDate || null;
+
+  /** Shortcut: bind a BooleanToggle to a boolean key */
+  const toggle = (label: string, key: BooleanKey) => (
+    <BooleanToggle
+      label={label}
+      value={formData[key]}
+      onChange={(val) => updateBooleanField(key, val)}
+    />
+  );
+
+  /** Shortcut: bind an EditableField to a string key */
+  const field = (label: string, key: StringKey, placeholder?: string) => (
+    <EditableField
+      label={label}
+      value={formData[key]}
+      onChange={(val) => updateField(key, val)}
+      placeholder={placeholder}
+    />
+  );
 
   return (
     <div className={`w-96 bg-white flex flex-col overflow-y-auto transition-all duration-300 font-mono h-full ${isOpen ? 'translate-x-0' : '-translate-x-full absolute z-10'}`}>
@@ -254,34 +160,21 @@ export function EditorSidebar({
               <ChevronDown className="w-3 h-3 ml-auto text-gray-400" />
             </button>
           )}
-          
-          <div className="space-y-4 pl-1">
-            {/* Title — always visible */}
-            <div>
-              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
-                Contract Title *
-              </label>
-              <input 
-                type="text" 
-                value={contractTitle}
-                onChange={(e) => setContractTitle(e.target.value)}
-                className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all rounded-sm"
-              />
-            </div>
 
-            {/* Counterparty — always visible, mapped from parties */}
+          <div className="space-y-4 pl-1">
+            {field('Contract Title *', 'contractTitle')}
+
             <div>
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Counterparty
               </label>
-              <PillInput 
-                value={contractPartner}
-                onChange={setContractPartner}
+              <PillInput
+                value={formData.contractPartner}
+                onChange={(val) => updateArrayField('contractPartner', val)}
                 placeholder="Add Counterparty..."
               />
             </div>
 
-            {/* Parties — read-only chips from extraction */}
             {initialData?.parties && initialData.parties.length > 0 && (
               <div>
                 <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
@@ -297,28 +190,26 @@ export function EditorSidebar({
               </div>
             )}
 
-            {/* Summary — always visible */}
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Summary</label>
               <div className="relative">
-                <textarea 
+                <textarea
                    className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-sans text-black outline-none min-h-[100px] resize-y focus:border-black rounded-sm transition-all"
-                   value={summary}
-                   onChange={(e) => setSummary(e.target.value)}
+                   value={formData.summary}
+                   onChange={(e) => updateField('summary', e.target.value)}
                 />
               </div>
             </div>
 
-            {/* These fields are only visible after save */}
             {isSaved && (
               <>
                 <div>
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                     Owner *
                   </label>
-                  <PillInput 
-                    value={contractOwner}
-                    onChange={setContractOwner}
+                  <PillInput
+                    value={formData.contractOwner}
+                    onChange={(val) => updateArrayField('contractOwner', val)}
                     placeholder="Add Owner..."
                   />
                 </div>
@@ -327,20 +218,20 @@ export function EditorSidebar({
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                     Deputy
                   </label>
-                  <PillInput 
-                    value={deputy}
-                    onChange={setDeputy}
+                  <PillInput
+                    value={formData.deputy}
+                    onChange={(val) => updateArrayField('deputy', val)}
                     placeholder="Add Deputy..."
                   />
                 </div>
-                
+
                 <div>
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                     Manager *
                   </label>
-                  <PillInput 
-                    value={contractManager}
-                    onChange={setContractManager}
+                  <PillInput
+                    value={formData.contractManager}
+                    onChange={(val) => updateArrayField('contractManager', val)}
                     placeholder="Add Manager..."
                   />
                 </div>
@@ -349,8 +240,8 @@ export function EditorSidebar({
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                     Ref. ID
                   </label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     defaultValue={initialData?.externalReference || ""}
                     className="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-xs font-mono text-gray-500 outline-none rounded-sm"
                     readOnly={true}
@@ -363,7 +254,7 @@ export function EditorSidebar({
                     Category
                   </label>
                   <div className="relative">
-                    <select 
+                    <select
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
                       defaultValue={contractType || ''}
                     >
@@ -380,10 +271,10 @@ export function EditorSidebar({
                     Org Unit *
                   </label>
                   <div className="relative">
-                    <select 
+                    <select
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      value={organizationalUnit}
-                      onChange={(e) => setOrganizationalUnit(e.target.value)}
+                      value={formData.organizationalUnit}
+                      onChange={(e) => updateField('organizationalUnit', e.target.value)}
                     >
                       <option value="Sales">Sales</option>
                       <option value="Legal">Legal</option>
@@ -409,29 +300,29 @@ export function EditorSidebar({
               )}
             </button>
             <div className="space-y-3 pl-1">
-              {/* ── NDA-specific fields ──────────────────────────────────────── */}
+              {/* ── NDA ──────────────────────────────────────────────────────── */}
               {analysisType === 'NDA' && (
                 <>
-                  <BooleanFlag label="Mutual NDA" value={initialData.isMutual} />
-                  <EditableField label="Confidentiality Duration" value={confidentialityDuration} onChange={setConfidentialityDuration} />
-                  <EditableField label="Jurisdiction" value={jurisdiction} onChange={setJurisdiction} />
-                  
+                  {toggle('Mutual NDA', 'isMutual')}
+                  {field('Confidentiality Duration', 'confidentialityDuration')}
+                  {field('Jurisdiction', 'jurisdiction')}
+
                   {initialData.riskFlags && (
                     <div>
                       <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
                         Risk Clauses
                       </label>
                       <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1">
-                        <BooleanFlag label="Non-Solicitation" value={initialData.riskFlags.nonSolicit} />
-                        <BooleanFlag label="Non-Compete" value={initialData.riskFlags.nonCompete} />
-                        <BooleanFlag label="Liquidated Damages" value={initialData.riskFlags.liquidatedDamages} />
+                        {toggle('Non-Solicitation', 'nonSolicit')}
+                        {toggle('Non-Compete', 'nonCompete')}
+                        {toggle('Liquidated Damages', 'liquidatedDamages')}
                       </div>
                     </div>
                   )}
                 </>
               )}
 
-              {/* ── ServiceAgreement-specific fields ────────────────────────── */}
+              {/* ── ServiceAgreement ─────────────────────────────────────────── */}
               {analysisType === 'ServiceAgreement' && (
                 <>
                   <div>
@@ -439,29 +330,29 @@ export function EditorSidebar({
                       Payment Terms
                     </label>
                     <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-2">
-                      <EditableField label="Method" value={paymentMethod} onChange={setPaymentMethod} />
-                      <EditableField label="Timing" value={paymentTiming} onChange={setPaymentTiming} />
-                      <EditableField label="Currency" value={paymentCurrency} onChange={setPaymentCurrency} />
+                      {field('Method', 'paymentMethod')}
+                      {field('Timing', 'paymentTiming')}
+                      {field('Currency', 'paymentCurrency')}
                     </div>
                   </div>
-                  <EditableField label="IP Ownership" value={ipOwnership} onChange={setIpOwnership} />
-                  <EditableField label="Indemnification" value={indemnification} onChange={setIndemnification} />
-                  <EditableField label="Liability Cap" value={liabilityCap} onChange={setLiabilityCap} />
-                  <EditableField label="Termination Notice" value={terminationNoticePeriod} onChange={setTerminationNoticePeriod} />
-                  <BooleanFlag label="Auto-Renewal" value={initialData.autoRenewal} />
+                  {field('IP Ownership', 'ipOwnership')}
+                  {field('Indemnification', 'indemnification')}
+                  {field('Liability Cap', 'liabilityCap')}
+                  {field('Termination Notice', 'terminationNoticePeriod')}
+                  {toggle('Auto-Renewal', 'autoRenewal')}
                 </>
               )}
 
-              {/* ── LicenseAgreement-specific fields ────────────────────────── */}
+              {/* ── LicenseAgreement ─────────────────────────────────────────── */}
               {analysisType === 'LicenseAgreement' && (
                 <>
-                  <EditableField label="Software / Product" value={softwareName} onChange={setSoftwareName} />
-                  <EditableField label="License Type" value={licenseType} onChange={setLicenseType} />
-                  <EditableField label="Licensor" value={licensor} onChange={setLicensor} />
-                  <EditableField label="Licensee" value={licensee} onChange={setLicensee} />
-                  <EditableField label="Usage Limits" value={usageLimits} onChange={setUsageLimits} />
-                  <BooleanFlag label="Exclusive License" value={initialData.exclusivity} />
-                  <EditableField label="Territory" value={territory} onChange={setTerritory} />
+                  {field('Software / Product', 'softwareName')}
+                  {field('License Type', 'licenseType')}
+                  {field('Licensor', 'licensor')}
+                  {field('Licensee', 'licensee')}
+                  {field('Usage Limits', 'usageLimits')}
+                  {toggle('Exclusive License', 'exclusivity')}
+                  {field('Territory', 'territory')}
 
                   {initialData.auditRights && (
                     <div>
@@ -469,17 +360,23 @@ export function EditorSidebar({
                         Audit Rights
                       </label>
                       <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1">
-                        <BooleanFlag label="Can Audit" value={initialData.auditRights.canAudit} />
+                        <div className="flex items-center justify-between py-1">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase">Can Audit</span>
+                          <span className={`flex items-center gap-1 text-[10px] font-bold uppercase ${initialData.auditRights!.canAudit ? 'text-green-600' : 'text-gray-400'}`}>
+                            {initialData.auditRights!.canAudit ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            {initialData.auditRights!.canAudit ? 'Yes' : 'No'}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}
                 </>
               )}
 
-              {/* ── General contract fields ──────────────────────────────────── */}
+              {/* ── General ──────────────────────────────────────────────────── */}
               {(analysisType === 'Other' || analysisType === 'General Terms and Conditions') && (
                 <>
-                  <EditableField label="Governing Law" value={governingLaw} onChange={setGoverningLaw} />
+                  {field('Governing Law', 'governingLaw')}
                   {initialData.keyDates && initialData.keyDates.length > 0 && (
                     <div>
                       <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
@@ -498,9 +395,8 @@ export function EditorSidebar({
                 </>
               )}
 
-              {/* Jurisdiction/Governing Law (show for any type if available and not already shown) */}
               {analysisType !== 'NDA' && analysisType !== 'Other' && analysisType !== 'General Terms and Conditions' && (
-                <EditableField label="Governing Law" value={governingLaw} onChange={setGoverningLaw} />
+                field('Governing Law', 'governingLaw')
               )}
             </div>
           </div>
@@ -509,30 +405,17 @@ export function EditorSidebar({
         {/* ── Section: Financial ────────────────────────────────────────────── */}
         <div>
           <div className="space-y-4 pl-1">
-            <div>
-              <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
-                Value
-              </label>
-              <div className="relative">
-                <input 
-                  type="text"
-                  className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
-                  value={contractValue}
-                  onChange={(e) => setContractValue(e.target.value)}
-                  placeholder="Not specified"
-                />
-              </div>
-            </div>
+            {field('Value', 'contractValue')}
 
             <div>
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Confidentiality
               </label>
               <div className="relative">
-                <select 
+                <select
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                  value={confidentiality}
-                  onChange={(e) => setConfidentiality(e.target.value)}
+                  value={formData.confidentiality}
+                  onChange={(e) => updateField('confidentiality', e.target.value)}
                 >
                   <option value="">Select...</option>
                   <option value="None">None</option>
@@ -560,11 +443,11 @@ export function EditorSidebar({
                 Status *
               </label>
               <div className="flex items-center gap-2 w-full px-3 py-2 bg-white border border-gray-200 text-xs font-bold uppercase text-black rounded-sm">
-                <div className={`w-2 h-2 rounded-full ${getStatusColor(status)} flex-shrink-0`}></div>
-                <select 
+                <div className={`w-2 h-2 rounded-full ${getStatusColor(formData.status)} flex-shrink-0`}></div>
+                <select
                   className="bg-transparent outline-none w-full appearance-none uppercase text-xs font-medium"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value as any)}
+                  value={formData.status}
+                  onChange={(e) => updateField('status', e.target.value)}
                 >
                   <option value="Draft">Draft</option>
                   <option value="Review">Review</option>
@@ -575,15 +458,15 @@ export function EditorSidebar({
                 <ChevronDown className="w-4 h-4 text-gray-400 pointer-events-none flex-shrink-0" />
               </div>
             </div>
-            
+
             <div>
               <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                 Duration Type *
               </label>
-              <select 
+              <select
                 className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
-                value={durationType}
-                onChange={(e) => setDurationType(e.target.value)}
+                value={formData.durationType}
+                onChange={(e) => updateField('durationType', e.target.value)}
               >
                 <option value="Once-off">Once-off</option>
                 <option value="Fixed-term">Fixed-term</option>
@@ -596,23 +479,22 @@ export function EditorSidebar({
                 Effective Date *
               </label>
               <div className="relative">
-                <input 
+                <input
                   type="date"
-                  value={contractStart}
-                  onChange={(e) => setContractStart(e.target.value)}
+                  value={formData.contractStart}
+                  onChange={(e) => updateField('contractStart', e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none focus:border-black rounded-sm transition-all"
                 />
               </div>
             </div>
 
-            {/* End date — from expirationDate / terminationDate / renewalDate */}
             {endDate && (
               <div>
                 <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                   {initialData?.renewalDate ? 'Renewal Date' : 'End Date'}
                 </label>
                 <div className="relative">
-                  <input 
+                  <input
                     type="text"
                     defaultValue={endDate}
                     className="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-xs font-medium text-black outline-none rounded-sm"
@@ -622,18 +504,15 @@ export function EditorSidebar({
               </div>
             )}
 
-            {/* Auto-renewal indicator for service agreements */}
-            {initialData?.autoRenewal !== null && initialData?.autoRenewal !== undefined && (
-              <BooleanFlag label="Auto-Renewal" value={initialData.autoRenewal} />
-            )}
+            {formData.autoRenewal !== null && toggle('Auto-Renewal', 'autoRenewal')}
 
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Conditions</label>
               <div className="border border-gray-200 bg-white overflow-hidden rounded-sm focus-within:border-black transition-all">
-                <textarea 
+                <textarea
                   className="w-full p-2 text-xs font-sans outline-none min-h-[80px]"
-                  value={conditions}
-                  onChange={(e) => setConditions(e.target.value)}
+                  value={formData.conditions}
+                  onChange={(e) => updateField('conditions', e.target.value)}
                 />
               </div>
             </div>
@@ -653,10 +532,10 @@ export function EditorSidebar({
                 <div>
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">Risk Level</label>
                   <div className="relative">
-                    <select 
+                    <select
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium uppercase text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      value={riskAssessment}
-                      onChange={(e) => setRiskAssessment(e.target.value)}
+                      value={formData.riskAssessment}
+                      onChange={(e) => updateField('riskAssessment', e.target.value)}
                     >
                       <option value="">Select...</option>
                       <option value="Low">Low</option>
@@ -672,7 +551,7 @@ export function EditorSidebar({
                 </div>
               )}
 
-              <EditableField label="Liability Amount" value={liabilityCap} onChange={setLiabilityCap} />
+              {field('Liability Amount', 'liabilityCap')}
             </div>
           </div>
         )}
