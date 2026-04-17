@@ -1,6 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
-import { Clock, Zap, FileText, Layout, Code, Database, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { Clock, Zap, FileText, Layout, Code, Database, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface PlaygroundHeaderProps {
   result: any;
@@ -66,28 +65,20 @@ export const PlaygroundHeader = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={onHydrate}
-          disabled={!result?.parsed || hydrateStatus === 'loading' || hydrateStatus === 'success'}
-          className={`px-4 py-1.5 border font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm
-             ${hydrateStatus === 'success' ? 'bg-[#CCFF00] text-black border-[#CCFF00]' :
-              !result?.parsed ? 'bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:border-black hover:text-black'}
-           `}
-        >
-          {hydrateStatus === 'loading' && <Clock className="w-3.5 h-3.5 animate-spin" />}
-          {hydrateStatus === 'success' && <CheckCircle className="w-3.5 h-3.5" />}
-          {hydrateStatus === 'error' && <AlertCircle className="w-3.5 h-3.5" />}
-          {hydrateStatus === 'idle' && <Database className="w-3.5 h-3.5" />}
-          {hydrateStatus === 'success' ? 'Hydrated' : 'Hydrate DB'}
-        </button>
-        <Link
-          href="/dashboard"
-          className="px-4 py-1.5 border border-black font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm bg-black text-white hover:bg-[#CCFF00] hover:text-black hover:border-black"
-        >
-          Dashboard <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
-      </div>
+      <button
+        onClick={onHydrate}
+        disabled={!result?.parsed || hydrateStatus === 'loading' || hydrateStatus === 'success'}
+        className={`px-4 py-1.5 border font-bold uppercase text-[10px] flex items-center gap-2 transition-colors rounded-sm
+           ${hydrateStatus === 'success' ? 'bg-[#CCFF00] text-black border-[#CCFF00]' :
+            !result?.parsed ? 'bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:border-black hover:text-black'}
+         `}
+      >
+        {hydrateStatus === 'loading' && <Clock className="w-3.5 h-3.5 animate-spin" />}
+        {hydrateStatus === 'success' && <CheckCircle className="w-3.5 h-3.5" />}
+        {hydrateStatus === 'error' && <AlertCircle className="w-3.5 h-3.5" />}
+        {hydrateStatus === 'idle' && <Database className="w-3.5 h-3.5" />}
+        {hydrateStatus === 'success' ? 'Hydrated' : 'Hydrate DB'}
+      </button>
     </div>
   );
 };
