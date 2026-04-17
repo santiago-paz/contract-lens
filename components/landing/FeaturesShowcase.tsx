@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, FileText, Loader2 } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
@@ -124,50 +124,80 @@ const DeadlinesVisual = () => {
 // Feature 2: Translation
 const TranslationVisual = () => {
     const { t } = useLanguage();
-    const [hovered, setHovered] = useState(false);
-    
+    const [activeSection, setActiveSection] = useState(-1);
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: false, margin: "-100px" });
+
+    // Cycle through sections: -1 (idle) → 0,1,2,3,4 (translating) → 5 (all done) → pause → reset
+    useEffect(() => {
+        if (!isInView) return;
+        let timeout: NodeJS.Timeout;
+        const cycle = () => {
+            setActiveSection(-1);
+            // Stagger through each section
+            const delays = [500, 1800, 3100, 4400, 5700];
+            delays.forEach((delay, i) => {
+                setTimeout(() => setActiveSection(i), delay);
+            });
+            // Show "all done" state, then reset
+            setTimeout(() => setActiveSection(5), 7000);
+            timeout = setTimeout(cycle, 9000);
+        };
+        cycle();
+        return () => clearTimeout(timeout);
+    }, [isInView]);
+
+    const sections = [
+        { id: 'header', leftWidths: ['w-2/3'], rightWidths: ['w-2/3'], isHighlighted: false, isHeader: true },
+        { id: 'para1', leftWidths: ['w-full', 'w-full', 'w-3/4'], rightWidths: ['w-full', 'w-full', 'w-4/5'], isHighlighted: false },
+        { id: 'para2', leftWidths: ['w-11/12', 'w-full', 'w-5/6'], rightWidths: ['w-10/12', 'w-full', 'w-3/4'], isHighlighted: false },
+        { id: 'clause', leftWidths: ['w-full', 'w-2/3'], rightWidths: ['w-full', 'w-3/4'], isHighlighted: true },
+        { id: 'para3', leftWidths: ['w-full', 'w-4/5'], rightWidths: ['w-11/12', 'w-full'], isHighlighted: false },
+    ];
+
     return (
-        <div 
-            className="w-full h-full flex flex-col sm:flex-row relative overflow-hidden cursor-crosshair bg-noise"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-        >
+        <div ref={ref} className="w-full h-full flex flex-col sm:flex-row relative overflow-hidden bg-noise">
             {/* Left: Original */}
             <div className="w-full sm:w-1/2 h-1/2 sm:h-full bg-white p-6 sm:p-8 border-b-2 sm:border-b-0 sm:border-r-2 border-black flex flex-col relative">
                 <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-gray-100 pb-2 shrink-0">
                      <h5 className="text-xs font-bold font-mono uppercase text-gray-400">{t.features.translation.visual.original}</h5>
                      <div className="w-2 h-2 bg-black rounded-full"></div>
                 </div>
-                <div className="space-y-3 opacity-100 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed select-none blur-[0.5px] flex flex-col justify-center">
-                    {/* Header */}
-                    <div className="h-4 w-2/3 bg-black rounded-none mb-2"></div>
-                    
-                    {/* Para 1 */}
-                    <div className="space-y-1.5">
-                        <div className="h-2 w-full bg-gray-300 rounded-none"></div>
-                        <div className="h-2 w-full bg-gray-300 rounded-none"></div>
-                        <div className="h-2 w-3/4 bg-gray-300 rounded-none"></div>
-                    </div>
-
-                    {/* Para 2 */}
-                    <div className="space-y-1.5">
-                        <div className="h-2 w-11/12 bg-gray-300 rounded-none"></div>
-                        <div className="h-2 w-full bg-gray-300 rounded-none"></div>
-                        <div className="h-2 w-5/6 bg-gray-300 rounded-none"></div>
-                    </div>
-
-                    {/* Highlighted Section */}
-                    <div className="space-y-1.5 pt-1 relative">
-                        <div className="absolute -left-2 top-0 w-1 h-full bg-[var(--accent)]"></div>
-                        <div className="h-2 w-full bg-black rounded-none"></div>
-                        <div className="h-2 w-2/3 bg-black rounded-none"></div>
-                    </div>
-
-                    {/* Para 3 */}
-                    <div className="space-y-1.5">
-                         <div className="h-2 w-full bg-gray-300 rounded-none"></div>
-                         <div className="h-2 w-4/5 bg-gray-300 rounded-none"></div>
-                    </div>
+                <div className="space-y-4 flex-1 overflow-hidden font-mono select-none blur-[0.5px] flex flex-col justify-center">
+                    {sections.map((section, i) => {
+                        const isActive = activeSection === i;
+                        const isPast = activeSection > i;
+                        return (
+                            <div key={section.id} className={`relative ${section.isHeader ? 'mb-1' : ''}`}>
+                                {/* Active reading highlight */}
+                                <motion.div
+                                    className="absolute -inset-x-2 -inset-y-1 bg-[var(--accent)]/15 border-l-2 border-[var(--accent)] pointer-events-none"
+                                    initial={false}
+                                    animate={{ opacity: isActive ? 1 : 0 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                                <div className={`space-y-2.5 relative ${section.isHighlighted ? 'pt-1' : ''}`}>
+                                    {section.isHighlighted && (
+                                        <div className="absolute -left-2 top-0 w-1 h-full bg-[var(--accent)]"></div>
+                                    )}
+                                    {section.leftWidths.map((w, j) => (
+                                        <motion.div
+                                            key={j}
+                                            className={`${section.isHeader ? 'h-5' : 'h-3'} ${w} rounded-none ${
+                                                section.isHighlighted ? 'bg-black' : isPast || isActive ? 'bg-gray-400' : 'bg-gray-300'
+                                            }`}
+                                            animate={{
+                                                backgroundColor: isActive
+                                                    ? section.isHighlighted ? '#000' : '#9ca3af'
+                                                    : section.isHighlighted ? '#000' : '#d1d5db'
+                                            }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
@@ -176,51 +206,65 @@ const TranslationVisual = () => {
                 <div className="h-8 flex items-center mb-4 justify-between border-b-2 border-black pb-2 shrink-0">
                     <h5 className="text-xs font-bold font-mono uppercase bg-[var(--accent)] text-black inline-block px-2 border border-black">{t.features.translation.visual.translated}</h5>
                 </div>
-                <div className="space-y-3 flex-1 overflow-hidden font-mono text-[10px] leading-relaxed flex flex-col justify-center">
-                     {/* Header */}
-                    <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-4 w-2/3 bg-black rounded-none mb-2 transition-opacity"></motion.div>
-
-                    {/* Para 1 */}
-                    <div className="space-y-1.5">
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-4/5 bg-black rounded-none transition-opacity"></motion.div>
-                    </div>
-
-                    {/* Para 2 */}
-                    <div className="space-y-1.5">
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-10/12 bg-black rounded-none transition-opacity"></motion.div>
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-3/4 bg-black rounded-none transition-opacity"></motion.div>
-                    </div>
-
-                    {/* Highlighted Section */}
-                    <div className="space-y-1.5 pt-1 relative">
-                        <motion.div 
-                            className="absolute -left-4 top-0 w-1 h-full bg-[var(--accent)]"
-                            initial={{ height: 0 }}
-                            animate={{ height: hovered ? '100%' : '0%' }}
-                        />
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-[var(--accent)] border border-black rounded-none transition-opacity"></motion.div>
-                        <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-3/4 bg-[var(--accent)] border border-black rounded-none transition-opacity"></motion.div>
-                    </div>
-
-                     {/* Para 3 */}
-                    <div className="space-y-1.5">
-                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-11/12 bg-black rounded-none transition-opacity"></motion.div>
-                         <motion.div animate={{ opacity: hovered ? 1 : 0.4 }} className="h-2 w-full bg-black rounded-none transition-opacity"></motion.div>
-                    </div>
+                <div className="space-y-4 flex-1 overflow-hidden font-mono flex flex-col justify-center">
+                    {sections.map((section, i) => {
+                        const isTranslated = activeSection > i || activeSection === 5;
+                        const isTranslating = activeSection === i;
+                        return (
+                            <div key={section.id} className={`relative ${section.isHeader ? 'mb-1' : ''}`}>
+                                <div className={`space-y-2.5 relative ${section.isHighlighted ? 'pt-1' : ''}`}>
+                                    {section.isHighlighted && (
+                                        <motion.div
+                                            className="absolute -left-4 top-0 w-1 bg-[var(--accent)]"
+                                            initial={false}
+                                            animate={{ height: isTranslated ? '100%' : '0%' }}
+                                            transition={{ duration: 0.4 }}
+                                        />
+                                    )}
+                                    {section.rightWidths.map((w, j) => (
+                                        <div key={j} className="relative">
+                                            {/* Shimmer effect while translating */}
+                                            {isTranslating && (
+                                                <motion.div
+                                                    className={`absolute inset-0 ${section.isHeader ? 'h-5' : 'h-3'} bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]`}
+                                                    animate={{ backgroundPosition: ['200% 0', '-200% 0'] }}
+                                                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                                                />
+                                            )}
+                                            <motion.div
+                                                className={`${section.isHeader ? 'h-5' : 'h-3'} ${w} rounded-none relative ${
+                                                    section.isHighlighted
+                                                        ? 'bg-[var(--accent)] border border-black'
+                                                        : 'bg-black'
+                                                }`}
+                                                initial={false}
+                                                animate={{
+                                                    opacity: isTranslated ? 1 : isTranslating ? 0.3 : 0.08,
+                                                    scaleX: isTranslated ? 1 : isTranslating ? 0.95 : 1,
+                                                }}
+                                                transition={{
+                                                    duration: 0.5,
+                                                    delay: isTranslated ? j * 0.1 : 0,
+                                                }}
+                                                style={{ transformOrigin: 'left' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
-            {/* Scanning Effect - Sophisticated */}
-            <motion.div 
-                className="absolute left-0 w-full h-[15%] bg-gradient-to-b from-transparent via-[var(--accent)]/20 to-transparent z-20 pointer-events-none flex items-center"
-                animate={{ top: ["-20%", "120%"] }}
-                transition={{ duration: 3, ease: "linear", repeat: Infinity }}
-            >
-                <div className="w-full h-[2px] bg-[var(--accent)] shadow-[0_0_15px_2px_rgba(204,255,0,0.8)]"></div>
-            </motion.div>
+            {/* Reading cursor on the left side */}
+            {activeSection >= 0 && activeSection < 5 && (
+                <motion.div
+                    className="absolute left-0 sm:w-1/2 w-full h-[2px] bg-[var(--accent)] z-20 pointer-events-none shadow-[0_0_10px_2px_rgba(204,255,0,0.6)]"
+                    layoutId="readingCursor"
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                />
+            )}
         </div>
     );
 };
