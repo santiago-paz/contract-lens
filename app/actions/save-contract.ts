@@ -2,19 +2,20 @@
 
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { encrypt, encryptBuffer } from '@/lib/encryption';
+import { hasPermission, canModifyOthersResource } from '@/lib/permissions';
 
 export async function saveContract(formData: FormData) {
-  const session = await getSession();
-  
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  const userId = session.userId;
 
   try {
     const file = formData.get('file') as File | null;
@@ -117,14 +118,22 @@ export async function saveContract(formData: FormData) {
 
     // If updating existing contract
     if (contractId) {
-        // Verify ownership
+        if (!hasPermission(session.role, 'contract:update')) {
+            return { success: false, error: 'Insufficient permissions' };
+        }
+
         const existingContract = await prisma.contract.findUnique({
             where: { id: contractId },
-            select: { userId: true }
+            select: { userId: true, organizationId: true }
         });
 
-        if (!existingContract || existingContract.userId !== userId) {
+        if (!existingContract || existingContract.organizationId !== session.orgId) {
              return { success: false, error: 'Contract not found or unauthorized' };
+        }
+
+        // Members can only edit their own contracts
+        if (session.role === 'member' && existingContract.userId !== userId) {
+            return { success: false, error: 'You can only edit your own contracts' };
         }
 
         const updateData: any = { ...commonData };
@@ -155,6 +164,10 @@ export async function saveContract(formData: FormData) {
 
     } else {
         // Creating new contract
+        if (!hasPermission(session.role, 'contract:create')) {
+            return { success: false, error: 'Insufficient permissions' };
+        }
+
         const contractNumber = metadata.externalReference || `CNT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
         const contract = await prisma.contract.create({
@@ -163,7 +176,8 @@ export async function saveContract(formData: FormData) {
                 contractNumber: contractNumber,
                 fileData: fileData ? encryptBuffer(fileData) as any : null,
                 fileName: fileName,
-                userId: userId
+                userId: userId,
+                organizationId: session.orgId,
             }
         });
 

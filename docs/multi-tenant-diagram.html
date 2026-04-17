@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SplitBerlin - Multi-tenant Architecture</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 2rem;
+    }
+    h1 { text-align: center; margin-bottom: 0.5rem; font-size: 1.8rem; color: #f8fafc; }
+    .subtitle { text-align: center; color: #94a3b8; margin-bottom: 2rem; font-size: 0.95rem; }
+    .diagram-container {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid #334155;
+    }
+    .diagram-container h2 {
+      color: #38bdf8;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    .mermaid { display: flex; justify-content: center; }
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .role-table th, .role-table td {
+      padding: 0.6rem 1rem;
+      text-align: center;
+      border: 1px solid #334155;
+      font-size: 0.85rem;
+    }
+    .role-table th {
+      background: #334155;
+      color: #f8fafc;
+      font-weight: 600;
+    }
+    .role-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+    .yes { color: #4ade80; font-weight: bold; }
+    .no { color: #475569; }
+    .own { color: #fbbf24; font-size: 0.75rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<h1>SplitBerlin - Arquitectura Multi-tenant</h1>
+<p class="subtitle">Organizaciones, Teams, Roles y Permisos</p>
+
+<!-- ER Diagram -->
+<div class="diagram-container">
+  <h2>Modelo de Datos</h2>
+  <pre class="mermaid">
+erDiagram
+    Organization ||--o{ Membership : "tiene"
+    Organization ||--o{ Team : "tiene"
+    Organization ||--o{ Contract : "tiene"
+    Organization ||--o{ Invitation : "tiene"
+
+    User ||--o{ Membership : "pertenece"
+    User ||--o{ TeamMember : "participa"
+    User ||--o{ Contract : "crea"
+    User ||--o{ Task : "asignado"
+    User ||--o{ Invitation : "invita"
+
+    Team ||--o{ TeamMember : "miembros"
+
+    Contract ||--o{ Task : "tiene"
+    Contract ||--o{ Alert : "tiene"
+
+    Alert ||--o| AlertResponse : "respuesta"
+    Alert ||--o{ AlertEvent : "eventos"
+
+    Organization {
+        string id PK
+        string name
+        string slug UK
+    }
+    Membership {
+        string id PK
+        string role "owner|admin|manager|member|viewer"
+        string userId FK
+        string organizationId FK
+    }
+    Team {
+        string id PK
+        string name
+        string organizationId FK
+    }
+    TeamMember {
+        string id PK
+        string userId FK
+        string teamId FK
+    }
+    User {
+        string id PK
+        string email UK
+        string name
+    }
+    Contract {
+        string id PK
+        string contractNumber
+        string title
+        string status
+        string userId FK
+        string organizationId FK
+    }
+    Invitation {
+        string id PK
+        string email
+        string role
+        string token UK
+        datetime expiresAt
+    }
+  </pre>
+</div>
+
+<div class="grid">
+
+  <!-- Flow Diagram -->
+  <div class="diagram-container">
+    <h2>Flujo: Crear Organizacion</h2>
+    <pre class="mermaid">
+flowchart TD
+    A[Usuario se registra] --> B[Entra a /setup-organization]
+    B --> C[Ingresa nombre de org]
+    C --> D[createOrganization action]
+    D --> E[Genera slug unico]
+    E --> F[Crea Organization en DB]
+    F --> G[Crea Membership con rol owner]
+    G --> H[Re-genera JWT con orgId + role]
+    H --> I[Redirect a /dashboard]
+
+    style A fill:#1e40af,stroke:#3b82f6,color:#fff
+    style D fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style F fill:#059669,stroke:#34d399,color:#fff
+    style G fill:#059669,stroke:#34d399,color:#fff
+    style I fill:#0891b2,stroke:#22d3ee,color:#fff
+    </pre>
+  </div>
+
+  <!-- Invitation Flow -->
+  <div class="diagram-container">
+    <h2>Flujo: Invitar Usuarios</h2>
+    <pre class="mermaid">
+flowchart TD
+    A[Owner/Admin crea Invitation] --> B[email + role + token + expiry]
+    B --> C[Se envia link con token]
+    C --> D[Invitado hace click]
+    D --> E{Tiene cuenta?}
+    E -->|Si| F[acceptInvitation - token]
+    E -->|No| G[Registro primero]
+    G --> F
+    F --> H{Token valido y no expirado?}
+    H -->|Si| I[Crea Membership con rol asignado]
+    H -->|No| J[Error: token invalido/expirado]
+    I --> K[Re-genera JWT con nueva org]
+    K --> L[Redirect a /dashboard]
+
+    style A fill:#1e40af,stroke:#3b82f6,color:#fff
+    style I fill:#059669,stroke:#34d399,color:#fff
+    style J fill:#dc2626,stroke:#f87171,color:#fff
+    style L fill:#0891b2,stroke:#22d3ee,color:#fff
+    </pre>
+  </div>
+
+</div>
+
+<!-- Permissions Table -->
+<div class="diagram-container">
+  <h2>Matriz de Permisos por Rol</h2>
+  <table class="role-table">
+    <thead>
+      <tr>
+        <th>Permiso</th>
+        <th>owner</th>
+        <th>admin</th>
+        <th>manager</th>
+        <th>member</th>
+        <th>viewer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>contract:create</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>contract:read</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td>
+      </tr>
+      <tr>
+        <td>contract:update</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td><span class="own">solo propios</span></td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>contract:delete</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>alert:create</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>alert:respond / close</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>task:create / update</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td><span class="own">solo propios</span></td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>org:manage / invite / remove</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>org:delete</td>
+        <td class="yes">&#10003;</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="no">&mdash;</td>
+      </tr>
+      <tr>
+        <td>team:manage</td>
+        <td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="no">&mdash;</td><td class="no">&mdash;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Session Diagram -->
+<div class="diagram-container">
+  <h2>Sesion JWT</h2>
+  <pre class="mermaid">
+flowchart LR
+    JWT["JWT Cookie (auth_session)"]
+    JWT --> id["id: userId"]
+    JWT --> email["email"]
+    JWT --> name["name"]
+    JWT --> orgId["orgId: organizationId"]
+    JWT --> orgSlug["orgSlug"]
+    JWT --> role["role: owner|admin|..."]
+
+    orgId --> Filter["Filtra contratos, tasks, alerts por orgId"]
+    role --> Perms["Verifica permisos con hasPermission()"]
+
+    style JWT fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style Filter fill:#059669,stroke:#34d399,color:#fff
+    style Perms fill:#0891b2,stroke:#22d3ee,color:#fff
+  </pre>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#1e40af',
+      primaryTextColor: '#f8fafc',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#64748b',
+      secondaryColor: '#334155',
+      tertiaryColor: '#1e293b',
+      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
+    }
+  });
+</script>
+
+</body>
+</html>

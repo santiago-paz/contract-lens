@@ -1,6 +1,6 @@
 import { FileIcon, FileText, Plus } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ContractActions } from './ContractActions';
@@ -25,9 +25,9 @@ export default async function ContractsPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const session = await getSession();
+  const session = await getSessionWithOrg();
 
-  if (!session || !session.id) {
+  if (!session) {
     redirect('/login');
   }
 
@@ -53,7 +53,8 @@ export default async function ContractsPage({
 
   const contracts = await prisma.contract.findMany({
     where: {
-      userId: session.id as string,
+      organizationId: session.orgId,
+      userId: session.userId,
       ...whereClause,
     },
     orderBy: { updatedAt: 'desc' },

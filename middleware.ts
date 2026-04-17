@@ -40,6 +40,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  // 5. If authenticated but no organization, redirect to setup
+  if (!session.orgId && !pathname.startsWith('/setup-organization')) {
+    return NextResponse.redirect(new URL('/setup-organization', request.url))
+  }
+
   return NextResponse.next()
 }
 

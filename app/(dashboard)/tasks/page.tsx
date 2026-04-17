@@ -1,16 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { TasksClient } from './TasksClient';
 
 export default async function TasksPage() {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     redirect('/login');
   }
 
   const tasks = await prisma.task.findMany({
-    where: { userId: session.id as string },
+    where: { userId: session.userId },
     include: {
       contract: {
         select: {

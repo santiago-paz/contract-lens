@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { decryptBuffer } from '@/lib/encryption';
 
@@ -7,17 +7,17 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getSession();
-  
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+
+  if (!session) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
   const resolvedParams = await params;
   const contract = await prisma.contract.findUnique({
-    where: { 
+    where: {
       id: resolvedParams.id,
-      userId: session.id as string
+      organizationId: session.orgId,
     },
     select: {
       fileData: true,

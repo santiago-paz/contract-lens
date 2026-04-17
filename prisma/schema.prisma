@@ -8,6 +8,59 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+// ── Organization (top-level tenant) ────────────────────────────────────────
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members     Membership[]
+  teams       Team[]
+  contracts   Contract[]
+  invitations Invitation[]
+}
+
+// ── Membership (User <-> Organization + role) ──────────────────────────────
+
+model Membership {
+  id             String       @id @default(cuid())
+  role           String       @default("member") // owner | admin | manager | member | viewer
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+// ── Invitation ─────────────────────────────────────────────────────────────
+
+model Invitation {
+  id             String    @id @default(cuid())
+  email          String
+  role           String    @default("member")
+  token          String    @unique @default(cuid())
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedById    String
+  invitedBy      User         @relation("InvitationsSent", fields: [invitedById], references: [id])
+
+  @@unique([email, organizationId])
+}
+
+// ── User ───────────────────────────────────────────────────────────────────
+
 model User {
   id              String          @id @default(cuid())
   email           String          @unique
@@ -16,31 +69,58 @@ model User {
   avatar          String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
-  teamId          String?
-  team            Team?           @relation(fields: [teamId], references: [id])
+
+  memberships     Membership[]
+  teamMembers     TeamMember[]
   contracts       Contract[]
   tasks           Task[]
   activities      Activity[]
   alertsCreated   Alert[]         @relation("AlertsCreated")
   alertResponses  AlertResponse[] @relation("AlertResponses")
   alertEvents     AlertEvent[]    @relation("AlertEvents")
+  invitationsSent Invitation[]    @relation("InvitationsSent")
 }
 
+// ── Team ───────────────────────────────────────────────────────────────────
+
 model Team {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id             String       @id @default(cuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  members        TeamMember[]
+
+  @@unique([name, organizationId])
+  @@index([organizationId])
 }
+
+// ── TeamMember (User <-> Team) ─────────────────────────────────────────────
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+}
+
+// ── Contract ───────────────────────────────────────────────────────────────
 
 model Contract {
   id              String   @id @default(cuid())
-  contractNumber  String   @unique // displayed ID e.g. "10023"
+  contractNumber  String // unique per organization (see @@unique below)
   title           String
   type            String // e.g. "NDA", "ServiceAgreement", "LicenseAgreement", "Other"
   status          String   @default("Draft") // e.g. "Active", "Review", "Draft"
-  
+
   // ── Core metadata ──────────────────────────────────────────────────────
   category        String?
   summary         String?  @db.Text
@@ -97,15 +177,21 @@ model Contract {
   fileName        String?
   content         String?  @db.Text // Extracted text or editor content
   fileData        Bytes?   // Actual file content if needed
-  
+
   userId          String
   user            User     @relation(fields: [userId], references: [id])
+
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id])
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   tasks           Task[]
   alerts          Alert[]
   activities      Activity[]
 
+  @@unique([contractNumber, organizationId])
+  @@index([organizationId, updatedAt(sort: Desc)], map: "idx_contract_org_updated")
   @@index([userId, updatedAt(sort: Desc)], map: "idx_contract_user_updated")
 }
 

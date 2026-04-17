@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import type { Role } from '@/lib/permissions'
 
 const secretKey = process.env.JWT_SECRET
 if (!secretKey) {
@@ -36,4 +37,28 @@ export async function getSession() {
 export async function verifySession() {
   const session = await getSession()
   return !!session
+}
+
+export type SessionWithOrg = {
+  userId: string
+  email: string
+  name: string | null
+  orgId: string
+  orgSlug: string
+  role: Role
+}
+
+/** Get session with organization context. Returns null if not authenticated or no org. */
+export async function getSessionWithOrg(): Promise<SessionWithOrg | null> {
+  const session = await getSession()
+  if (!session || !session.orgId) return null
+
+  return {
+    userId: session.id as string,
+    email: session.email as string,
+    name: (session.name as string) ?? null,
+    orgId: session.orgId as string,
+    orgSlug: session.orgSlug as string,
+    role: session.role as Role,
+  }
 }
