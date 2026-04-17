@@ -11,6 +11,7 @@ export interface ContractFormData {
   conditions: string;
   comments: string;
   status: string;
+  category: string;
 
   // People (arrays)
   contractOwner: string[];
@@ -86,6 +87,7 @@ function buildInitialState(initialData: ContractAnalysis | null | undefined, fil
     conditions: d?.conditions || '',
     comments: d?.comments || '',
     status: d?.status || 'Review',
+    category: d?.category || '',
 
     contractOwner: splitString(d?.contractOwner),
     deputy: splitString(d?.deputy),
@@ -163,6 +165,7 @@ export function useContractForm(initialData: ContractAnalysis | null | undefined
       conditions: f.conditions,
       comments: f.comments,
       status: f.status,
+      category: f.category || null,
       contractValue: f.contractValue,
       confidentiality: f.confidentiality,
       durationType: f.durationType,

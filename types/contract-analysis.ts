@@ -21,6 +21,7 @@ export interface ContractAnalysis {
   contractType?: string;
   title?: string;
   status?: string;
+  category?: string | null;
   summary?: string;
   conditions?: string;
   comments?: string;

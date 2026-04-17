@@ -29,3 +29,21 @@ export const CONTRACT_TYPES = [
 
 export type ContractType = typeof CONTRACT_TYPES[number];
 
+export const CONTRACT_CATEGORIES = [
+  'Outsourcing',
+  'Direct Procurement',
+  'Real Estate',
+  'Finance & Banking',
+  'Fleet Management',
+  'HR',
+  'Insurance',
+  'IT',
+  'Legal Services',
+  'Marketing & Events',
+  'Market Data & Research',
+  'Corporate Management',
+  'Partnerships & Alliances',
+] as const;
+
+export type ContractCategory = typeof CONTRACT_CATEGORIES[number];
+

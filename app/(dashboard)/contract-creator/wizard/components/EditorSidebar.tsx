@@ -8,7 +8,7 @@ import {
   X
 } from 'lucide-react';
 import { ContractAnalysis } from '@/types/contract-analysis';
-import { CONTRACT_TYPES } from '@/lib/constants';
+import { CONTRACT_TYPES, CONTRACT_CATEGORIES } from '@/lib/constants';
 import { PillInput } from './PillInput';
 import type { ContractFormData } from '../hooks/use-contract-form';
 
@@ -72,6 +72,7 @@ interface EditorSidebarProps {
   initialData?: ContractAnalysis | null;
   fileName: string;
   contractType: string;
+  onContractTypeChange?: (type: string) => void;
   formData: ContractFormData;
   updateField: (key: StringKey, value: string) => void;
   updateArrayField: (key: ArrayKey, value: string[]) => void;
@@ -86,6 +87,7 @@ export function EditorSidebar({
   initialData,
   fileName,
   contractType,
+  onContractTypeChange,
   formData,
   updateField,
   updateArrayField,
@@ -251,15 +253,35 @@ export function EditorSidebar({
 
                 <div>
                   <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
+                    Type
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
+                      value={contractType || ''}
+                      onChange={(e) => onContractTypeChange?.(e.target.value)}
+                    >
+                      {CONTRACT_TYPES.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
                     Category
                   </label>
                   <div className="relative">
                     <select
                       className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black outline-none appearance-none pr-8 focus:border-black rounded-sm transition-all"
-                      defaultValue={contractType || ''}
+                      value={formData.category}
+                      onChange={(e) => updateField('category', e.target.value)}
                     >
-                      {CONTRACT_TYPES.map(type => (
-                        <option key={type} value={type}>{type}</option>
+                      <option value="">Select...</option>
+                      {CONTRACT_CATEGORIES.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
                       ))}
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
