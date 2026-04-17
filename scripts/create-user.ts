@@ -85,30 +85,18 @@ async function main() {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
-      // Create User and Team
+      // Create User
       const user = await prisma.user.upsert({
         where: { email },
         update: {
           name,
-          password: hashedPassword, // Update password if changed
-          team: {
-            connectOrCreate: {
-              where: { name: equipo },
-              create: { name: equipo }
-            }
-          }
+          password: hashedPassword,
         },
         create: {
           email,
           password: hashedPassword,
           name,
-          team: {
-            connectOrCreate: {
-              where: { name: equipo },
-              create: { name: equipo }
-            }
-          }
-        }
+        },
       })
       
       console.log(`User ${email} upserted successfully. ID: ${user.id}`)
@@ -117,40 +105,59 @@ async function main() {
       if (contracts && contracts.length > 0) {
         console.log(`Processing ${contracts.length} contracts...`)
         for (const contract of contracts) {
-          await prisma.contract.upsert({
-            where: { contractNumber: contract.contractNumber },
-            update: {
-              title: contract.title,
-              type: contract.type,
-              status: contract.status,
-              summary: contract.summary,
-              conditions: contract.conditions,
-              contractOwner: contract.contractOwner,
-              deputy: contract.deputy,
-              contractManager: contract.contractManager,
-              contractValue: contract.contractValue,
-              startDate: contract.startDate,
-              endDate: contract.endDate,
-              renewalDate: contract.renewalDate,
-              userId: user.id
-            },
-            create: {
-              contractNumber: contract.contractNumber,
-              title: contract.title,
-              type: contract.type,
-              status: contract.status,
-              summary: contract.summary,
-              conditions: contract.conditions,
-              contractOwner: contract.contractOwner,
-              deputy: contract.deputy,
-              contractManager: contract.contractManager,
-              contractValue: contract.contractValue,
-              startDate: contract.startDate,
-              endDate: contract.endDate,
-              renewalDate: contract.renewalDate,
-              userId: user.id
-            }
+          const existing = await prisma.contract.findFirst({
+            where: { contractNumber: contract.contractNumber, userId: user.id },
           })
+
+          if (existing) {
+            await prisma.contract.update({
+              where: { id: existing.id },
+              data: {
+                title: contract.title,
+                type: contract.type,
+                status: contract.status,
+                summary: contract.summary,
+                conditions: contract.conditions,
+                contractOwner: contract.contractOwner,
+                deputy: contract.deputy,
+                contractManager: contract.contractManager,
+                contractValue: contract.contractValue,
+                startDate: contract.startDate,
+                endDate: contract.endDate,
+                renewalDate: contract.renewalDate,
+              },
+            })
+          } else {
+            // Find user's org membership for organizationId
+            const membership = await prisma.membership.findFirst({
+              where: { userId: user.id },
+              select: { organizationId: true },
+            })
+            if (!membership) {
+              console.warn(`  Skipping contract ${contract.contractNumber}: user has no org membership`)
+              continue
+            }
+
+            await prisma.contract.create({
+              data: {
+                contractNumber: contract.contractNumber,
+                title: contract.title,
+                type: contract.type,
+                status: contract.status,
+                summary: contract.summary,
+                conditions: contract.conditions,
+                contractOwner: contract.contractOwner,
+                deputy: contract.deputy,
+                contractManager: contract.contractManager,
+                contractValue: contract.contractValue,
+                startDate: contract.startDate,
+                endDate: contract.endDate,
+                renewalDate: contract.renewalDate,
+                userId: user.id,
+                organizationId: membership.organizationId,
+              },
+            })
+          }
         }
       }
 

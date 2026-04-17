@@ -1,8 +1,9 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
+import { hasPermission } from '@/lib/permissions';
 
 export async function createAlert(
   contractId: string,
@@ -12,27 +13,29 @@ export async function createAlert(
     note?: string;
   }
 ) {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  if (!hasPermission(session.role, 'alert:create')) {
+    return { success: false, error: 'Insufficient permissions' };
+  }
 
   try {
     const contract = await prisma.contract.findUnique({
       where: { id: contractId },
-      select: { userId: true },
+      select: { organizationId: true },
     });
 
-    if (!contract || contract.userId !== userId) {
+    if (!contract || contract.organizationId !== session.orgId) {
       return { success: false, error: 'Contract not found or unauthorized' };
     }
 
     const alert = await prisma.alert.create({
       data: {
         contractId,
-        createdById: userId,
+        createdById: session.userId,
         deadline: data.deadline ? new Date(data.deadline) : null,
         deadlineLabel: data.deadlineLabel || null,
         note: data.note || null,
@@ -44,7 +47,7 @@ export async function createAlert(
       data: {
         eventType: 'alarmed',
         alertId: alert.id,
-        userId,
+        userId: session.userId,
       },
     });
 
@@ -62,23 +65,25 @@ export async function respondToAlert(
   responseType: string,
   comment?: string
 ) {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  if (!hasPermission(session.role, 'alert:respond')) {
+    return { success: false, error: 'Insufficient permissions' };
+  }
 
   try {
     const alert = await prisma.alert.findUnique({
       where: { id: alertId },
       include: {
-        contract: { select: { userId: true } },
+        contract: { select: { organizationId: true } },
         response: true,
       },
     });
 
-    if (!alert || alert.contract.userId !== userId) {
+    if (!alert || alert.contract.organizationId !== session.orgId) {
       return { success: false, error: 'Alert not found or unauthorized' };
     }
 
@@ -92,7 +97,7 @@ export async function respondToAlert(
           responseType,
           comment: comment || null,
           alertId,
-          respondedById: userId,
+          respondedById: session.userId,
         },
       }),
       prisma.alert.update({
@@ -104,7 +109,7 @@ export async function respondToAlert(
           eventType: 'responded',
           description: responseType,
           alertId,
-          userId,
+          userId: session.userId,
         },
       }),
     ]);
@@ -119,20 +124,22 @@ export async function respondToAlert(
 }
 
 export async function closeAlert(alertId: string) {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  if (!hasPermission(session.role, 'alert:close')) {
+    return { success: false, error: 'Insufficient permissions' };
+  }
 
   try {
     const alert = await prisma.alert.findUnique({
       where: { id: alertId },
-      include: { contract: { select: { userId: true } } },
+      include: { contract: { select: { organizationId: true } } },
     });
 
-    if (!alert || alert.contract.userId !== userId) {
+    if (!alert || alert.contract.organizationId !== session.orgId) {
       return { success: false, error: 'Alert not found or unauthorized' };
     }
 
@@ -145,7 +152,7 @@ export async function closeAlert(alertId: string) {
         data: {
           eventType: 'closed',
           alertId,
-          userId,
+          userId: session.userId,
         },
       }),
     ]);
@@ -160,20 +167,22 @@ export async function closeAlert(alertId: string) {
 }
 
 export async function escalateAlert(alertId: string) {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  if (!hasPermission(session.role, 'alert:respond')) {
+    return { success: false, error: 'Insufficient permissions' };
+  }
 
   try {
     const alert = await prisma.alert.findUnique({
       where: { id: alertId },
-      include: { contract: { select: { userId: true } } },
+      include: { contract: { select: { organizationId: true } } },
     });
 
-    if (!alert || alert.contract.userId !== userId) {
+    if (!alert || alert.contract.organizationId !== session.orgId) {
       return { success: false, error: 'Alert not found or unauthorized' };
     }
 
@@ -186,7 +195,7 @@ export async function escalateAlert(alertId: string) {
         data: {
           eventType: 'escalated',
           alertId,
-          userId,
+          userId: session.userId,
         },
       }),
     ]);
@@ -200,20 +209,22 @@ export async function escalateAlert(alertId: string) {
 }
 
 export async function getContractAlerts(contractId: string) {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  if (!hasPermission(session.role, 'contract:read')) {
+    return { success: false, error: 'Insufficient permissions' };
+  }
 
   try {
     const contract = await prisma.contract.findUnique({
       where: { id: contractId },
-      select: { userId: true },
+      select: { organizationId: true },
     });
 
-    if (!contract || contract.userId !== userId) {
+    if (!contract || contract.organizationId !== session.orgId) {
       return { success: false, error: 'Contract not found or unauthorized' };
     }
 
@@ -235,7 +246,6 @@ export async function getContractAlerts(contractId: string) {
       orderBy: { alarmDate: 'desc' },
     });
 
-    // Serialize dates
     const serializedAlerts = alerts.map((alert) => ({
       ...alert,
       alarmDate: alert.alarmDate.toISOString(),
@@ -262,44 +272,42 @@ export async function getContractAlerts(contractId: string) {
 }
 
 export async function getUserNotifications() {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
-
   try {
-    // Find alerts for contracts owned by the user, that are not closed
+    // Find alerts for contracts in the user's organization that are not closed
     const alerts = await prisma.alert.findMany({
       where: {
         contract: {
-          userId: userId
+          organizationId: session.orgId,
         },
         status: {
-          not: 'closed'
-        }
+          not: 'closed',
+        },
       },
       include: {
         contract: {
           select: {
             id: true,
             title: true,
-            contractNumber: true
-          }
+            contractNumber: true,
+          },
         },
         createdBy: {
-            select: {
-                name: true
-            }
-        }
+          select: {
+            name: true,
+          },
+        },
       },
       orderBy: {
-        alarmDate: 'asc' // Soonest first
-      }
+        alarmDate: 'asc',
+      },
     });
 
-    const serializedAlerts = alerts.map(alert => ({
+    const serializedAlerts = alerts.map((alert) => ({
       id: alert.id,
       alarmDate: alert.alarmDate.toISOString(),
       deadline: alert.deadline?.toISOString() ?? null,
@@ -308,7 +316,7 @@ export async function getUserNotifications() {
       contractTitle: alert.contract.title,
       contractNumber: alert.contract.contractNumber,
       createdByName: alert.createdBy.name,
-      createdAt: alert.createdAt.toISOString()
+      createdAt: alert.createdAt.toISOString(),
     }));
 
     return { success: true, notifications: serializedAlerts };

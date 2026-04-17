@@ -1,6 +1,6 @@
 import { FileIcon, FileText, CheckCircle2, AlertCircle, Clock, ArrowRight, Terminal } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
@@ -38,59 +38,55 @@ function getStatusStyle(status: string) {
 }
 
 export default async function Overview() {
-  const session = await getSession();
-  
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+
+  if (!session) {
     redirect('/login');
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.id as string },
-    select: {
-      name: true,
-      contracts: {
-        orderBy: { updatedAt: 'desc' },
-        take: 4,
-        select: {
-          id: true,
-          contractNumber: true,
-          title: true,
-          type: true,
-          status: true,
-        }
+  // Fetch contracts, tasks, and activities scoped to the organization
+  const [contracts, tasks, activities, userName] = await Promise.all([
+    prisma.contract.findMany({
+      where: { organizationId: session.orgId },
+      orderBy: { updatedAt: 'desc' },
+      take: 4,
+      select: {
+        id: true,
+        contractNumber: true,
+        title: true,
+        type: true,
+        status: true,
       },
-      tasks: {
-        where: { status: 'Open' },
-        orderBy: { dueDate: 'asc' },
-        take: 5,
-        select: {
-          id: true,
-          title: true,
-          dueDate: true,
-          status: true,
-          type: true,
-        }
+    }),
+    prisma.task.findMany({
+      where: { userId: session.userId, status: 'Open' },
+      orderBy: { dueDate: 'asc' },
+      take: 5,
+      select: {
+        id: true,
+        title: true,
+        dueDate: true,
+        status: true,
+        type: true,
       },
-      activities: {
-        orderBy: { timestamp: 'desc' },
-        take: 20,
-        select: {
-          id: true,
-          description: true,
-          action: true,
-          timestamp: true,
-          contractId: true,
-        }
-      }
-    }
-  });
-
-  if (!user) {
-    redirect('/login');
-  }
+    }),
+    prisma.activity.findMany({
+      where: { userId: session.userId },
+      orderBy: { timestamp: 'desc' },
+      take: 20,
+      select: {
+        id: true,
+        description: true,
+        action: true,
+        timestamp: true,
+        contractId: true,
+      },
+    }),
+    Promise.resolve(session.name),
+  ]);
 
   // Group consecutive activities
-  const groupedActivities = user.activities.reduce((acc, activity) => {
+  const groupedActivities = activities.reduce((acc, activity) => {
     const last = acc[acc.length - 1];
     
     // Check if same description and action, and action is 'updated'
@@ -119,7 +115,7 @@ export default async function Overview() {
     return acc;
   }, [] as any[]).slice(0, 7); // Take top 7 after grouping
 
-  const contracts = user.contracts.map(contract => {
+  const contractCards = contracts.map(contract => {
     const style = getStatusStyle(contract.status);
     // Only show contractNumber if it's a real external reference (not auto-generated)
     const hasRealReference = !contract.contractNumber.startsWith('CNT-');
@@ -133,8 +129,6 @@ export default async function Overview() {
     };
   });
 
-  const tasks = user.tasks;
-
   return (
     <div className="space-y-12">
       {/* Header Greeting */}
@@ -145,7 +139,7 @@ export default async function Overview() {
                 <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">System Online</span>
            </div>
            <h1 className="text-3xl font-black font-sans uppercase tracking-tighter text-black">
-              Welcome back, {user.name?.split(' ')[0] || 'User'}
+              Welcome back, {userName?.split(' ')[0] || 'User'}
            </h1>
            <p className="text-gray-500 text-sm mt-1 uppercase font-medium">Ready to manage operations.</p>
         </div>
@@ -260,16 +254,16 @@ export default async function Overview() {
         <div className="flex items-center justify-between border-b border-gray-200 pb-2">
             <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-gray-400" />
-                <h2 className="text-sm font-bold uppercase text-black">Active Contracts ({contracts.length})</h2>
+                <h2 className="text-sm font-bold uppercase text-black">Active Contracts ({contractCards.length})</h2>
             </div>
           <Link href="/contracts" className="text-[10px] font-bold uppercase text-gray-500 hover:text-black transition-colors">
             View Archive
           </Link>
         </div>
 
-        {contracts.length > 0 ? (
+        {contractCards.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {contracts.map((contract) => (
+            {contractCards.map((contract) => (
               <Link 
                 href={`/contracts/${contract.id}`} 
                 key={contract.id} 

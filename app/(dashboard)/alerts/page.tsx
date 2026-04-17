@@ -1,19 +1,17 @@
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { AlertsClient } from './AlertsClient';
 
 export default async function AlertsPage() {
-  const session = await getSession();
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+  if (!session) {
     redirect('/login');
   }
 
-  const userId = session.id as string;
-
   const alerts = await prisma.alert.findMany({
     where: {
-      contract: { userId },
+      contract: { organizationId: session.orgId },
     },
     include: {
       contract: {

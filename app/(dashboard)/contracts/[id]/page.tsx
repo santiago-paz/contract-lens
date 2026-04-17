@@ -1,22 +1,22 @@
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { ClientEditorWrapper } from './ClientEditorWrapper';
 import { decrypt } from '@/lib/encryption';
 
 export default async function ContractEditPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await getSession();
-  
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+
+  if (!session) {
     redirect('/login');
   }
 
   const resolvedParams = await params;
   const contract = await prisma.contract.findUnique({
-    where: { 
+    where: {
       id: resolvedParams.id,
-      userId: session.id as string
+      organizationId: session.orgId,
     },
     include: {
       alerts: {

@@ -1,20 +1,20 @@
 'use server';
 
 import { Prisma } from '@prisma/client';
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { ContractData } from '@/actions/extract-contract-data';
 import { revalidatePath } from 'next/cache';
 import { encrypt } from '@/lib/encryption';
 
 export async function hydrateContract(analysis: ContractData, contractType: string, rawText: string) {
-  const session = await getSession();
-  
-  if (!session || !session.id) {
+  const session = await getSessionWithOrg();
+
+  if (!session) {
     return { success: false, error: 'Unauthorized' };
   }
 
-  const userId = session.id as string;
+  const userId = session.userId;
 
   try {
     // Use 'any' to access properties that might be specific to certain types
@@ -35,6 +35,7 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         status: 'Draft',
         contractNumber,
         userId,
+        organizationId: session.orgId,
         fileName: 'hydrated-from-playground.txt',
         content: encrypt(rawText),
 
