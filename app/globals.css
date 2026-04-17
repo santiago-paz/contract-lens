@@ -133,3 +133,20 @@ h1, h2, h3, h4, h5, h6 {
 .animate-slide-in-right {
   animation: slideInRight 0.3s ease-out forwards;
 }
+
+/* docx-preview: fit document to container width */
+.docx-viewer .docx-wrapper {
+  padding: 16px !important;
+  background: white !important;
+}
+
+.docx-viewer .docx-wrapper > section.docx {
+  width: 100% !important;
+  min-width: unset !important;
+  max-width: 100% !important;
+  padding: 24px !important;
+  margin-bottom: 16px !important;
+  box-shadow: none !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}

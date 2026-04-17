@@ -79,6 +79,7 @@ export default async function Overview() {
           description: true,
           action: true,
           timestamp: true,
+          contractId: true,
         }
       }
     }
@@ -111,7 +112,8 @@ export default async function Overview() {
       text: `${activity.description} was ${activity.action}`,
       time: getTimeAgo(activity.timestamp),
       active: true,
-      count: 1
+      count: 1,
+      contractId: activity.contractId,
     });
     
     return acc;
@@ -190,7 +192,13 @@ export default async function Overview() {
                     </div>
                     <div className="flex-1 pb-1 border-b border-gray-50 group-last:border-0">
                       <p className="text-gray-700 uppercase leading-relaxed">
-                        {activity.text}
+                        {activity.contractId ? (
+                          <Link href={`/contracts/${activity.contractId}`} className="hover:text-black underline decoration-gray-300 hover:decoration-black underline-offset-2 transition-colors">
+                            {activity.text}
+                          </Link>
+                        ) : (
+                          activity.text
+                        )}
                         {activity.count > 1 && (
                            <span className="ml-2 inline-flex items-center justify-center bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
                              ×{activity.count}

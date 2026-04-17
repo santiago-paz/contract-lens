@@ -103,6 +103,7 @@ model Contract {
   updatedAt       DateTime @updatedAt
   tasks           Task[]
   alerts          Alert[]
+  activities      Activity[]
 
   @@index([userId, updatedAt(sort: Desc)], map: "idx_contract_user_updated")
 }
@@ -129,6 +130,8 @@ model Activity {
   timestamp   DateTime @default(now())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+  contractId  String?
+  contract    Contract? @relation(fields: [contractId], references: [id], onDelete: SetNull)
 }
 
 // ── Alerts / Alarms ────────────────────────────────────────────────────────────

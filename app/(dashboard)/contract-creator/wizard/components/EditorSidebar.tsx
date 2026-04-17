@@ -20,17 +20,20 @@ import { Tooltip } from '@/components/Tooltip';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-/** Small read-only chip for displaying extracted values */
-function ReadOnlyField({ label, value }: { label: string; value: string | null | undefined }) {
-  if (!value) return null;
+/** Editable field for AI-extracted values that the user can override */
+function EditableField({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (val: string) => void; placeholder?: string }) {
   return (
     <div>
       <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-1">
         {label}
       </label>
-      <div className="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-xs font-medium text-black rounded-sm">
-        {value}
-      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder || "Not specified"}
+        className="w-full px-3 py-2 bg-white border border-gray-200 text-xs font-medium text-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all rounded-sm"
+      />
     </div>
   );
 }
@@ -91,6 +94,40 @@ interface EditorSidebarProps {
   setRiskAssessment: (val: string) => void;
   organizationalUnit: string;
   setOrganizationalUnit: (val: string) => void;
+
+  // Contract Details (editable)
+  paymentMethod: string;
+  setPaymentMethod: (val: string) => void;
+  paymentTiming: string;
+  setPaymentTiming: (val: string) => void;
+  paymentCurrency: string;
+  setPaymentCurrency: (val: string) => void;
+  ipOwnership: string;
+  setIpOwnership: (val: string) => void;
+  indemnification: string;
+  setIndemnification: (val: string) => void;
+  liabilityCap: string;
+  setLiabilityCap: (val: string) => void;
+  terminationNoticePeriod: string;
+  setTerminationNoticePeriod: (val: string) => void;
+  confidentialityDuration: string;
+  setConfidentialityDuration: (val: string) => void;
+  jurisdiction: string;
+  setJurisdiction: (val: string) => void;
+  softwareName: string;
+  setSoftwareName: (val: string) => void;
+  licenseType: string;
+  setLicenseType: (val: string) => void;
+  licensor: string;
+  setLicensor: (val: string) => void;
+  licensee: string;
+  setLicensee: (val: string) => void;
+  usageLimits: string;
+  setUsageLimits: (val: string) => void;
+  territory: string;
+  setTerritory: (val: string) => void;
+  governingLaw: string;
+  setGoverningLaw: (val: string) => void;
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -130,7 +167,40 @@ export function EditorSidebar({
   riskAssessment,
   setRiskAssessment,
   organizationalUnit,
-  setOrganizationalUnit
+  setOrganizationalUnit,
+  // Contract Details
+  paymentMethod,
+  setPaymentMethod,
+  paymentTiming,
+  setPaymentTiming,
+  paymentCurrency,
+  setPaymentCurrency,
+  ipOwnership,
+  setIpOwnership,
+  indemnification,
+  setIndemnification,
+  liabilityCap,
+  setLiabilityCap,
+  terminationNoticePeriod,
+  setTerminationNoticePeriod,
+  confidentialityDuration,
+  setConfidentialityDuration,
+  jurisdiction,
+  setJurisdiction,
+  softwareName,
+  setSoftwareName,
+  licenseType,
+  setLicenseType,
+  licensor,
+  setLicensor,
+  licensee,
+  setLicensee,
+  usageLimits,
+  setUsageLimits,
+  territory,
+  setTerritory,
+  governingLaw,
+  setGoverningLaw
 }: EditorSidebarProps) {
 
   // The analysis contract type (determines which schema fields are available)
@@ -343,8 +413,8 @@ export function EditorSidebar({
               {analysisType === 'NDA' && (
                 <>
                   <BooleanFlag label="Mutual NDA" value={initialData.isMutual} />
-                  <ReadOnlyField label="Confidentiality Duration" value={initialData.confidentialityDuration} />
-                  <ReadOnlyField label="Jurisdiction" value={initialData.jurisdiction} />
+                  <EditableField label="Confidentiality Duration" value={confidentialityDuration} onChange={setConfidentialityDuration} />
+                  <EditableField label="Jurisdiction" value={jurisdiction} onChange={setJurisdiction} />
                   
                   {initialData.riskFlags && (
                     <div>
@@ -364,22 +434,20 @@ export function EditorSidebar({
               {/* ── ServiceAgreement-specific fields ────────────────────────── */}
               {analysisType === 'ServiceAgreement' && (
                 <>
-                  {initialData.paymentTerms && (
-                    <div>
-                      <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
-                        Payment Terms
-                      </label>
-                      <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-2">
-                        <ReadOnlyField label="Method" value={initialData.paymentTerms.method} />
-                        <ReadOnlyField label="Timing" value={initialData.paymentTerms.timing} />
-                        <ReadOnlyField label="Currency" value={initialData.paymentTerms.currency} />
-                      </div>
+                  <div>
+                    <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
+                      Payment Terms
+                    </label>
+                    <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-2">
+                      <EditableField label="Method" value={paymentMethod} onChange={setPaymentMethod} />
+                      <EditableField label="Timing" value={paymentTiming} onChange={setPaymentTiming} />
+                      <EditableField label="Currency" value={paymentCurrency} onChange={setPaymentCurrency} />
                     </div>
-                  )}
-                  <ReadOnlyField label="IP Ownership" value={initialData.ipOwnership} />
-                  <ReadOnlyField label="Indemnification" value={initialData.indemnification} />
-                  <ReadOnlyField label="Liability Cap" value={initialData.liabilityCap} />
-                  <ReadOnlyField label="Termination Notice" value={initialData.terminationNoticePeriod} />
+                  </div>
+                  <EditableField label="IP Ownership" value={ipOwnership} onChange={setIpOwnership} />
+                  <EditableField label="Indemnification" value={indemnification} onChange={setIndemnification} />
+                  <EditableField label="Liability Cap" value={liabilityCap} onChange={setLiabilityCap} />
+                  <EditableField label="Termination Notice" value={terminationNoticePeriod} onChange={setTerminationNoticePeriod} />
                   <BooleanFlag label="Auto-Renewal" value={initialData.autoRenewal} />
                 </>
               )}
@@ -387,15 +455,14 @@ export function EditorSidebar({
               {/* ── LicenseAgreement-specific fields ────────────────────────── */}
               {analysisType === 'LicenseAgreement' && (
                 <>
-                  <ReadOnlyField label="Software / Product" value={initialData.softwareName} />
-                  <ReadOnlyField label="License Type" value={initialData.licenseType} />
-                  <ReadOnlyField label="Licensor" value={initialData.licensor} />
-                  <ReadOnlyField label="Licensee" value={initialData.licensee} />
-                  <ReadOnlyField label="Usage Limits" value={initialData.usageLimits} />
+                  <EditableField label="Software / Product" value={softwareName} onChange={setSoftwareName} />
+                  <EditableField label="License Type" value={licenseType} onChange={setLicenseType} />
+                  <EditableField label="Licensor" value={licensor} onChange={setLicensor} />
+                  <EditableField label="Licensee" value={licensee} onChange={setLicensee} />
+                  <EditableField label="Usage Limits" value={usageLimits} onChange={setUsageLimits} />
                   <BooleanFlag label="Exclusive License" value={initialData.exclusivity} />
-                  <ReadOnlyField label="Territory" value={initialData.territory} />
-                  <ReadOnlyField label="Renewal Date" value={initialData.renewalDate} />
-                  
+                  <EditableField label="Territory" value={territory} onChange={setTerritory} />
+
                   {initialData.auditRights && (
                     <div>
                       <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
@@ -403,7 +470,6 @@ export function EditorSidebar({
                       </label>
                       <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1">
                         <BooleanFlag label="Can Audit" value={initialData.auditRights.canAudit} />
-                        <ReadOnlyField label="Notice Period" value={initialData.auditRights.noticePeriod} />
                       </div>
                     </div>
                   )}
@@ -413,7 +479,7 @@ export function EditorSidebar({
               {/* ── General contract fields ──────────────────────────────────── */}
               {(analysisType === 'Other' || analysisType === 'General Terms and Conditions') && (
                 <>
-                  <ReadOnlyField label="Governing Law" value={initialData.governingLaw} />
+                  <EditableField label="Governing Law" value={governingLaw} onChange={setGoverningLaw} />
                   {initialData.keyDates && initialData.keyDates.length > 0 && (
                     <div>
                       <label className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase mb-2">
@@ -434,7 +500,7 @@ export function EditorSidebar({
 
               {/* Jurisdiction/Governing Law (show for any type if available and not already shown) */}
               {analysisType !== 'NDA' && analysisType !== 'Other' && analysisType !== 'General Terms and Conditions' && (
-                <ReadOnlyField label="Governing Law" value={initialData.governingLaw} />
+                <EditableField label="Governing Law" value={governingLaw} onChange={setGoverningLaw} />
               )}
             </div>
           </div>
@@ -606,7 +672,7 @@ export function EditorSidebar({
                 </div>
               )}
 
-              <ReadOnlyField label="Liability Amount" value={initialData?.liabilityAmount || initialData?.liabilityCap} />
+              <EditableField label="Liability Amount" value={liabilityCap} onChange={setLiabilityCap} />
             </div>
           </div>
         )}
