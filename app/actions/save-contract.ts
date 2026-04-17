@@ -60,6 +60,7 @@ export async function saveContract(formData: FormData) {
         status: metadata.status || 'Draft',
 
         // ── Core metadata ────────────────────────────────────────────────
+        category: metadata.category || null,
         summary: encryptIfPresent(metadata.summary),
         conditions: encryptIfPresent(metadata.conditions),
         comments: getString(metadata.comments), // Comments might be searched? Let's leave plaintext or encrypt? User didn't specify. Let's leave comments plaintext for now as they are "meta".

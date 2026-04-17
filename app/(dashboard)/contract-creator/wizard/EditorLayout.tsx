@@ -6,7 +6,8 @@ import {
   Download,
   ChevronLeft,
   Loader2,
-  Bell
+  Bell,
+  CheckCircle2
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
 import { getFileType } from '@/lib/file-config';
@@ -14,6 +15,7 @@ import { ContractAnalysis } from '@/types/contract-analysis';
 
 import { EditorSidebar } from './components/EditorSidebar';
 import { ContractAlerts, type ContractAlert } from './components/ContractAlerts';
+import { ContractTasks, type ContractTask } from './components/ContractTasks';
 import { useContractForm } from './hooks/use-contract-form';
 
 import { saveContract } from '@/app/actions/save-contract';
@@ -28,13 +30,15 @@ interface EditorLayoutProps {
   initialData?: ContractAnalysis | null;
   contractId?: string;
   alerts?: ContractAlert[];
+  tasks?: ContractTask[];
 }
 
-export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData, contractId, alerts = [] }: EditorLayoutProps) {
+export function EditorLayout({ children, fileName, contractType, onBack, uploadedFile, initialData, contractId, alerts = [], tasks = [] }: EditorLayoutProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState<'document' | 'alerts'>('document');
+  const [activeTab, setActiveTab] = useState<'document' | 'alerts' | 'tasks'>('document');
 
+  const [currentContractType, setCurrentContractType] = useState(contractType);
   const [isSaved, setIsSaved] = useState(!!contractId);
   const [isSaving, setIsSaving] = useState(false);
   const [savedContractId, setSavedContractId] = useState<string | undefined>(contractId);
@@ -51,7 +55,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         fd.append('file', uploadedFile);
       }
 
-      const metadata = buildSaveMetadata(contractType, initialData);
+      const metadata = buildSaveMetadata(currentContractType, initialData);
       fd.append('metadata', JSON.stringify(metadata));
 
       if (savedContractId) {
@@ -217,7 +221,8 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             isSaved={isSaved}
             initialData={initialData}
             fileName={fileName}
-            contractType={contractType}
+            contractType={currentContractType}
+            onContractTypeChange={setCurrentContractType}
             formData={formData}
             updateField={updateField}
             updateArrayField={updateArrayField}
@@ -243,28 +248,52 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
               </div>
             </button>
             {isSaved && savedContractId && (
-              <button
-                onClick={() => setActiveTab('alerts')}
-                className={`px-4 py-2 text-xs font-bold uppercase border-b-2 transition-colors ${
-                  activeTab === 'alerts'
-                    ? 'border-[#CCFF00] text-black'
-                    : 'border-transparent text-gray-400 hover:text-black'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <Bell className="w-3 h-3" />
-                  Alerts
-                  {alerts.length > 0 && (
-                    <span className={`text-[9px] font-bold px-1.5 py-0.5 leading-none border ${
-                      activeTab === 'alerts'
-                        ? 'bg-black text-white border-black'
-                        : 'bg-gray-100 text-gray-500 border-gray-200'
-                    }`}>
-                      {alerts.length}
-                    </span>
-                  )}
-                </div>
-              </button>
+              <>
+                <button
+                  onClick={() => setActiveTab('alerts')}
+                  className={`px-4 py-2 text-xs font-bold uppercase border-b-2 transition-colors ${
+                    activeTab === 'alerts'
+                      ? 'border-[#CCFF00] text-black'
+                      : 'border-transparent text-gray-400 hover:text-black'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Bell className="w-3 h-3" />
+                    Alerts
+                    {alerts.length > 0 && (
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 leading-none border ${
+                        activeTab === 'alerts'
+                          ? 'bg-black text-white border-black'
+                          : 'bg-gray-100 text-gray-500 border-gray-200'
+                      }`}>
+                        {alerts.length}
+                      </span>
+                    )}
+                  </div>
+                </button>
+                <button
+                  onClick={() => setActiveTab('tasks')}
+                  className={`px-4 py-2 text-xs font-bold uppercase border-b-2 transition-colors ${
+                    activeTab === 'tasks'
+                      ? 'border-[#CCFF00] text-black'
+                      : 'border-transparent text-gray-400 hover:text-black'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Tasks
+                    {tasks.length > 0 && (
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 leading-none border ${
+                        activeTab === 'tasks'
+                          ? 'bg-black text-white border-black'
+                          : 'bg-gray-100 text-gray-500 border-gray-200'
+                      }`}>
+                        {tasks.length}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              </>
             )}
           </div>
 
@@ -298,8 +327,15 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
                 </div>
               </div>
             </>
-          ) : (
+          ) : activeTab === 'alerts' ? (
             <ContractAlerts contractId={savedContractId!} alerts={alerts} />
+          ) : (
+            <ContractTasks
+              contractId={savedContractId!}
+              contractTitle={formData.contractTitle || initialData?.title || fileName}
+              contractType={currentContractType}
+              tasks={tasks}
+            />
           )}
         </div>
       </div>

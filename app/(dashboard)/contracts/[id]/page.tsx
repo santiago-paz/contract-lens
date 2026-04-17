@@ -35,6 +35,19 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
         },
         orderBy: { alarmDate: 'desc' as const },
       },
+      tasks: {
+        orderBy: { createdAt: 'desc' as const },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true,
+          type: true,
+          dueDate: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
   });
 
@@ -44,25 +57,63 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
 
   // Transform DB contract to ContractAnalysis format for the editor
   const initialData: ContractAnalysis = {
-    contractType: contract.type as any, // Type assertion as enum might differ
+    // ── Core metadata ───────────────────────────────────────────────────
+    contractType: contract.type,
     title: contract.title,
     summary: decrypt(contract.summary || ''),
-    status: contract.status as any,
+    status: contract.status,
+    category: contract.category,
     conditions: decrypt(contract.conditions || '') || undefined,
+    comments: contract.comments || undefined,
     contractOwner: contract.contractOwner,
     deputy: contract.deputy,
     contractManager: contract.contractManager,
-    contractValue: contract.contractValue,
-    // Add other fields mapping
-    contractStart: contract.startDate || null,
     contractPartner: contract.contractPartner,
+    contractValue: contract.contractValue,
+    confidentiality: contract.confidentiality,
     durationType: contract.durationType || 'Fixed-term',
     organizationalUnit: contract.organizationalUnit,
-    confidentiality: contract.confidentiality,
     riskAssessment: contract.riskAssessment,
     liabilityAmount: contract.liabilityAmount,
-    comments: contract.comments || undefined,
-  } as unknown as ContractAnalysis;
+    externalReference: contract.contractNumber,
+
+    // ── Dates ────────────────────────────────────────────────────────────
+    contractStart: contract.startDate || null,
+    effectiveDate: contract.startDate || null,
+    expirationDate: contract.endDate || null,
+    renewalDate: contract.renewalDate || null,
+
+    // ── Parties ──────────────────────────────────────────────────────────
+    parties: (contract.parties as string[] | null) ?? null,
+
+    // ── NDA-specific ─────────────────────────────────────────────────────
+    confidentialityDuration: contract.confidentialityDuration,
+    isMutual: contract.isMutual,
+    jurisdiction: contract.jurisdiction,
+    riskFlags: (contract.riskFlags as ContractAnalysis['riskFlags']) ?? null,
+
+    // ── Service Agreement-specific ───────────────────────────────────────
+    autoRenewal: contract.autoRenewal,
+    paymentTerms: (contract.paymentTerms as ContractAnalysis['paymentTerms']) ?? null,
+    ipOwnership: contract.ipOwnership,
+    terminationNoticePeriod: contract.terminationNoticePeriod,
+    liabilityCap: contract.liabilityCap,
+    indemnification: contract.indemnification,
+
+    // ── License Agreement-specific ───────────────────────────────────────
+    licensor: contract.licensor,
+    licensee: contract.licensee,
+    softwareName: contract.softwareName,
+    licenseType: contract.licenseType,
+    usageLimits: contract.usageLimits,
+    exclusivity: contract.exclusivity,
+    auditRights: (contract.auditRights as ContractAnalysis['auditRights']) ?? null,
+    territory: contract.territory,
+
+    // ── General ──────────────────────────────────────────────────────────
+    governingLaw: contract.governingLaw,
+    keyDates: (contract.keyDates as ContractAnalysis['keyDates']) ?? undefined,
+  };
 
   // Serialize alerts
   const serializedAlerts = contract.alerts.map((alert) => ({
@@ -83,6 +134,14 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     })),
   }));
 
+  // Serialize tasks
+  const serializedTasks = contract.tasks.map((task) => ({
+    ...task,
+    dueDate: task.dueDate?.toISOString() ?? null,
+    createdAt: task.createdAt.toISOString(),
+    updatedAt: task.updatedAt.toISOString(),
+  }));
+
   // Prepare serializable contract object for client
   const serializableContract = {
     ...contract,
@@ -90,16 +149,18 @@ export default async function ContractEditPage({ params }: { params: Promise<{ i
     conditions: decrypt(contract.conditions || ''),
     content: decrypt(contract.content || ''),
     alerts: undefined,
+    tasks: undefined,
     fileData: null,
     createdAt: contract.createdAt.toISOString(),
     updatedAt: contract.updatedAt.toISOString(),
   };
 
   return (
-    <ClientEditorWrapper 
-      contract={serializableContract} 
+    <ClientEditorWrapper
+      contract={serializableContract}
       initialData={initialData}
       alerts={serializedAlerts}
+      tasks={serializedTasks}
     />
   );
 }

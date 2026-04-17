@@ -42,6 +42,7 @@ model Contract {
   status          String   @default("Draft") // e.g. "Active", "Review", "Draft"
   
   // ── Core metadata ──────────────────────────────────────────────────────
+  category        String?
   summary         String?  @db.Text
   conditions      String?  @db.Text
   comments        String?  @db.Text
