@@ -63,6 +63,28 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [riskAssessment, setRiskAssessment] = useState(initialData?.riskAssessment || "");
   const [organizationalUnit, setOrganizationalUnit] = useState(initialData?.organizationalUnit || "Legal");
 
+  // Contract Details fields (extracted by AI, editable by user)
+  // ServiceAgreement
+  const [paymentMethod, setPaymentMethod] = useState(initialData?.paymentTerms?.method || "");
+  const [paymentTiming, setPaymentTiming] = useState(initialData?.paymentTerms?.timing || "");
+  const [paymentCurrency, setPaymentCurrency] = useState(initialData?.paymentTerms?.currency || "");
+  const [ipOwnership, setIpOwnership] = useState(initialData?.ipOwnership || "");
+  const [indemnification, setIndemnification] = useState(initialData?.indemnification || "");
+  const [liabilityCap, setLiabilityCap] = useState(initialData?.liabilityCap || "");
+  const [terminationNoticePeriod, setTerminationNoticePeriod] = useState(initialData?.terminationNoticePeriod || "");
+  // NDA
+  const [confidentialityDuration, setConfidentialityDuration] = useState(initialData?.confidentialityDuration || "");
+  const [jurisdiction, setJurisdiction] = useState(initialData?.jurisdiction || "");
+  // LicenseAgreement
+  const [softwareName, setSoftwareName] = useState(initialData?.softwareName || "");
+  const [licenseType, setLicenseType] = useState(initialData?.licenseType || "");
+  const [licensor, setLicensor] = useState(initialData?.licensor || "");
+  const [licensee, setLicensee] = useState(initialData?.licensee || "");
+  const [usageLimits, setUsageLimits] = useState(initialData?.usageLimits || "");
+  const [territory, setTerritory] = useState(initialData?.territory || "");
+  // General
+  const [governingLaw, setGoverningLaw] = useState(initialData?.governingLaw || "");
+
   const handleSave = async () => {
     setIsSaving(true);
 
@@ -92,6 +114,21 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         contractStart,
         riskAssessment,
         organizationalUnit,
+        // Contract Details
+        paymentTerms: { method: paymentMethod, timing: paymentTiming, currency: paymentCurrency },
+        ipOwnership,
+        indemnification,
+        liabilityCap,
+        terminationNoticePeriod,
+        confidentialityDuration,
+        jurisdiction,
+        softwareName,
+        licenseType,
+        licensor,
+        licensee,
+        usageLimits,
+        territory,
+        governingLaw,
       };
 
       formData.append('metadata', JSON.stringify(metadata));
@@ -293,6 +330,39 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             setRiskAssessment={setRiskAssessment}
             organizationalUnit={organizationalUnit}
             setOrganizationalUnit={setOrganizationalUnit}
+            // Contract Details
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+            paymentTiming={paymentTiming}
+            setPaymentTiming={setPaymentTiming}
+            paymentCurrency={paymentCurrency}
+            setPaymentCurrency={setPaymentCurrency}
+            ipOwnership={ipOwnership}
+            setIpOwnership={setIpOwnership}
+            indemnification={indemnification}
+            setIndemnification={setIndemnification}
+            liabilityCap={liabilityCap}
+            setLiabilityCap={setLiabilityCap}
+            terminationNoticePeriod={terminationNoticePeriod}
+            setTerminationNoticePeriod={setTerminationNoticePeriod}
+            confidentialityDuration={confidentialityDuration}
+            setConfidentialityDuration={setConfidentialityDuration}
+            jurisdiction={jurisdiction}
+            setJurisdiction={setJurisdiction}
+            softwareName={softwareName}
+            setSoftwareName={setSoftwareName}
+            licenseType={licenseType}
+            setLicenseType={setLicenseType}
+            licensor={licensor}
+            setLicensor={setLicensor}
+            licensee={licensee}
+            setLicensee={setLicensee}
+            usageLimits={usageLimits}
+            setUsageLimits={setUsageLimits}
+            territory={territory}
+            setTerritory={setTerritory}
+            governingLaw={governingLaw}
+            setGoverningLaw={setGoverningLaw}
           />
         </div>
 

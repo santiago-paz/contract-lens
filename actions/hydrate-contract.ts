@@ -86,7 +86,8 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
         data: {
             description: `Hydrated: ${contract.title}`,
             action: 'created',
-            userId: userId
+            userId: userId,
+            contractId: contract.id
         }
     });
 

@@ -25,7 +25,7 @@ export interface PromptConfig {
  * Files are expected at: prompts/configs/{version}.json
  */
 export function loadPromptConfig(version: string): PromptConfig {
-  const configPath = path.join(__dirname, 'configs', `${version}.json`);
+  const configPath = path.join(process.cwd(), 'actions', 'contract-extraction', 'prompts', 'configs', `${version}.json`);
 
   if (!fs.existsSync(configPath)) {
     throw new Error(`Prompt config "${version}" not found at ${configPath}`);
@@ -39,7 +39,7 @@ export function loadPromptConfig(version: string): PromptConfig {
  * Returns a list of all available prompt config versions.
  */
 export function listPromptVersions(): string[] {
-  const configsDir = path.join(__dirname, 'configs');
+  const configsDir = path.join(process.cwd(), 'actions', 'contract-extraction', 'prompts', 'configs');
 
   if (!fs.existsSync(configsDir)) {
     return [];

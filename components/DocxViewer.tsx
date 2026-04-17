@@ -17,8 +17,8 @@ export function DocxViewer({ file, className }: DocxViewerProps) {
             containerRef.current.innerHTML = ''; // Clear previous content
             renderAsync(buffer, containerRef.current, containerRef.current, {
                 inWrapper: true,
-                ignoreWidth: false,
-                ignoreHeight: false,
+                ignoreWidth: true,
+                ignoreHeight: true,
                 ignoreFonts: false,
                 breakPages: true,
                 ignoreLastRenderedPageBreak: true,
@@ -33,10 +33,10 @@ export function DocxViewer({ file, className }: DocxViewerProps) {
   }, [file]);
 
   return (
-    <div 
-        ref={containerRef} 
+    <div
+        ref={containerRef}
         className={`docx-viewer bg-white overflow-auto ${className || ''}`}
-        style={{ minHeight: '500px' }}
+        style={{ minHeight: '500px', maxWidth: '100%' }}
     />
   );
 }

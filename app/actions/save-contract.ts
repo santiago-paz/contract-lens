@@ -143,7 +143,8 @@ export async function saveContract(formData: FormData) {
             data: {
                 description: updateData.title || 'Contract',
                 action: 'updated',
-                userId: userId
+                userId: userId,
+                contractId: contractId
             }
         });
 
@@ -170,7 +171,8 @@ export async function saveContract(formData: FormData) {
             data: {
                 description: contract.title,
                 action: 'created',
-                userId: userId
+                userId: userId,
+                contractId: contract.id
             }
         });
 
