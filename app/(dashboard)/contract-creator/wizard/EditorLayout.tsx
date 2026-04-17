@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import {
   FileText,
-  Search,
   PenLine,
   Save,
   Download,
   ChevronLeft,
-  Eye,
-  Check,
   Loader2,
-  Terminal,
   Bell
 } from 'lucide-react';
 import { FilePreview } from '@/components/FilePreview';
@@ -18,6 +14,7 @@ import { ContractAnalysis } from '@/types/contract-analysis';
 
 import { EditorSidebar } from './components/EditorSidebar';
 import { ContractAlerts, type ContractAlert } from './components/ContractAlerts';
+import { useContractForm } from './hooks/use-contract-form';
 
 import { saveContract } from '@/app/actions/save-contract';
 import { useRouter } from 'next/navigation';
@@ -42,105 +39,26 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
   const [isSaving, setIsSaving] = useState(false);
   const [savedContractId, setSavedContractId] = useState<string | undefined>(contractId);
 
-  const [contractTitle, setContractTitle] = useState(initialData?.title || fileName.replace(/\.[^/.]+$/, ""));
-  const [summary, setSummary] = useState(initialData?.summary || "");
-  const [conditions, setConditions] = useState(initialData?.conditions || "");
-  const [comments, setComments] = useState(initialData?.comments || "");
-  // Helper to split string into array
-  const splitString = (val: string | null | undefined) => val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-  const [contractOwner, setContractOwner] = useState<string[]>(splitString(initialData?.contractOwner));
-  const [deputy, setDeputy] = useState<string[]>(splitString(initialData?.deputy));
-  const [contractManager, setContractManager] = useState<string[]>(splitString(initialData?.contractManager));
-  const [contractPartner, setContractPartner] = useState<string[]>(splitString(initialData?.contractPartner));
-  const [status, setStatus] = useState<string>(initialData?.status || "Review");
-
-  // Additional controlled fields
-  const [contractValue, setContractValue] = useState(initialData?.contractValue || initialData?.liabilityCap || "");
-  const [confidentiality, setConfidentiality] = useState(initialData?.confidentiality || "");
-  const [durationType, setDurationType] = useState(initialData?.durationType || "Once-off");
-  const [contractStart, setContractStart] = useState(initialData?.contractStart || initialData?.effectiveDate || "");
-  const [riskAssessment, setRiskAssessment] = useState(initialData?.riskAssessment || "");
-  const [organizationalUnit, setOrganizationalUnit] = useState(initialData?.organizationalUnit || "Legal");
-
-  // Contract Details fields (extracted by AI, editable by user)
-  // ServiceAgreement
-  const [paymentMethod, setPaymentMethod] = useState(initialData?.paymentTerms?.method || "");
-  const [paymentTiming, setPaymentTiming] = useState(initialData?.paymentTerms?.timing || "");
-  const [paymentCurrency, setPaymentCurrency] = useState(initialData?.paymentTerms?.currency || "");
-  const [ipOwnership, setIpOwnership] = useState(initialData?.ipOwnership || "");
-  const [indemnification, setIndemnification] = useState(initialData?.indemnification || "");
-  const [liabilityCap, setLiabilityCap] = useState(initialData?.liabilityCap || "");
-  const [terminationNoticePeriod, setTerminationNoticePeriod] = useState(initialData?.terminationNoticePeriod || "");
-  // NDA
-  const [confidentialityDuration, setConfidentialityDuration] = useState(initialData?.confidentialityDuration || "");
-  const [jurisdiction, setJurisdiction] = useState(initialData?.jurisdiction || "");
-  // LicenseAgreement
-  const [softwareName, setSoftwareName] = useState(initialData?.softwareName || "");
-  const [licenseType, setLicenseType] = useState(initialData?.licenseType || "");
-  const [licensor, setLicensor] = useState(initialData?.licensor || "");
-  const [licensee, setLicensee] = useState(initialData?.licensee || "");
-  const [usageLimits, setUsageLimits] = useState(initialData?.usageLimits || "");
-  const [territory, setTerritory] = useState(initialData?.territory || "");
-  // General
-  const [governingLaw, setGoverningLaw] = useState(initialData?.governingLaw || "");
+  const { formData, updateField, updateArrayField, updateBooleanField, buildSaveMetadata } = useContractForm(initialData, fileName);
 
   const handleSave = async () => {
     setIsSaving(true);
 
     try {
-      const formData = new FormData();
+      const fd = new FormData();
 
       if (uploadedFile) {
-        formData.append('file', uploadedFile);
+        fd.append('file', uploadedFile);
       }
 
-      const metadata = {
-        ...initialData, // Include all analysis data as base
-        title: contractTitle,
-        contractType,
-        contractOwner: contractOwner.length > 0 ? contractOwner.join(', ') : null,
-        deputy: deputy.length > 0 ? deputy.join(', ') : null,
-        contractManager: contractManager.length > 0 ? contractManager.join(', ') : null,
-        contractPartner: contractPartner.length > 0 ? contractPartner.join(', ') : null,
-        // Overwrite with current state
-        summary: summary,
-        conditions: conditions,
-        comments: comments,
-        status: status,
-        contractValue,
-        confidentiality,
-        durationType,
-        contractStart,
-        riskAssessment,
-        organizationalUnit,
-        // Contract Details
-        paymentTerms: { method: paymentMethod, timing: paymentTiming, currency: paymentCurrency },
-        ipOwnership,
-        indemnification,
-        liabilityCap,
-        terminationNoticePeriod,
-        confidentialityDuration,
-        jurisdiction,
-        softwareName,
-        licenseType,
-        licensor,
-        licensee,
-        usageLimits,
-        territory,
-        governingLaw,
-      };
-
-      formData.append('metadata', JSON.stringify(metadata));
-
-      // If we had editable content text, we would append it here
-      // formData.append('content', content);
+      const metadata = buildSaveMetadata(contractType, initialData);
+      fd.append('metadata', JSON.stringify(metadata));
 
       if (savedContractId) {
-        formData.append('contractId', savedContractId);
+        fd.append('contractId', savedContractId);
       }
 
-      const result = await saveContract(formData);
+      const result = await saveContract(fd);
 
       if (result.success) {
         setIsSaved(true);
@@ -180,7 +98,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
     Completed: 'completed',
     Archived: 'archived',
   };
-  const currentStepId = statusToStepId[status] || 'review';
+  const currentStepId = statusToStepId[formData.status] || 'review';
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] -m-6 md:-m-8 font-mono">
@@ -198,7 +116,7 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
               </div>
             </button>
             <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-              {isSaved ? `Contracts / ${initialData?.externalReference || 'ID:10023'} / ${initialData?.title || fileName.replace(/\.[^/.]+$/, "")}` : `System / New Contract / ${contractTitle.trim() || 'Draft'}`}
+              {isSaved ? `Contracts / ${initialData?.externalReference || 'ID:10023'} / ${initialData?.title || fileName.replace(/\.[^/.]+$/, "")}` : `System / New Contract / ${formData.contractTitle.trim() || 'Draft'}`}
             </div>
           </div>
 
@@ -252,13 +170,13 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
         <div className="flex items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             {isSaved ? (
-              <h1 className="text-xl font-bold text-black flex items-center gap-2 uppercase min-w-0" title={contractTitle || initialData?.title || fileName.replace(/\.[^/.]+$/, "")}>
-                <span className="truncate min-w-0" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{contractTitle.trim() || initialData?.title || fileName.replace(/\.[^/.]+$/, "")}</span>
-                <span className="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] font-bold uppercase tracking-widest rounded-sm shrink-0">{status}</span>
+              <h1 className="text-xl font-bold text-black flex items-center gap-2 uppercase min-w-0" title={formData.contractTitle || initialData?.title || fileName.replace(/\.[^/.]+$/, "")}>
+                <span className="truncate min-w-0" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{formData.contractTitle.trim() || initialData?.title || fileName.replace(/\.[^/.]+$/, "")}</span>
+                <span className="px-2 py-0.5 bg-gray-100 text-gray-700 text-[10px] font-bold uppercase tracking-widest rounded-sm shrink-0">{formData.status}</span>
               </h1>
             ) : (
-              <h1 className="text-xl font-bold text-black flex items-center gap-2 uppercase min-w-0" title={contractTitle || 'New Contract'}>
-                <span className="truncate min-w-0" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{contractTitle.trim() || 'New Contract'}</span>
+              <h1 className="text-xl font-bold text-black flex items-center gap-2 uppercase min-w-0" title={formData.contractTitle || 'New Contract'}>
+                <span className="truncate min-w-0" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{formData.contractTitle.trim() || 'New Contract'}</span>
                 <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-widest rounded-sm shrink-0">Draft Mode</span>
               </h1>
             )}
@@ -300,69 +218,10 @@ export function EditorLayout({ children, fileName, contractType, onBack, uploade
             initialData={initialData}
             fileName={fileName}
             contractType={contractType}
-            contractTitle={contractTitle}
-            setContractTitle={setContractTitle}
-            contractPartner={contractPartner}
-            setContractPartner={setContractPartner}
-            contractOwner={contractOwner}
-            setContractOwner={setContractOwner}
-            deputy={deputy}
-            setDeputy={setDeputy}
-            contractManager={contractManager}
-            setContractManager={setContractManager}
-            summary={summary}
-            setSummary={setSummary}
-            conditions={conditions}
-            setConditions={setConditions}
-            comments={comments}
-            setComments={setComments}
-            status={status}
-            setStatus={setStatus}
-            contractValue={contractValue}
-            setContractValue={setContractValue}
-            confidentiality={confidentiality}
-            setConfidentiality={setConfidentiality}
-            durationType={durationType}
-            setDurationType={setDurationType}
-            contractStart={contractStart}
-            setContractStart={setContractStart}
-            riskAssessment={riskAssessment}
-            setRiskAssessment={setRiskAssessment}
-            organizationalUnit={organizationalUnit}
-            setOrganizationalUnit={setOrganizationalUnit}
-            // Contract Details
-            paymentMethod={paymentMethod}
-            setPaymentMethod={setPaymentMethod}
-            paymentTiming={paymentTiming}
-            setPaymentTiming={setPaymentTiming}
-            paymentCurrency={paymentCurrency}
-            setPaymentCurrency={setPaymentCurrency}
-            ipOwnership={ipOwnership}
-            setIpOwnership={setIpOwnership}
-            indemnification={indemnification}
-            setIndemnification={setIndemnification}
-            liabilityCap={liabilityCap}
-            setLiabilityCap={setLiabilityCap}
-            terminationNoticePeriod={terminationNoticePeriod}
-            setTerminationNoticePeriod={setTerminationNoticePeriod}
-            confidentialityDuration={confidentialityDuration}
-            setConfidentialityDuration={setConfidentialityDuration}
-            jurisdiction={jurisdiction}
-            setJurisdiction={setJurisdiction}
-            softwareName={softwareName}
-            setSoftwareName={setSoftwareName}
-            licenseType={licenseType}
-            setLicenseType={setLicenseType}
-            licensor={licensor}
-            setLicensor={setLicensor}
-            licensee={licensee}
-            setLicensee={setLicensee}
-            usageLimits={usageLimits}
-            setUsageLimits={setUsageLimits}
-            territory={territory}
-            setTerritory={setTerritory}
-            governingLaw={governingLaw}
-            setGoverningLaw={setGoverningLaw}
+            formData={formData}
+            updateField={updateField}
+            updateArrayField={updateArrayField}
+            updateBooleanField={updateBooleanField}
           />
         </div>
 
