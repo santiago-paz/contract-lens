@@ -29,7 +29,7 @@ export const Sidebar = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="w-96 bg-white border-r border-gray-200 flex flex-col h-screen sticky top-0 z-10 shadow-sm">
+    <div className="w-96 bg-white border-r border-gray-200 flex flex-col z-10 shadow-sm">
       <div className="p-4 border-b border-gray-200 bg-gray-50">
         <h1 className="font-black text-xl flex items-center gap-2 uppercase tracking-tighter text-black">
           <Terminal className="w-5 h-5 text-gray-500" />

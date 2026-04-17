@@ -51,7 +51,7 @@ export default function PlaygroundPage() {
   const showReasoningPanelAfterDone = result && !hasAcknowledgedReasoning;
 
   return (
-    <div className="min-h-screen bg-white font-mono text-sm flex bg-noise relative overflow-hidden">
+    <div className="font-mono text-sm flex -m-6 md:-m-8 min-h-[calc(100vh-4rem)]">
       {/* Error Popup */}
       <ErrorPopup
         isOpen={!!errorPopup?.isOpen}
@@ -59,9 +59,6 @@ export default function PlaygroundPage() {
         details={errorPopup?.details}
         onClose={closeErrorPopup}
       />
-
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-0"></div>
 
       {/* Sidebar Controls */}
       <Sidebar
@@ -78,7 +75,7 @@ export default function PlaygroundPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden relative z-10">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar / Metrics */}
         <PlaygroundHeader
           result={result}
