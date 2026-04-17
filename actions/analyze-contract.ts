@@ -88,7 +88,7 @@ export async function analyzeContract(
     ${text.slice(0, 5000)}`;
 
     const { output: routerResult, usage: routerUsage } = await generateText({
-      model: 'meta/llama-3.1-8b' as any,
+      model: 'openai/gpt-4o-mini' as any,
       output: Output.object({
         schema: z.object({
           classification: z.enum(CONTRACT_TYPES),
