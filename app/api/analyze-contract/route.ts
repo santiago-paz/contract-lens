@@ -160,18 +160,48 @@ export async function POST(request: Request) {
     
     ${text.slice(0, 5000)}`;
 
-        const { output: routerResult, usage: routerUsage } = await generateText({
-          model: 'meta/llama-3.1-8b' as any,
-          output: Output.object({
-            schema: z.object({
-              classification: z.enum(CONTRACT_TYPES),
-            }),
-          }),
-          prompt: routerPrompt,
-          temperature: 0,
-        });
+        let classification: string;
+        let routerUsage: any;
 
-        const classification = routerResult.classification;
+        try {
+          const { output: routerResult, usage } = await generateText({
+            model: 'openai/gpt-4o-mini' as any,
+            output: Output.object({
+              schema: z.object({
+                classification: z.enum(CONTRACT_TYPES),
+              }),
+            }),
+            prompt: routerPrompt,
+            temperature: 0,
+          });
+          classification = routerResult.classification;
+          routerUsage = usage;
+        } catch (routerError: unknown) {
+          console.error('Router classification failed:', routerError);
+          emit({ type: 'step', id: 'classification', status: 'done' });
+          emit({
+            type: 'log',
+            text: 'Could not classify contract type',
+            variant: 'error',
+          });
+          emit({
+            type: 'result',
+            success: false,
+            error: 'Classification model did not return a valid response.',
+            data: {
+              rawText: text,
+              parsed: null,
+              classification: 'Unknown',
+              latency: {
+                extraction: extractionMs,
+                router: Math.round(performance.now() - routerStart),
+                total: Math.round(performance.now() - startTime),
+              },
+            },
+          });
+          controller.close();
+          return;
+        }
         const routerMs = Math.round(performance.now() - routerStart);
 
         emit({ type: 'step', id: 'classification', status: 'done' });
