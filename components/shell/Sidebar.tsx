@@ -10,6 +10,7 @@ import {
   FileText,
   LayoutDashboard,
   Menu,
+  Settings,
   User,
   Users,
   LogOut,
@@ -50,6 +51,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: 'Recently created', href: '/recently-created', icon: FileText, comingSoon: false },
       { label: 'All Expiring Contracts', href: '/all-expiring', icon: Clock, comingSoon: false },
       { label: 'Partners', href: '/partners', icon: Users, comingSoon: false },
+      { label: 'Settings', href: '/settings/members', icon: Settings, comingSoon: false },
     ],
   },
 ];

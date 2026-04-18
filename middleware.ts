@@ -26,21 +26,26 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // 3. Handle Login Page
-  if (pathname === '/login') {
-    // If already logged in, redirect to dashboard
-    if (session) {
+  // 3. Handle Login & Register pages
+  if (pathname === '/login' || pathname === '/register') {
+    // If already logged in and no redirect param, go to dashboard
+    if (session && !request.nextUrl.searchParams.has('redirect')) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
     return NextResponse.next()
   }
 
-  // 4. Protect all other routes (Dashboard, etc.)
+  // 4. Allow invite pages (public for accepting invitations)
+  if (pathname.startsWith('/invite')) {
+    return NextResponse.next()
+  }
+
+  // 5. Protect all other routes (Dashboard, etc.)
   if (!session) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // 5. If authenticated but no organization, redirect to setup
+  // 6. If authenticated but no organization, redirect to setup
   if (!session.orgId && !pathname.startsWith('/setup-organization')) {
     return NextResponse.redirect(new URL('/setup-organization', request.url))
   }
