@@ -3,11 +3,14 @@
 import { useActionState, useState } from 'react'
 import { login } from '@/app/actions/auth'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Loader2, Terminal, ShieldCheck } from 'lucide-react'
 
 export default function LoginPage() {
   const [state, action, isPending] = useActionState(login, null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect')
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -51,6 +54,7 @@ export default function LoginPage() {
 
             <div className="p-8">
                 <form action={action} className="space-y-6">
+                    {redirectTo && <input type="hidden" name="redirect" value={redirectTo} />}
                     {/* Email Input */}
                     <div className="space-y-2">
                         <label 
