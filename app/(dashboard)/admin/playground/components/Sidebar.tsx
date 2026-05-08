@@ -6,8 +6,6 @@ interface SidebarProps {
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   systemPrompt: string;
   setSystemPrompt: (value: string) => void;
-  model: string;
-  setModel: (value: string) => void;
   temperature: number;
   setTemperature: (value: number) => void;
   isLoading: boolean;
@@ -19,8 +17,6 @@ export const Sidebar = ({
   onFileChange,
   systemPrompt,
   setSystemPrompt,
-  model,
-  setModel,
   temperature,
   setTemperature,
   isLoading,
@@ -67,22 +63,6 @@ export const Sidebar = ({
 
         {/* Model Settings */}
         <div className="space-y-6">
-          <div className="space-y-3">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Expert Model</label>
-            <div className="relative">
-              <select
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                className="w-full p-3 border border-gray-200 bg-white text-xs font-bold text-black appearance-none rounded-sm focus:border-black focus:outline-none transition-colors cursor-pointer"
-              >
-                <option value="deepseek/deepseek-r1">deepseek/deepseek-r1</option>
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <div className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-gray-400"></div>
-              </div>
-            </div>
-          </div>
-
           <div className="space-y-3">
             <label className="text-[10px] font-bold uppercase tracking-wider flex justify-between items-center">
               <span className="text-gray-500">Temperature</span>

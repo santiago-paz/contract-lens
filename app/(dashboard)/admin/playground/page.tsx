@@ -13,8 +13,6 @@ export default function PlaygroundPage() {
     file,
     systemPrompt,
     setSystemPrompt,
-    model,
-    setModel,
     temperature,
     setTemperature,
     isLoading,
@@ -66,8 +64,6 @@ export default function PlaygroundPage() {
         onFileChange={handleFileChange}
         systemPrompt={systemPrompt}
         setSystemPrompt={setSystemPrompt}
-        model={model}
-        setModel={setModel}
         temperature={temperature}
         setTemperature={setTemperature}
         isLoading={isLoading}
