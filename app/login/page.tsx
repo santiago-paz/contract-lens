@@ -1,12 +1,20 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { Suspense, useActionState, useState } from 'react'
 import { login } from '@/app/actions/auth'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Loader2, Terminal, ShieldCheck } from 'lucide-react'
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
+  )
+}
+
+function LoginPageContent() {
   const [state, action, isPending] = useActionState(login, null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
   const searchParams = useSearchParams()
