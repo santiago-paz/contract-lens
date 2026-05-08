@@ -1,12 +1,20 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { Suspense, useActionState, useState } from 'react'
 import { register } from '@/app/actions/auth'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Loader2, Terminal, UserPlus } from 'lucide-react'
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterPageContent />
+    </Suspense>
+  )
+}
+
+function RegisterPageContent() {
   const [state, action, isPending] = useActionState(register, null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
   const searchParams = useSearchParams()
