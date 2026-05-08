@@ -42,10 +42,10 @@ export function ContactForm() {
                     <div className="relative z-10">
                         <div className="flex items-center gap-3 mb-4">
                              <div className="bg-[#CCFF00] text-black w-8 h-8 flex items-center justify-center border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]">
-                                <span className="font-black font-mono text-sm leading-none">S</span>
+                                <span className="font-black font-mono text-sm leading-none">§</span>
                              </div>
                              <div className="flex flex-col">
-                                <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Blackletter</span>
+                                <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Paragraph+</span>
                                 <span className="text-[10px] font-mono text-[#CCFF00] uppercase tracking-wider">{t.contact.secureChannel}</span>
                              </div>
                         </div>

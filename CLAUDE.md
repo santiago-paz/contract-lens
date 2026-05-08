@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Blackletter is a multi-tenant SaaS for AI-driven contract management (target: small German law firms). Built with Next.js 16 App Router, React 19, TypeScript, Prisma + PostgreSQL (Supabase), Tailwind v4. The package name in `package.json` is `blackletter`; the repo is `SplitBerlin`.
+Paragraph+ is a multi-tenant SaaS for AI-driven contract management (target: small German law firms). Built with Next.js 16 App Router, React 19, TypeScript, Prisma + PostgreSQL (Supabase), Tailwind v4. The package name in `package.json` is `paragraph-plus`; the repo is `SplitBerlin`.
 
 ## Commands
 

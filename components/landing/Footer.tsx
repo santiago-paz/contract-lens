@@ -36,10 +36,10 @@ export function Footer() {
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <div className="bg-black text-[#CCFF00] w-16 h-16 border-2 border-black flex items-center justify-center shadow-hard-sm hover:rotate-6 transition-transform">
-                <div className="font-mono font-black text-3xl leading-none">S</div>
+                <div className="font-mono font-black text-3xl leading-none">§</div>
               </div>
               <div className="flex flex-col">
-                <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Blackletter</span>
+                <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Paragraph+</span>
                 {/* <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Contrakt</span> */}
               </div>
             </div>
