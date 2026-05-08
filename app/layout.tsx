@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blackletter | The Enterprise Asset OS",
+  title: "Paragraph+ | The Enterprise Asset OS",
   description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
   keywords: [
     // English
@@ -37,18 +37,18 @@ export const metadata: Metadata = {
     "Risikomanagement",
     "Rechtssicherheit"
   ],
-  authors: [{ name: "Blackletter GmbH" }],
+  authors: [{ name: "Paragraph+ GmbH" }],
   openGraph: {
-    title: "Blackletter | The Enterprise Asset OS",
+    title: "Paragraph+ | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
     type: "website",
-    siteName: "Blackletter",
+    siteName: "Paragraph+",
     locale: "en_US",
     alternateLocale: ["de_DE"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blackletter | The Enterprise Asset OS",
+    title: "Paragraph+ | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
   },
   robots: {
