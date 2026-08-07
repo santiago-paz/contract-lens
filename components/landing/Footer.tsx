@@ -39,7 +39,7 @@ export function Footer() {
                 <div className="font-mono font-black text-3xl leading-none">§</div>
               </div>
               <div className="flex flex-col">
-                <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Paragraph+</span>
+                <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Contract Lens</span>
                 {/* <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Contrakt</span> */}
               </div>
             </div>

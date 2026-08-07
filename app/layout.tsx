@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Paragraph+ | The Enterprise Asset OS",
+  title: "Contract Lens | The Enterprise Asset OS",
   description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
   keywords: [
     // English
@@ -37,18 +37,18 @@ export const metadata: Metadata = {
     "Risikomanagement",
     "Rechtssicherheit"
   ],
-  authors: [{ name: "Paragraph+ GmbH" }],
+  authors: [{ name: "Contract Lens GmbH" }],
   openGraph: {
-    title: "Paragraph+ | The Enterprise Asset OS",
+    title: "Contract Lens | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
     type: "website",
-    siteName: "Paragraph+",
+    siteName: "Contract Lens",
     locale: "en_US",
     alternateLocale: ["de_DE"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paragraph+ | The Enterprise Asset OS",
+    title: "Contract Lens | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
   },
   robots: {

@@ -1,8 +1,8 @@
-# Paragraph+ — Análisis de Producto-Mercado
+# Contract Lens — Análisis de Producto-Mercado
 
 ## Lo que tienes hoy
 
-Paragraph+ es una plataforma SaaS de gestión inteligente de contratos con:
+Contract Lens es una plataforma SaaS de gestión inteligente de contratos con:
 
 - Pipeline de IA en dos fases (GPT-4o-mini para clasificar, DeepSeek R1 para extracción estructurada) con streaming en tiempo real
 - Cifrado AES-256-GCM en reposo para datos sensibles
@@ -50,7 +50,7 @@ El mercado está saturado de Kanzleisoftware integral (RA-MICRO, DATEV, Advolux)
 
 ### "Vertragsmanagement mit KI — gebaut für kleine Kanzleien"
 
-1. **IA que extrae, no que chatea:** A diferencia de ChatGPT (que el 82,5% ya usa de forma genérica), Paragraph+ extrae datos estructurados del contrato automáticamente — fechas, partes, cláusulas, plazos de terminación. No requiere prompts.
+1. **IA que extrae, no que chatea:** A diferencia de ChatGPT (que el 82,5% ya usa de forma genérica), Contract Lens extrae datos estructurados del contrato automáticamente — fechas, partes, cláusulas, plazos de terminación. No requiere prompts.
 2. **Alertas de vencimiento proactivas:** El 58% de los abogados no tiene sistema automatizado de plazos contractuales. Un contrato que se auto-renueva sin aviso puede costarle miles a un cliente.
 3. **Cifrado de grado profesional:** AES-256-GCM en reposo — cumple con la Schweigepflicht (secreto profesional) que va más allá del DSGVO estándar. Pocos competidores pueden decir esto.
 4. **Precio para Einzelanwälte:** Sin mínimo de 5 usuarios. Sin contratos anuales de miles de euros. Un abogado solo puede empezar hoy.

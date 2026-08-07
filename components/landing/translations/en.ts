@@ -279,8 +279,8 @@ export const en = {
   footer: {
     ctaTitle: "Operational failure is a choice.",
     ctaButton: "Secure Your Infrastructure",
-    systemDesc: "Advanced Contract Analysis System Operated by Paragraph+ GmbH",
-    copyright: "Paragraph+. ALL RIGHTS RESERVED.",
+    systemDesc: "Advanced Contract Analysis System Operated by Contract Lens GmbH",
+    copyright: "Contract Lens. ALL RIGHTS RESERVED.",
     rights: "All rights reserved.",
     privacy: "Privacy Protocol",
     terms: "Terms of Service"
