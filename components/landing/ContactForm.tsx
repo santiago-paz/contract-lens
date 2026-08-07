@@ -45,7 +45,7 @@ export function ContactForm() {
                                 <span className="font-black font-mono text-sm leading-none">§</span>
                              </div>
                              <div className="flex flex-col">
-                                <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Paragraph+</span>
+                                <span className="font-bold font-mono text-sm tracking-widest text-white uppercase leading-none">Contract Lens</span>
                                 <span className="text-[10px] font-mono text-[#CCFF00] uppercase tracking-wider">{t.contact.secureChannel}</span>
                              </div>
                         </div>

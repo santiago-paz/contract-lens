@@ -81,7 +81,7 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
             <div className="w-6 h-6 bg-[#CCFF00] border border-white flex items-center justify-center">
                <span className="text-black font-mono font-bold text-xs leading-none">§</span>
             </div>
-            <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Paragraph+</span>
+            <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Contract Lens</span>
           </div>
         )}
         <button

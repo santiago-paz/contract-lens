@@ -228,7 +228,7 @@ export async function sendInvitation(prevState: any, formData: FormData) {
   const { error } = await resend.emails.send({
     from: 'onboarding@resend.dev',
     to: email,
-    subject: `You've been invited to ${org?.name ?? 'an organization'} on Paragraph+`,
+    subject: `You've been invited to ${org?.name ?? 'an organization'} on Contract Lens`,
     html: `
       <div style="font-family: monospace; max-width: 500px; margin: 0 auto; padding: 40px 20px;">
         <h2 style="font-size: 18px; margin-bottom: 24px;">You've been invited</h2>

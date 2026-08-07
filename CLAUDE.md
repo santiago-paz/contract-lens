@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Paragraph+ is a multi-tenant SaaS for AI-driven contract management (target: small German law firms). Built with Next.js 16 App Router, React 19, TypeScript, Prisma + PostgreSQL (Supabase), Tailwind v4. The package name in `package.json` is `paragraph-plus`; the repo is `SplitBerlin`.
+Contract Lens is a multi-tenant SaaS for AI-driven contract management (target: small German law firms). Built with Next.js 16 App Router, React 19, TypeScript, Prisma + PostgreSQL (Supabase), Tailwind v4. The package name in `package.json` is `contract-lens`; the repo is `contract-lens`.
 
 ## Commands
 

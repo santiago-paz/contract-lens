@@ -45,7 +45,7 @@ function LoginPageContent() {
                         <div className="bg-[#CCFF00] text-black w-8 h-8 flex items-center justify-center border border-white">
                             <span className="font-bold font-mono text-lg leading-none">§</span>
                         </div>
-                        <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Paragraph+</span>
+                        <span className="font-bold font-mono text-sm tracking-wide text-white uppercase">Contract Lens</span>
                     </div>
                     <div className="flex items-center gap-1 px-2 py-1 bg-[#CCFF00] text-black text-[10px] font-bold font-mono uppercase">
                         <ShieldCheck className="w-3 h-3" />
