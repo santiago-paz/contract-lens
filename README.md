@@ -2,6 +2,8 @@
 
 ### ▶ Live demo: [paragraph-plus.vercel.app](https://paragraph-plus.vercel.app)
 
+![Contract Lens — uploading a contract, classifying it and extracting structured fields](docs/demo.gif)
+
 A multi-tenant SaaS platform for AI-driven contract management, built for small law firms. Contracts are uploaded as PDF or DOCX, parsed, and run through an LLM extraction pipeline that pulls out structured data — parties, dates, clauses, termination and renewal terms — which then drives a task and alert system so deadlines don't get missed.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
