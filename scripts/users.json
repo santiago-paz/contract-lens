@@ -1,8 +1,8 @@
 [
   {
-    "email": "irem.cengiz@example.com",
+    "email": "anna.weber@example.com",
     "password": "password123",
-    "name": "Irem Cengiz",
+    "name": "Anna Weber",
     "equipo": "Management",
     "contracts": [],
     "tasks": [
@@ -27,9 +27,9 @@
     ]
   },
   {
-    "email": "info@santiagopaz.com",
+    "email": "lukas.berger@example.com",
     "password": "password123",
-    "name": "Santiago Paz",
+    "name": "Lukas Berger",
     "equipo": "Legal",
     "contracts": [],
     "tasks": [
