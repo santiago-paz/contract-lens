@@ -2,7 +2,7 @@
 
 A multi-tenant SaaS platform for AI-driven contract management, built for small law firms. Contracts are uploaded as PDF or DOCX, parsed, and run through an LLM extraction pipeline that pulls out structured data — parties, dates, clauses, termination and renewal terms — which then drives a task and alert system so deadlines don't get missed.
 
-**▶ Live demo: [contract-lens.vercel.app](https://contract-lens.vercel.app)**
+**▶ Live demo: [paragraph-plus.vercel.app](https://paragraph-plus.vercel.app)**
 
 The product thesis: an AI that *extracts* rather than *chats*. No prompting required from the user — upload a contract, get structured fields and a deadline pipeline.
 
