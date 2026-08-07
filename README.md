@@ -4,6 +4,17 @@ A multi-tenant SaaS platform for AI-driven contract management, built for small 
 
 **▶ Live demo: [paragraph-plus.vercel.app](https://paragraph-plus.vercel.app)**
 
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?logo=postgresql&logoColor=white)
+![AI SDK](https://img.shields.io/badge/AI%20SDK-v6-000000?logo=vercel&logoColor=white)
+![Multi-tenant](https://img.shields.io/badge/multi--tenant-5%20roles-0EA5E9)
+![Encryption](https://img.shields.io/badge/encryption-AES--256--GCM-4B5563)
+![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20DE-8B5CF6)
+
 The product thesis: an AI that *extracts* rather than *chats*. No prompting required from the user — upload a contract, get structured fields and a deadline pipeline.
 
 ## Features
