@@ -21,6 +21,20 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // 1b. Allow file-based metadata routes — social crawlers fetch these
+  // unauthenticated, so redirecting them to /login breaks link previews.
+  if (
+    pathname.startsWith('/opengraph-image') ||
+    pathname.startsWith('/twitter-image') ||
+    pathname.startsWith('/icon') ||
+    pathname.startsWith('/apple-icon') ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/manifest.webmanifest'
+  ) {
+    return NextResponse.next()
+  }
+
   // 2. Allow Landing Page
   if (pathname === '/') {
     return NextResponse.next()

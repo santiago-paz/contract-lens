@@ -1,6 +1,6 @@
 # Contract Lens
 
-### ▶ Live demo: [paragraph-plus.vercel.app](https://paragraph-plus.vercel.app)
+### ▶ Live demo: [contract-lens-web.vercel.app](https://contract-lens-web.vercel.app)
 
 ![Contract Lens — uploading a contract, classifying it and extracting structured fields](docs/demo.gif)
 
