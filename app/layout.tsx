@@ -28,7 +28,6 @@ export const metadata: Metadata = {
     "Legal Tech",
     "Structured Data",
     "Capital Recovery",
-    "Operational Supremacy",
     // German
     "Vertragsmanagement",
     "Digitale Akte",
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
     "Risikomanagement",
     "Rechtssicherheit"
   ],
-  authors: [{ name: "Contract Lens GmbH" }],
+  authors: [{ name: "Santiago Paz" }],
   openGraph: {
     title: "Contract Lens | The Enterprise Asset OS",
     description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
