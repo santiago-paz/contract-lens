@@ -160,7 +160,7 @@ export default async function Image() {
                 marginRight: 12,
               }}
             />
-            contract-lens-web.vercel.app
+            trycontractlens.com
           </div>
         </div>
 

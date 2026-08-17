@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://contract-lens-web.vercel.app"),
+  metadataBase: new URL("https://trycontractlens.com"),
   title: "Contract Lens | The Enterprise Asset OS",
   description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
   keywords: [
