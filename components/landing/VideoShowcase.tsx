@@ -10,29 +10,42 @@ import { useLanguage } from './LanguageContext';
 /**
  * Demo video configuration.
  *
- * The current clip is the January 2026 showcase recording. It still shows the
- * old "Split Berlin" sidebar branding, so it is a stand-in until the walkthrough
- * is re-recorded against Contract Lens.
+ * The clip is the August 2026 walkthrough: sign in, upload a contract, watch the
+ * analysis run, land on the extracted record. The recording comes off a 16:10
+ * screen (3456x2160), and it is transcoded before upload, since the original is
+ * 85 MB at 60fps:
  *
- * The Blob pathname is stable and has no random suffix, so replacing the video
- * needs no code change and no redeploy. Upload over it and the site picks up the
- * new file within the cache window (currently 1 day):
+ *   ffmpeg -i source.mp4 -an -vf "fps=30,scale=1728:1080:flags=lanczos" \
+ *     -c:v libx264 -profile:v high -preset slow -crf 25 \
+ *     -pix_fmt yuv420p -movflags +faststart walkthrough.mp4
+ *
+ * DEMO_VIDEO_ASPECT has to match the clip, so re-derive it from the encoded
+ * width and height rather than assuming 16:9. A 16:9 frame is what put black
+ * bars down both sides of this 16:10 recording. The frame is object-cover
+ * rather than object-contain for the same reason: aspect-ratio sizes the
+ * border box while object-fit works on the content box inside the 2px border,
+ * and cover absorbs that difference instead of leaving a sliver of black.
+ *
+ * Both the Blob pathname and the poster filename carry a version suffix, and
+ * that is deliberate. Overwriting either one in place keeps the URL identical,
+ * so browsers and the Vercel image optimiser go on serving the previous file
+ * until their cache expires. Bumping the suffix makes the swap take effect at
+ * once. To replace the video, upload under the next version and update the
+ * three constants below:
  *
  *   set -a; . ./.env.local; set +a
  *   vercel blob put walkthrough.mp4 \
- *     --pathname contract-lens-walkthrough.mp4 \
- *     --access public --allow-overwrite true \
- *     --rw-token "$BLOB_READ_WRITE_TOKEN"
- *
- * The poster lives in public/ so next/image can optimise it. To refresh it:
- *
- *   ffmpeg -ss 16 -i walkthrough.mp4 -frames:v 1 -q:v 3 public/walkthrough-poster.jpg
+ *     --pathname contract-lens-walkthrough-v4.mp4 \
+ *     --access public --rw-token "$BLOB_READ_WRITE_TOKEN"
+ *   ffmpeg -ss 50 -i walkthrough.mp4 -frames:v 1 -q:v 4 public/walkthrough-poster-v4.jpg
  *
  * Leaving DEMO_VIDEO_URL empty falls back to the placeholder state.
  */
 const DEMO_VIDEO_URL =
-  'https://gdiqtaqfbz3yltxe.public.blob.vercel-storage.com/contract-lens-walkthrough.mp4';
-const DEMO_VIDEO_POSTER = '/walkthrough-poster.jpg';
+  'https://gdiqtaqfbz3yltxe.public.blob.vercel-storage.com/contract-lens-walkthrough-v3.mp4';
+const DEMO_VIDEO_POSTER = '/walkthrough-poster-v3.jpg';
+/** 1728x1080, the clip's own ratio. Keep in step with the file above. */
+const DEMO_VIDEO_ASPECT = 'aspect-[8/5]';
 
 export function VideoShowcase() {
   const { t } = useLanguage();
@@ -76,11 +89,11 @@ export function VideoShowcase() {
         >
           {DEMO_VIDEO_URL ? (
             isPlaying ? (
-              <div className="border-2 border-black bg-black shadow-[10px_10px_0px_0px_#CCFF00] aspect-video">
+              <div className={`border-2 border-black bg-black shadow-[10px_10px_0px_0px_#CCFF00] ${DEMO_VIDEO_ASPECT}`}>
                 <video
                   src={DEMO_VIDEO_URL}
                   poster={DEMO_VIDEO_POSTER || undefined}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                   controls
                   autoPlay
                   playsInline
@@ -93,14 +106,14 @@ export function VideoShowcase() {
                 aria-label={t.videoShowcase.playAria}
                 className="group relative block w-full text-left touch-manipulation focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-black"
               >
-                <div className="border-2 border-black bg-black shadow-[10px_10px_0px_0px_#CCFF00] aspect-video relative overflow-hidden">
+                <div className={`border-2 border-black bg-black shadow-[10px_10px_0px_0px_#CCFF00] ${DEMO_VIDEO_ASPECT} relative overflow-hidden`}>
                   {DEMO_VIDEO_POSTER && (
                     <Image
                       src={DEMO_VIDEO_POSTER}
                       alt=""
                       fill
                       sizes="(max-width: 1024px) 100vw, 1024px"
-                      className="object-contain"
+                      className="object-cover"
                       priority={false}
                     />
                   )}
