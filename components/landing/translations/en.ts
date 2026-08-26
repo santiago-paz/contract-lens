@@ -7,6 +7,16 @@ export const en = {
     teams: "Teams",
     security: "Security"
   },
+  videoShowcase: {
+    titlePart1: "See it work on a",
+    titlePart2: "real contract",
+    subtitle: "You upload a PDF and get back structured data, with every deadline already tracked.",
+    play: "Play",
+    playAria: "Play the product walkthrough",
+    placeholderTitle: "The video is on its way.",
+    placeholderBody: "Until then, we can show you the product ourselves.",
+    placeholderCta: "Ask for a live demo"
+  },
   features: {
     header: {
       title1: "Not just another",

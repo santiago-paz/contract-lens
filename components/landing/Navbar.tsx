@@ -79,6 +79,7 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-10">
+              <NavButton onClick={() => scrollToSection('how-it-works')}>{t.nav.howItWorks}</NavButton>
               <NavButton onClick={() => scrollToSection('features')}>{t.nav.features}</NavButton>
               <NavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</NavButton>
               <NavButton onClick={() => scrollToSection('security')}>{t.nav.security}</NavButton>
@@ -129,6 +130,7 @@ export function Navbar() {
             <div className="bg-grid-pattern absolute inset-0 opacity-20 pointer-events-none" />
             <div className="flex flex-col p-8 space-y-8 relative z-10">
               <div className="space-y-6">
+                <MobileNavButton onClick={() => scrollToSection('how-it-works')}>{t.nav.howItWorks}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('features')}>{t.nav.features}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
                 <MobileNavButton onClick={() => scrollToSection('security')}>{t.nav.security}</MobileNavButton>

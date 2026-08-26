@@ -10,6 +10,7 @@ import { LanguageProvider } from '@/components/landing/LanguageContext';
 import { Navbar } from '@/components/landing/Navbar';
 import { Security } from '@/components/landing/Security';
 import { TeamSection } from '@/components/landing/TeamSection';
+import { VideoShowcase } from '@/components/landing/VideoShowcase';
 
 export default function LandingPage() {
   return (
@@ -18,6 +19,7 @@ export default function LandingPage() {
         <main className="min-h-screen bg-white text-black selection:bg-[var(--accent)] selection:text-white overflow-x-hidden max-w-[100vw]">
           <Navbar />
           <Hero />
+          <VideoShowcase />
           <FeaturesShowcase />
           <TeamSection />
           <Security />

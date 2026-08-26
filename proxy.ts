@@ -16,6 +16,12 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith('/api') ||
     pathname.endsWith('.svg') ||
     pathname.endsWith('.png') ||
+    pathname.endsWith('.jpg') ||
+    pathname.endsWith('.jpeg') ||
+    pathname.endsWith('.webp') ||
+    pathname.endsWith('.avif') ||
+    pathname.endsWith('.mp4') ||
+    pathname.endsWith('.webm') ||
     pathname.endsWith('.ico')
   ) {
     return NextResponse.next()
