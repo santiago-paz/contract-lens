@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 export const alt =
-  'Contract Lens — the Enterprise Asset OS. Upload a contract, get structured fields, deadlines and alerts.'
+  'Contract Lens - the Enterprise Asset OS. Upload a contract, get structured fields, deadlines and alerts.'
 
 export const size = {
   width: 1200,
@@ -49,7 +49,7 @@ export default async function Image() {
           padding: 64,
         }}
       >
-        {/* Left column — the thesis */}
+        {/* Left column - the thesis */}
         <div
           style={{
             display: 'flex',
@@ -136,7 +136,7 @@ export default async function Image() {
                 maxWidth: 540,
               }}
             >
-              Upload a contract. Get structured fields, deadlines and alerts —
+              Upload a contract. Get structured fields, deadlines and alerts,
               no prompting required.
             </div>
           </div>
@@ -164,7 +164,7 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Right column — the signature: what the pipeline actually returns */}
+        {/* Right column - the signature: what the pipeline actually returns */}
         <div
           style={{
             display: 'flex',
