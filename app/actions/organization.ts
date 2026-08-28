@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { getSession, getSessionWithOrg, encrypt } from '@/lib/auth';
-import { resend } from '@/lib/email';
+import { resend, INVITE_FROM } from '@/lib/email';
 import { hasPermission, type Role } from '@/lib/permissions';
 
 function slugify(text: string): string {
@@ -226,7 +226,7 @@ export async function sendInvitation(prevState: any, formData: FormData) {
   const inviteUrl = `${baseUrl}/invite/${invitation.token}`;
 
   const { error } = await resend.emails.send({
-    from: 'onboarding@resend.dev',
+    from: INVITE_FROM,
     to: email,
     subject: `You've been invited to ${org?.name ?? 'an organization'} on Contract Lens`,
     html: `

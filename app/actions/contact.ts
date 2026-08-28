@@ -2,13 +2,9 @@
 
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { resend } from '@/lib/email';
+import { resend, CONTACT_FROM } from '@/lib/email';
 
-// Sends from trycontractlens.com, verified in Resend with DKIM and SPF, so mail
-// reaches any recipient. Falling back to Resend's sandbox sender would only ever
-// deliver to the address the account is registered under.
 const CONTACT_TO = process.env.CONTACT_TO_EMAIL || 'santiago.paz.1992@gmail.com';
-const CONTACT_FROM = process.env.CONTACT_FROM_EMAIL || 'contact@trycontractlens.com';
 
 const contactSchema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -77,7 +73,7 @@ export async function sendContactMessage(input: ContactInput): Promise<ContactRe
   const subjectName = name.replace(/[\r\n]+/g, ' ');
 
   const { error } = await resend.emails.send({
-    from: `Contract Lens <${CONTACT_FROM}>`,
+    from: CONTACT_FROM,
     to: CONTACT_TO,
     replyTo: email,
     subject: `Contact form: ${subjectName}`,
