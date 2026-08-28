@@ -289,7 +289,6 @@ export const de = {
   footer: {
     ctaTitle: "Operatives Versagen ist eine Wahl.",
     ctaButton: "Infrastruktur sichern",
-    systemDesc: "Fortschrittliches Vertragsanalysesystem betrieben von Contract Lens GmbH",
     copyright: "Contract Lens. ALLE RECHTE VORBEHALTEN.",
     rights: "Alle Rechte vorbehalten.",
     privacy: "Datenschutzprotokoll",

@@ -43,9 +43,6 @@ export function Footer() {
                 {/* <span className="text-4xl font-black font-mono uppercase text-black tracking-tighter leading-none">Contrakt</span> */}
               </div>
             </div>
-            <div className="text-sm font-mono text-black max-w-xs leading-relaxed font-bold uppercase">
-              {t.footer.systemDesc}
-            </div>
             <div className="flex flex-wrap gap-2 sm:gap-4 -ml-4">
               <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">{t.footer.privacy}</a>
               <a href="#" className="font-mono text-sm uppercase font-bold text-black border-2 border-transparent hover:border-black hover:bg-[#CCFF00] px-4 py-2 transition-all">{t.footer.terms}</a>
