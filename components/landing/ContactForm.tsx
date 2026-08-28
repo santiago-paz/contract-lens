@@ -1,24 +1,51 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, Loader2, CheckCircle2, FileText, PenTool, ArrowRight, Terminal } from 'lucide-react';
+import { Loader2, CheckCircle2, ArrowRight, Terminal, AlertTriangle } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendContactMessage } from '@/app/actions/contact';
+
+const EMPTY_FORM = { name: '', email: '', message: '', company: '' };
+
+type FormField = keyof typeof EMPTY_FORM;
+type ContactError = 'invalid' | 'throttled' | 'failed';
 
 export function ContactForm() {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<ContactError | null>(null);
+  const [fields, setFields] = useState(EMPTY_FORM);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const errorMessage = error && {
+    invalid: t.contact.errorInvalid,
+    throttled: t.contact.errorThrottled,
+    failed: t.contact.errorFailed,
+  }[error];
+
+  const updateField = (field: FormField, value: string) =>
+    setFields((current) => ({ ...current, [field]: value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-        setLoading(false);
+    setError(null);
+
+    try {
+      const result = await sendContactMessage(fields);
+      if (result.ok) {
+        setFields(EMPTY_FORM);
         setSuccess(true);
-    }, 1500);
+      } else {
+        setError(result.reason);
+      }
+    } catch {
+      setError('failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -94,7 +121,7 @@ export function ContactForm() {
                                 </p>
                                 
                                 <button 
-                                    onClick={() => setSuccess(false)}
+                                    onClick={() => { setSuccess(false); setError(null); }}
                                     className="px-8 py-3 bg-black text-white text-sm font-bold font-mono uppercase hover:bg-[#CCFF00] hover:text-black border-2 border-black shadow-hard hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
                                 >
                                     {t.contact.sendAnother}
@@ -125,6 +152,9 @@ export function ContactForm() {
                                                 id="name"
                                                 type="text" 
                                                 required
+                                                maxLength={100}
+                                                value={fields.name}
+                                                onChange={(e) => updateField('name', e.target.value)}
                                                 onFocus={() => setFocusedField('name')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
@@ -139,6 +169,9 @@ export function ContactForm() {
                                                 id="email"
                                                 type="email" 
                                                 required
+                                                maxLength={254}
+                                                value={fields.email}
+                                                onChange={(e) => updateField('email', e.target.value)}
                                                 onFocus={() => setFocusedField('email')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all placeholder:text-gray-400 uppercase shadow-sm focus:shadow-hard-sm"
@@ -163,6 +196,10 @@ export function ContactForm() {
                                             id="message"
                                             required
                                             rows={5}
+                                            minLength={10}
+                                            maxLength={5000}
+                                            value={fields.message}
+                                            onChange={(e) => updateField('message', e.target.value)}
                                             onFocus={() => setFocusedField('message')}
                                             onBlur={() => setFocusedField(null)}
                                             className="w-full bg-gray-50 border-2 border-black px-4 py-4 text-black text-sm font-mono focus:bg-[#CCFF00] focus:outline-none transition-all resize-none placeholder:text-gray-400 leading-relaxed uppercase shadow-sm focus:shadow-hard-sm"
@@ -170,6 +207,31 @@ export function ContactForm() {
                                         />
                                     </div>
                                 </div>
+
+                                <div hidden>
+                                    <label htmlFor="company">Company</label>
+                                    <input
+                                        id="company"
+                                        name="company"
+                                        type="text"
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                        value={fields.company}
+                                        onChange={(e) => updateField('company', e.target.value)}
+                                    />
+                                </div>
+
+                                {errorMessage && (
+                                    <div
+                                        role="alert"
+                                        className="flex items-start gap-3 border-2 border-black bg-red-50 px-4 py-3 shadow-hard-sm"
+                                    >
+                                        <AlertTriangle className="w-5 h-5 shrink-0 text-black mt-px" />
+                                        <p className="text-xs font-mono font-bold text-black uppercase leading-relaxed">
+                                            {errorMessage}
+                                        </p>
+                                    </div>
+                                )}
 
                                 {/* Footer / Sign */}
                                 <div className="pt-8 border-t-2 border-black mt-8 bg-gray-50 -mx-8 sm:-mx-12 px-8 sm:px-12 pb-2">

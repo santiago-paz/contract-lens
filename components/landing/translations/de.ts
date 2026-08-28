@@ -284,7 +284,10 @@ export const de = {
     submitting: "ÜBERTRAGE...",
     sentTitle: "Übertragung empfangen",
     sentDesc: "Wir werden innerhalb von 24 operativen Stunden antworten.",
-    sendAnother: "Neue Anweisung senden"
+    sendAnother: "Neue Anweisung senden",
+    errorInvalid: "Ein Feld ist leer oder zu kurz. Bitte prüfen und erneut senden.",
+    errorThrottled: "Von dieser Verbindung wurden zu viele Nachrichten gesendet. Bitte in einer Stunde erneut versuchen.",
+    errorFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
   },
   footer: {
     ctaTitle: "Operatives Versagen ist eine Wahl.",

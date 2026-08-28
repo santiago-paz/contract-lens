@@ -284,7 +284,10 @@ export const en = {
     submitting: "TRANSMITTING...",
     sentTitle: "Transmission Received",
     sentDesc: "We will respond within 24 operational hours.",
-    sendAnother: "Send new directive"
+    sendAnother: "Send new directive",
+    errorInvalid: "One of the fields is empty or too short. Check them and send again.",
+    errorThrottled: "This connection has sent too many messages. Try again in an hour.",
+    errorFailed: "We could not send your message. Please try again."
   },
   footer: {
     ctaTitle: "Operational failure is a choice.",
