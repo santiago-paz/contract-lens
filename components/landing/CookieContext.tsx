@@ -27,18 +27,12 @@ export function CookieProvider({ children }: { children: React.ReactNode }) {
   const acceptCookies = () => {
     localStorage.setItem('cookie-consent', 'true');
     setConsentStatus('accepted');
-    
-    // Aquí es donde se inicializarían los scripts de tracking reales
-    // initAnalytics();
-    console.log('SYSTEM_LOG: Analytics initialized.');
+    // Optional analytics scripts would be initialized here once they exist.
   };
 
   const declineCookies = () => {
     localStorage.setItem('cookie-consent', 'declined');
     setConsentStatus('declined');
-    
-    // Aquí se limpiarían cookies si fuera necesario
-    console.log('SYSTEM_LOG: Analytics disabled.');
   };
 
   return (

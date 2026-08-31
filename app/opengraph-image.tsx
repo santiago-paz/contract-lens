@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 export const alt =
-  'Contract Lens - the Enterprise Asset OS. Upload a contract, get structured fields, deadlines and alerts.'
+  'Contract Lens - AI contract analysis. Upload a contract, get structured fields, deadlines and alerts.'
 
 export const size = {
   width: 1200,
@@ -121,8 +121,8 @@ export default async function Image() {
                 color: INK,
               }}
             >
-              <div style={{ display: 'flex' }}>The Enterprise</div>
-              <div style={{ display: 'flex' }}>Asset OS</div>
+              <div style={{ display: 'flex' }}>Contracts</div>
+              <div style={{ display: 'flex' }}>under control.</div>
             </div>
 
             <div

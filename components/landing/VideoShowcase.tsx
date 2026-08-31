@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import { useLanguage } from './LanguageContext';
+import { scrollToSection } from './scroll';
 
 /**
  * Demo video configuration.
@@ -86,7 +87,7 @@ export function VideoShowcase() {
   }, [isPlaying]);
 
   const scrollToContact = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('contact-form');
   };
 
   return (

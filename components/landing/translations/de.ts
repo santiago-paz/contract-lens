@@ -5,7 +5,11 @@ export const de = {
     howItWorks: "Funktionsweise",
     features: "Funktionen",
     teams: "Teams",
-    security: "Sicherheit"
+    security: "Sicherheit",
+    skipToContent: "Zum Inhalt springen",
+    openMenu: "Menü öffnen",
+    closeMenu: "Menü schließen",
+    languageLabel: "Sprache"
   },
   videoShowcase: {
     titlePart1: "Sehen Sie es an einem",
@@ -19,56 +23,57 @@ export const de = {
   },
   features: {
     header: {
-      title1: "Nicht nur ein weiteres",
-      title2: "Verwaltungstool.",
-      title3: "Wir sind Ihr",
-      title4: "unfairer Vorteil.",
-      subtitle: "Schnell und leistungsstark, wo andere nur sicher und stabil sind."
+      title1: "Ihre Verträge,",
+      title2: "strukturiert.",
+      title3: "Ihre Fristen,",
+      title4: "im Blick.",
+      subtitle: "Vier Dinge, die Contract Lens gut macht."
     },
     deadlines: {
       title: "Fristen",
       subtitle: "Die Zeit verzeiht nicht. Wir schon.",
-      description: "Präventive Visualisierung kritischer Fristen. Warnung bevor das Risiko eintritt, nicht danach.",
+      description: "Jede Kündigungsfrist und jede Verlängerung auf einer Zeitachse, mit Warnungen, die früh genug kommen, um zu handeln.",
       visual: {
-        autoRenewal: "AUTOMATISCHE VERLÄNGERUNG",
-        exitClause: "AUSSTIEGSKLAUSEL",
-        annualReview: "JÄHRLICHE PRÜFUNG",
+        autoRenewal: "Automatische Verlängerung",
+        exitClause: "Ausstiegsklausel",
+        annualReview: "Jährliche Prüfung",
         days: "Tage",
-        cronJobs: "CRON_JOBS: AKTIV",
+        cronJobs: "Überwachung: aktiv",
         critical: "KRITISCH",
         warning: "WARNUNG",
         normal: "NORMAL"
       }
     },
     translation: {
-      title: "Simultanübersetzung",
-      subtitle: "Grenzenlose Verträge, Gesetze ohne Barrieren",
-      description: "Kein Google Translate. Übersetzung mit tiefem juristischen Kontext unter Wahrung von Format und Gültigkeit in Echtzeit.",
+      title: "Juristische Übersetzung",
+      subtitle: "Deutsch und Englisch, nebeneinander",
+      description: "Verträge werden im juristischen Kontext übersetzt. Struktur, definierte Begriffe und Nummerierung bleiben erhalten.",
       visual: {
           original: "Original (DE)",
           translated: "Übersetzt (EN)"
       }
     },
     aiDraft: {
-      title: "KI-Entwurfserstellung",
-      subtitle: "Rechtsarchitektur, nicht nur Text",
-      description: "Übertrifft generische Modelle durch strukturierte Vorlagen und RAG mit echter Rechtsprechung für kugelsichere Verträge.",
+      title: "KI-Entwürfe",
+      subtitle: "Klauseln aus geprüften Vorlagen",
+      description: "Standardklauseln aus strukturierten Vorlagen entwerfen. Sie prüfen und bearbeiten, bevor etwas die Kanzlei verlässt.",
       visual: {
-        draftGenerated: "Entwurf erfolgreich generiert.",
+        draftGenerated: "Entwurf bereit zur Prüfung.",
         status: "ONLINE",
-        components: "KOMPONENTEN",
+        components: "Komponenten",
         jurisdiction: "Gerichtsstand",
         liability: "Haftung",
         term: "Laufzeit",
         payment: "Zahlung",
-        engineTitle: "KI-Vertrags-Engine",
+        engineTitle: "Entwurfsassistent",
         readyStatus: "Bereit",
         initialStatus: "Wählen Sie eine Komponente, um den Entwurf zu starten.",
-        generating: "Generiere Klauselstruktur nach EU-Recht...",
+        generating: "Klausel wird aus Vorlage erstellt…",
         clauseTitle: "Haftungsbeschränkung",
         codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten...",
-        copyToast: "Natürlich können Sie Elemente kopieren!",
-        module: "MODUL",
+        copyToast: "Kopiert",
+        copyAria: "Beispielklausel kopieren",
+        module: "Modul",
         done: "FERTIG",
         clauseGenerated: "KLAUSEL_GENERIERT",
         validated: "VALIDIERT",
@@ -93,9 +98,9 @@ export const de = {
       }
     },
     anatomy: {
-      title: "Anatomische Struktur",
-      subtitle: "Vertragsanatomie",
-      description: "Chirurgische Aufschlüsselung jeder Klausel und Verpflichtung. Verstehen Sie die Knochenstruktur Ihrer Verträge sofort.",
+      title: "Vertragsanatomie",
+      subtitle: "Jede Klausel, beschriftet",
+      description: "Parteien, Pflichten und Kündigungsrechte, extrahiert und beschriftet. Sie sehen den Aufbau eines Vertrags, bevor Sie eine Zeile lesen.",
       visual: {
         parties: "Parteien",
         obligations: "Pflichten",
@@ -104,18 +109,20 @@ export const de = {
     }
   },
   hero: {
-    badge: "VERTRAGSANALYSE-SYSTEM",
-    seeSystem: "SYSTEM ANSEHEN",
+    badge: "KI-Vertragsanalyse",
+    seeSystem: "Demo ansehen",
     title: "Infrastruktur ist Schicksal.",
-    titleLine1: "RESSOURCEN",
-    titleLine2: "DOMINANZ",
+    titleLine1: "VERTRÄGE",
+    titleLine2: "IM GRIFF.",
     titleHighlight: "Kontrollieren Sie das Ergebnis.",
     titleEnd: "Ausführen.",
-    subtitle: "OPERATIVE ÜBERLEGENHEIT EINFÜHREN. Wir schaffen Ordnung aus dem Chaos. Verträge automatisch erfassen, Anbieterleistung prüfen und Kapitaleffizienz erzwingen. Das Betriebssystem für Ihre Unternehmenswerte.",
-    cta: "SYSTEM STARTEN",
+    subtitle: "Vertrag hochladen, strukturierte Daten zurückbekommen: Parteien, Fristen, Pflichten, Risiken. Entwickelt für kleine Kanzleien.",
+    cta: "Demo anfragen",
     unstructured: "ROHDATEN",
     raw: "BINÄRER INPUT",
-    analysisSteps: ["DATENSTRUKTURIERUNG", "FORENSISCHE EXTRAKTION", "RISIKOPRÜFUNG"],
+    analysisSteps: ["Textextraktion", "Klauselanalyse", "Risikoprüfung"],
+    reviewTitle: "Vertragsprüfung",
+    encryptedTag: "AES-256-verschlüsselt",
     card: {
       vendor: "Amazon Web Services, Inc.",
       type: "Rahmenvertrag",
@@ -124,17 +131,18 @@ export const de = {
       dateLabel: "Gültigkeitsdatum",
       value: "120.000 $ / Jahr",
       date: "01. Jan 2024",
-      riskTitle: "KRITISCHE WARNUNG",
-      riskText: "UNGEWOLLTE VERLÄNGERUNG ERKANNT. SOFORT HANDELN.",
-      detected: "ERKANNT",
+      riskTitle: "Hinweis",
+      riskText: "Automatische Verlängerung: Kündigungsfrist endet in 30 Tagen.",
+      riskBadge: "Prüfen",
+      detected: "Erkannt",
       target: "ZIEL",
       latency: "Latenz",
       verified: "Verifiziert",
       complete: "Audit abgeschlossen"
     },
     latency: "Latenz",
-    liveMonitor: "Live-Monitor",
-    target: "Ziel",
+    liveMonitor: "Analyse",
+    target: "Datei",
     verified: "Verifiziert",
     complete: "Audit abgeschlossen",
     detected: "Erkannt"
@@ -212,94 +220,96 @@ export const de = {
     }
   },
   security: {
-    defenseProtocol: "Abwehrprotokoll v1.0",
-    titlePart1: "Unternehmensweite",
-    titlePart2: "Absicherung",
+    defenseProtocol: "Sicherheit",
+    titlePart1: "Gebaut für",
+    titlePart2: "Vertraulichkeit.",
     encryption: {
-      title: "AES-256-GCM Verschlüsselung",
-      desc: "Authentifizierte Verschlüsselung in Ruhe. TLS 1.3 bei Übertragung. Kryptographisch isolierter Speicher."
+      title: "AES-256-GCM-Verschlüsselung",
+      desc: "Zusammenfassungen, Konditionen und Dateien werden verschlüsselt, bevor sie die Datenbank erreichen. TLS bei der Übertragung."
     },
     ai: {
       title: "Zustandslose KI-Pipeline",
-      desc: "Ephemere Verarbeitung. Daten werden sofort nach Erfassung verschlüsselt. Kein Modelltraining."
+      desc: "Dokumente werden im Speicher verarbeitet, direkt nach der Analyse verschlüsselt und nie für Modelltraining verwendet."
     },
     hosting: {
-      title: "Sovereign Infrastruktur",
-      desc: "Strenge Datenresidenz. DSGVO-konformer Backbone."
+      title: "Datenschutz",
+      desc: "DSGVO-konforme Verarbeitung mit rollenbasierten Zugriffsrechten. Ihre Daten werden auf Wunsch gelöscht."
     }
   },
   teams: {
-    matrixTitle: "Organisationsmatrix",
-    title: "Präzisionsinfrastruktur",
-    titleHighlight: "Für Skalierung entwickelt.",
-    subtitle: "Hochleistungstools für das moderne Unternehmen. Verwandeln Sie statische Vereinbarungen in eine abfragbare Asset-Datenbank.",
-    cta: "Architektur bereitstellen",
+    matrixTitle: "Teams",
+    title: "Für Juristen gebaut.",
+    titleHighlight: "Für alle nützlich.",
+    subtitle: "Verträge betreffen die ganze Kanzlei. Jedes Team sieht genau das, was es braucht, von Fristen bis Kosten.",
+    cta: "Demo anfragen",
     legal: {
-      title: "Algorithmisches Audit",
-      desc: "Erkennen Sie unautorisierte Ausgabenmuster und Vertragsabweichungen mit 99,9% Genauigkeit."
+      title: "Recht",
+      desc: "Klauselgenaue Prüfung eingehender Verträge, jede Änderung und Anmerkung dokumentiert."
     },
     procurement: {
-      title: "Datenstrukturierung",
-      desc: "Konvertieren Sie PDF-Binärdaten in abfragbare, SQL-fähige Datensätze für sofortige Analysen."
+      title: "Einkauf",
+      desc: "Konditionen, Verlängerungen und Kündigungsfristen aller Lieferanten in einer Liste."
     },
     hr: {
-      title: "Kapitalrückgewinnung",
-      desc: "Identifizieren und fordern Sie durchschnittlich 12% Budgetverluste aus Zombie-Abonnements zurück."
+      title: "Personal",
+      desc: "Arbeitsverträge und Probezeitfristen an einem Ort, Zugriff nach Rolle beschränkt."
     },
     finance: {
-      title: "Sicherheitsarchitektur",
-      desc: "AES-256-Verschlüsselung. Granulare Zugriffskontrolle. Zero-Trust-Architektur."
+      title: "Finanzen",
+      desc: "Was jeder Vertrag pro Jahr kostet und zu welchem Datum Sie aus ihm herauskommen."
     },
     grc: {
-      title: "Compliance-Durchsetzung",
-      desc: "Automatisierte AVV-Verifizierung und regulatorische Konformitätsprüfungen."
+      title: "Compliance",
+      desc: "Auftragsverarbeitungsverträge und Prüfpflichten in einem Register nachverfolgt."
     },
     ops: {
-      title: "Operative Geschwindigkeit",
-      desc: "Reduzieren Sie die Vertragsdurchlaufzeit um 40% durch automatisierte Workflows und API-Integration."
+      title: "Betrieb",
+      desc: "Verantwortliche und Aufgaben je Vertrag, damit keine Verlängerung vom Gedächtnis Einzelner abhängt."
     }
   },
   contact: {
     title: "Bereitstellung initiieren",
     subtitle: "Anforderungen auf Unternehmensebene? Unser Engineering-Team ist bereit.",
-    headerTitle: "Kommunikationsanfrage",
-    secureChannel: "Sicherer Kanal",
+    headerTitle: "Kontakt",
+    secureChannel: "Kontaktformular",
     refCode: "REF: KONTAKT",
     officialInquiry: "Offizielle Anfrage",
-    section1: "Abschnitt 1",
+    section1: "§ 1",
     theParties: "Die Parteien",
-    name: "Name des Verantwortlichen",
-    enterFullName: "VOLLSTÄNDIGEN NAMEN EINGEBEN...",
+    section2: "§ 2",
+    theDetails: "Das Anliegen",
+    name: "Name",
+    enterFullName: "Ihr Name",
     email: "Geschäftliche E-Mail",
-    enterEmail: "E-MAIL-ADRESSE EINGEBEN...",
-    section2: "Abschnitt 2",
-    theDetails: "Die Details",
-    message: "Anweisungen",
+    enterEmail: "name@kanzlei.de",
+    message: "Nachricht",
     placeholder: "Skizzieren Sie Ihre operativen Anforderungen...",
-    describeInquiry: "ANFRAGE BESCHREIBEN...",
+    describeInquiry: "Womit können wir helfen?",
     disclaimer: "*Mit dem Absenden bestätigen Sie, dass dieses Formular zwar sehr offiziell aussieht, Sie aber zu nichts anderem als einer freundlichen Unterhaltung verpflichtet.",
     send: "Übermitteln",
-    submitButton: "ANFRAGE SENDEN",
-    sending: "Übertrage...",
-    submitting: "ÜBERTRAGE...",
-    sentTitle: "Übertragung empfangen",
-    sentDesc: "Wir werden innerhalb von 24 operativen Stunden antworten.",
-    sendAnother: "Neue Anweisung senden",
+    submitButton: "Nachricht senden",
+    sending: "Wird gesendet…",
+    submitting: "Wird gesendet…",
+    sentTitle: "Nachricht erhalten",
+    sentDesc: "Wir antworten innerhalb eines Werktags.",
+    sendAnother: "Weitere Nachricht senden",
     errorInvalid: "Ein Feld ist leer oder zu kurz. Bitte prüfen und erneut senden.",
     errorThrottled: "Von dieser Verbindung wurden zu viele Nachrichten gesendet. Bitte in einer Stunde erneut versuchen.",
     errorFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
   },
   footer: {
-    ctaTitle: "Operatives Versagen ist eine Wahl.",
-    ctaButton: "Infrastruktur sichern",
-    copyright: "Contract Lens. ALLE RECHTE VORBEHALTEN.",
+    ctaTitle: "Sehen Sie es an Ihren eigenen Verträgen.",
+    ctaButton: "Demo anfragen",
+    copyright: "Contract Lens. Alle Rechte vorbehalten.",
     rights: "Alle Rechte vorbehalten.",
-    privacy: "Datenschutzprotokoll",
+    privacy: "Datenschutz",
     terms: "Nutzungsbedingungen"
   },
   cookieConsent: {
-    text: "SYSTEMHINWEIS: Diese Schnittstelle verwendet Cookies zur Aufrechterhaltung der Sitzungsintegrität und Leistungsoptimierung.",
-    accept: "BESTÄTIGEN",
-    decline: "ABLEHNEN"
+    title: "Cookies",
+    text: "Wir verwenden Cookies, die die Seite zum Funktionieren braucht, zum Beispiel für die Anmeldung. Optionale Statistik läuft nur, wenn Sie zustimmen.",
+    accept: "Akzeptieren",
+    decline: "Ablehnen",
+    closeAria: "Schließen und optionale Cookies ablehnen"
   }
 };

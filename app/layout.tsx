@@ -14,33 +14,32 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://trycontractlens.com"),
-  title: "Contract Lens | The Enterprise Asset OS",
-  description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital with our forensic ingestion and AI-driven analysis engine.",
+  title: "Contract Lens | AI Contract Analysis",
+  description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
   keywords: [
     // English
-    "Enterprise Asset OS",
     "Contract Management",
-    "Forensic Audit",
     "AI Contract Analysis",
+    "Contract Deadlines",
     "Risk Detection",
     "Compliance",
     "Berlin",
     "Legal Tech",
     "Structured Data",
-    "Capital Recovery",
     // German
     "Vertragsmanagement",
-    "Digitale Akte",
+    "Kanzleisoftware",
     "Künstliche Intelligenz",
     "Compliance Software",
     "Vertragsanalyse",
+    "Fristenmanagement",
     "Risikomanagement",
     "Rechtssicherheit"
   ],
   authors: [{ name: "Santiago Paz" }],
   openGraph: {
-    title: "Contract Lens | The Enterprise Asset OS",
-    description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
+    title: "Contract Lens | AI Contract Analysis",
+    description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
     type: "website",
     siteName: "Contract Lens",
     locale: "en_US",
@@ -48,8 +47,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contract Lens | The Enterprise Asset OS",
-    description: "The operating system for your corporate assets. Automate contract auditing, enforce compliance, and recover capital.",
+    title: "Contract Lens | AI Contract Analysis",
+    description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
   },
   robots: {
     index: true,

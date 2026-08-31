@@ -48,6 +48,23 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+/* Visible keyboard focus everywhere; components may override the color on dark surfaces */
+:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Brutalist Utilities */
 .shadow-hard {
   box-shadow: 4px 4px 0px 0px #000000;

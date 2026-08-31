@@ -5,7 +5,11 @@ export const en = {
     howItWorks: "How it Works",
     features: "Features",
     teams: "Teams",
-    security: "Security"
+    security: "Security",
+    skipToContent: "Skip to content",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    languageLabel: "Language"
   },
   videoShowcase: {
     titlePart1: "See it work on a",
@@ -19,56 +23,57 @@ export const en = {
   },
   features: {
     header: {
-      title1: "Not just another",
-      title2: "management tool.",
-      title3: "We are your",
-      title4: "unfair advantage.",
-      subtitle: "Fast and powerful where others are merely safe and stable."
+      title1: "Your contracts,",
+      title2: "structured.",
+      title3: "Your deadlines,",
+      title4: "on time.",
+      subtitle: "Four things Contract Lens does well."
     },
     deadlines: {
       title: "Deadlines",
       subtitle: "Time doesn't forgive. We do.",
-      description: "Preventive visualization of critical deadlines. Alerting you before risk materializes, not after.",
+      description: "Every notice period and renewal date on one timeline, with alerts that arrive early enough to act.",
       visual: {
-        autoRenewal: "AUTOMATIC RENEWAL",
-        exitClause: "EXIT CLAUSE",
-        annualReview: "ANNUAL REVIEW",
+        autoRenewal: "Automatic renewal",
+        exitClause: "Exit clause",
+        annualReview: "Annual review",
         days: "Days",
-        cronJobs: "CRON_JOBS: ACTIVE",
+        cronJobs: "Monitoring: active",
         critical: "CRITICAL",
         warning: "WARNING",
         normal: "NORMAL"
       }
     },
     translation: {
-      title: "Simultaneous Translation",
-      subtitle: "Borderless contracts, barrier-free laws",
-      description: "Not Google Translate. Deep legal context translation preserving format and validity in real-time.",
+      title: "Legal Translation",
+      subtitle: "German and English, side by side",
+      description: "Contracts translated with legal context. Structure, defined terms and numbering stay intact.",
       visual: {
           original: "Original (DE)",
           translated: "Translated (EN)"
       }
     },
     aiDraft: {
-      title: "AI Draft Creation",
-      subtitle: "Legal Architecture, not just text",
-      description: "Outperforming generic models using structured templates and RAG with real jurisprudence for bulletproof contracts.",
+      title: "AI Drafting",
+      subtitle: "Clauses from vetted templates",
+      description: "Draft standard clauses from structured templates. You review and edit before anything leaves the firm.",
       visual: {
-        draftGenerated: "Draft Generated Successfully.",
+        draftGenerated: "Draft ready for review.",
         status: "ONLINE",
-        components: "COMPONENTS",
+        components: "Components",
         jurisdiction: "Jurisdiction",
         liability: "Liability",
         term: "Term",
         payment: "Payment",
-        engineTitle: "AI Contract Engine",
+        engineTitle: "Drafting Assistant",
         readyStatus: "Ready",
         initialStatus: "Select a component to start drafting.",
-        generating: "Generating clause structure based on EU Law...",
+        generating: "Drafting clause from template…",
         clauseTitle: "Limitation of Liability",
         codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid...",
-        copyToast: "Of course you can copy elements!",
-        module: "MODULE",
+        copyToast: "Copied",
+        copyAria: "Copy sample clause",
+        module: "Module",
         done: "DONE",
         clauseGenerated: "CLAUSE_GENERATED",
         validated: "VALIDATED",
@@ -93,9 +98,9 @@ export const en = {
       }
     },
     anatomy: {
-      title: "Anatomical Structure",
-      subtitle: "Contract Anatomy",
-      description: "Surgical breakdown of every clause and obligation. Understand the bone structure of your agreements instantly.",
+      title: "Contract Anatomy",
+      subtitle: "Every clause, labeled",
+      description: "Parties, obligations and termination rights, extracted and labeled. You see how an agreement is built before you read a line.",
       visual: {
         parties: "Parties",
         obligations: "Obligations",
@@ -104,18 +109,20 @@ export const en = {
     }
   },
   hero: {
-    badge: "CONTRACT INTELLIGENCE UNIT",
-    seeSystem: "SEE SYSTEM",
+    badge: "AI contract analysis",
+    seeSystem: "Watch the demo",
     title: "Infrastructure is destiny.",
-    titleLine1: "RESOURCE",
-    titleLine2: "MASTERY",
+    titleLine1: "CONTRACTS",
+    titleLine2: "UNDER CONTROL.",
     titleHighlight: "Control the outcome.",
     titleEnd: "Execute.",
-    subtitle: "DEPLOY OPERATIONAL SUPREMACY. We engineer order from chaos. Auto-ingest contracts, audit vendor performance, and enforce capital efficiency. The operating system for your corporate assets.",
-    cta: "INITIATE SYSTEM",
+    subtitle: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
+    cta: "Request a demo",
     unstructured: "RAW DATA",
     raw: "BINARY INPUT",
-    analysisSteps: ["DATA STRUCTURING", "FORENSIC EXTRACTION", "RISK AUDIT"],
+    analysisSteps: ["Text extraction", "Clause analysis", "Risk review"],
+    reviewTitle: "Contract review",
+    encryptedTag: "AES-256 encrypted",
     card: {
       vendor: "Amazon Web Services, Inc.",
       type: "Master Service Agreement",
@@ -124,16 +131,17 @@ export const en = {
       dateLabel: "Effective Date",
       value: "$120,000 / year",
       date: "Jan 01, 2024",
-      riskTitle: "CRITICAL ALERT",
-      riskText: "UNAUTHORIZED RENEWAL DETECTED. IMMEDIATE ACTION REQUIRED.",
-      detected: "DETECTED",
+      riskTitle: "Finding",
+      riskText: "Automatic renewal: notice period ends in 30 days.",
+      riskBadge: "Review",
+      detected: "Detected",
       target: "TARGET",
       latency: "Latency",
       verified: "Verified",
       complete: "Audit Complete"
     },
     latency: "Latency",
-    liveMonitor: "Live Monitor",
+    liveMonitor: "Analysis",
     target: "File",
     verified: "Verified",
     complete: "Audit Complete",
@@ -212,94 +220,96 @@ export const en = {
     }
   },
   security: {
-    defenseProtocol: "Defense Protocol v1.0",
-    titlePart1: "Enterprise-Grade",
-    titlePart2: "Fortification",
+    defenseProtocol: "Security",
+    titlePart1: "Built for",
+    titlePart2: "confidentiality.",
     encryption: {
       title: "AES-256-GCM Encryption",
-      desc: "Authenticated encryption at rest. TLS 1.3 in transit. Cryptographically isolated storage."
+      desc: "Summaries, conditions and files are encrypted before they reach the database. TLS in transit."
     },
     ai: {
       title: "Stateless AI Pipeline",
-      desc: "Ephemeral processing. Data is encrypted immediately post-ingestion. No model training."
+      desc: "Documents are processed in memory, encrypted right after analysis, and never used for model training."
     },
     hosting: {
-      title: "Sovereign Infrastructure",
-      desc: "Strict data residency. GDPR/CCPA compliant backbone."
+      title: "Data Protection",
+      desc: "GDPR-compliant processing with role-based access. Your data is deleted on request."
     }
   },
   teams: {
-    matrixTitle: "Organizational Matrix",
-    title: "Precision Infrastructure",
-    titleHighlight: "Engineered for scale.",
-    subtitle: "High-performance tools for the modern enterprise. Transform static agreements into a queryable asset database.",
-    cta: "Deploy Architecture",
+    matrixTitle: "Teams",
+    title: "Built for legal.",
+    titleHighlight: "Useful to everyone.",
+    subtitle: "Contracts touch every part of the firm. Each team gets the view it needs, from deadlines to costs.",
+    cta: "Request a demo",
     legal: {
-      title: "Algorithmic Audit",
-      desc: "Detect unauthorized spend patterns and contract deviations with 99.9% accuracy."
+      title: "Legal",
+      desc: "Clause-level review of incoming contracts, with every change and comment on record."
     },
     procurement: {
-      title: "Data Structuring",
-      desc: "Convert PDF binaries into queryable, SQL-ready datasets for instant analysis."
+      title: "Procurement",
+      desc: "Terms, renewal dates and notice periods for every vendor, in one list."
     },
     hr: {
-      title: "Capital Recovery",
-      desc: "Identify and reclaim 12% avg. budget leakage from zombie subscriptions."
+      title: "HR",
+      desc: "Employment terms and probation deadlines in one place, with access limited by role."
     },
     finance: {
-      title: "Security Architecture",
-      desc: "AES-256 encryption at rest. Granular access control. Zero-trust architecture."
+      title: "Finance",
+      desc: "What each contract costs per year, and the date you can get out of it."
     },
     grc: {
-      title: "Compliance Enforcement",
-      desc: "Automated DPA verification and regulatory adherence checks. Audit-ready logs."
+      title: "Compliance",
+      desc: "Data processing agreements and review duties tracked in one register."
     },
     ops: {
-      title: "Operational Velocity",
-      desc: "Reduce contract turnaround time by 40% via automated workflows and API integration."
+      title: "Operations",
+      desc: "Owners and tasks per contract, so a renewal never depends on someone's memory."
     }
   },
   contact: {
     title: "Initiate Deployment",
     subtitle: "Enterprise-grade requirements? Our engineering team is ready.",
-    headerTitle: "Communication Request",
-    secureChannel: "Secure Channel",
+    headerTitle: "Contact",
+    secureChannel: "Contact form",
     refCode: "REF: CONTACT",
     officialInquiry: "Official Inquiry",
-    section1: "Section 1",
+    section1: "§ 1",
     theParties: "The Parties",
-    name: "Officer Name",
-    enterFullName: "ENTER FULL NAME...",
-    email: "Work Email",
-    enterEmail: "ENTER EMAIL ADDRESS...",
-    section2: "Section 2",
-    theDetails: "The Details",
-    message: "Directives",
+    section2: "§ 2",
+    theDetails: "The Matter",
+    name: "Name",
+    enterFullName: "Your name",
+    email: "Work email",
+    enterEmail: "name@firm.com",
+    message: "Message",
     placeholder: "Outline your operational requirements...",
-    describeInquiry: "DESCRIBE INQUIRY...",
+    describeInquiry: "How can we help?",
     disclaimer: "*By clicking submit, you acknowledge that while this form looks very official, it does not actually bind you to anything other than a friendly conversation.",
     send: "Transmit",
-    submitButton: "SEND REQUEST",
-    sending: "Transmitting...",
-    submitting: "TRANSMITTING...",
-    sentTitle: "Transmission Received",
-    sentDesc: "We will respond within 24 operational hours.",
-    sendAnother: "Send new directive",
+    submitButton: "Send message",
+    sending: "Sending…",
+    submitting: "Sending…",
+    sentTitle: "Message received",
+    sentDesc: "We reply within one business day.",
+    sendAnother: "Send another message",
     errorInvalid: "One of the fields is empty or too short. Check them and send again.",
     errorThrottled: "This connection has sent too many messages. Try again in an hour.",
     errorFailed: "We could not send your message. Please try again."
   },
   footer: {
-    ctaTitle: "Operational failure is a choice.",
-    ctaButton: "Secure Your Infrastructure",
-    copyright: "Contract Lens. ALL RIGHTS RESERVED.",
+    ctaTitle: "See it on your own contracts.",
+    ctaButton: "Request a demo",
+    copyright: "Contract Lens. All rights reserved.",
     rights: "All rights reserved.",
-    privacy: "Privacy Protocol",
-    terms: "Terms of Service"
+    privacy: "Privacy",
+    terms: "Terms"
   },
   cookieConsent: {
-    text: "SYSTEM NOTICE: This interface utilizes cookies to maintain session integrity and optimize performance.",
-    accept: "ACKNOWLEDGE",
-    decline: "DECLINE"
+    title: "Cookies",
+    text: "We use cookies the site needs to work, for example to keep you signed in. Optional analytics only run if you accept.",
+    accept: "Accept",
+    decline: "Decline",
+    closeAria: "Close and decline optional cookies"
   }
 };
