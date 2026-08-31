@@ -25,6 +25,9 @@ export const PERMISSIONS = {
 
   // Team management
   'team:manage': ['owner', 'admin', 'manager'],
+
+  // Admin tooling (playground, debug surfaces, arbitrary-prompt LLM access)
+  'admin:access': ['owner', 'admin'],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type Permission = keyof typeof PERMISSIONS;

@@ -24,13 +24,21 @@ export async function updateTaskStatus(taskId: string, status: string) {
     return { success: false, error: 'Task not found' };
   }
 
-  // Verify org scope: task belongs to org (via contract or via user membership)
-  if (task.contract && task.contract.organizationId !== session.orgId) {
+  // Task has no organizationId, so authorize by ownership and by the linked
+  // contract's org. A standalone task (no contract) has no org boundary, so it
+  // is only reachable by its owner — otherwise any elevated-role user of any
+  // org could update any standalone task by id.
+  const isOwn = task.userId === session.userId;
+  const inOrg = task.contract
+    ? task.contract.organizationId === session.orgId
+    : false;
+
+  if (!isOwn && !inOrg) {
     return { success: false, error: 'Task not found' };
   }
 
-  // Members can only update their own tasks
-  if (session.role === 'member' && task.userId !== session.userId) {
+  // Updating someone else's (in-org, contract-linked) task needs an elevated role.
+  if (!isOwn && !canModifyOthersResource(session.role)) {
     return { success: false, error: 'You can only update your own tasks' };
   }
 

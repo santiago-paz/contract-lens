@@ -1,22 +1,38 @@
 'use server'
 
-import { cookies, headers } from 'next/headers'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
-import { encrypt } from '@/lib/auth'
+import { encrypt, getSession, setSessionCookie, clearSessionCookie } from '@/lib/auth'
 import { checkRateLimit } from '@/lib/rate-limit'
+
+// Pre-computed hash of a throwaway password. Compared against when the email
+// is unknown so that "no such user" and "wrong password" take the same time.
+const DUMMY_HASH = '$2b$10$CwTycUXWue0Thq9StjUM0uJ8ZzP0R8gVQ8mS0uH6C1u1yG9c3mDCS'
+
+/**
+ * Only allow same-site path redirects. Rejects absolute URLs and
+ * protocol-relative URLs ("//evil.com" starts with "/" but leaves the site).
+ */
+function safeRedirectPath(raw: FormDataEntryValue | null, fallback: string): string {
+  if (typeof raw !== 'string') return fallback
+  if (!raw.startsWith('/') || raw.startsWith('//') || raw.startsWith('/\\')) {
+    return fallback
+  }
+  return raw
+}
 
 export async function login(prevState: any, formData: FormData) {
   // Rate limiting: 5 attempts per minute per IP
-  const ip = (await headers()).get('x-forwarded-for') || 'unknown'
-  const isAllowed = checkRateLimit(ip, 5, 60 * 1000)
-  
+  const ip = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  const isAllowed = checkRateLimit(`login:${ip}`, 5, 60 * 1000)
+
   if (!isAllowed) {
     return { message: 'Too many login attempts. Please try again in a minute.' }
   }
 
-  const email = formData.get('email') as string
+  const email = (formData.get('email') as string)?.trim().toLowerCase()
   const password = formData.get('password') as string
 
   if (!email || !password) {
@@ -28,13 +44,11 @@ export async function login(prevState: any, formData: FormData) {
       where: { email },
     })
 
-    if (!user) {
-      return { message: 'Invalid credentials' }
-    }
+    // Always run a bcrypt compare so response timing does not reveal
+    // whether the email exists.
+    const passwordsMatch = await bcrypt.compare(password, user?.password ?? DUMMY_HASH)
 
-    const passwordsMatch = await bcrypt.compare(password, user.password)
-
-    if (!passwordsMatch) {
+    if (!user || !passwordsMatch) {
       return { message: 'Invalid credentials' }
     }
 
@@ -59,27 +73,18 @@ export async function login(prevState: any, formData: FormData) {
     }
 
     const session = await encrypt(sessionPayload)
-
-    const cookieStore = await cookies()
-    cookieStore.set('auth_session', session, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 1 week
-      path: '/',
-    })
-
+    await setSessionCookie(session)
   } catch (error) {
     console.error('Login error:', error)
     return { message: 'Something went wrong. Please try again.' }
   }
 
-  const redirectTo = (formData.get('redirect') as string) || '/dashboard'
-  redirect(redirectTo.startsWith('/') ? redirectTo : '/dashboard')
+  redirect(safeRedirectPath(formData.get('redirect'), '/dashboard'))
 }
 
 export async function register(prevState: any, formData: FormData) {
-  const ip = (await headers()).get('x-forwarded-for') || 'unknown'
-  const isAllowed = checkRateLimit(ip, 5, 60 * 1000)
+  const ip = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  const isAllowed = checkRateLimit(`register:${ip}`, 5, 60 * 1000)
 
   if (!isAllowed) {
     return { message: 'Too many attempts. Please try again in a minute.' }
@@ -93,12 +98,16 @@ export async function register(prevState: any, formData: FormData) {
     return { message: 'Name must be at least 2 characters.' }
   }
 
-  if (!email || !email.includes('@')) {
+  if (name.length > 100) {
+    return { message: 'Name must be at most 100 characters.' }
+  }
+
+  if (!email || !email.includes('@') || email.length > 254) {
     return { message: 'Please enter a valid email address.' }
   }
 
-  if (!password || password.length < 6) {
-    return { message: 'Password must be at least 6 characters.' }
+  if (!password || password.length < 8) {
+    return { message: 'Password must be at least 8 characters.' }
   }
 
   const confirmPassword = formData.get('confirmPassword') as string
@@ -118,32 +127,21 @@ export async function register(prevState: any, formData: FormData) {
       data: { name, email, password: hashedPassword },
     })
 
-    const sessionPayload: Record<string, unknown> = {
+    const session = await encrypt({
       id: user.id,
       email: user.email,
       name: user.name,
-    }
-
-    const session = await encrypt(sessionPayload)
-
-    const cookieStore = await cookies()
-    cookieStore.set('auth_session', session, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
     })
+    await setSessionCookie(session)
   } catch (error) {
     console.error('Registration error:', error)
     return { message: 'Something went wrong. Please try again.' }
   }
 
-  const redirectTo = (formData.get('redirect') as string) || '/setup-organization'
-  redirect(redirectTo.startsWith('/') ? redirectTo : '/setup-organization')
+  redirect(safeRedirectPath(formData.get('redirect'), '/setup-organization'))
 }
 
 export async function switchOrganization(organizationId: string) {
-  const { getSession } = await import('@/lib/auth')
   const session = await getSession()
   if (!session) redirect('/login')
 
@@ -169,20 +167,12 @@ export async function switchOrganization(organizationId: string) {
     orgSlug: membership.organization.slug,
     role: membership.role,
   })
-
-  const cookieStore = await cookies()
-  cookieStore.set('auth_session', newSession, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
-  })
+  await setSessionCookie(newSession)
 
   redirect('/dashboard')
 }
 
 export async function logout() {
-  const cookieStore = await cookies()
-  cookieStore.delete('auth_session')
+  await clearSessionCookie()
   redirect('/login')
 }

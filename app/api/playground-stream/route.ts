@@ -12,10 +12,20 @@ import {
 import type { ContractType } from '@/actions/contract-extraction';
 import { stripThinkingTags, stripToSchema } from '@/actions/contract-extraction';
 
-import { getSession } from '@/lib/auth';
+import { getSessionWithOrg } from '@/lib/auth';
+import { hasPermission } from '@/lib/permissions';
 
 export const maxDuration = 120; // Allow up to 2 minutes for the full pipeline
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+// The playground lets the caller pick the expert model. Restrict it to a known
+// set so an authenticated user can't route the org's gateway budget to an
+// arbitrary/expensive model string.
+const ALLOWED_MODELS = new Set([
+  'deepseek/deepseek-r1',
+  'openai/gpt-4o-mini',
+  'openai/gpt-4o',
+]);
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -46,9 +56,12 @@ function getSchemaForType(contractType: ContractType) {
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
-  const session = await getSession();
+  const session = await getSessionWithOrg();
   if (!session) {
     return new Response('Unauthorized', { status: 401 });
+  }
+  if (!hasPermission(session.role, 'admin:access')) {
+    return new Response('Forbidden', { status: 403 });
   }
 
   const formData = await request.formData();
@@ -65,7 +78,13 @@ export async function POST(request: Request) {
     return Response.json({ error: 'File too large (max 10MB)' }, { status: 413 });
   }
 
-  const temperature = temperatureStr ? parseFloat(temperatureStr) : 0;
+  if (modelOverride && !ALLOWED_MODELS.has(modelOverride)) {
+    return Response.json({ error: 'Unsupported model' }, { status: 400 });
+  }
+
+  // Clamp temperature to the valid range and default invalid input to 0.
+  const parsedTemp = temperatureStr ? parseFloat(temperatureStr) : 0;
+  const temperature = Number.isFinite(parsedTemp) ? Math.min(Math.max(parsedTemp, 0), 2) : 0;
   const modelName = modelOverride || 'deepseek/deepseek-r1';
 
   const encoder = new TextEncoder();

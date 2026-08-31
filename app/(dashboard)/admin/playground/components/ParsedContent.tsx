@@ -1,6 +1,6 @@
 import React from 'react';
 import { Briefcase, Scale, Shield, FileText } from 'lucide-react';
-import { ContractType } from '@/actions/extract-contract-data';
+import { ContractType } from '@/actions/contract-extraction';
 import { ContractAnalysis } from '@/types/contract-analysis';
 
 interface ParsedContentProps {

@@ -37,10 +37,18 @@ export async function GET(
 
   const decryptedData = decryptBuffer(contract.fileData);
 
+  // fileName is user-controlled (it's the uploaded file's name), so never
+  // interpolate it raw into the header. Build an ASCII-safe fallback plus an
+  // RFC 5987 filename* for the real name to avoid header injection.
+  const rawName = contract.fileName || 'document';
+  const asciiName = rawName.replace(/[^\x20-\x7e]/g, '_').replace(/["\\\r\n]/g, '_');
+  const encodedName = encodeURIComponent(rawName);
+  const contentDisposition = `attachment; filename="${asciiName}"; filename*=UTF-8''${encodedName}`;
+
   return new NextResponse(decryptedData as any, {
     headers: {
       'Content-Type': contentType,
-      'Content-Disposition': `attachment; filename="${contract.fileName || 'document'}"`,
+      'Content-Disposition': contentDisposition,
       'X-Content-Type-Options': 'nosniff',
     },
   });

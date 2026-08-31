@@ -1,0 +1,11 @@
+[
+  {
+    "email": "owner@example.com",
+    "password": "change-me-in-your-local-copy",
+    "name": "Example Owner",
+    "equipo": "Legal",
+    "contracts": [],
+    "tasks": [],
+    "activities": []
+  }
+]

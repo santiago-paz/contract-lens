@@ -1,11 +1,12 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { randomBytes } from 'crypto';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { getSession, getSessionWithOrg, encrypt } from '@/lib/auth';
+import { getSession, getSessionWithOrg, encrypt, setSessionCookie } from '@/lib/auth';
 import { resend, INVITE_FROM } from '@/lib/email';
-import { hasPermission, type Role } from '@/lib/permissions';
+import { hasPermission } from '@/lib/permissions';
+import { escapeHtml } from '@/lib/utils';
 
 function slugify(text: string): string {
   return text
@@ -64,14 +65,7 @@ export async function createOrganization(prevState: any, formData: FormData) {
       orgSlug: org.slug,
       role: 'owner',
     });
-
-    const cookieStore = await cookies();
-    cookieStore.set('auth_session', newSession, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-    });
+    await setSessionCookie(newSession);
   } catch (error) {
     console.error('Error creating organization:', error);
     return { error: 'Failed to create organization. Please try again.' };
@@ -139,14 +133,7 @@ export async function acceptInvitation(token: string) {
       orgSlug: invitation.organization.slug,
       role: invitation.role,
     });
-
-    const cookieStore = await cookies();
-    cookieStore.set('auth_session', newSession, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-    });
+    await setSessionCookie(newSession);
   } catch (error: any) {
     if (error.code === 'P2002') {
       return { error: 'You are already a member of this organization.' };
@@ -216,6 +203,9 @@ export async function sendInvitation(prevState: any, formData: FormData) {
     data: {
       email,
       role,
+      // The token is a bearer credential sent by email — use CSPRNG output
+      // rather than the schema's default cuid, which is not built to be secret.
+      token: randomBytes(32).toString('base64url'),
       organizationId: session.orgId,
       invitedById: session.userId,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days

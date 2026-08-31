@@ -3,15 +3,22 @@
 import { Prisma } from '@prisma/client';
 import { getSessionWithOrg } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { ContractData } from '@/actions/extract-contract-data';
+import { ContractData } from '@/actions/contract-extraction';
 import { revalidatePath } from 'next/cache';
 import { encrypt } from '@/lib/encryption';
+import { hasPermission } from '@/lib/permissions';
 
 export async function hydrateContract(analysis: ContractData, contractType: string, rawText: string) {
   const session = await getSessionWithOrg();
 
   if (!session) {
     return { success: false, error: 'Unauthorized' };
+  }
+
+  // Hydrate writes a real contract row — same gate as any other create, plus
+  // the playground itself is admin-only.
+  if (!hasPermission(session.role, 'admin:access') || !hasPermission(session.role, 'contract:create')) {
+    return { success: false, error: 'Insufficient permissions' };
   }
 
   const userId = session.userId;
@@ -100,10 +107,6 @@ export async function hydrateContract(analysis: ContractData, contractType: stri
     if (error.code === 'P2002') {
         return { success: false, error: 'A contract with this number already exists.' };
     }
-    // Handle date parsing errors gracefully
-    if (error.message && error.message.includes('Invalid time value')) {
-       return { success: false, error: 'Failed to parse Effective Date. Please check the format.' };
-    }
-    return { success: false, error: 'Failed to hydrate contract: ' + error.message };
+    return { success: false, error: 'Failed to hydrate contract.' };
   }
 }

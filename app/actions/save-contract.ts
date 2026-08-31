@@ -6,7 +6,21 @@ import { getSessionWithOrg } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { ContractAnalysis } from '@/types/contract-analysis';
 import { encrypt, encryptBuffer } from '@/lib/encryption';
-import { hasPermission, canModifyOthersResource } from '@/lib/permissions';
+import { hasPermission } from '@/lib/permissions';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB — matches the analyze endpoint
+const ALLOWED_FILE_MIME = new Set([
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+]);
+const MAX_METADATA_BYTES = 256 * 1024; // 256KB of extracted metadata is plenty
+
+/** Trim an uploaded filename to a safe, bounded, path-free value. */
+function sanitizeFileName(name: string): string {
+  const base = name.split(/[\\/]/).pop() || 'document';
+  return base.replace(/[\r\n\x00]/g, '').slice(0, 255) || 'document';
+}
 
 export async function saveContract(formData: FormData) {
   const session = await getSessionWithOrg();
@@ -20,23 +34,43 @@ export async function saveContract(formData: FormData) {
   try {
     const file = formData.get('file') as File | null;
     const metadataString = formData.get('metadata') as string;
-    const content = formData.get('content') as string; 
+    const content = formData.get('content') as string;
     const contractId = formData.get('contractId') as string | null;
-    
+
     if (!metadataString) {
         return { success: false, error: 'Missing metadata' };
     }
 
-    const metadata = JSON.parse(metadataString) as Partial<ContractAnalysis>;
-    
+    if (metadataString.length > MAX_METADATA_BYTES) {
+        return { success: false, error: 'Metadata payload too large' };
+    }
+
+    let metadata: Partial<ContractAnalysis>;
+    try {
+        metadata = JSON.parse(metadataString) as Partial<ContractAnalysis>;
+    } catch {
+        return { success: false, error: 'Invalid metadata' };
+    }
+
+    if (!metadata || typeof metadata !== 'object') {
+        return { success: false, error: 'Invalid metadata' };
+    }
+
     let fileData: Buffer | null = null;
     let fileName = metadata.title || 'Untitled';
 
-    // Only process file if a new one is uploaded
+    // Only process file if a new one is uploaded. Re-validate size and type
+    // server-side — the client only sets an `accept` hint, which is bypassable.
     if (file && file.size > 0) {
+        if (file.size > MAX_FILE_SIZE) {
+            return { success: false, error: 'File too large (max 10MB)' };
+        }
+        if (file.type && !ALLOWED_FILE_MIME.has(file.type)) {
+            return { success: false, error: 'Unsupported file type' };
+        }
         const arrayBuffer = await file.arrayBuffer();
         fileData = Buffer.from(arrayBuffer);
-        fileName = file.name;
+        fileName = sanitizeFileName(file.name);
     }
 
     // Helper to format string or join array

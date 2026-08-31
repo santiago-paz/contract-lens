@@ -34,6 +34,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local seed data — contains plaintext passwords, must not be committed
+/scripts/users.json
+
 # vercel
 .vercel
 

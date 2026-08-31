@@ -11,7 +11,7 @@ export type ClassificationResult = z.infer<typeof ClassificationSchema>;
 
 // --- Expert Schemas ---
 // Re-exporting from the action file to maintain a single source of truth
-export type { ContractData } from '@/actions/extract-contract-data';
+export type { ContractData } from '@/actions/contract-extraction';
 
 // Flat interface that includes all fields from every schema variant + sidebar metadata.
 // Using an interface (instead of a union intersection) so we can access any field

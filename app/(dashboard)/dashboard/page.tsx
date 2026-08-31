@@ -59,7 +59,14 @@ export default async function Overview() {
       },
     }),
     prisma.task.findMany({
-      where: { userId: session.userId, status: 'Open' },
+      where: {
+        userId: session.userId,
+        status: 'Open',
+        OR: [
+          { contractId: null },
+          { contract: { organizationId: session.orgId } },
+        ],
+      },
       orderBy: { dueDate: 'asc' },
       take: 5,
       select: {
@@ -71,7 +78,13 @@ export default async function Overview() {
       },
     }),
     prisma.activity.findMany({
-      where: { userId: session.userId },
+      where: {
+        userId: session.userId,
+        OR: [
+          { contractId: null },
+          { contract: { organizationId: session.orgId } },
+        ],
+      },
       orderBy: { timestamp: 'desc' },
       take: 20,
       select: {
