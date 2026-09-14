@@ -1,31 +1,22 @@
-import React from 'react';
+import Link from 'next/link';
 
-interface LogoProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+/** The brand mark: the section sign on the red of the commentaries. */
+export function Mark({ className = '' }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-beck font-serif text-[19px] font-semibold leading-none text-paper ${className}`}
+    >
+      §
+    </span>
+  );
 }
 
-export function Logo({ className = "text-black", ...props }: LogoProps) {
+export function Brand({ href = '/' }: { href?: string }) {
   return (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      {...props}
-    >
-      <text
-        x="12"
-        y="19"
-        textAnchor="middle"
-        fontFamily="ui-monospace, 'Geist Mono', SFMono-Regular, Menlo, monospace"
-        fontWeight="900"
-        fontSize="22"
-        fill="currentColor"
-      >
-        §
-      </text>
-    </svg>
+    <Link href={href} className="inline-flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+      <Mark />
+      <span translate="no">Contract Lens</span>
+    </Link>
   );
 }

@@ -1,315 +1,266 @@
+import type { ContractTypeCard, DeadlineRow, SpecimenDocument } from './types';
+
+const specimen: SpecimenDocument = {
+  fileName: "dienstleistungsvertrag-nordlicht.pdf",
+  pageNote: "Auszug",
+  title: "Dienstleistungsvertrag",
+  paragraphs: [
+    {
+      segments: [
+        "zwischen der ",
+        { mark: 0, text: "Habermann Logistik GmbH, Hamburg, und der Nordlicht Software GmbH, Kiel" },
+        " (gemeinsam „die Parteien“).",
+      ],
+    },
+    {
+      heading: "§ 1 Vertragsgegenstand",
+      segments: ["Der Auftragnehmer betreibt und wartet für den Auftraggeber das in Anlage 1 beschriebene Lagerverwaltungssystem."],
+    },
+    {
+      heading: "§ 3 Laufzeit",
+      segments: [
+        { mark: 1, text: "Dieser Vertrag beginnt am 1. Januar 2025 und hat eine feste Laufzeit von 24 Monaten." },
+        " ",
+        { mark: 2, text: "Er verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit einer Frist von drei Monaten zum Ende der Laufzeit schriftlich kündigt." },
+      ],
+    },
+    {
+      heading: "§ 7 Vergütung",
+      segments: ["Rechnungen sind innerhalb von 30 Tagen nach Zugang per Überweisung zu zahlen."],
+    },
+    {
+      heading: "§ 9 Haftung",
+      segments: [
+        { mark: 3, text: "Die Gesamthaftung des Auftragnehmers aus diesem Vertrag ist auf 50.000 EUR je Vertragsjahr begrenzt." },
+        " Diese Begrenzung gilt nicht bei Vorsatz und grober Fahrlässigkeit.",
+      ],
+    },
+  ],
+};
+
+const contractTypes: ContractTypeCard[] = [
+  {
+    name: "Geheimhaltungsvereinbarung (NDA)",
+    fields: [
+      "Parteien",
+      "Beginn und Ablauf",
+      "Dauer der Geheimhaltungspflicht",
+      "Wechselseitig oder einseitig",
+      "Gerichtsstand",
+      "Hinweise auf Wettbewerbsverbot, Abwerbeverbot und pauschalierten Schadensersatz",
+    ],
+  },
+  {
+    name: "Dienstleistungsvertrag",
+    fields: [
+      "Auftraggeber und Auftragnehmer",
+      "Beginn und Ende oder die erste Laufzeit",
+      "Automatische Verlängerung",
+      "Kündigungsfrist für die ordentliche Kündigung",
+      "Zahlungsbedingungen: Art, Fälligkeit, Währung",
+      "Wem die Arbeitsergebnisse gehören",
+      "Haftungsobergrenze",
+      "Wer wen freistellt",
+    ],
+  },
+  {
+    name: "Lizenzvertrag",
+    fields: [
+      "Lizenzgeber und Lizenznehmer",
+      "Die lizenzierte Software",
+      "Lizenzart: unbefristet, Abonnement, Testlizenz, Open Source",
+      "Nutzungsgrenzen",
+      "Exklusiv oder nicht exklusiv",
+      "Verlängerungsdatum",
+      "Auditrechte und ihre Ankündigungsfrist",
+      "Gebiet",
+    ],
+  },
+  {
+    name: "Alles andere",
+    note: "AGB, Mietverträge, Arbeitsverträge und der Rest",
+    fields: ["Titel", "Parteien", "Wichtige Termine", "Anwendbares Recht"],
+  },
+];
+
+const deadlineRows: DeadlineRow[] = [
+  { title: "Wartungsvertrag Aufzug", partner: "Aufzugtechnik Sauer GmbH", notice: "3 Monate", ends: "in 5 Tagen", urgency: "week" },
+  { title: "Softwarelizenz Aktenverwaltung", partner: "Advotec Systems AG", notice: "30 Tage", ends: "in 19 Tagen", urgency: "month" },
+  { title: "Büromiete Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 Monate", ends: "in 47 Tagen", urgency: "quarter" },
+  { title: "Rahmenvertrag Übersetzungen", partner: "Lingua Nord GmbH", notice: "1 Monat", ends: "in 83 Tagen", urgency: "quarter" },
+];
+
 export const de = {
   nav: {
-    signIn: "Anmelden",
-    getStarted: "Starten",
     howItWorks: "Funktionsweise",
-    features: "Funktionen",
-    teams: "Teams",
-    security: "Sicherheit",
+    whatItReads: "Was gelesen wird",
+    deadlines: "Fristen",
+    confidentiality: "Vertraulichkeit",
+    signIn: "Anmelden",
+    requestDemo: "Demo anfragen",
     skipToContent: "Zum Inhalt springen",
     openMenu: "Menü öffnen",
     closeMenu: "Menü schließen",
-    languageLabel: "Sprache"
-  },
-  videoShowcase: {
-    titlePart1: "Sehen Sie es an einem",
-    titlePart2: "echten Vertrag",
-    subtitle: "Sie laden ein PDF hoch und bekommen strukturierte Daten zurück, mit allen Fristen im Blick.",
-    play: "Abspielen",
-    playAria: "Produkt-Rundgang abspielen",
-    placeholderTitle: "Das Video ist in Arbeit.",
-    placeholderBody: "Bis dahin zeigen wir Ihnen das Produkt gerne persönlich.",
-    placeholderCta: "Live-Demo anfragen"
-  },
-  features: {
-    header: {
-      title1: "Ihre Verträge,",
-      title2: "strukturiert.",
-      title3: "Ihre Fristen,",
-      title4: "im Blick.",
-      subtitle: "Vier Dinge, die Contract Lens gut macht."
-    },
-    deadlines: {
-      title: "Fristen",
-      subtitle: "Die Zeit verzeiht nicht. Wir schon.",
-      description: "Jede Kündigungsfrist und jede Verlängerung auf einer Zeitachse, mit Warnungen, die früh genug kommen, um zu handeln.",
-      visual: {
-        autoRenewal: "Automatische Verlängerung",
-        exitClause: "Ausstiegsklausel",
-        annualReview: "Jährliche Prüfung",
-        days: "Tage",
-        cronJobs: "Überwachung: aktiv",
-        critical: "KRITISCH",
-        warning: "WARNUNG",
-        normal: "NORMAL"
-      }
-    },
-    translation: {
-      title: "Juristische Übersetzung",
-      subtitle: "Deutsch und Englisch, nebeneinander",
-      description: "Verträge werden im juristischen Kontext übersetzt. Struktur, definierte Begriffe und Nummerierung bleiben erhalten.",
-      visual: {
-          original: "Original (DE)",
-          translated: "Übersetzt (EN)"
-      }
-    },
-    aiDraft: {
-      title: "KI-Entwürfe",
-      subtitle: "Klauseln aus geprüften Vorlagen",
-      description: "Standardklauseln aus strukturierten Vorlagen entwerfen. Sie prüfen und bearbeiten, bevor etwas die Kanzlei verlässt.",
-      visual: {
-        draftGenerated: "Entwurf bereit zur Prüfung.",
-        status: "ONLINE",
-        components: "Komponenten",
-        jurisdiction: "Gerichtsstand",
-        liability: "Haftung",
-        term: "Laufzeit",
-        payment: "Zahlung",
-        engineTitle: "Entwurfsassistent",
-        readyStatus: "Bereit",
-        initialStatus: "Wählen Sie eine Komponente, um den Entwurf zu starten.",
-        generating: "Klausel wird aus Vorlage erstellt…",
-        clauseTitle: "Haftungsbeschränkung",
-        codeText: "7.1 Die Gesamthaftung einer Partei darf die insgesamt gezahlten Gebühren nicht überschreiten...",
-        copyToast: "Kopiert",
-        copyAria: "Beispielklausel kopieren",
-        module: "Modul",
-        done: "FERTIG",
-        clauseGenerated: "KLAUSEL_GENERIERT",
-        validated: "VALIDIERT",
-        snippets: {
-          jurisdiction: [
-              "Der ausschließliche Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist Berlin, Deutschland.",
-              "Dieser Vertrag unterliegt dem Recht der Bundesrepublik Deutschland."
-          ],
-          liability: [
-              "Der Anbieter haftet für Schäden, die durch Vorsatz oder grobe Fahrlässigkeit verursacht wurden.",
-              "Bei leichter Fahrlässigkeit beschränkt sich die Haftung auf den vertragstypischen, vorhersehbaren Schaden."
-          ],
-          term: [
-              "Dieser Vertrag beginnt am Datum des Inkrafttretens und hat eine erste Laufzeit von zwölf (12) Monaten.",
-              "Er verlängert sich automatisch um jeweils weitere zwölf (12) Monate, sofern er nicht von einer Partei gekündigt wird."
-          ],
-          payment: [
-              "Alle Gebühren sind innerhalb von dreißig (30) Tagen nach Rechnungsdatum zur Zahlung fällig.",
-              "Bei Zahlungsverzug werden Verzugszinsen in Höhe von 9 Prozentpunkten über dem Basiszinssatz berechnet."
-          ]
-        }
-      }
-    },
-    anatomy: {
-      title: "Vertragsanatomie",
-      subtitle: "Jede Klausel, beschriftet",
-      description: "Parteien, Pflichten und Kündigungsrechte, extrahiert und beschriftet. Sie sehen den Aufbau eines Vertrags, bevor Sie eine Zeile lesen.",
-      visual: {
-        parties: "Parteien",
-        obligations: "Pflichten",
-        termination: "Kündigung"
-      }
-    }
+    languageLabel: "Sprache",
   },
   hero: {
-    badge: "KI-Vertragsanalyse",
-    seeSystem: "Demo ansehen",
-    title: "Infrastruktur ist Schicksal.",
-    titleLine1: "VERTRÄGE",
-    titleLine2: "IM GRIFF.",
-    titleHighlight: "Kontrollieren Sie das Ergebnis.",
-    titleEnd: "Ausführen.",
-    subtitle: "Vertrag hochladen, strukturierte Daten zurückbekommen: Parteien, Fristen, Pflichten, Risiken. Entwickelt für kleine Kanzleien.",
+    eyebrow: "Vertragsmanagement für kleine Kanzleien",
+    titleLine1: "Vertrag hochladen.",
+    titleLine2: "Fakten und Fristen zurückbekommen.",
+    lead: "Contract Lens liest eine PDF- oder Word-Datei und füllt die Vertragsakte aus: Parteien, Laufzeit, Kündigungsfrist, Verlängerung, Zahlungsbedingungen, Haftung. Sie prüfen jedes Feld neben der Originalseite, denn das letzte Wort bleibt bei Ihnen. Die Termine landen in einer Liste, und der Alarm meldet sich, solange noch Zeit zum Handeln ist.",
     cta: "Demo anfragen",
-    unstructured: "ROHDATEN",
-    raw: "BINÄRER INPUT",
-    analysisSteps: ["Textextraktion", "Klauselanalyse", "Risikoprüfung"],
-    reviewTitle: "Vertragsprüfung",
-    encryptedTag: "AES-256-verschlüsselt",
-    card: {
-      vendor: "Amazon Web Services, Inc.",
-      type: "Rahmenvertrag",
-      status: "AUDIT LÄUFT",
-      valueLabel: "Vertragswert",
-      dateLabel: "Gültigkeitsdatum",
-      value: "120.000 $ / Jahr",
-      date: "01. Jan 2024",
-      riskTitle: "Hinweis",
-      riskText: "Automatische Verlängerung: Kündigungsfrist endet in 30 Tagen.",
-      riskBadge: "Prüfen",
-      detected: "Erkannt",
-      target: "ZIEL",
-      latency: "Latenz",
-      verified: "Verifiziert",
-      complete: "Audit abgeschlossen"
-    },
-    latency: "Latenz",
-    liveMonitor: "Analyse",
-    target: "Datei",
-    verified: "Verifiziert",
-    complete: "Audit abgeschlossen",
-    detected: "Erkannt"
+    secondary: "Rundgang ansehen",
+    figureLabel: "Beispiel: ein Dienstleistungsvertrag und die Akte, die Contract Lens daraus ausfüllt",
+    figureCaption: "Ein Dienstleistungsvertrag und die Akte, die Contract Lens daraus ausfüllt. Jede Markierung im Dokument füllt ein Feld, und der Kündigungstermin ergibt sich aus Laufzeit und Kündigungsfrist.",
   },
-  showcase: {
-    title: "Präzisionsgefertigter Workflow",
-    subtitle: "Von der Rohdatenerfassung bis zum aktiven Kommando. Erleben Sie Asset-Management mit hoher Geschwindigkeit.",
-    step1: "Phase 1",
-    step2: "Phase 2",
-    step3: "Phase 3",
-    features: [
+  extract: {
+    doc: specimen,
+    recordTitle: "Vertragsakte",
+    recognizedLabel: "Erkannt als",
+    recognized: "Dienstleistungsvertrag",
+    fields: [
+      { label: "Parteien", value: "Habermann Logistik GmbH und Nordlicht Software GmbH" },
+      { label: "Laufzeit", value: "1. Jan. 2025 bis 31. Dez. 2026" },
+      { label: "Verlängerung und Frist", value: "Verlängert sich um 12 Monate. Kündigungsfrist: 3 Monate zum Laufzeitende" },
+      { label: "Haftungsobergrenze", value: "50.000\u00a0EUR je Vertragsjahr" },
+    ],
+    deadlineLabel: "Kündigung spätestens am",
+    deadlineDate: "30. Sep. 2026",
+    alertNote: "Vorfrist: 1. Sep. 2026",
+  },
+  howItWorks: {
+    eyebrow: "Funktionsweise",
+    title: "Von der Datei zur Akte in drei Schritten.",
+    summary: "Contract Lens liest. Sie prüfen.",
+    steps: [
       {
-        title: "Forensische Erfassung",
-        description: "Ziehen Sie alte PDFs per Drag & Drop. Unsere Engine strukturiert das Unstrukturierte und validiert Anbieter gegen globale Register."
+        title: "Datei hochladen",
+        body: "PDF oder Word, bis 10\u00a0MB. Contract Lens zieht den Text heraus und erkennt die Vertragsart: Geheimhaltungsvereinbarung, Dienstleistungsvertrag, Lizenzvertrag oder etwas anderes.",
       },
       {
-        title: "Algorithmische Analyse",
-        description: "Deep-Learning-Modelle dekonstruieren die Dokumentenarchitektur und identifizieren Verbindlichkeiten und kritische Daten in Millisekunden."
+        title: "Akte prüfen",
+        body: "Die Felder kommen ausgefüllt zurück und stehen neben der Originalseite, sodass Sie jedes Feld bestätigen oder korrigieren, bevor Sie speichern. Schweigt der Vertrag zu einem Punkt, bleibt das Feld leer, weil die Software nicht rät.",
       },
       {
-        title: "Strukturiertes Kommando",
-        description: "Datengesteuerte Schnittstelle. Felder bearbeiten, Verantwortliche zuweisen und Verlängerungsrichtlinien in einer einheitlichen Konsole durchsetzen."
-      }
-    ]
+        title: "Termine verfolgen",
+        body: "Enddaten, Verlängerungen und Kündigungsfristen stehen in einer Liste, sortiert nach dem, was zuerst ansteht. Sie setzen einen Alarm auf das Datum, auf das es ankommt, und er bleibt offen, bis eine Kollegin oder ein Kollege antwortet.",
+      },
+    ],
+    videoTitle: "Der Rundgang",
+    videoBody: "Anmelden, Vertrag hochladen und zusehen, wie sich die Akte füllt.",
+    play: "Rundgang abspielen",
+    playAria: "Produkt-Rundgang abspielen",
   },
-  bento: {
-    title: "Das Enterprise Asset OS",
-    subtitle: "Zentralisieren. Auditieren. Bereitstellen. Optimieren. Eine einheitliche Infrastruktur für Lizenzen, Abonnements, Dateien und Kapital.",
-    ingestion: {
-      title: "Forensische Erfassung",
-      description: "Parst unstrukturierte Binärdaten. Validiert Entitäten. Erzwingt Datenintegrität.",
-      processing: "Verarbeitung",
-      validating: "Integrität prüfen...",
-      results: {
-        title: "Audit abgeschlossen",
-        summaryLabel: "Executive Summary",
-        summaryText: "Standard-Unternehmenslizenzvertrag. 99,9% SLA bestätigt. Risikostufe: Niedrig.",
-        vendorLabel: "Entität",
-        vendor: "Slack Technologies, LLC",
-        valueLabel: "Kostenbasis",
-        value: "14.500 € / Jahr"
-      }
-    },
-    guard: {
-      title: "Automatisches Audit",
-      description: "Kontinuierliche Kostenanomalieerkennung. Keine Konfiguration erforderlich.",
-      alert1: "Verlängerungswarnung",
-      alert1Sub: "T-minus 30 Tage. Autorisierung erforderlich.",
-      alert2: "Compliance-Prüfung",
-      alert2Sub: "AVV-Prüfung ausstehend",
-      alert3: "Budgetabweichung",
-      alert3Sub: "Marketing Q1 > 105%",
-      alert4: "Anbietererkennung",
-      alert4Sub: "Linear Orbit Inc. identifiziert"
-    },
-    collab: {
-      title: "Workflow-Orchestrierung",
-      description: "Direkte Ressourcenbereitstellung. Granulare Berechtigungen. Einheitliche Asset-Ansicht.",
-      list: [
-        "Rechtsprüfungsprotokolle durchsetzen",
-        "Genehmigungsketten verfolgen",
-        "Anbieterzentrierte Asset-Ansicht"
+  whatItReads: {
+    eyebrow: "Was gelesen wird",
+    title: "Die Checkliste hängt von der Vertragsart ab.",
+    summary: "Contract Lens erkennt zuerst die Art und liest dann mit der passenden Checkliste.",
+    body: "Eine Geheimhaltungsvereinbarung wirft andere Fragen auf als eine Softwarelizenz, deshalb hat jede Vertragsart ihre eigene Liste von Feldern. Jedes Feld darf leer bleiben: Sagt der Vertrag zu einem Punkt nichts, steht das auch so in der Akte.",
+    types: contractTypes,
+    footnote: "Jede Akte bekommt außerdem einen Titel und eine Zusammenfassung in zwei Sätzen, unabhängig von der Art.",
+  },
+  deadlines: {
+    eyebrow: "Fristen",
+    title: "Der Alarm wartet auf eine Antwort.",
+    summary: "Ein Alarm bleibt offen, bis ein Manager antwortet, und die Antwort steht in der Akte.",
+    body: "Jedes Enddatum, jede Verlängerung und jede Kündigungsfrist steht in einer Liste, sortiert nach dem, was zuerst ansteht: überfällig, diese Woche, dieser Monat, die nächsten 90 Tage. Kommt es auf ein Datum an, setzen Sie einen Alarm darauf. Ein Manager muss dann antworten: Vertrag fortführen, kündigen oder eine Rückfrage stellen. Bis dahin bleibt der Alarm offen, er kann eskaliert werden, und jeder Schritt wird mit Name und Uhrzeit festgehalten.",
+    listLabel: "Beispiel: die Liste der auslaufenden Verträge",
+    list: {
+      title: "Auslaufende Verträge",
+      buckets: [
+        { label: "Überfällig", count: 0 },
+        { label: "Diese Woche", count: 1 },
+        { label: "Dieser Monat", count: 2 },
+        { label: "90 Tage", count: 4 },
       ],
-      partnerCard: "Partner-Intelligenz",
-      taskCard: {
-        assigned: "@Sarah zugewiesen",
-        task: "\"Haftung prüfen\"",
-        due: "Fällig: T-24h"
+      columns: { contract: "Vertrag", partner: "Vertragspartner", notice: "Kündigungsfrist", ends: "Endet" },
+      rows: deadlineRows,
+    },
+    alertLabel: "Beispiel: ein offener Alarm",
+    alert: {
+      title: "Alarm",
+      status: "Offen, keine Antwort",
+      contract: "Rahmenvertrag IT-Support",
+      deadlineLabel: "Kündigung spätestens am",
+      deadlineDate: "30. Sep. 2026",
+      detail: "Der Vertrag endet am 31. Dez. 2026 mit drei Monaten Kündigungsfrist.",
+      actions: ["Vertrag fortführen", "Vertrag kündigen", "Rückfrage"],
+      log: "Gesetzt von S. Brandt am 1. Sep. 2026",
+    },
+  },
+  firm: {
+    eyebrow: "Die Kanzlei",
+    title: "Eine Akte je Vertrag, für die ganze Kanzlei.",
+    summary: "Rollen legen fest, wer liest, wer bearbeitet und wer antwortet.",
+    points: [
+      {
+        title: "Rollen",
+        body: "Laden Sie Kolleginnen und Kollegen per E-Mail ein und geben Sie jeder Person eine Rolle. Ein Betrachter liest. Ein Mitglied bearbeitet die eigenen Verträge. Ein Manager beantwortet Alarme und bearbeitet alle Verträge. Ein Admin verwaltet das Konto der Kanzlei.",
       },
-      taskCard2: {
-        assigned: "@Mike zugewiesen",
-        task: "\"Ausgaben genehmigen\"",
-        due: "Fällig: Heute"
-      }
-    }
+      {
+        title: "Aufgaben",
+        body: "Eine Aufgabe hängt an dem Vertrag, zu dem sie gehört, mit Fälligkeit und Zuständigkeit, damit keine Verlängerung vom Gedächtnis Einzelner abhängt.",
+      },
+      {
+        title: "Das Protokoll",
+        body: "Jede Änderung an einer Akte wird mit Name und Uhrzeit festgehalten. Dasselbe gilt für jeden Alarm und jede Antwort darauf.",
+      },
+    ],
   },
-  security: {
-    defenseProtocol: "Sicherheit",
-    titlePart1: "Gebaut für",
-    titlePart2: "Vertraulichkeit.",
-    encryption: {
-      title: "AES-256-GCM-Verschlüsselung",
-      desc: "Zusammenfassungen, Konditionen und Dateien werden verschlüsselt, bevor sie die Datenbank erreichen. TLS bei der Übertragung."
-    },
-    ai: {
-      title: "Zustandslose KI-Pipeline",
-      desc: "Dokumente werden im Speicher verarbeitet, direkt nach der Analyse verschlüsselt und nie für Modelltraining verwendet."
-    },
-    hosting: {
-      title: "Datenschutz",
-      desc: "DSGVO-konforme Verarbeitung mit rollenbasierten Zugriffsrechten. Ihre Daten werden auf Wunsch gelöscht."
-    }
-  },
-  teams: {
-    matrixTitle: "Teams",
-    title: "Für Juristen gebaut.",
-    titleHighlight: "Für alle nützlich.",
-    subtitle: "Verträge betreffen die ganze Kanzlei. Jedes Team sieht genau das, was es braucht, von Fristen bis Kosten.",
-    cta: "Demo anfragen",
-    legal: {
-      title: "Recht",
-      desc: "Klauselgenaue Prüfung eingehender Verträge, jede Änderung und Anmerkung dokumentiert."
-    },
-    procurement: {
-      title: "Einkauf",
-      desc: "Konditionen, Verlängerungen und Kündigungsfristen aller Lieferanten in einer Liste."
-    },
-    hr: {
-      title: "Personal",
-      desc: "Arbeitsverträge und Probezeitfristen an einem Ort, Zugriff nach Rolle beschränkt."
-    },
-    finance: {
-      title: "Finanzen",
-      desc: "Was jeder Vertrag pro Jahr kostet und zu welchem Datum Sie aus ihm herauskommen."
-    },
-    grc: {
-      title: "Compliance",
-      desc: "Auftragsverarbeitungsverträge und Prüfpflichten in einem Register nachverfolgt."
-    },
-    ops: {
-      title: "Betrieb",
-      desc: "Verantwortliche und Aufgaben je Vertrag, damit keine Verlängerung vom Gedächtnis Einzelner abhängt."
-    }
+  confidentiality: {
+    eyebrow: "Vertraulichkeit",
+    title: "Was mit der Datei passiert.",
+    summary: "Verschlüsselt gespeichert, einmal von der KI gelesen, auf Wunsch gelöscht.",
+    items: [
+      {
+        term: "Speicherung",
+        body: "Dateien, Zusammenfassungen und Konditionen werden verschlüsselt, bevor sie in die Datenbank geschrieben werden. Die Verbindung zwischen Ihrem Browser und Contract Lens ist ebenfalls verschlüsselt.",
+      },
+      {
+        term: "Die KI",
+        body: "Das Dokument wird einmal gelesen, um die Akte auszufüllen, und direkt danach wieder verschlüsselt. Ihre Verträge werden nie zum Training eines Modells verwendet.",
+      },
+      {
+        term: "Zugriff",
+        body: "Nur Mitglieder Ihrer Kanzlei können eine Akte öffnen, und nur im Rahmen ihrer Rolle. Kanzleien sind voneinander getrennt.",
+      },
+      {
+        term: "Löschung",
+        body: "Die Verarbeitung folgt der DSGVO. Auf Ihren Wunsch löschen wir Ihre Daten.",
+      },
+    ],
   },
   contact: {
-    title: "Bereitstellung initiieren",
-    subtitle: "Anforderungen auf Unternehmensebene? Unser Engineering-Team ist bereit.",
-    headerTitle: "Kontakt",
-    secureChannel: "Kontaktformular",
-    refCode: "REF: KONTAKT",
-    officialInquiry: "Offizielle Anfrage",
-    section1: "§ 1",
-    theParties: "Die Parteien",
-    section2: "§ 2",
-    theDetails: "Das Anliegen",
+    eyebrow: "Kontakt",
+    title: "Sehen Sie es an einem Ihrer eigenen Verträge.",
+    body: "Schreiben Sie ein paar Zeilen zu Ihrer Kanzlei und dazu, wie Sie Verträge heute im Blick behalten. Wir antworten innerhalb eines Werktags, und die Demo läuft an einem Vertrag, den Sie mitbringen.",
     name: "Name",
-    enterFullName: "Ihr Name",
+    namePlaceholder: "Ihr Name",
     email: "Geschäftliche E-Mail",
-    enterEmail: "name@kanzlei.de",
+    emailPlaceholder: "name@kanzlei.de",
     message: "Nachricht",
-    placeholder: "Skizzieren Sie Ihre operativen Anforderungen...",
-    describeInquiry: "Womit können wir helfen?",
-    disclaimer: "*Mit dem Absenden bestätigen Sie, dass dieses Formular zwar sehr offiziell aussieht, Sie aber zu nichts anderem als einer freundlichen Unterhaltung verpflichtet.",
-    send: "Übermitteln",
-    submitButton: "Nachricht senden",
-    sending: "Wird gesendet…",
+    messagePlaceholder: "Wie behalten Sie Verträge heute im Blick?",
+    note: "Wir verwenden Ihre Adresse nur für die Antwort.",
+    submit: "Nachricht senden",
     submitting: "Wird gesendet…",
-    sentTitle: "Nachricht erhalten",
-    sentDesc: "Wir antworten innerhalb eines Werktags.",
+    sentTitle: "Nachricht erhalten.",
+    sentBody: "Wir antworten innerhalb eines Werktags.",
     sendAnother: "Weitere Nachricht senden",
     errorInvalid: "Ein Feld ist leer oder zu kurz. Bitte prüfen und erneut senden.",
     errorThrottled: "Von dieser Verbindung wurden zu viele Nachrichten gesendet. Bitte in einer Stunde erneut versuchen.",
-    errorFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+    errorFailed: "Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
   },
   footer: {
-    ctaTitle: "Sehen Sie es an Ihren eigenen Verträgen.",
-    ctaButton: "Demo anfragen",
-    copyright: "Contract Lens. Alle Rechte vorbehalten.",
-    rights: "Alle Rechte vorbehalten.",
+    tagline: "Vertragsmanagement für kleine Kanzleien in Deutschland.",
     privacy: "Datenschutz",
-    terms: "Nutzungsbedingungen"
+    terms: "Nutzungsbedingungen",
+    copyright: "Contract Lens. Alle Rechte vorbehalten.",
   },
   cookieConsent: {
     title: "Cookies",
     text: "Wir verwenden Cookies, die die Seite zum Funktionieren braucht, zum Beispiel für die Anmeldung. Optionale Statistik läuft nur, wenn Sie zustimmen.",
     accept: "Akzeptieren",
     decline: "Ablehnen",
-    closeAria: "Schließen und optionale Cookies ablehnen"
-  }
+    closeAria: "Schließen und optionale Cookies ablehnen",
+  },
 };

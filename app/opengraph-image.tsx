@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 export const alt =
-  'Contract Lens - AI contract analysis. Upload a contract, get structured fields, deadlines and alerts.'
+  'Contract Lens - contract management for small law firms. Upload a contract, get the facts and the deadlines back.'
 
 export const size = {
   width: 1200,
@@ -12,26 +12,27 @@ export const size = {
 
 export const contentType = 'image/png'
 
-const INK = '#000000'
+// Mirrors the landing tokens in globals.css.
+const INK = '#1a1c20'
 const PAPER = '#ffffff'
-const ACCENT = '#CCFF00'
-const GRID = '#f0f0f0'
-const MUTED = '#6b7280'
+const LEDGER = '#f4f4f1'
+const RULE = '#d8d9d4'
+const MUTED = '#5d6470'
+const BECK = '#a3202f'
+const BECK_TINT = '#fbeef0'
 
-/** The fields the extraction pipeline pulls out of a ServiceAgreement. */
+/** The fields the extraction pipeline fills in for a service agreement. */
 const EXTRACTED_FIELDS = [
-  ['PARTIES', 'Meyer GmbH / Kleine AG'],
-  ['TERM', '24 months'],
-  ['NOTICE PERIOD', '3 months'],
-  ['AUTO-RENEWAL', 'Yes'],
-  ['GOVERNING LAW', 'German law (BGB)'],
+  ['Parties', 'Habermann Logistik GmbH and Nordlicht Software GmbH'],
+  ['Term', '1 Jan 2025 to 31 Dec 2026'],
+  ['Renewal and notice', 'Renews for 12 months. Notice: 3 months'],
+  ['Liability cap', 'EUR 50,000 per contract year'],
 ] as const
 
 export default async function Image() {
-  const [monoBold, monoRegular, sans] = await Promise.all([
-    readFile(join(process.cwd(), 'assets/GeistMono-Bold.ttf')),
-    readFile(join(process.cwd(), 'assets/GeistMono-Regular.ttf')),
+  const [sansRegular, monoBold] = await Promise.all([
     readFile(join(process.cwd(), 'assets/Geist-Regular.ttf')),
+    readFile(join(process.cwd(), 'assets/GeistMono-Bold.ttf')),
   ])
 
   return new ImageResponse(
@@ -42,214 +43,157 @@ export default async function Image() {
           height: '100%',
           display: 'flex',
           backgroundColor: PAPER,
-          // Mirrors .bg-grid-pattern from globals.css
-          backgroundImage: `linear-gradient(to right, ${GRID} 1px, transparent 1px), linear-gradient(to bottom, ${GRID} 1px, transparent 1px)`,
-          backgroundSize: '40px 40px',
-          fontFamily: 'Geist Mono',
+          fontFamily: 'Geist',
           padding: 64,
         }}
       >
-        {/* Left column - the thesis */}
+        {/* Left column: the thesis */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            width: 600,
+            width: 620,
           }}
         >
-          {/* Wordmark */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 56,
-                height: 56,
-                backgroundColor: ACCENT,
-                border: `2px solid ${INK}`,
-                boxShadow: `4px 4px 0px 0px ${INK}`,
-                fontSize: 34,
+                width: 52,
+                height: 52,
+                borderRadius: 6,
+                backgroundColor: BECK,
+                fontFamily: 'Geist Mono',
+                fontSize: 30,
                 fontWeight: 700,
-                color: INK,
+                color: PAPER,
               }}
             >
               §
             </div>
-            <div
-              style={{
-                marginLeft: 18,
-                fontSize: 22,
-                fontWeight: 700,
-                letterSpacing: 2,
-                color: INK,
-              }}
-            >
-              CONTRACT LENS
+            <div style={{ marginLeft: 16, fontSize: 24, fontWeight: 700, color: INK, fontFamily: 'Geist Mono' }}>
+              Contract Lens
             </div>
           </div>
 
-          {/* Headline block */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div
               style={{
                 display: 'flex',
-                alignSelf: 'flex-start',
-                backgroundColor: ACCENT,
-                border: `2px solid ${INK}`,
-                boxShadow: `2px 2px 0px 0px ${INK}`,
-                padding: '7px 14px',
-                fontSize: 17,
+                fontFamily: 'Geist Mono',
+                fontSize: 15,
                 fontWeight: 700,
-                letterSpacing: 1.5,
-                color: INK,
-                marginBottom: 26,
+                letterSpacing: 2,
+                color: BECK,
+                marginBottom: 22,
               }}
             >
-              AI CONTRACT EXTRACTION
+              CONTRACT MANAGEMENT FOR SMALL LAW FIRMS
             </div>
-
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                fontSize: 74,
-                fontWeight: 700,
-                lineHeight: 1.04,
-                letterSpacing: -2.5,
+                fontSize: 62,
+                lineHeight: 1.08,
+                letterSpacing: -1.5,
                 color: INK,
               }}
             >
-              <div style={{ display: 'flex' }}>Contracts</div>
-              <div style={{ display: 'flex' }}>under control.</div>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                marginTop: 26,
-                fontFamily: 'Geist',
-                fontSize: 24,
-                lineHeight: 1.42,
-                color: MUTED,
-                maxWidth: 540,
-              }}
-            >
-              Upload a contract. Get structured fields, deadlines and alerts,
-              no prompting required.
+              <div style={{ display: 'flex' }}>Upload a contract.</div>
+              <div style={{ display: 'flex' }}>Get the facts and</div>
+              <div style={{ display: 'flex' }}>the deadlines back.</div>
             </div>
           </div>
 
-          {/* Footer line */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              fontSize: 19,
-              color: INK,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                width: 10,
-                height: 10,
-                backgroundColor: ACCENT,
-                border: `2px solid ${INK}`,
-                marginRight: 12,
-              }}
-            />
-            trycontractlens.com
-          </div>
+          <div style={{ display: 'flex', fontSize: 20, color: MUTED }}>trycontractlens.com</div>
         </div>
 
-        {/* Right column - the signature: what the pipeline actually returns */}
+        {/* Right column: the record the pipeline fills in */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 408,
+            width: 388,
             marginLeft: 64,
             alignSelf: 'center',
-            border: `2px solid ${INK}`,
-            boxShadow: `8px 8px 0px 0px ${INK}`,
-            backgroundColor: PAPER,
+            border: `1px solid ${RULE}`,
+            borderRadius: 6,
+            backgroundColor: LEDGER,
+            overflow: 'hidden',
           }}
         >
-          {/* Card header */}
           <div
             style={{
               display: 'flex',
-              alignItems: 'center',
               justifyContent: 'space-between',
-              backgroundColor: INK,
-              padding: '13px 16px',
+              padding: '12px 18px',
+              borderBottom: `1px solid ${RULE}`,
+              fontFamily: 'Geist Mono',
+              fontSize: 12,
+              letterSpacing: 1.5,
+              color: MUTED,
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                fontSize: 15,
-                fontWeight: 700,
-                letterSpacing: 1.2,
-                color: PAPER,
-              }}
-            >
-              EXTRACTED
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                fontSize: 15,
-                fontWeight: 700,
-                letterSpacing: 1.2,
-                color: ACCENT,
-              }}
-            >
-              ServiceAgreement
-            </div>
+            <div style={{ display: 'flex' }}>CONTRACT RECORD</div>
+            <div style={{ display: 'flex', color: INK }}>SERVICE AGREEMENT</div>
           </div>
 
-          {/* Typed fields */}
-          <div style={{ display: 'flex', flexDirection: 'column', padding: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', padding: '4px 18px 6px' }}>
             {EXTRACTED_FIELDS.map(([label, value], i) => (
               <div
                 key={label}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  paddingTop: i === 0 ? 0 : 13,
-                  paddingBottom: 13,
-                  borderBottom:
-                    i === EXTRACTED_FIELDS.length - 1
-                      ? '0px solid transparent'
-                      : `1px solid ${GRID}`,
+                  padding: '12px 0',
+                  borderBottom: i === EXTRACTED_FIELDS.length - 1 ? '0px solid transparent' : `1px solid ${RULE}`,
                 }}
               >
                 <div
                   style={{
                     display: 'flex',
-                    fontSize: 13,
-                    letterSpacing: 1.1,
+                    fontFamily: 'Geist Mono',
+                    fontSize: 11,
+                    letterSpacing: 1.5,
                     color: MUTED,
                     marginBottom: 5,
                   }}
                 >
-                  {label}
+                  {label.toUpperCase()}
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    fontSize: 20,
-                    fontWeight: 700,
-                    color: INK,
-                  }}
-                >
-                  {value}
-                </div>
+                <div style={{ display: 'flex', fontSize: 17, color: INK }}>{value}</div>
               </div>
             ))}
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '14px 18px',
+              borderTop: `1px solid ${RULE}`,
+              backgroundColor: BECK_TINT,
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                fontFamily: 'Geist Mono',
+                fontSize: 11,
+                letterSpacing: 1.5,
+                color: BECK,
+                marginBottom: 4,
+              }}
+            >
+              GIVE NOTICE BY
+            </div>
+            <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: INK, fontFamily: 'Geist Mono' }}>
+              30 Sep 2026
+            </div>
           </div>
         </div>
       </div>
@@ -257,9 +201,8 @@ export default async function Image() {
     {
       ...size,
       fonts: [
+        { name: 'Geist', data: sansRegular, style: 'normal', weight: 400 },
         { name: 'Geist Mono', data: monoBold, style: 'normal', weight: 700 },
-        { name: 'Geist Mono', data: monoRegular, style: 'normal', weight: 400 },
-        { name: 'Geist', data: sans, style: 'normal', weight: 400 },
       ],
     }
   )

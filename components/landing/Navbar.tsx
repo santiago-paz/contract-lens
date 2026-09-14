@@ -6,192 +6,136 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useLanguage } from './LanguageContext';
-import { Logo } from './Logo';
+import { LanguageToggle } from './LanguageToggle';
+import { Brand } from './Logo';
+import { DUR, EASE } from './motion';
 import { scrollToSection } from './scroll';
 
+const SECTIONS = ['how-it-works', 'what-it-reads', 'deadlines', 'confidentiality'] as const;
+type SectionId = (typeof SECTIONS)[number];
+
 export function Navbar() {
-  const { language, setLanguage, t } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const labels: Record<SectionId, string> = {
+    'how-it-works': t.nav.howItWorks,
+    'what-it-reads': t.nav.whatItReads,
+    deadlines: t.nav.deadlines,
+    confidentiality: t.nav.confidentiality,
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
     };
-  }, [isOpen]);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
 
-  const goToSection = (id: string) => {
-    setIsOpen(false);
+  // Real anchors for semantics; the click scrolls with the page's own easing.
+  const go = (id: string) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    setOpen(false);
     scrollToSection(id);
   };
 
-  const LanguageToggle = () => (
-    <div
-      role="group"
-      aria-label={t.nav.languageLabel}
-      className="flex border-2 border-black bg-white h-10 items-center shadow-hard-sm"
-    >
-      <button
-        onClick={() => setLanguage('en')}
-        aria-pressed={language === 'en'}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'en' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
-          }`}
-      >
-        EN
-      </button>
-      <div className="w-0.5 h-full bg-black" aria-hidden="true" />
-      <button
-        onClick={() => setLanguage('de')}
-        aria-pressed={language === 'de'}
-        className={`h-full px-4 text-xs font-mono font-bold transition-colors ${language === 'de' ? 'bg-black text-[#CCFF00]' : 'text-black hover:bg-gray-100'
-          }`}
-      >
-        DE
-      </button>
-    </div>
-  );
-
   return (
     <>
-      <nav aria-label="Main" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 ${scrolled ? 'bg-white border-black py-3 shadow-sm' : 'bg-white/90 backdrop-blur-md border-transparent py-5'
-        }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="bg-[#CCFF00] border-2 border-black w-12 h-12 flex items-center justify-center shadow-hard-sm" aria-hidden="true">
-                <Logo className="text-black" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tighter font-mono uppercase leading-none">
-                  Contract Lens
-                </span>
-                <span className="hidden sm:block text-[11px] font-mono uppercase tracking-widest text-gray-600 leading-none mt-1">
-                  {t.hero.badge}
-                </span>
-              </div>
-            </div>
+      <nav
+        aria-label="Main"
+        className={`fixed inset-x-0 top-0 z-50 border-b bg-paper/90 backdrop-blur-md transition-[border-color] duration-300 ${
+          scrolled || open ? 'border-rule' : 'border-transparent'
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+          <Brand />
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-10">
-              <NavButton onClick={() => goToSection('how-it-works')}>{t.nav.howItWorks}</NavButton>
-              <NavButton onClick={() => goToSection('features')}>{t.nav.features}</NavButton>
-              <NavButton onClick={() => goToSection('teams-section')}>{t.nav.teams}</NavButton>
-              <NavButton onClick={() => goToSection('security')}>{t.nav.security}</NavButton>
-            </div>
-
-            {/* Desktop Right Section */}
-            <div className="hidden md:flex items-center gap-6">
-              <LanguageToggle />
-
-              <Link
-                href="/login"
-                className="text-sm font-mono font-bold uppercase tracking-wider border-b-2 border-transparent hover:border-[#CCFF00] transition-all"
+          {/* The links sit in the middle column, so they stay centred whatever the two sides weigh. */}
+          <div className="hidden items-center gap-7 lg:flex">
+            {SECTIONS.map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={go(id)}
+                className="text-[14px] font-medium text-body transition-colors hover:text-ink"
               >
-                {t.nav.signIn}
-              </Link>
-              <button
-                onClick={() => goToSection('contact-form')}
-                className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-[#CCFF00] active:text-black"
-              >
-                {t.nav.getStarted}
-              </button>
-            </div>
+                {labels[id]}
+              </a>
+            ))}
+          </div>
 
-            {/* Mobile Toggle */}
-            <div className="flex md:hidden items-center gap-4">
-              <LanguageToggle />
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? t.nav.closeMenu : t.nav.openMenu}
-                aria-expanded={isOpen}
-                aria-controls="mobile-menu"
-                className="p-2 border-2 border-black shadow-hard-sm bg-white active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
-              >
-                {isOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
-              </button>
-            </div>
+          <div className="hidden items-center justify-end gap-6 lg:flex">
+            <LanguageToggle />
+            <Link href="/login" className="text-[14px] font-medium text-body transition-colors hover:text-ink">
+              {t.nav.signIn}
+            </Link>
+            <a href="#contact" onClick={go('contact')} className="btn btn-primary btn-sm">
+              {t.nav.requestDemo}
+            </a>
+          </div>
+
+          <div className="flex items-center gap-3 lg:hidden">
+            <LanguageToggle />
+            <button
+              type="button"
+              onClick={() => setOpen((value) => !value)}
+              aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-rule text-ink"
+            >
+              {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {isOpen && (
+        {open && (
           <motion.div
             id="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2, ease: "circOut" }}
-            className="fixed inset-0 top-[80px] z-40 bg-white md:hidden overflow-y-auto overscroll-contain border-t-2 border-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: DUR.quick, ease: EASE }}
+            className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto overscroll-contain bg-paper lg:hidden"
           >
-            <div className="bg-grid-pattern absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true" />
-            <div className="flex flex-col p-8 space-y-8 relative z-10">
-              <div className="space-y-6">
-                <MobileNavButton onClick={() => goToSection('how-it-works')}>{t.nav.howItWorks}</MobileNavButton>
-                <MobileNavButton onClick={() => goToSection('features')}>{t.nav.features}</MobileNavButton>
-                <MobileNavButton onClick={() => goToSection('teams-section')}>{t.nav.teams}</MobileNavButton>
-                <MobileNavButton onClick={() => goToSection('security')}>{t.nav.security}</MobileNavButton>
-              </div>
-
-              <div className="h-0.5 bg-black w-full opacity-20" aria-hidden="true" />
-
-              <div className="space-y-4">
-                <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center w-full py-4 text-sm font-mono font-bold uppercase border-2 border-black bg-white hover:bg-[#CCFF00] transition-colors shadow-hard-sm"
-                >
+            <div className="mx-auto flex max-w-[1200px] flex-col px-6 py-6">
+              <ul className="divide-y divide-rule border-b border-rule">
+                {SECTIONS.map((id) => (
+                  <li key={id}>
+                    <a href={`#${id}`} onClick={go(id)} className="display block py-4 text-[1.75rem] text-ink">
+                      {labels[id]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-col gap-3">
+                <a href="#contact" onClick={go('contact')} className="btn btn-primary">
+                  {t.nav.requestDemo}
+                </a>
+                <Link href="/login" onClick={() => setOpen(false)} className="btn btn-secondary">
                   {t.nav.signIn}
                 </Link>
-                <button
-                  onClick={() => goToSection('contact-form')}
-                  className="w-full py-4 text-sm font-bold font-mono uppercase bg-black text-white border-2 border-black shadow-hard active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-                >
-                  {t.nav.getStarted}
-                </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  );
-}
-
-function NavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="relative text-sm font-mono font-bold uppercase tracking-wide group py-1"
-    >
-      <span className="relative z-10">{children}</span>
-      <span className="absolute bottom-0 left-0 w-0 h-2 bg-[#CCFF00] transition-all duration-300 group-hover:w-full -z-0" aria-hidden="true"></span>
-    </button>
-  );
-}
-
-function MobileNavButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left text-3xl font-black font-mono uppercase tracking-tighter hover:translate-x-4 transition-all duration-300 flex items-center gap-4 group"
-    >
-      <span className="w-2 h-2 bg-black group-hover:bg-[#CCFF00] group-hover:scale-125 transition-all" aria-hidden="true" />
-      {children}
-    </button>
   );
 }

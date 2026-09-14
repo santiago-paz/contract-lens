@@ -65,21 +65,50 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Brutalist Utilities */
-.shadow-hard {
+/*
+ * Brutalist utilities.
+ *
+ * These are declared with @utility rather than as plain classes so they land in
+ * Tailwind's utilities layer. Written as plain CSS after the import they sit
+ * outside every layer, and unlayered rules beat layered ones no matter their
+ * specificity - which meant `hover:shadow-none` next to `shadow-hard` never
+ * applied, and the press left its shadow behind on every button on the page.
+ */
+@utility shadow-hard {
   box-shadow: 4px 4px 0px 0px #000000;
 }
 
-.shadow-hard-sm {
+@utility shadow-hard-sm {
   box-shadow: 2px 2px 0px 0px #000000;
 }
 
-.shadow-hard-lg {
+@utility shadow-hard-lg {
   box-shadow: 8px 8px 0px 0px #000000;
 }
 
-.border-hard {
+@utility border-hard {
   border: 2px solid #000000;
+}
+
+/*
+ * The press. Every block on the landing page moves the same way under the
+ * pointer: it travels along its own shadow and the shadow shortens by the same
+ * amount, so the shadow stays put on the paper. Naming the transition here
+ * keeps that gesture at one speed and one curve across the page, and lists the
+ * properties rather than using `transition-all`, which would also animate
+ * whatever a hover state happens to change next.
+ */
+.press {
+  transition-property: transform, translate, box-shadow, background-color, border-color, color;
+  transition-duration: 140ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* For the large cards, where the same speed reads as twitchy. */
+.press-slow {
+  transition-property: transform, translate, box-shadow, background-color, border-color, color;
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Grid Background */
@@ -166,4 +195,177 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+
+/*
+ * Landing page (components/landing).
+ *
+ * The landing has its own tokens and type, scoped under `.landing` so the
+ * dashboard keeps its look. Fonts go through `@theme inline` on purpose: the
+ * font variables are set on <body> by next/font, and a non-inline theme value
+ * would try to resolve them on :root, where they do not exist.
+ *
+ * The page is white with one warm grey band and two deep navy blocks. The
+ * serif carries only the headlines; everything that is read or pressed is set
+ * in the sans. The red of the commentaries stays on the mark, on dates and on
+ * the marks in the specimen document, and nowhere else.
+ */
+@theme inline {
+  --font-serif: var(--font-source-serif), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-ui: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+  --color-paper: #ffffff;
+  --color-ledger: #f4f4f1;
+  --color-ink: #16181d;
+  --color-body: #3f444c;
+  --color-muted: #5f6670;
+  --color-rule: #e1e2dd;
+  --color-navy: #1a2742;
+  --color-navy-deep: #121b30;
+  --color-beck: #a3202f;
+  --color-beck-deep: #85192a;
+  --color-beck-tint: #fbeef0;
+  --color-marker: #ffe45c;
+  --color-mist: #e8edf3;
+  --color-sand: #f1ebe0;
+  --color-sage: #e6ece6;
+}
+
+/* A sheet of paper lying on a surface: a hairline and a soft, low shadow. */
+@utility shadow-sheet {
+  box-shadow: 0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28);
+}
+
+.landing {
+  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-optical-sizing: auto;
+}
+
+/* Headlines take the serif; the global mono heading rule above is unlayered, so it has to be beaten here. */
+.landing h1,
+.landing h2,
+.landing .display {
+  font-family: var(--font-source-serif), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.landing h3,
+.landing h4 {
+  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+  letter-spacing: -0.005em;
+}
+
+.landing :focus-visible {
+  outline: 2px solid #16181d;
+  outline-offset: 3px;
+}
+
+.landing .tone-navy :focus-visible {
+  outline-color: #ffffff;
+}
+
+.landing .tone-navy .on-paper :focus-visible {
+  outline-color: #16181d;
+}
+
+.landing .eyebrow {
+  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5f6670;
+}
+
+.landing .tone-navy .eyebrow {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* Buttons. Fully specified here, because unlayered rules beat hover: utilities. */
+.landing .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.9375rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.landing .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.landing .btn-primary {
+  background: #16181d;
+  border-color: #16181d;
+  color: #ffffff;
+}
+
+.landing .btn-primary:hover:not(:disabled) {
+  background: #1a2742;
+  border-color: #1a2742;
+}
+
+.landing .btn-secondary {
+  background: transparent;
+  border-color: #cfd1cc;
+  color: #16181d;
+}
+
+.landing .btn-secondary:hover:not(:disabled) {
+  background: #f4f4f1;
+  border-color: #16181d;
+}
+
+.landing .btn-light {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #16181d;
+}
+
+.landing .btn-light:hover:not(:disabled) {
+  background: #e8edf3;
+  border-color: #e8edf3;
+}
+
+.landing .btn-sm {
+  padding: 0.6875rem 1.125rem;
+  font-size: 0.875rem;
+}
+
+/* The highlighter in the specimen document. Clone keeps the mark whole across line breaks. */
+.landing .mark {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0.06em 0.2em;
+  margin: 0 -0.2em;
+  border-radius: 2px;
+  background-color: transparent;
+  transition: background-color 320ms ease;
+}
+
+.landing .mark.is-on {
+  background-color: rgba(255, 228, 92, 0.62);
+}
+
+.landing input,
+.landing textarea {
+  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+
+.landing a,
+.landing button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(22, 24, 29, 0.08);
 }

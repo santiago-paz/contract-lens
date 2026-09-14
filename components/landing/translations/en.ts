@@ -1,315 +1,266 @@
+import type { ContractTypeCard, DeadlineRow, SpecimenDocument } from './types';
+
+const specimen: SpecimenDocument = {
+  fileName: "service-agreement-nordlicht.pdf",
+  pageNote: "Excerpt",
+  title: "Service Agreement",
+  paragraphs: [
+    {
+      segments: [
+        "between ",
+        { mark: 0, text: "Habermann Logistik GmbH, Hamburg, and Nordlicht Software GmbH, Kiel" },
+        " (together “the Parties”).",
+      ],
+    },
+    {
+      heading: "§ 1 Subject",
+      segments: ["The Provider operates and maintains the warehouse management system described in Annex 1 for the Client."],
+    },
+    {
+      heading: "§ 3 Term",
+      segments: [
+        { mark: 1, text: "This Agreement commences on 1 January 2025 and runs for an initial term of 24 months." },
+        " ",
+        { mark: 2, text: "It renews for successive periods of twelve months unless either Party terminates it in writing with three months' notice to the end of the term." },
+      ],
+    },
+    {
+      heading: "§ 7 Fees",
+      segments: ["Invoices are payable within 30 days of receipt by bank transfer."],
+    },
+    {
+      heading: "§ 9 Liability",
+      segments: [
+        { mark: 3, text: "The Provider's total liability under this Agreement is limited to EUR 50,000 per contract year." },
+        " This limit does not apply to intent or gross negligence.",
+      ],
+    },
+  ],
+};
+
+const contractTypes: ContractTypeCard[] = [
+  {
+    name: "Confidentiality agreement (NDA)",
+    fields: [
+      "Parties",
+      "Effective date and expiry",
+      "How long confidentiality lasts",
+      "Mutual or one-sided",
+      "Place of jurisdiction",
+      "Flags for non-compete, non-solicitation and liquidated damages clauses",
+    ],
+  },
+  {
+    name: "Service agreement",
+    fields: [
+      "Client and provider",
+      "Start and end date, or the initial term",
+      "Automatic renewal",
+      "Notice period for termination without cause",
+      "Payment terms: method, timing, currency",
+      "Who owns the work product",
+      "Liability cap",
+      "Who indemnifies whom",
+    ],
+  },
+  {
+    name: "Licence agreement",
+    fields: [
+      "Licensor and licensee",
+      "The licensed software",
+      "Licence type: perpetual, subscription, evaluation, open source",
+      "Usage limits",
+      "Exclusive or non-exclusive",
+      "Renewal date",
+      "Audit rights and their notice period",
+      "Territory",
+    ],
+  },
+  {
+    name: "Everything else",
+    note: "General terms, leases, employment contracts and the rest",
+    fields: ["Title", "Parties", "Key dates", "Governing law"],
+  },
+];
+
+const deadlineRows: DeadlineRow[] = [
+  { title: "Maintenance contract, lift", partner: "Aufzugtechnik Sauer GmbH", notice: "3 months", ends: "in 5 days", urgency: "week" },
+  { title: "Software licence, case management", partner: "Advotec Systems AG", notice: "30 days", ends: "in 19 days", urgency: "month" },
+  { title: "Office lease, Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 months", ends: "in 47 days", urgency: "quarter" },
+  { title: "Framework agreement, translations", partner: "Lingua Nord GmbH", notice: "1 month", ends: "in 83 days", urgency: "quarter" },
+];
+
 export const en = {
   nav: {
-    signIn: "Sign In",
-    getStarted: "Get Started",
-    howItWorks: "How it Works",
-    features: "Features",
-    teams: "Teams",
-    security: "Security",
+    howItWorks: "How it works",
+    whatItReads: "What it reads",
+    deadlines: "Deadlines",
+    confidentiality: "Confidentiality",
+    signIn: "Sign in",
+    requestDemo: "Request a demo",
     skipToContent: "Skip to content",
     openMenu: "Open menu",
     closeMenu: "Close menu",
-    languageLabel: "Language"
-  },
-  videoShowcase: {
-    titlePart1: "See it work on a",
-    titlePart2: "real contract",
-    subtitle: "You upload a PDF and get back structured data, with every deadline already tracked.",
-    play: "Play",
-    playAria: "Play the product walkthrough",
-    placeholderTitle: "The video is on its way.",
-    placeholderBody: "Until then, we can show you the product ourselves.",
-    placeholderCta: "Ask for a live demo"
-  },
-  features: {
-    header: {
-      title1: "Your contracts,",
-      title2: "structured.",
-      title3: "Your deadlines,",
-      title4: "on time.",
-      subtitle: "Four things Contract Lens does well."
-    },
-    deadlines: {
-      title: "Deadlines",
-      subtitle: "Time doesn't forgive. We do.",
-      description: "Every notice period and renewal date on one timeline, with alerts that arrive early enough to act.",
-      visual: {
-        autoRenewal: "Automatic renewal",
-        exitClause: "Exit clause",
-        annualReview: "Annual review",
-        days: "Days",
-        cronJobs: "Monitoring: active",
-        critical: "CRITICAL",
-        warning: "WARNING",
-        normal: "NORMAL"
-      }
-    },
-    translation: {
-      title: "Legal Translation",
-      subtitle: "German and English, side by side",
-      description: "Contracts translated with legal context. Structure, defined terms and numbering stay intact.",
-      visual: {
-          original: "Original (DE)",
-          translated: "Translated (EN)"
-      }
-    },
-    aiDraft: {
-      title: "AI Drafting",
-      subtitle: "Clauses from vetted templates",
-      description: "Draft standard clauses from structured templates. You review and edit before anything leaves the firm.",
-      visual: {
-        draftGenerated: "Draft ready for review.",
-        status: "ONLINE",
-        components: "Components",
-        jurisdiction: "Jurisdiction",
-        liability: "Liability",
-        term: "Term",
-        payment: "Payment",
-        engineTitle: "Drafting Assistant",
-        readyStatus: "Ready",
-        initialStatus: "Select a component to start drafting.",
-        generating: "Drafting clause from template…",
-        clauseTitle: "Limitation of Liability",
-        codeText: "7.1 The aggregate liability of either party shall not exceed the total fees paid...",
-        copyToast: "Copied",
-        copyAria: "Copy sample clause",
-        module: "Module",
-        done: "DONE",
-        clauseGenerated: "CLAUSE_GENERATED",
-        validated: "VALIDATED",
-        snippets: {
-          jurisdiction: [
-              "The exclusive place of jurisdiction for all disputes arising from or in connection with this Agreement shall be Berlin, Germany.",
-              "This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Germany."
-          ],
-          liability: [
-              "The Provider shall be liable for damages caused by intent or gross negligence.",
-              "In case of slight negligence, liability shall be limited to the foreseeable damage typical for this type of contract."
-          ],
-          term: [
-              "This Agreement shall commence on the Effective Date and shall continue for an initial term of twelve (12) months.",
-              "It shall automatically renew for successive periods of twelve (12) months unless terminated by either party."
-          ],
-          payment: [
-              "All fees are due and payable within thirty (30) days from the date of invoice.",
-              "Late payments shall accrue interest at a rate of 9 percentage points above the base interest rate."
-          ]
-        }
-      }
-    },
-    anatomy: {
-      title: "Contract Anatomy",
-      subtitle: "Every clause, labeled",
-      description: "Parties, obligations and termination rights, extracted and labeled. You see how an agreement is built before you read a line.",
-      visual: {
-        parties: "Parties",
-        obligations: "Obligations",
-        termination: "Termination"
-      }
-    }
+    languageLabel: "Language",
   },
   hero: {
-    badge: "AI contract analysis",
-    seeSystem: "Watch the demo",
-    title: "Infrastructure is destiny.",
-    titleLine1: "CONTRACTS",
-    titleLine2: "UNDER CONTROL.",
-    titleHighlight: "Control the outcome.",
-    titleEnd: "Execute.",
-    subtitle: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
+    eyebrow: "Contract management for small law firms in Germany",
+    titleLine1: "Upload a contract.",
+    titleLine2: "Get the facts and the deadlines back.",
+    lead: "Contract Lens reads a PDF or Word file and fills in the record: parties, term, notice period, renewal, payment terms, liability. You check each field against the original page, so the last word stays with you. The dates go into one list, and an alert arrives while there is still time to act.",
     cta: "Request a demo",
-    unstructured: "RAW DATA",
-    raw: "BINARY INPUT",
-    analysisSteps: ["Text extraction", "Clause analysis", "Risk review"],
-    reviewTitle: "Contract review",
-    encryptedTag: "AES-256 encrypted",
-    card: {
-      vendor: "Amazon Web Services, Inc.",
-      type: "Master Service Agreement",
-      status: "AUDITING",
-      valueLabel: "Contract Value",
-      dateLabel: "Effective Date",
-      value: "$120,000 / year",
-      date: "Jan 01, 2024",
-      riskTitle: "Finding",
-      riskText: "Automatic renewal: notice period ends in 30 days.",
-      riskBadge: "Review",
-      detected: "Detected",
-      target: "TARGET",
-      latency: "Latency",
-      verified: "Verified",
-      complete: "Audit Complete"
-    },
-    latency: "Latency",
-    liveMonitor: "Analysis",
-    target: "File",
-    verified: "Verified",
-    complete: "Audit Complete",
-    detected: "Detected"
+    secondary: "Watch the walkthrough",
+    figureLabel: "Sample: a service agreement and the record Contract Lens fills in from it",
+    figureCaption: "A service agreement and the record Contract Lens fills in from it. Each mark in the document feeds one field, and the notice date follows from the term and the notice period.",
   },
-  showcase: {
-    title: "Precision Engineered Workflow",
-    subtitle: "From raw ingestion to active command. Experience high-velocity asset management.",
-    step1: "Phase 1",
-    step2: "Phase 2",
-    step3: "Phase 3",
-    features: [
+  extract: {
+    doc: specimen,
+    recordTitle: "Contract record",
+    recognizedLabel: "Recognized as",
+    recognized: "Service agreement",
+    fields: [
+      { label: "Parties", value: "Habermann Logistik GmbH and Nordlicht Software GmbH" },
+      { label: "Term", value: "1 Jan 2025 to 31 Dec 2026" },
+      { label: "Renewal and notice", value: "Renews for 12 months. Notice: 3 months to the end of the term" },
+      { label: "Liability cap", value: "EUR\u00a050,000 per contract year" },
+    ],
+    deadlineLabel: "Give notice by",
+    deadlineDate: "30 Sep 2026",
+    alertNote: "Alert set for 1 Sep 2026",
+  },
+  howItWorks: {
+    eyebrow: "How it works",
+    title: "From file to record in three steps.",
+    summary: "Contract Lens does the reading. You do the checking.",
+    steps: [
       {
-        title: "Forensic Ingestion",
-        description: "Drag & drop legacy PDFs. Our engine structures the unstructured, validating vendors against global registries."
+        title: "Upload the file",
+        body: "PDF or Word, up to 10\u00a0MB. Contract Lens pulls out the text and recognizes the kind of contract: an NDA, a service agreement, a licence agreement, or something else.",
       },
       {
-        title: "Algorithmic Analysis",
-        description: "Deep-learning models deconstruct document architecture, identifying liabilities and critical dates in milliseconds."
+        title: "Check the record",
+        body: "The fields come back filled in and sit next to the original page, so you confirm or correct each one before you save. Where the contract is silent, the field stays empty, because the software does not guess.",
       },
       {
-        title: "Structured Command",
-        description: "Data-driven interface. Edit fields, assign owners, and enforce renewal policies in a unified console."
-      }
-    ]
+        title: "Track the dates",
+        body: "End dates, renewals and notice periods appear in one list, sorted by what comes first. You set an alert on the date that matters, and it stays open until a colleague answers it.",
+      },
+    ],
+    videoTitle: "The walkthrough",
+    videoBody: "Sign in, upload a contract, and watch the record fill in.",
+    play: "Play the walkthrough",
+    playAria: "Play the product walkthrough video",
   },
-  bento: {
-    title: "The Enterprise Asset OS",
-    subtitle: "Centralize. Audit. Deploy. Optimize. A unified infrastructure for licenses, subscriptions, files, and capital.",
-    ingestion: {
-      title: "Forensic Ingestion",
-      description: "Parses unstructured binaries. Validates entities. Enforces data integrity.",
-      processing: "Processing",
-      validating: "Validating Integrity...",
-      results: {
-        title: "Audit Complete",
-        summaryLabel: "Executive Summary",
-        summaryText: "Standard enterprise license agreement. 99.9% SLA confirmed. Risk level: Low.",
-        vendorLabel: "Entity",
-        vendor: "Slack Technologies, LLC",
-        valueLabel: "Cost Basis",
-        value: "€14,500 / year"
-      }
-    },
-    guard: {
-      title: "Automated Audit",
-      description: "Continuous cost anomaly detection. Zero configuration required.",
-      alert1: "Renewal Alert",
-      alert1Sub: "T-minus 30 days. Authorization needed.",
-      alert2: "Compliance Check",
-      alert2Sub: "DPA review pending",
-      alert3: "Budget Variance",
-      alert3Sub: "Marketing Q1 > 105%",
-      alert4: "Vendor Detection",
-      alert4Sub: "Linear Orbit Inc. identified"
-    },
-    collab: {
-      title: "Workflow Orchestration",
-      description: "Direct resource deployment. Granular permissioning. Unified asset view.",
-      list: [
-        "Enforce legal review protocols",
-        "Track approval chains",
-        "Vendor-centric asset view"
+  whatItReads: {
+    eyebrow: "What it reads",
+    title: "The checklist depends on the kind of contract.",
+    summary: "Contract Lens recognizes the type first, then reads with the checklist for that type.",
+    body: "A confidentiality agreement raises different questions than a software licence, so each type has its own list of fields. Every field may stay empty: if the contract says nothing on a point, the record says so too.",
+    types: contractTypes,
+    footnote: "Every record also gets a title and a summary in two sentences, whatever the type.",
+  },
+  deadlines: {
+    eyebrow: "Deadlines",
+    title: "The alert waits for an answer.",
+    summary: "An alert stays open until a manager answers it, and the answer goes on record.",
+    body: "Every end date, renewal and notice period appears in one list, sorted by what comes first: overdue, this week, this month, the next 90 days. When a date matters, you set an alert on it. A manager then has to answer: continue the contract, terminate it, or ask a question back. Until that happens the alert stays open, it can be escalated, and every step is logged with a name and a time.",
+    listLabel: "Sample: the list of expiring contracts",
+    list: {
+      title: "Expiring contracts",
+      buckets: [
+        { label: "Overdue", count: 0 },
+        { label: "This week", count: 1 },
+        { label: "This month", count: 2 },
+        { label: "90 days", count: 4 },
       ],
-      partnerCard: "Entity Intelligence",
-      taskCard: {
-        assigned: "@Sarah assigned",
-        task: "\"Audit Liability\"",
-        due: "Due: T-24h"
+      columns: { contract: "Contract", partner: "Partner", notice: "Notice period", ends: "Ends" },
+      rows: deadlineRows,
+    },
+    alertLabel: "Sample: an open alert",
+    alert: {
+      title: "Alert",
+      status: "Open, no answer",
+      contract: "Framework agreement, IT support",
+      deadlineLabel: "Give notice by",
+      deadlineDate: "30 Sep 2026",
+      detail: "The agreement ends on 31 Dec 2026 with three months' notice.",
+      actions: ["Continue contract", "Terminate contract", "Question"],
+      log: "Set by S. Brandt on 1 Sep 2026",
+    },
+  },
+  firm: {
+    eyebrow: "The firm",
+    title: "One record per contract, shared by the whole firm.",
+    summary: "Roles decide who reads, who edits and who answers.",
+    points: [
+      {
+        title: "Roles",
+        body: "Invite colleagues by email and give each one a role. A viewer reads. A member edits their own contracts. A manager answers alerts and edits everyone's. An admin runs the firm's account.",
       },
-      taskCard2: {
-        assigned: "@Mike assigned",
-        task: "\"Approve Spend\"",
-        due: "Due: Today"
-      }
-    }
+      {
+        title: "Tasks",
+        body: "A task hangs on the contract it belongs to, with a due date and an owner, so a renewal never depends on someone's memory.",
+      },
+      {
+        title: "The log",
+        body: "Every change to a record is written down with a name and a time. The same goes for every alert and every answer to it.",
+      },
+    ],
   },
-  security: {
-    defenseProtocol: "Security",
-    titlePart1: "Built for",
-    titlePart2: "confidentiality.",
-    encryption: {
-      title: "AES-256-GCM Encryption",
-      desc: "Summaries, conditions and files are encrypted before they reach the database. TLS in transit."
-    },
-    ai: {
-      title: "Stateless AI Pipeline",
-      desc: "Documents are processed in memory, encrypted right after analysis, and never used for model training."
-    },
-    hosting: {
-      title: "Data Protection",
-      desc: "GDPR-compliant processing with role-based access. Your data is deleted on request."
-    }
-  },
-  teams: {
-    matrixTitle: "Teams",
-    title: "Built for legal.",
-    titleHighlight: "Useful to everyone.",
-    subtitle: "Contracts touch every part of the firm. Each team gets the view it needs, from deadlines to costs.",
-    cta: "Request a demo",
-    legal: {
-      title: "Legal",
-      desc: "Clause-level review of incoming contracts, with every change and comment on record."
-    },
-    procurement: {
-      title: "Procurement",
-      desc: "Terms, renewal dates and notice periods for every vendor, in one list."
-    },
-    hr: {
-      title: "HR",
-      desc: "Employment terms and probation deadlines in one place, with access limited by role."
-    },
-    finance: {
-      title: "Finance",
-      desc: "What each contract costs per year, and the date you can get out of it."
-    },
-    grc: {
-      title: "Compliance",
-      desc: "Data processing agreements and review duties tracked in one register."
-    },
-    ops: {
-      title: "Operations",
-      desc: "Owners and tasks per contract, so a renewal never depends on someone's memory."
-    }
+  confidentiality: {
+    eyebrow: "Confidentiality",
+    title: "What happens to the file.",
+    summary: "Encrypted when stored, read once by the AI, deleted when you ask.",
+    items: [
+      {
+        term: "Storage",
+        body: "Files, summaries and conditions are encrypted before they are written to the database. The connection between your browser and Contract Lens is encrypted as well.",
+      },
+      {
+        term: "The AI",
+        body: "The document is read once to fill in the record and encrypted again right after. Your contracts are never used to train a model.",
+      },
+      {
+        term: "Access",
+        body: "Only members of your firm can open a record, and only within their role. Firms are kept apart from each other.",
+      },
+      {
+        term: "Deletion",
+        body: "Processing follows the GDPR. When you ask, we delete your data.",
+      },
+    ],
   },
   contact: {
-    title: "Initiate Deployment",
-    subtitle: "Enterprise-grade requirements? Our engineering team is ready.",
-    headerTitle: "Contact",
-    secureChannel: "Contact form",
-    refCode: "REF: CONTACT",
-    officialInquiry: "Official Inquiry",
-    section1: "§ 1",
-    theParties: "The Parties",
-    section2: "§ 2",
-    theDetails: "The Matter",
+    eyebrow: "Contact",
+    title: "See it on one of your own contracts.",
+    body: "Write a few lines about your firm and how you keep track of contracts today. We reply within one business day, and the demo runs on a contract you bring.",
     name: "Name",
-    enterFullName: "Your name",
+    namePlaceholder: "Your name",
     email: "Work email",
-    enterEmail: "name@firm.com",
+    emailPlaceholder: "name@firm.de",
     message: "Message",
-    placeholder: "Outline your operational requirements...",
-    describeInquiry: "How can we help?",
-    disclaimer: "*By clicking submit, you acknowledge that while this form looks very official, it does not actually bind you to anything other than a friendly conversation.",
-    send: "Transmit",
-    submitButton: "Send message",
-    sending: "Sending…",
+    messagePlaceholder: "How do you keep track of contracts today?",
+    note: "We use your address only to reply.",
+    submit: "Send message",
     submitting: "Sending…",
-    sentTitle: "Message received",
-    sentDesc: "We reply within one business day.",
+    sentTitle: "Message received.",
+    sentBody: "We reply within one business day.",
     sendAnother: "Send another message",
     errorInvalid: "One of the fields is empty or too short. Check them and send again.",
     errorThrottled: "This connection has sent too many messages. Try again in an hour.",
-    errorFailed: "We could not send your message. Please try again."
+    errorFailed: "We could not send your message. Please try again.",
   },
   footer: {
-    ctaTitle: "See it on your own contracts.",
-    ctaButton: "Request a demo",
-    copyright: "Contract Lens. All rights reserved.",
-    rights: "All rights reserved.",
+    tagline: "Contract management for small law firms in Germany.",
     privacy: "Privacy",
-    terms: "Terms"
+    terms: "Terms",
+    copyright: "Contract Lens. All rights reserved.",
   },
   cookieConsent: {
     title: "Cookies",
     text: "We use cookies the site needs to work, for example to keep you signed in. Optional analytics only run if you accept.",
     accept: "Accept",
     decline: "Decline",
-    closeAria: "Close and decline optional cookies"
-  }
+    closeAria: "Close and decline optional cookies",
+  },
 };

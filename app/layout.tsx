@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,34 +12,49 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// The landing page reads in a serif and labels in a plain sans; the dashboard keeps Geist.
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
+});
+
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const description =
+  "Upload a contract and get the facts and the deadlines back: parties, term, notice period, renewal, liability. Built for small law firms in Germany.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://trycontractlens.com"),
-  title: "Contract Lens | AI Contract Analysis",
-  description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
+  title: "Contract Lens | Contract management for small law firms",
+  description,
   keywords: [
     // English
     "Contract Management",
     "AI Contract Analysis",
     "Contract Deadlines",
-    "Risk Detection",
-    "Compliance",
+    "Notice Periods",
+    "Law Firm Software",
     "Berlin",
     "Legal Tech",
-    "Structured Data",
     // German
     "Vertragsmanagement",
     "Kanzleisoftware",
-    "Künstliche Intelligenz",
-    "Compliance Software",
     "Vertragsanalyse",
     "Fristenmanagement",
-    "Risikomanagement",
+    "Kündigungsfristen",
     "Rechtssicherheit"
   ],
   authors: [{ name: "Santiago Paz" }],
   openGraph: {
-    title: "Contract Lens | AI Contract Analysis",
-    description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
+    title: "Contract Lens | Contract management for small law firms",
+    description,
     type: "website",
     siteName: "Contract Lens",
     locale: "en_US",
@@ -47,13 +62,17 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contract Lens | AI Contract Analysis",
-    description: "Upload a contract and get structured data back: parties, deadlines, obligations, risks. Built for small German law firms.",
+    title: "Contract Lens | Contract management for small law firms",
+    description,
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -64,7 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${plexSans.variable} antialiased`}
       >
         {children}
       </body>
