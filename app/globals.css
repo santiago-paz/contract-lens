@@ -224,7 +224,6 @@ h1, h2, h3, h4, h5, h6 {
   --color-beck: #a3202f;
   --color-beck-deep: #85192a;
   --color-beck-tint: #fbeef0;
-  --color-marker: #ffe45c;
   --color-mist: #e8edf3;
   --color-sand: #f1ebe0;
   --color-sage: #e6ece6;
@@ -238,6 +237,11 @@ h1, h2, h3, h4, h5, h6 {
 .landing {
   font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
   font-optical-sizing: auto;
+}
+
+/* The fixed bar is 4rem tall; a focused link or a jumped-to heading must land below it. */
+html:has(.landing) {
+  scroll-padding-top: 4rem;
 }
 
 /* Headlines take the serif; the global mono heading rule above is unlayered, so it has to be beaten here. */
@@ -342,21 +346,6 @@ h1, h2, h3, h4, h5, h6 {
 .landing .btn-sm {
   padding: 0.6875rem 1.125rem;
   font-size: 0.875rem;
-}
-
-/* The highlighter in the specimen document. Clone keeps the mark whole across line breaks. */
-.landing .mark {
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  padding: 0.06em 0.2em;
-  margin: 0 -0.2em;
-  border-radius: 2px;
-  background-color: transparent;
-  transition: background-color 320ms ease;
-}
-
-.landing .mark.is-on {
-  background-color: rgba(255, 228, 92, 0.62);
 }
 
 .landing input,

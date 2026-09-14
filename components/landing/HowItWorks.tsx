@@ -80,7 +80,7 @@ function UploadFigure() {
     <div className="w-full max-w-[17rem] rounded-xl border border-dashed border-ink/25 p-3 text-[12px]">
       <div className="flex items-center gap-3 rounded-lg bg-paper px-3 py-2.5 shadow-sheet">
         <FileText className="h-4 w-4 shrink-0 text-ink" />
-        <span className="truncate font-medium text-ink">{t.extract.doc.fileName}</span>
+        <span className="truncate font-medium text-ink">{t.extract.fileName}</span>
       </div>
       <div className="mt-3 flex items-center gap-2 px-1 text-muted">
         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-beck" />

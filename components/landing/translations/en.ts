@@ -1,42 +1,4 @@
-import type { ContractTypeCard, DeadlineRow, SpecimenDocument } from './types';
-
-const specimen: SpecimenDocument = {
-  fileName: "service-agreement-nordlicht.pdf",
-  pageNote: "Excerpt",
-  title: "Service Agreement",
-  paragraphs: [
-    {
-      segments: [
-        "between ",
-        { mark: 0, text: "Habermann Logistik GmbH, Hamburg, and Nordlicht Software GmbH, Kiel" },
-        " (together “the Parties”).",
-      ],
-    },
-    {
-      heading: "§ 1 Subject",
-      segments: ["The Provider operates and maintains the warehouse management system described in Annex 1 for the Client."],
-    },
-    {
-      heading: "§ 3 Term",
-      segments: [
-        { mark: 1, text: "This Agreement commences on 1 January 2025 and runs for an initial term of 24 months." },
-        " ",
-        { mark: 2, text: "It renews for successive periods of twelve months unless either Party terminates it in writing with three months' notice to the end of the term." },
-      ],
-    },
-    {
-      heading: "§ 7 Fees",
-      segments: ["Invoices are payable within 30 days of receipt by bank transfer."],
-    },
-    {
-      heading: "§ 9 Liability",
-      segments: [
-        { mark: 3, text: "The Provider's total liability under this Agreement is limited to EUR 50,000 per contract year." },
-        " This limit does not apply to intent or gross negligence.",
-      ],
-    },
-  ],
-};
+import type { ContractTypeCard, DeadlineRow } from './types';
 
 const contractTypes: ContractTypeCard[] = [
   {
@@ -110,23 +72,35 @@ export const en = {
     lead: "Contract Lens reads a PDF or Word file and fills in the record: parties, term, notice period, renewal, payment terms, liability. You check each field against the original page, so the last word stays with you. The dates go into one list, and an alert arrives while there is still time to act.",
     cta: "Request a demo",
     secondary: "Watch the walkthrough",
-    figureLabel: "Sample: a service agreement and the record Contract Lens fills in from it",
-    figureCaption: "A service agreement and the record Contract Lens fills in from it. Each mark in the document feeds one field, and the notice date follows from the term and the notice period.",
+    figureLabel: "Sample: a service agreement being read, and the record Contract Lens fills in from it",
+    figureCaption: "A service agreement goes in, and the record comes back filled in. The log shows each step as it runs: Contract Lens reads the text, recognizes the type, and fills in the checklist for that type. You check every field before you save.",
   },
   extract: {
-    doc: specimen,
+    title: "Analysis",
+    fileName: "service-agreement-nordlicht.pdf",
+    fileMeta: "PDF",
+    stepLabel: "Step {done} of {total}",
+    lines: [
+      "Opening the document",
+      "Reading the text",
+      "Contract type: Service agreement",
+      "Reading the details",
+      "6\u00a0fields filled in",
+      "Done",
+    ],
     recordTitle: "Contract record",
     recognizedLabel: "Recognized as",
     recognized: "Service agreement",
     fields: [
+      { label: "Title", value: "Service agreement, Nordlicht Software GmbH" },
       { label: "Parties", value: "Habermann Logistik GmbH and Nordlicht Software GmbH" },
-      { label: "Term", value: "1 Jan 2025 to 31 Dec 2026" },
-      { label: "Renewal and notice", value: "Renews for 12 months. Notice: 3 months to the end of the term" },
+      { label: "Start", value: "1 January 2025" },
+      { label: "End or term", value: "24\u00a0months" },
+      { label: "Notice period", value: "3\u00a0months to the end of the term" },
       { label: "Liability cap", value: "EUR\u00a050,000 per contract year" },
     ],
-    deadlineLabel: "Give notice by",
-    deadlineDate: "30 Sep 2026",
-    alertNote: "Alert set for 1 Sep 2026",
+    summaryLabel: "Summary",
+    summary: "Nordlicht Software operates and maintains the warehouse management system of Habermann Logistik. The agreement runs for 24 months from 1 January 2025 and renews for twelve months at a time unless one party gives three months' notice.",
   },
   howItWorks: {
     eyebrow: "How it works",

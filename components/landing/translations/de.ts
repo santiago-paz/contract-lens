@@ -1,42 +1,4 @@
-import type { ContractTypeCard, DeadlineRow, SpecimenDocument } from './types';
-
-const specimen: SpecimenDocument = {
-  fileName: "dienstleistungsvertrag-nordlicht.pdf",
-  pageNote: "Auszug",
-  title: "Dienstleistungsvertrag",
-  paragraphs: [
-    {
-      segments: [
-        "zwischen der ",
-        { mark: 0, text: "Habermann Logistik GmbH, Hamburg, und der Nordlicht Software GmbH, Kiel" },
-        " (gemeinsam „die Parteien“).",
-      ],
-    },
-    {
-      heading: "§ 1 Vertragsgegenstand",
-      segments: ["Der Auftragnehmer betreibt und wartet für den Auftraggeber das in Anlage 1 beschriebene Lagerverwaltungssystem."],
-    },
-    {
-      heading: "§ 3 Laufzeit",
-      segments: [
-        { mark: 1, text: "Dieser Vertrag beginnt am 1. Januar 2025 und hat eine feste Laufzeit von 24 Monaten." },
-        " ",
-        { mark: 2, text: "Er verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit einer Frist von drei Monaten zum Ende der Laufzeit schriftlich kündigt." },
-      ],
-    },
-    {
-      heading: "§ 7 Vergütung",
-      segments: ["Rechnungen sind innerhalb von 30 Tagen nach Zugang per Überweisung zu zahlen."],
-    },
-    {
-      heading: "§ 9 Haftung",
-      segments: [
-        { mark: 3, text: "Die Gesamthaftung des Auftragnehmers aus diesem Vertrag ist auf 50.000 EUR je Vertragsjahr begrenzt." },
-        " Diese Begrenzung gilt nicht bei Vorsatz und grober Fahrlässigkeit.",
-      ],
-    },
-  ],
-};
+import type { ContractTypeCard, DeadlineRow } from './types';
 
 const contractTypes: ContractTypeCard[] = [
   {
@@ -110,23 +72,35 @@ export const de = {
     lead: "Contract Lens liest eine PDF- oder Word-Datei und füllt die Vertragsakte aus: Parteien, Laufzeit, Kündigungsfrist, Verlängerung, Zahlungsbedingungen, Haftung. Sie prüfen jedes Feld neben der Originalseite, denn das letzte Wort bleibt bei Ihnen. Die Termine landen in einer Liste, und der Alarm meldet sich, solange noch Zeit zum Handeln ist.",
     cta: "Demo anfragen",
     secondary: "Rundgang ansehen",
-    figureLabel: "Beispiel: ein Dienstleistungsvertrag und die Akte, die Contract Lens daraus ausfüllt",
-    figureCaption: "Ein Dienstleistungsvertrag und die Akte, die Contract Lens daraus ausfüllt. Jede Markierung im Dokument füllt ein Feld, und der Kündigungstermin ergibt sich aus Laufzeit und Kündigungsfrist.",
+    figureLabel: "Beispiel: ein Dienstleistungsvertrag wird gelesen, und Contract Lens füllt die Akte daraus aus",
+    figureCaption: "Ein Dienstleistungsvertrag geht hinein, und die Akte kommt ausgefüllt zurück. Das Protokoll zeigt jeden Schritt, während er läuft: Contract Lens liest den Text, erkennt die Vertragsart und füllt die Checkliste für diese Art aus. Sie prüfen jedes Feld, bevor Sie speichern.",
   },
   extract: {
-    doc: specimen,
+    title: "Analyse",
+    fileName: "dienstleistungsvertrag-nordlicht.pdf",
+    fileMeta: "PDF",
+    stepLabel: "Schritt {done} von {total}",
+    lines: [
+      "Dokument wird geöffnet",
+      "Text wird gelesen",
+      "Vertragsart: Dienstleistungsvertrag",
+      "Details werden gelesen",
+      "6\u00a0Felder ausgefüllt",
+      "Fertig",
+    ],
     recordTitle: "Vertragsakte",
     recognizedLabel: "Erkannt als",
     recognized: "Dienstleistungsvertrag",
     fields: [
+      { label: "Titel", value: "Dienstleistungsvertrag, Nordlicht Software GmbH" },
       { label: "Parteien", value: "Habermann Logistik GmbH und Nordlicht Software GmbH" },
-      { label: "Laufzeit", value: "1. Jan. 2025 bis 31. Dez. 2026" },
-      { label: "Verlängerung und Frist", value: "Verlängert sich um 12 Monate. Kündigungsfrist: 3 Monate zum Laufzeitende" },
+      { label: "Beginn", value: "1. Januar 2025" },
+      { label: "Ende oder Laufzeit", value: "24\u00a0Monate" },
+      { label: "Kündigungsfrist", value: "3\u00a0Monate zum Laufzeitende" },
       { label: "Haftungsobergrenze", value: "50.000\u00a0EUR je Vertragsjahr" },
     ],
-    deadlineLabel: "Kündigung spätestens am",
-    deadlineDate: "30. Sep. 2026",
-    alertNote: "Vorfrist: 1. Sep. 2026",
+    summaryLabel: "Zusammenfassung",
+    summary: "Nordlicht Software betreibt und wartet das Lagerverwaltungssystem der Habermann Logistik. Der Vertrag läuft 24 Monate ab dem 1. Januar 2025 und verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit drei Monaten Frist kündigt.",
   },
   howItWorks: {
     eyebrow: "Funktionsweise",

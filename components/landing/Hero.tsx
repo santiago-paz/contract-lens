@@ -13,6 +13,8 @@ export function Hero() {
 
   // Real anchors for semantics; the click scrolls with the page's own easing.
   const go = (id: string) => (event: React.MouseEvent) => {
+    // A modified click (new tab, new window) keeps the browser's own behaviour.
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     scrollToSection(id);
   };
