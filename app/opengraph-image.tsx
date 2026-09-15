@@ -19,13 +19,13 @@ const LEDGER = '#f4f4f1'
 const RULE = '#d8d9d4'
 const MUTED = '#5d6470'
 const BECK = '#a3202f'
-const BECK_TINT = '#fbeef0'
 
-/** The fields the extraction pipeline fills in for a service agreement. */
+/** The fields Contract Lens fills in for a service agreement, as the hero record shows them. */
 const EXTRACTED_FIELDS = [
   ['Parties', 'Habermann Logistik GmbH and Nordlicht Software GmbH'],
-  ['Term', '1 Jan 2025 to 31 Dec 2026'],
-  ['Renewal and notice', 'Renews for 12 months. Notice: 3 months'],
+  ['Start', '1 January 2025'],
+  ['End or term', '24 months'],
+  ['Notice period', '3 months to the end of the term'],
   ['Liability cap', 'EUR 50,000 per contract year'],
 ] as const
 
@@ -112,7 +112,7 @@ export default async function Image() {
           <div style={{ display: 'flex', fontSize: 20, color: MUTED }}>trycontractlens.com</div>
         </div>
 
-        {/* Right column: the record the pipeline fills in */}
+        {/* Right column: the record Contract Lens fills in */}
         <div
           style={{
             display: 'flex',
@@ -168,32 +168,6 @@ export default async function Image() {
                 <div style={{ display: 'flex', fontSize: 17, color: INK }}>{value}</div>
               </div>
             ))}
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '14px 18px',
-              borderTop: `1px solid ${RULE}`,
-              backgroundColor: BECK_TINT,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                fontFamily: 'Geist Mono',
-                fontSize: 11,
-                letterSpacing: 1.5,
-                color: BECK,
-                marginBottom: 4,
-              }}
-            >
-              GIVE NOTICE BY
-            </div>
-            <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: INK, fontFamily: 'Geist Mono' }}>
-              30 Sep 2026
-            </div>
           </div>
         </div>
       </div>

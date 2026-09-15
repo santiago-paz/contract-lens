@@ -8,4 +8,4 @@ export type DeadlineRow = {
   urgency: Urgency;
 };
 
-export type ContractTypeCard = { name: string; note?: string; fields: string[] };
+export type ContractTypeCard = { name: string; fields: string[] };

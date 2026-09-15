@@ -64,7 +64,7 @@ export function Deadlines() {
           </div>
         </figure>
 
-        {/* One open alert, with the answers a manager can give */}
+        {/* One open alert: the date and type someone set on it by hand, and the answers a manager can give */}
         <figure aria-label={t.deadlines.alertLabel}>
           <div aria-hidden="true" className="overflow-hidden rounded-2xl bg-paper shadow-sheet">
             <div className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3.5">
@@ -77,16 +77,16 @@ export function Deadlines() {
             <div className="px-5 py-4">
               <p className="text-[14px] font-medium text-ink">{alert.contract}</p>
               <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-beck">{alert.deadlineLabel}</p>
-              <p className="mt-0.5 text-[17px] font-semibold text-ink">{alert.deadlineDate}</p>
-              <p className="mt-1 text-[13px] text-muted">{alert.detail}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {alert.actions.map((action, index) => (
-                  <span
-                    key={action}
-                    className={`rounded-full px-3 py-1.5 text-[13px] font-medium ${
-                      index === 0 ? 'bg-ink text-paper' : 'border border-rule text-ink'
-                    }`}
-                  >
+              <p className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <span className="text-[17px] font-semibold text-ink">{alert.deadlineDate}</span>
+                <span className="rounded-full border border-rule px-2 py-0.5 text-[11px] font-medium text-muted">
+                  {alert.deadlineType}
+                </span>
+              </p>
+              <p className="mt-4 text-[11px] uppercase tracking-[0.12em] text-muted">{alert.answerLabel}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {alert.actions.map((action) => (
+                  <span key={action} className="rounded-full border border-rule px-3 py-1.5 text-[13px] font-medium text-ink">
                     {action}
                   </span>
                 ))}

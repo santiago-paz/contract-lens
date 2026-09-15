@@ -25,21 +25,13 @@ export function Footer() {
             <p className="mt-4 text-[15px] leading-[1.6] text-muted">{t.footer.tagline}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-[14px] sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-[14px]">
             <nav aria-label="Sections" className="flex flex-col gap-3">
               {sections.map(([id, label]) => (
                 <a key={id} href={`#${id}`} className="text-body underline-offset-4 hover:text-ink hover:underline">
                   {label}
                 </a>
               ))}
-            </nav>
-            <nav aria-label="Legal" className="flex flex-col gap-3">
-              <a href="#" className="text-body underline-offset-4 hover:text-ink hover:underline">
-                {t.footer.privacy}
-              </a>
-              <a href="#" className="text-body underline-offset-4 hover:text-ink hover:underline">
-                {t.footer.terms}
-              </a>
             </nav>
             <nav aria-label="Account" className="flex flex-col gap-3">
               <Link href="/login" className="text-body underline-offset-4 hover:text-ink hover:underline">

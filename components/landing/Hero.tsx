@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
 
 import { Extract } from './Extract';
 import { useLanguage } from './LanguageContext';
@@ -44,10 +43,6 @@ export function Hero() {
           <motion.div variants={rise} className="mt-8 flex flex-wrap justify-center gap-3">
             <a href="#contact" onClick={go('contact')} className="btn btn-primary">
               {t.hero.cta}
-            </a>
-            <a href="#walkthrough" onClick={go('walkthrough')} className="btn btn-secondary">
-              {t.hero.secondary}
-              <Play className="h-4 w-4" aria-hidden="true" />
             </a>
           </motion.div>
         </motion.div>
