@@ -171,6 +171,17 @@ export function Extract() {
           <div className="text-[11px] uppercase tracking-[0.12em] text-muted">{t.extract.summaryLabel}</div>
           <p className="mt-1 text-[13px] leading-[1.5] text-body">{t.extract.summary}</p>
         </div>
+
+        {/* The last beat: the reading stops here, and a person decides to save. */}
+        <div
+          className={`flex justify-end border-t border-rule px-5 py-3 transition-opacity duration-300 ${
+            finished ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <span className="rounded-full bg-ink px-3.5 py-1.5 text-[12px] font-medium text-paper">
+            {t.extract.saveRecord}
+          </span>
+        </div>
       </div>
     </div>
   );

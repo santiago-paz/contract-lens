@@ -13,6 +13,12 @@ colors:
   muted: "#5f6670"
   rule: "#e1e2dd"
   mist: "#e8edf3"
+  navy-crest: "#1c2946"
+  navy-lit: "#27365b"
+  navy-floor: "#151f37"
+  ledger-crest: "#f7f7f4"
+  ledger-lit: "#fafaf8"
+  ledger-floor: "#f0f0ec"
   sand: "#f1ebe0"
   sage: "#e6ece6"
 typography:
@@ -165,14 +171,14 @@ components:
 
 The name comes from the four-eyes principle (Vier-Augen-Prinzip): one person does the work, and a second person checks it. Contract Lens splits the work the same way. The software reads the contract, and the lawyer checks what it found. The landing page follows that split. Its pictures are the product's own screens, built in code with sample data: the analysis log, the filled-in record, the list of expiring contracts and an open alert. A reader can check every claim on the page against what the app does.
 
-The mood is sober, plain and exact. The page is white, with one warm grey band and two deep navy blocks. A book serif sets the headlines, and a plain sans sets everything a visitor reads in detail or presses. Buttons, cards and fields are soft and plain: round pills, 16px cards and hairline borders, with no movement on hover. The one red is kept for the § mark and for things that need attention soon. The page should look like the software a firm would use. It never imitates a physical object such as a ledger, a form, a stamp or a binder.
+The mood is sober, plain and exact. The page is white, with two warm grey bands and two deep navy blocks. The white sections are flat paper, because that's where a visitor reads. The four bands are not: each one is lit from one side and carries a faint measure of vertical ticks on the other, so a band reads as a lit surface rather than a slab. A book serif sets the headlines, and a plain sans sets everything a visitor reads in detail or presses. Buttons, cards and fields are soft and plain: round pills, 16px cards and hairline borders, with no movement on hover. The one red is kept for the § mark and for things that need attention soon. The page should look like the software a firm would use. It never imitates a physical object such as a ledger, a form, a stamp or a binder.
 
-Motion stays quiet. The hero's analysis run is the only timed sequence. Everything else is a short rise: a section header fades in and moves up 12px over 450ms, once, when a quarter of it is in view. Buttons change color and never move. The page honors reduced motion everywhere.
+Motion stays quiet. The hero's analysis run is the only timed sequence, and the measure's sideways creep is the only scroll-linked one. Everything else is a short rise: a section header fades in and moves up 12px over 450ms, once, when a quarter of it is in view. Buttons change color and never move. The page honors reduced motion everywhere.
 
 This file covers the landing page only: `app/page.tsx` and `components/landing/`, plus the share card and the favicon, which reuse its tokens. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The landing is light only and has no dark theme.
 
 **Key Characteristics:**
-- A white page with one warm grey band and two full-bleed navy blocks.
+- A white page with two warm grey bands and two full-bleed navy blocks, the bands lit and measured, the white sections left as paper.
 - Source Serif 4 at weight 500 for h1 and h2, and IBM Plex Sans for everything else.
 - Ink pill buttons that turn navy on hover.
 - Flat text cards with hairline borders, and product screens that float on one soft shadow.
@@ -202,6 +208,13 @@ The palette is a white page with cool text greys, warm surface greys, one deep n
 - **Hairline Grey** (#e1e2dd): Every border and divider on light ground: card outlines, table rows, the input border and the line under the nav bar.
 - **Mist Blue** (#e8edf3): The hero panel behind the product screens, the icon discs, the well of the first step card and the text selection.
 - **Sand** (#f1ebe0) and **Sage** (#e6ece6): The wells of the second and third step cards. They appear nowhere else.
+
+### Ground
+The four bands are painted, not filled. Each ramp is narrow on purpose: about ten RGB points end to end, which reads as a lit surface and never as a gradient.
+
+- **Navy band**: Navy Crest (#1c2946) at the top, Firm Navy (#1a2742) at 42%, Navy Floor (#151f37) at the foot, with a wide pool of Navy Lit (#27365b) behind the headline. The pool is the lightest point on the block, and white at 68% still reaches 6.5:1 on it. A hairline of white at 10% catches the block's top edge.
+- **Warm grey band**: Ledger Crest (#f7f7f4) at the top, Warm Grey (#f4f4f1) at 44%, Ledger Floor (#f0f0ec) at the foot, with a lift of Ledger Lit (#fafaf8) at one shoulder.
+- **The measure**: vertical ticks at the page's own 24px gutter pitch, with a heavier mark every fifth (120px). On navy they're white at 7% and 13%; on the warm grey band, Ink at 5% and 8.5%. The field is 48px wider than its band on each side and creeps 40px sideways while the band crosses the viewport, on the CSS view timeline, so it needs no script. Where that timeline is unsupported it simply holds still, and `prefers-reduced-motion` stops it.
 
 `app/globals.css` also defines `navy-deep` (#121b30) and `beck-deep` (#85192a). Nothing on the landing uses them.
 
@@ -256,9 +269,15 @@ Every string exists in English and German, and the German runs longer. No layout
 ### Named Rules
 **The Alternating Ground Rule.** Neighboring sections never share a background. White, warm grey and navy take turns, so the page needs no divider lines between sections.
 
+**The Travelling Sun Rule.** Every band is lit from one side, and each band mirrors the one before it: the light sits at 12% in "How it works", 88% in "Deadlines", 18% in the firm block and 82% in the contact block. One sun crosses the page, so no two bands read as the same rectangle.
+
+**The Measure Sits In The Shade Rule.** The tick field always fades in from the side opposite the light, and fades out across about 72% of the band. The lit side of a band stays clean.
+
+**The Paper Stays Paper Rule.** Light and measure belong to the bands. The white sections, the hero and the footer take neither, because they're what a visitor reads on, and the contrast between painted band and plain paper is what makes the bands read as set pieces.
+
 ## Elevation & Depth
 
-The page is flat, with one exception. Text cards lie flat on the page with a hairline border and no shadow. Product screens float: they're white sheets on one soft, low shadow, so they read as the app itself, set on the page. The contact form floats too, because it's a working screen. Tinted ground does the rest. The Mist Blue hero panel and the tinted wells of the step cards set screens apart without more shadows.
+Depth comes from the ground and from one shadow, never from a stack of them. The bands are lit surfaces (see Colors: Ground); the white sections are flat paper. Text cards lie flat on the page with a hairline border and no shadow. Product screens float: they're white sheets on one soft, low shadow, so they read as the app itself, set on the page. The contact form floats too, because it's a working screen. Tinted ground does the rest. The Mist Blue hero panel and the tinted wells of the step cards set screens apart without more shadows.
 
 The nav bar is the only see-through surface: white at 90% with a 12px backdrop blur. A hairline appears under it once the page scrolls 8px.
 
@@ -359,6 +378,7 @@ The hero's analysis plays once, when the figure is 35% in view, and takes about 
 - **Don't** draw lines, highlights or marks from a field to a passage in a contract, because the product doesn't link fields to passages.
 - **Don't** make a button, link, headline or background red.
 - **Don't** put a shadow on a text card, or use any shadow other than the sheet shadow.
-- **Don't** add decoration the page doesn't have, such as gradients, glows or background shapes.
+- **Don't** add decoration the page doesn't have: no glows, no blurred blobs, no background shapes, no gradient that announces itself as a gradient. The band ramps in Colors: Ground are the page's only background gradients, and they stay under the threshold of noticing.
+- **Don't** put light or the measure on a white section, on the hero or in the footer, and don't turn the measure into a two-axis grid. It's a ruler, not graph paper.
 - **Don't** set headings or buttons in Title Case or all caps. Only the 11px labels are uppercase.
 - **Don't** set a headline in the sans or a paragraph in the serif.

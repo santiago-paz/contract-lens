@@ -92,6 +92,7 @@ export const de = {
       { label: "Kündigungsfrist", value: "3 Monate zum Laufzeitende" },
       { label: "Haftungsobergrenze", value: "50.000 EUR je Vertragsjahr" },
     ],
+    saveRecord: "Akte speichern",
     summaryLabel: "Zusammenfassung",
     summary: "Nordlicht Software betreibt und wartet das Lagerverwaltungssystem der Habermann Logistik. Der Vertrag läuft 24 Monate ab dem 1. Januar 2025 und verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit drei Monaten Frist kündigt.",
   },
@@ -112,7 +113,6 @@ export const de = {
         body: "Die Liste der auslaufenden Verträge zeigt, was innerhalb von 90 Tagen endet, mit der Kündigungsfrist daneben. Sie setzen einen Alarm auf jedes Datum, auf das es ankommt, und ein Manager beantwortet ihn.",
       },
     ],
-    saveRecord: "Akte speichern",
   },
   whatItReads: {
     title: "Die Checkliste hängt von der Vertragsart ab.",
@@ -150,7 +150,7 @@ export const de = {
   },
   firm: {
     title: "Eine Akte je Vertrag, für die ganze Kanzlei.",
-    summary: "Rollen legen fest, wer liest, wer bearbeitet und wer antwortet.",
+    summary: "Rollen legen fest, wer liest, wer bearbeitet und wer antwortet, und jeder Alarm hält jeden Schritt fest.",
     points: [
       {
         title: "Rollen",
@@ -160,11 +160,22 @@ export const de = {
         title: "Aufgaben",
         body: "Eine Aufgabe hängt an dem Vertrag, zu dem sie gehört, auf Wunsch mit Fälligkeit. Wer den Vertrag öffnet, sieht seine Aufgaben.",
       },
-      {
-        title: "Alarmverlauf",
-        body: "Jeder Alarm hält fest, wer ihn gesetzt, wer geantwortet und wer ihn geschlossen hat, und wann.",
-      },
     ],
+    alert: {
+      figureLabel: "Beispiel: der Verlauf eines Alarms, vom Setzen bis zum Schließen durch einen Manager",
+      title: "Alarm",
+      status: "Geschlossen",
+      contract: "Rahmenvertrag IT-Support",
+      deadlineLabel: "Termin",
+      deadlineDate: "30. Sep. 2026",
+      deadlineType: "Kündigungsfrist",
+      historyLabel: "Verlauf",
+      events: [
+        { action: "Gesetzt", by: "S. Brandt", date: "1. Sep. 2026" },
+        { action: "Beantwortet: Vertrag fortführen", by: "Dr. K. Weber", date: "3. Sep. 2026" },
+        { action: "Geschlossen", by: "Dr. K. Weber", date: "4. Sep. 2026" },
+      ],
+    },
   },
   confidentiality: {
     title: "Was mit der Datei passiert.",

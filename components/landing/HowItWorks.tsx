@@ -73,7 +73,7 @@ function RecordFigure() {
         </div>
       ))}
       <div className="flex justify-end px-3 py-2">
-        <span className="rounded-full bg-ink px-3 py-1 text-[11px] font-medium text-paper">{t.howItWorks.saveRecord}</span>
+        <span className="rounded-full bg-ink px-3 py-1 text-[11px] font-medium text-paper">{t.extract.saveRecord}</span>
       </div>
     </div>
   );

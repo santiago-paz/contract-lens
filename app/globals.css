@@ -399,3 +399,128 @@ body:has(.landing) {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(22, 24, 29, 0.08);
 }
+
+/*
+ * ── The ground ───────────────────────────────────────────────────────
+ *
+ * The bands carry the page's depth and the white sections stay paper, so
+ * the surfaces a visitor reads on are never touched. Two layers sit under
+ * the content of a band, and neither is ornament:
+ *
+ *   Light (::before). One wide, low-contrast field, so a band reads as a
+ *   lit surface instead of a slab. The light falls from a different side
+ *   in each band, so the page has one sun that travels down it and no two
+ *   bands read as the same rectangle.
+ *
+ *   Measure (::after). Vertical ticks at the page's own 24px gutter
+ *   pitch, with a heavier mark every fifth. It is the product's subject
+ *   turned into texture: a contract is a period, and a period is counted.
+ *   The field fades in from the shaded side of each band, opposite the
+ *   light, and creeps sideways as the band crosses the viewport. It rides
+ *   the view timeline, so it costs no script, holds still where that
+ *   timeline is unsupported, and stops dead under reduced motion.
+ *
+ * Both layers stay under the threshold of noticing on purpose. This page
+ * is read by law firms, where visible gloss costs trust.
+ */
+
+.landing .tone-ledger,
+.landing .tone-navy {
+  position: relative;
+  /* `clip`, not `hidden`: the measure is wider than the band, and a scroll
+     container here would kill the contact section's sticky header. */
+  overflow: clip;
+}
+
+/* The content rides above both ground layers. */
+.landing .tone-ledger > *,
+.landing .tone-navy > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Where the light falls, and which side the measure comes out of. */
+.landing .tone-ledger {
+  --lit-x: 12%;
+  --measure-x: 100%;
+  --tick-minor: rgba(22, 24, 29, 0.05);
+  --tick-major: rgba(22, 24, 29, 0.085);
+}
+
+.landing .tone-navy {
+  --lit-x: 18%;
+  --measure-x: 100%;
+  --tick-minor: rgba(255, 255, 255, 0.07);
+  --tick-major: rgba(255, 255, 255, 0.13);
+}
+
+/* Every second band mirrors, so the sun crosses the page rather than repeating. */
+.landing #deadlines.tone-ledger,
+.landing #contact.tone-navy {
+  --lit-x: 88%;
+  --measure-x: 0%;
+}
+
+.landing #contact.tone-navy {
+  --lit-x: 82%;
+}
+
+.landing .tone-ledger::before,
+.landing .tone-navy::before,
+.landing .tone-ledger::after,
+.landing .tone-navy::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Light on the warm grey band: a lift at one shoulder over a top-lit grade. */
+.landing .tone-ledger::before {
+  inset: 0;
+  background:
+    radial-gradient(120% 95% at var(--lit-x) 0%, #fafaf8 0%, rgba(250, 250, 248, 0) 62%),
+    linear-gradient(180deg, #f7f7f4 0%, #f4f4f1 44%, #f0f0ec 100%);
+}
+
+/* Light on navy: a hairline catching the top edge, a pool behind the
+   headline, and a floor that deepens toward navy-deep. The pool never
+   lifts the ground past #27365b, where white at 68% still reaches 6.5:1. */
+.landing .tone-navy::before {
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, rgba(255, 255, 255, 0) 1px),
+    radial-gradient(85% 70% at var(--lit-x) -8%, #27365b 0%, rgba(39, 54, 91, 0) 58%),
+    linear-gradient(180deg, #1c2946 0%, #1a2742 42%, #151f37 100%);
+}
+
+/* The measure. Wider than the band, so the drift never exposes an edge. */
+.landing .tone-ledger::after,
+.landing .tone-navy::after {
+  inset: 0 -48px;
+  background-image:
+    repeating-linear-gradient(90deg, var(--tick-major) 0 1px, transparent 1px 120px),
+    repeating-linear-gradient(90deg, var(--tick-minor) 0 1px, transparent 1px 24px);
+  -webkit-mask-image: radial-gradient(115% 100% at var(--measure-x) 0%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(115% 100% at var(--measure-x) 0%, #000 0%, transparent 72%);
+}
+
+@keyframes ground-measure-drift {
+  from {
+    transform: translate3d(-20px, 0, 0);
+  }
+  to {
+    transform: translate3d(20px, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .landing .tone-ledger::after,
+    .landing .tone-navy::after {
+      animation: ground-measure-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}

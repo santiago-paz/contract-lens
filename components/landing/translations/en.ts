@@ -92,6 +92,7 @@ export const en = {
       { label: "Notice period", value: "3 months to the end of the term" },
       { label: "Liability cap", value: "EUR 50,000 per contract year" },
     ],
+    saveRecord: "Save record",
     summaryLabel: "Summary",
     summary: "Nordlicht Software operates and maintains the warehouse management system of Habermann Logistik. The agreement runs for 24 months from 1 January 2025 and renews for twelve months at a time unless one party gives three months' notice.",
   },
@@ -112,7 +113,6 @@ export const en = {
         body: "The list of expiring contracts shows what ends within 90 days, with the notice period next to each. You set an alert on any date that matters, and a manager answers it.",
       },
     ],
-    saveRecord: "Save record",
   },
   whatItReads: {
     title: "The checklist depends on the kind of contract.",
@@ -150,7 +150,7 @@ export const en = {
   },
   firm: {
     title: "One record per contract, shared by the whole firm.",
-    summary: "Roles decide who reads, who edits and who answers.",
+    summary: "Roles decide who reads, who edits and who answers, and every alert keeps a record of each step.",
     points: [
       {
         title: "Roles",
@@ -160,11 +160,22 @@ export const en = {
         title: "Tasks",
         body: "A task sits on the contract it belongs to, with a due date if you set one. Everyone who opens the contract sees its tasks.",
       },
-      {
-        title: "Alert history",
-        body: "Every alert keeps a history of who set it, who answered, who closed it, and when.",
-      },
     ],
+    alert: {
+      figureLabel: "Sample: the history of one alert, from the day it was set to the day a manager closed it",
+      title: "Alert",
+      status: "Closed",
+      contract: "Framework agreement, IT support",
+      deadlineLabel: "Deadline",
+      deadlineDate: "30 Sep 2026",
+      deadlineType: "Notice period",
+      historyLabel: "History",
+      events: [
+        { action: "Set", by: "S. Brandt", date: "1 Sep 2026" },
+        { action: "Answered: Continue contract", by: "Dr. K. Weber", date: "3 Sep 2026" },
+        { action: "Closed", by: "Dr. K. Weber", date: "4 Sep 2026" },
+      ],
+    },
   },
   confidentiality: {
     title: "What happens to the file.",

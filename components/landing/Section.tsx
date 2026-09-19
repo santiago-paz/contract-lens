@@ -7,7 +7,7 @@ type Layout = 'stack' | 'split' | 'center';
 
 const TONE: Record<Tone, string> = {
   paper: 'bg-paper text-ink',
-  ledger: 'bg-ledger text-ink',
+  ledger: 'tone-ledger bg-ledger text-ink',
   navy: 'tone-navy bg-navy text-paper',
 };
 
