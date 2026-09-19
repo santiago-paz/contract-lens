@@ -1,0 +1,444 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-19T11:06:18Z",
+  "title": "Design System: Contract Lens landing page",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Ink Black",
+        "canonical": "#16181d",
+        "tonalRamp": [
+          "#090b10",
+          "#23252a",
+          "#404248",
+          "#5f6167",
+          "#808289",
+          "#a2a5ac",
+          "#c6c9d0",
+          "#ebeef6"
+        ]
+      },
+      "navy": {
+        "role": "secondary",
+        "displayName": "Firm Navy",
+        "canonical": "#1a2742",
+        "tonalRamp": [
+          "#020921",
+          "#17243f",
+          "#33425f",
+          "#526180",
+          "#7283a3",
+          "#94a5c7",
+          "#b7caed",
+          "#e6efff"
+        ]
+      },
+      "beck": {
+        "role": "tertiary",
+        "displayName": "Commentary Red",
+        "canonical": "#a3202f",
+        "tonalRamp": [
+          "#1f0002",
+          "#4c000c",
+          "#80001b",
+          "#ab2936",
+          "#d35056",
+          "#fb7477",
+          "#ffb2b0",
+          "#ffe8e7"
+        ]
+      },
+      "beck-tint": {
+        "role": "tertiary",
+        "displayName": "Red Wash",
+        "canonical": "#fbeef0",
+        "tonalRamp": [
+          "#10090a",
+          "#2b2224",
+          "#493f41",
+          "#695e60",
+          "#8a7f81",
+          "#aea1a3",
+          "#d2c5c7",
+          "#f8ebed"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "ledger": {
+        "role": "neutral",
+        "displayName": "Warm Grey",
+        "canonical": "#f4f4f1",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#424240",
+          "#61615f",
+          "#828280",
+          "#a5a5a2",
+          "#c9c9c6",
+          "#efefec"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Dark Slate",
+        "canonical": "#3f444c",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3d424a",
+          "#5c626a",
+          "#7d838c",
+          "#a0a5af",
+          "#c3cad3",
+          "#e9eff9"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "#5f6670",
+        "tonalRamp": [
+          "#070b13",
+          "#20252e",
+          "#3c424c",
+          "#5b626c",
+          "#7c838d",
+          "#9ea6b1",
+          "#c2cad5",
+          "#e7effb"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Grey",
+        "canonical": "#e1e2dd",
+        "tonalRamp": [
+          "#0b0c08",
+          "#252522",
+          "#42423e",
+          "#61625d",
+          "#82837e",
+          "#a5a6a1",
+          "#c9cac5",
+          "#eeefea"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist Blue",
+        "canonical": "#e8edf3",
+        "tonalRamp": [
+          "#080b0f",
+          "#22252a",
+          "#3e4247",
+          "#5d6267",
+          "#7e8388",
+          "#a1a5ab",
+          "#c5cacf",
+          "#eaeff5"
+        ]
+      },
+      "sand": {
+        "role": "neutral",
+        "displayName": "Sand",
+        "canonical": "#f1ebe0",
+        "tonalRamp": [
+          "#0e0b04",
+          "#29241c",
+          "#464138",
+          "#666157",
+          "#878278",
+          "#aaa49a",
+          "#cec8be",
+          "#f4eee3"
+        ]
+      },
+      "sage": {
+        "role": "neutral",
+        "displayName": "Sage",
+        "canonical": "#e6ece6",
+        "tonalRamp": [
+          "#090c09",
+          "#222622",
+          "#3f433f",
+          "#5e635e",
+          "#7f847f",
+          "#a1a7a1",
+          "#c5cbc5",
+          "#eaf0ea"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero headline only. 2.625rem, then 3.5rem from 640px and 4.25rem from 1024px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles (h2). 2rem, then 2.5rem from 640px and 2.75rem from 1024px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Titles of cards and steps (h3)."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The hero lead and section summaries. 1.0625rem below 1024px."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Text inside cards."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Captions, footnotes, form labels (at weight 500) and the note beside the submit button."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase eyebrows and the header labels of product screens. Field labels use 0.12em."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Every button."
+      },
+      "button-small": {
+        "displayName": "Small button",
+        "purpose": "Small buttons in the nav bar and the form's success state."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet",
+        "value": "0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28)",
+        "purpose": "The shadow-sheet utility. Product screens and the contact form only; text cards stay flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-rise",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "The one curve for every framer-motion move: a quick approach and a soft stop."
+      },
+      {
+        "name": "duration-base",
+        "value": "450ms",
+        "purpose": "A section header line fades in and rises 12px, once, at 25% in view."
+      },
+      {
+        "name": "stagger",
+        "value": "80ms",
+        "purpose": "The delay between the lines of a section header or the hero text."
+      },
+      {
+        "name": "duration-quick",
+        "value": "280ms",
+        "purpose": "The mobile menu fade and the contact form swapping to its sent note."
+      },
+      {
+        "name": "hero-figure-entry",
+        "value": "600ms after a 350ms delay, rising 24px",
+        "purpose": "The hero figure arriving on load."
+      },
+      {
+        "name": "analysis-run",
+        "value": "log lines at 400, 900, 1500, 2000, 4200 and 4600ms; fields every 280ms from 2400ms",
+        "purpose": "The hero's only timed sequence. It runs once at 35% in view; reduced motion shows the finished figure."
+      },
+      {
+        "name": "button-color",
+        "value": "150ms ease",
+        "purpose": "Button fill, border and text color changes. Buttons never move."
+      },
+      {
+        "name": "nav-border",
+        "value": "300ms",
+        "purpose": "The hairline under the nav bar fades in after 8px of scroll."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The ink pill for the main action. It turns Firm Navy on hover and never moves.",
+      "html": "<button type=\"button\" class=\"ds-btn-primary\">Request a demo</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; font-size: 15px; font-weight: 500; line-height: 1; padding: 15px 24px; border-radius: 9999px; border: 1px solid #16181d; background: #16181d; color: #ffffff; cursor: pointer; white-space: nowrap; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; } .ds-btn-primary:hover:not(:disabled) { background: #1a2742; border-color: #1a2742; } .ds-btn-primary:focus-visible { outline: 2px solid #16181d; outline-offset: 3px; } .ds-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A clear pill with a light border. It fills Warm Grey on hover.",
+      "html": "<button type=\"button\" class=\"ds-btn-secondary\">Send another message</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; font-size: 15px; font-weight: 500; line-height: 1; padding: 15px 24px; border-radius: 9999px; border: 1px solid #cfd1cc; background: transparent; color: #16181d; cursor: pointer; white-space: nowrap; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; } .ds-btn-secondary:hover { background: #f4f4f1; border-color: #16181d; } .ds-btn-secondary:focus-visible { outline: 2px solid #16181d; outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A label above a 10px field with a hairline border. Focus turns the border Ink and adds the ring.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-email\">Work email</label><input class=\"ds-input\" id=\"ds-email\" type=\"email\" placeholder=\"name@firm.de\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 320px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; } .ds-field-label { font-size: 13px; font-weight: 500; line-height: 1.5; color: #16181d; } .ds-input { font-family: inherit; font-size: 15px; color: #16181d; background: #ffffff; border: 1px solid #e1e2dd; border-radius: 10px; padding: 12px 16px; transition: border-color 150ms ease; } .ds-input::placeholder { color: rgba(95, 102, 112, 0.7); } .ds-input:focus { border-color: #16181d; } .ds-input:focus-visible { outline: 2px solid #16181d; outline-offset: 3px; }"
+    },
+    {
+      "name": "Navigation Bar",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "The fixed bar from 1024px: the brand, four centered section links, the EN / DE toggle, Sign in and a small primary button.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main\"><a class=\"ds-nav-brand\" href=\"#\"><span class=\"ds-nav-mark\" aria-hidden=\"true\">§</span>Contract Lens</a><div class=\"ds-nav-links\"><a href=\"#\">How it works</a><a href=\"#\">What it reads</a><a href=\"#\">Deadlines</a><a href=\"#\">Confidentiality</a></div><div class=\"ds-nav-end\"><span class=\"ds-nav-lang\" role=\"group\" aria-label=\"Language\"><button type=\"button\" aria-pressed=\"true\">EN</button><span aria-hidden=\"true\">/</span><button type=\"button\" aria-pressed=\"false\">DE</button></span><a class=\"ds-nav-link\" href=\"#\">Sign in</a><a class=\"ds-nav-cta\" href=\"#\">Request a demo</a></div></nav>",
+      "css": ".ds-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 64px; padding: 0 24px; background: rgba(255, 255, 255, 0.9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid #e1e2dd; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; } .ds-nav a { text-decoration: none; } .ds-nav-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: #16181d; } .ds-nav-mark { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; border-radius: 9999px; background: #a3202f; color: #ffffff; font-family: var(--font-source-serif, 'Source Serif 4'), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif; font-size: 19px; font-weight: 600; line-height: 1; } .ds-nav-links { display: flex; gap: 28px; } .ds-nav-links a, .ds-nav-link { font-size: 14px; font-weight: 500; color: #3f444c; transition: color 150ms ease; } .ds-nav-links a:hover, .ds-nav-link:hover { color: #16181d; } .ds-nav-end { display: flex; align-items: center; justify-content: flex-end; gap: 24px; } .ds-nav-lang { display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; } .ds-nav-lang span { padding: 0 4px; color: #e1e2dd; } .ds-nav-lang button { font: inherit; background: none; border: 0; border-radius: 9999px; padding: 6px; cursor: pointer; color: #5f6670; } .ds-nav-lang button[aria-pressed=\"true\"], .ds-nav-lang button:hover { color: #16181d; } .ds-nav-cta { display: inline-flex; align-items: center; font-size: 14px; font-weight: 500; line-height: 1; padding: 11px 18px; border-radius: 9999px; border: 1px solid #16181d; background: #16181d; color: #ffffff; white-space: nowrap; transition: background-color 150ms ease, border-color 150ms ease; } .ds-nav-cta:hover { background: #1a2742; border-color: #1a2742; } .ds-nav a:focus-visible, .ds-nav button:focus-visible { outline: 2px solid #16181d; outline-offset: 3px; }"
+    },
+    {
+      "name": "Urgency Chips",
+      "kind": "chip",
+      "refersTo": "chip-week",
+      "description": "End dates in pills: filled red within a week, outlined red within a month, grey beyond.",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-chip-week\">in 5 days</span><span class=\"ds-chip ds-chip-month\">in 19 days</span><span class=\"ds-chip ds-chip-quarter\">in 47 days</span></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; } .ds-chip { display: inline-block; white-space: nowrap; border-radius: 9999px; padding: 2px 10px; font-size: 12px; font-weight: 500; line-height: 1.5; font-variant-numeric: tabular-nums; } .ds-chip-week { background: #a3202f; color: #ffffff; } .ds-chip-month { border: 1px solid rgba(163, 32, 47, 0.6); color: #a3202f; } .ds-chip-quarter { border: 1px solid #e1e2dd; color: #5f6670; }"
+    },
+    {
+      "name": "Contract Type Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "A flat white card with a hairline border and no shadow, listing fields between hairlines.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Service agreement</h3><ul class=\"ds-card-list\"><li>Client and provider</li><li>Start and end date, or the initial term</li><li>Automatic renewal</li><li>Notice period for termination without cause</li></ul></div>",
+      "css": ".ds-card { width: 100%; max-width: 360px; box-sizing: border-box; background: #ffffff; border: 1px solid #e1e2dd; border-radius: 16px; padding: 24px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; color: #16181d; } .ds-card-title { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.5; letter-spacing: -0.005em; } .ds-card-list { list-style: none; margin: 20px 0 0; padding: 0; border-top: 1px solid #e1e2dd; } .ds-card-list li { padding: 10px 0; font-size: 14px; line-height: 1.45; color: #3f444c; } .ds-card-list li + li { border-top: 1px solid #e1e2dd; }"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "refersTo": "band-ledger",
+      "description": "Eyebrow, serif headline and summary on the Warm Grey band, the way every section opens.",
+      "html": "<section class=\"ds-band\"><p class=\"ds-eyebrow\">How it works</p><h2 class=\"ds-h2\">From file to record in three steps.</h2><p class=\"ds-summary\">Contract Lens does the reading. You do the checking.</p></section>",
+      "css": ".ds-band { background: #f4f4f1; color: #16181d; padding: 48px 32px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; } .ds-eyebrow { margin: 0; font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6670; } .ds-h2 { margin: 16px 0 0; max-width: 40rem; font-family: var(--font-source-serif, 'Source Serif 4'), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif; font-size: 44px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; } .ds-summary { margin: 20px 0 0; max-width: 40rem; font-size: 18px; line-height: 1.6; color: #3f444c; }"
+    },
+    {
+      "name": "Navy Block",
+      "kind": "custom",
+      "refersTo": "band-navy",
+      "description": "A full-bleed Firm Navy section with its faint ruled texture in the top right corner and white text at set opacities.",
+      "html": "<section class=\"ds-navy\"><div class=\"ds-navy-lines\" aria-hidden=\"true\"></div><p class=\"ds-navy-eyebrow\">The firm</p><h2 class=\"ds-navy-h2\">One record per contract, shared by the whole firm.</h2><p class=\"ds-navy-summary\">Roles decide who reads, who edits and who answers.</p></section>",
+      "css": ".ds-navy { position: relative; overflow: hidden; background: #1a2742; color: #ffffff; padding: 56px 32px; font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; } .ds-navy-lines { position: absolute; top: 0; right: 0; width: 34rem; height: 20rem; pointer-events: none; background-image: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 16px); -webkit-mask-image: radial-gradient(farthest-side at 100% 0%, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); mask-image: radial-gradient(farthest-side at 100% 0%, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); } .ds-navy-eyebrow { position: relative; margin: 0; font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.68); } .ds-navy-h2 { position: relative; margin: 16px 0 0; max-width: 40rem; font-family: var(--font-source-serif, 'Source Serif 4'), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif; font-size: 44px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; } .ds-navy-summary { position: relative; margin: 20px 0 0; max-width: 40rem; font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.75); }"
+    },
+    {
+      "name": "Contract Record Screen",
+      "kind": "custom",
+      "refersTo": "product-screen",
+      "description": "A product screen: a white sheet on the sheet shadow, a label header, field rows between hairlines and the summary strip.",
+      "html": "<div class=\"ds-rec\"><div class=\"ds-rec-head\"><span class=\"ds-rec-label\">Contract record</span><span class=\"ds-rec-meta\">Recognized as <b>Service agreement</b></span></div><dl class=\"ds-rec-rows\"><div><dt>Parties</dt><dd>Habermann Logistik GmbH and Nordlicht Software GmbH</dd></div><div><dt>Start</dt><dd>1 January 2025</dd></div><div><dt>End or term</dt><dd>24 months</dd></div><div><dt>Notice period</dt><dd>3 months to the end of the term</dd></div></dl><div class=\"ds-rec-summary\"><div class=\"ds-rec-field\">Summary</div><p>Nordlicht Software operates and maintains the warehouse management system of Habermann Logistik.</p></div></div>",
+      "css": ".ds-rec { width: 100%; max-width: 520px; overflow: hidden; background: #ffffff; border-radius: 14px; box-shadow: 0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28); font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; color: #16181d; } .ds-rec-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #e1e2dd; } .ds-rec-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6670; } .ds-rec-meta { font-size: 12px; color: #5f6670; } .ds-rec-meta b { font-weight: 500; color: #16181d; } .ds-rec-rows { margin: 0; padding: 0 20px; } .ds-rec-rows > div { display: grid; grid-template-columns: 9rem 1fr; gap: 2px 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #e1e2dd; } .ds-rec-rows dt, .ds-rec-field { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #5f6670; } .ds-rec-rows dd { margin: 0; min-width: 0; font-size: 14px; font-weight: 500; line-height: 1.4; } .ds-rec-summary { background: #f4f4f1; padding: 16px 20px; } .ds-rec-summary p { margin: 4px 0 0; font-size: 13.5px; line-height: 1.55; color: #3f444c; }"
+    },
+    {
+      "name": "Analysis Log",
+      "kind": "custom",
+      "refersTo": "product-screen",
+      "description": "The hero's signature screen mid-run: step counter, 2px progress bar, the file, finished lines with ink checks and one running line.",
+      "html": "<div class=\"ds-log\"><div class=\"ds-log-head\"><span class=\"ds-log-label\">Analysis</span><span class=\"ds-log-step\">Step 2 of 2</span></div><div class=\"ds-log-bar\"><span></span></div><div class=\"ds-log-file\"><span class=\"ds-log-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/></svg></span><div><div class=\"ds-log-name\">service-agreement-nordlicht.pdf</div><div class=\"ds-log-meta\">PDF</div></div></div><ol class=\"ds-log-lines\"><li><span class=\"ds-log-done\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>Opening the document</li><li><span class=\"ds-log-done\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>Reading the text</li><li><span class=\"ds-log-done\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>Contract type: Service agreement</li><li><span class=\"ds-log-done\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>Reading the details</li><li class=\"is-running\"><span class=\"ds-log-run\"><i></i></span>6 fields filled in</li></ol></div>",
+      "css": ".ds-log { width: 100%; max-width: 420px; overflow: hidden; background: #ffffff; border-radius: 14px; box-shadow: 0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28); font-family: var(--font-plex, 'IBM Plex Sans'), 'Helvetica Neue', Arial, system-ui, sans-serif; color: #16181d; } .ds-log-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #e1e2dd; } .ds-log-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #5f6670; } .ds-log-step { font-size: 12px; color: #5f6670; font-variant-numeric: tabular-nums; } .ds-log-bar { height: 2px; background: #e1e2dd; } .ds-log-bar span { display: block; height: 100%; background: rgba(22, 24, 29, 0.8); transform-origin: left; transition: transform 500ms ease-out; } .ds-log-file { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #e1e2dd; } .ds-log-icon { display: inline-flex; flex-shrink: 0; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 8px; background: #e8edf3; color: #16181d; } .ds-log-icon svg { width: 16px; height: 16px; } .ds-log-name { font-size: 13px; font-weight: 500; } .ds-log-meta { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5f6670; } .ds-log-lines { list-style: none; margin: 0; padding: 16px 20px; display: grid; gap: 10px; font-size: 13px; line-height: 1.45; color: #3f444c; } .ds-log-lines li { display: flex; align-items: flex-start; gap: 10px; } .ds-log-lines .is-running { color: #16181d; } .ds-log-done, .ds-log-run { display: inline-flex; flex-shrink: 0; width: 14px; height: 14px; margin-top: 3px; align-items: center; justify-content: center; border-radius: 9999px; } .ds-log-done { background: #16181d; color: #ffffff; } .ds-log-done svg { width: 10px; height: 10px; } .ds-log-run { background: rgba(22, 24, 29, 0.1); } .ds-log-run i { width: 6px; height: 6px; border-radius: 9999px; background: #16181d; animation: ds-log-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; } @keyframes ds-log-pulse { 50% { opacity: 0.5; } } @media (prefers-reduced-motion: reduce) { .ds-log-run i { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Second Pair of Eyes",
+    "overview": "The name comes from the four-eyes principle (Vier-Augen-Prinzip): one person does the work, and a second person checks it. Contract Lens splits the work the same way. The software reads the contract, and the lawyer checks what it found. The landing page follows that split. Its pictures are the product's own screens, built in code with sample data: the analysis log, the filled-in record, the list of expiring contracts and an open alert. A reader can check every claim on the page against what the app does.\n\nThe mood is sober, plain and exact. The page is white, with one warm grey band and two deep navy blocks. A book serif sets the headlines, and a plain sans sets everything a visitor reads in detail or presses. Buttons, cards and fields are soft and plain: round pills, 16px cards and hairline borders, with no movement on hover. The one red is kept for the § mark and for things that need attention soon. The page should look like the software a firm would use. It never imitates a physical object such as a ledger, a form, a stamp or a binder.\n\nMotion stays quiet. The hero's analysis run is the only timed sequence. Everything else is a short rise: a section header fades in and moves up 12px over 450ms, once, when a quarter of it is in view. Buttons change color and never move. The page honors reduced motion everywhere.\n\nThis file covers the landing page only: `app/page.tsx` and `components/landing/`, plus the share card and the favicon, which reuse its tokens. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The landing is light only and has no dark theme.",
+    "keyCharacteristics": [
+      "A white page with one warm grey band and two full-bleed navy blocks.",
+      "Source Serif 4 at weight 500 for h1 and h2, and IBM Plex Sans for everything else.",
+      "Ink pill buttons that turn navy on hover.",
+      "Flat text cards with hairline borders, and product screens that float on one soft shadow.",
+      "Red only on the mark and on signals: a close date, an open alert, an error.",
+      "Product screens with sample data, labeled as samples.",
+      "One timed sequence: the hero's analysis run."
+    ],
+    "rules": [
+      {
+        "name": "The Red Means Soon Rule",
+        "body": "Commentary Red marks the brand and whatever needs attention soon: a close date, an open alert, an error. Buttons, links, headlines and backgrounds are never red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Block Rule",
+        "body": "Firm Navy fills whole sections from edge to edge. It's never a card, a chip or a text color. The one exception is the primary button's hover.",
+        "section": "colors"
+      },
+      {
+        "name": "The Headline-Only Serif Rule",
+        "body": "The serif sets h1, h2, the § in the mark, the step numbers and the links in the mobile menu, and nothing else. Anything a visitor reads in detail or presses is IBM Plex Sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Full Sentence Rule",
+        "body": "The h1 and every h2 are full sentences in sentence case, and they end with a period. Card titles, buttons and labels take no period. Only the 11px labels are uppercase.",
+        "section": "typography"
+      },
+      {
+        "name": "The Alternating Ground Rule",
+        "body": "Neighboring sections never share a background. White, warm grey and navy take turns, so the page needs no divider lines between sections.",
+        "section": "layout"
+      },
+      {
+        "name": "The Screens Float Rule",
+        "body": "Only product screens and the contact form get the sheet shadow. A card that holds text never has one, and nothing else on the page casts a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Pill Rule",
+        "body": "If it's a button, it's a pill, and chips are pills too. Links stay plain text.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do set h1 and h2 in Source Serif 4 at weight 500 with -0.02em tracking, and everything else in IBM Plex Sans.",
+      "Do write the h1 and every h2 as a full sentence in sentence case, with a period at the end.",
+      "Do make every button a pill. Use one Ink primary button per section, plus the one in the nav bar, with Firm Navy on hover.",
+      "Do show the product through its own screens: white sheets with the sheet shadow on a tinted ground, sample data, and an aria-label that starts with \"Sample:\".",
+      "Do keep Commentary Red for the mark and for signals: a filled chip within a week, an outlined chip within a month, grey beyond that.",
+      "Do alternate white, Warm Grey and Firm Navy, so no two neighboring sections share a background.",
+      "Do keep text at WCAG AA or better: Ink, Dark Slate or Muted Slate on white and Warm Grey, and white at 68% or more on navy.",
+      "Do use tabular figures for dates, counts and the step counter.",
+      "Do check every layout in German as well, because German copy runs longer.",
+      "Do show the finished state when the visitor prefers reduced motion."
+    ],
+    "donts": [
+      "Don't imitate a physical object: no ruled ledger sheets, typewriter type, stamps, binders, paper forms or hand-drawn marks. The landing should look like the app a firm would use.",
+      "Don't bring the dashboard's look onto the landing: no neon green (#CCFF00), 2px black borders, hard offset shadows (`shadow-hard`), uppercase Geist Mono headings or the `press` movement.",
+      "Don't draw lines, highlights or marks from a field to a passage in a contract, because the product doesn't link fields to passages.",
+      "Don't make a button, link, headline or background red.",
+      "Don't put a shadow on a text card, or use any shadow other than the sheet shadow.",
+      "Don't add decoration the page doesn't have, such as gradients, glows or background shapes.",
+      "Don't set headings or buttons in Title Case or all caps. Only the 11px labels are uppercase.",
+      "Don't set a headline in the sans or a paragraph in the serif."
+    ]
+  }
+}

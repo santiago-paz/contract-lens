@@ -11,14 +11,11 @@ export function Deadlines() {
   return (
     <Section
       id="deadlines"
-      eyebrow={t.deadlines.eyebrow}
       title={t.deadlines.title}
       summary={t.deadlines.summary}
       tone="ledger"
     >
-      <p className="max-w-[44rem] text-[1.0625rem] leading-[1.6] text-body">{t.deadlines.body}</p>
-
-      <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
         {/* The list of expiring contracts, as the product sorts it */}
         <figure aria-label={t.deadlines.listLabel}>
           <div aria-hidden="true" className="overflow-hidden rounded-2xl bg-paper shadow-sheet">
@@ -32,13 +29,13 @@ export function Deadlines() {
                 ))}
               </div>
             </div>
-            <table className="w-full text-[13.5px]">
+            <table className="w-full text-[13px]">
               <thead>
                 <tr className="text-left text-[11px] uppercase tracking-[0.12em] text-muted">
-                  <th className="px-5 py-2.5 font-medium">{list.columns.contract}</th>
-                  <th className="hidden px-3 py-2.5 font-medium md:table-cell">{list.columns.partner}</th>
-                  <th className="hidden px-3 py-2.5 font-medium sm:table-cell">{list.columns.notice}</th>
-                  <th className="px-5 py-2.5 text-right font-medium">{list.columns.ends}</th>
+                  <th className="px-5 py-2.5 font-normal">{list.columns.contract}</th>
+                  <th className="hidden px-3 py-2.5 font-normal md:table-cell">{list.columns.partner}</th>
+                  <th className="hidden px-3 py-2.5 font-normal sm:table-cell">{list.columns.notice}</th>
+                  <th className="px-5 py-2.5 text-right font-normal">{list.columns.ends}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-rule border-t border-rule">

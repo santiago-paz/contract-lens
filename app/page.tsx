@@ -1,49 +1,8 @@
-'use client';
+import { LandingPage } from '@/components/landing/LandingPage';
+import { plexSans, sourceSerif } from '@/components/landing/fonts';
 
-import { MotionConfig } from 'framer-motion';
-
-import { Confidentiality } from '@/components/landing/Confidentiality';
-import { ContactForm } from '@/components/landing/ContactForm';
-import { Deadlines } from '@/components/landing/Deadlines';
-import { Firm } from '@/components/landing/Firm';
-import { Footer } from '@/components/landing/Footer';
-import { Hero } from '@/components/landing/Hero';
-import { HowItWorks } from '@/components/landing/HowItWorks';
-import { LanguageProvider, useLanguage } from '@/components/landing/LanguageContext';
-import { Navbar } from '@/components/landing/Navbar';
-import { WhatItReads } from '@/components/landing/WhatItReads';
-
-function SkipLink() {
-  const { t } = useLanguage();
-  return (
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-paper"
-    >
-      {t.nav.skipToContent}
-    </a>
-  );
-}
-
-export default function LandingPage() {
-  return (
-    <LanguageProvider>
-      <MotionConfig reducedMotion="user">
-        <div className="landing min-h-screen bg-paper text-ink selection:bg-mist">
-          <SkipLink />
-          <Navbar />
-          <main id="main-content">
-            <Hero />
-            <HowItWorks />
-            <WhatItReads />
-            <Deadlines />
-            <Firm />
-            <Confidentiality />
-            <ContactForm />
-          </main>
-          <Footer />
-        </div>
-      </MotionConfig>
-    </LanguageProvider>
-  );
+// A server page on purpose: the landing's fonts are called from here, so Next
+// preloads them on this route only (see next/font "Preloading").
+export default function Page() {
+  return <LandingPage fontClassName={`${sourceSerif.variable} ${plexSans.variable}`} />;
 }

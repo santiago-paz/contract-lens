@@ -202,8 +202,9 @@ h1, h2, h3, h4, h5, h6 {
  *
  * The landing has its own tokens and type, scoped under `.landing` so the
  * dashboard keeps its look. Fonts go through `@theme inline` on purpose: the
- * font variables are set on <body> by next/font, and a non-inline theme value
- * would try to resolve them on :root, where they do not exist.
+ * font variables are set on the `.landing` wrapper by next/font (see
+ * components/landing/fonts.ts), and a non-inline theme value would try to
+ * resolve them on :root, where they do not exist.
  *
  * The page is white with one warm grey band and two deep navy blocks. The
  * serif carries only the headlines; everything that is read or pressed is set
@@ -219,6 +220,8 @@ h1, h2, h3, h4, h5, h6 {
   --color-body: #3f444c;
   --color-muted: #5f6670;
   --color-rule: #e1e2dd;
+  /* The hairline is decorative; a form field's edge is the control itself, so it needs 3:1 against white. */
+  --color-rule-strong: #8f949b;
   --color-navy: #1a2742;
   --color-navy-deep: #121b30;
   --color-beck: #a3202f;
@@ -227,6 +230,25 @@ h1, h2, h3, h4, h5, h6 {
   --color-mist: #e8edf3;
   --color-sand: #f1ebe0;
   --color-sage: #e6ece6;
+
+  /*
+   * Type roles for page text, in rem so they follow the reader's font size.
+   * The product screens keep px sizes: they are pictures of the app, drawn to scale.
+   */
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6;
+  --text-lead-lg: 1.125rem;
+  --text-lead-lg--line-height: 1.6;
+  --text-title: 1.0625rem;
+  --text-title--line-height: 1.35;
+  --text-title--letter-spacing: -0.005em;
+  --text-title--font-weight: 600;
+  --text-copy: 0.9375rem;
+  --text-copy--line-height: 1.6;
+  --text-row: 0.875rem;
+  --text-row--line-height: 1.45;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.5;
 }
 
 /* A sheet of paper lying on a surface: a hairline and a soft, low shadow. */
@@ -242,6 +264,21 @@ h1, h2, h3, h4, h5, h6 {
 /* The fixed bar is 4rem tall; a focused link or a jumped-to heading must land below it. */
 html:has(.landing) {
   scroll-padding-top: 4rem;
+}
+
+/*
+ * The landing is a light page. The dashboard paints the body near-black in dark
+ * mode, and that shows through when the page is pulled past its edge, so the
+ * canvas stays white here.
+ */
+html:has(.landing),
+body:has(.landing) {
+  background: #ffffff;
+}
+
+/* A jumped-to section takes focus so the keyboard follows the page. It is a landmark, not a control, so it shows no ring. */
+.landing section[tabindex="-1"]:focus {
+  outline: none;
 }
 
 /* Headlines take the serif; the global mono heading rule above is unlayered, so it has to be beaten here. */
@@ -260,6 +297,23 @@ html:has(.landing) {
   letter-spacing: -0.005em;
 }
 
+/*
+ * Paragraph setting, in the base layer so a utility such as text-balance still
+ * wins. No word is left alone on a last line. German runs long and its
+ * compounds never break on their own, so German paragraphs hyphenate;
+ * LanguageContext keeps <html lang> in step with the toggle.
+ */
+@layer base {
+  .landing :is(p, li, dd, figcaption) {
+    text-wrap: pretty;
+  }
+
+  .landing :is(p, li, dd):lang(de) {
+    hyphens: auto;
+    hyphenate-limit-chars: 10 4 4;
+  }
+}
+
 .landing :focus-visible {
   outline: 2px solid #16181d;
   outline-offset: 3px;
@@ -271,19 +325,6 @@ html:has(.landing) {
 
 .landing .tone-navy .on-paper :focus-visible {
   outline-color: #16181d;
-}
-
-.landing .eyebrow {
-  font-family: var(--font-plex), "Helvetica Neue", Arial, system-ui, sans-serif;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #5f6670;
-}
-
-.landing .tone-navy .eyebrow {
-  color: rgba(255, 255, 255, 0.68);
 }
 
 /* Buttons. Fully specified here, because unlayered rules beat hover: utilities. */

@@ -67,22 +67,22 @@ export function Navbar() {
           <Brand />
 
           {/* The links sit in the middle column, so they stay centred whatever the two sides weigh. */}
-          <div className="hidden items-center gap-7 lg:flex">
+          <div className="hidden items-center gap-5 lg:flex xl:gap-7">
             {SECTIONS.map((id) => (
               <a
                 key={id}
                 href={`#${id}`}
                 onClick={go(id)}
-                className="text-[14px] font-medium text-body transition-colors hover:text-ink"
+                className="text-row font-medium text-body transition-colors hover:text-ink"
               >
                 {labels[id]}
               </a>
             ))}
           </div>
 
-          <div className="hidden items-center justify-end gap-6 lg:flex">
+          <div className="hidden items-center justify-end gap-4 lg:flex xl:gap-6">
             <LanguageToggle />
-            <Link href="/login" className="text-[14px] font-medium text-body transition-colors hover:text-ink">
+            <Link href="/login" className="text-row font-medium text-body transition-colors hover:text-ink">
               {t.nav.signIn}
             </Link>
             <a href="#contact" onClick={go('contact')} className="btn btn-primary btn-sm">

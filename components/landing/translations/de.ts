@@ -41,10 +41,10 @@ const contractTypes: ContractTypeCard[] = [
 ];
 
 const deadlineRows: DeadlineRow[] = [
-  { title: "Wartungsvertrag Aufzug", partner: "Aufzugtechnik Sauer GmbH", notice: "3 Monate", ends: "in 5 Tagen", urgency: "week" },
-  { title: "Softwarelizenz Aktenverwaltung", partner: "Advotec Systems AG", notice: "30 Tage", ends: "in 19 Tagen", urgency: "month" },
-  { title: "Büromiete Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 Monate", ends: "in 47 Tagen", urgency: "quarter" },
-  { title: "Rahmenvertrag Übersetzungen", partner: "Lingua Nord GmbH", notice: "1 Monat", ends: "in 83 Tagen", urgency: "quarter" },
+  { title: "Wartungsvertrag Aufzug", partner: "Aufzugtechnik Sauer GmbH", notice: "3 Monate", ends: "in 5 Tagen", urgency: "week" },
+  { title: "Softwarelizenz Aktenverwaltung", partner: "Advotec Systems AG", notice: "30 Tage", ends: "in 19 Tagen", urgency: "month" },
+  { title: "Büromiete Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 Monate", ends: "in 47 Tagen", urgency: "quarter" },
+  { title: "Rahmenvertrag Übersetzungen", partner: "Lingua Nord GmbH", notice: "1 Monat", ends: "in 83 Tagen", urgency: "quarter" },
 ];
 
 export const de = {
@@ -61,13 +61,12 @@ export const de = {
     languageLabel: "Sprache",
   },
   hero: {
-    eyebrow: "Vertragsmanagement für kleine Kanzleien",
     titleLine1: "Vertrag hochladen.",
     titleLine2: "Fakten und Fristen zurückbekommen.",
-    lead: "Contract Lens liest eine PDF- oder Word-Datei und füllt die Vertragsakte aus: Parteien, Laufzeit, Kündigungsfrist, Verlängerung, Zahlungsbedingungen, Haftung. Sie prüfen jedes Feld neben der Originalseite, denn das letzte Wort bleibt bei Ihnen. Verträge, die innerhalb von 90 Tagen enden, stehen in einer Liste, und Sie setzen einen Alarm auf jedes Datum, auf das es ankommt.",
+    lead: "Contract Lens ist für kleine Kanzleien gemacht. Die Software liest eine PDF- oder Word-Datei und füllt die Vertragsakte aus. Sie prüfen jedes Feld, bevor Sie speichern.",
     cta: "Demo anfragen",
     figureLabel: "Beispiel: ein Dienstleistungsvertrag wird gelesen, und Contract Lens füllt die Akte daraus aus",
-    figureCaption: "Ein Dienstleistungsvertrag geht hinein, und die Akte kommt ausgefüllt zurück. Das Protokoll zeigt jeden Schritt, während er läuft: Contract Lens liest den Text, erkennt die Vertragsart und füllt die Checkliste für diese Art aus. Sie prüfen jedes Feld, bevor Sie speichern.",
+    figureCaption: "Beispiel: ein Dienstleistungsvertrag. Contract Lens erkennt zuerst die Vertragsart und füllt dann die Checkliste für diese Art aus.",
   },
   extract: {
     title: "Analyse",
@@ -86,18 +85,17 @@ export const de = {
     recognizedLabel: "Erkannt als",
     recognized: "Dienstleistungsvertrag",
     fields: [
-      { label: "Titel", value: "Dienstleistungsvertrag, Nordlicht Software GmbH" },
-      { label: "Parteien", value: "Habermann Logistik GmbH und Nordlicht Software GmbH" },
-      { label: "Beginn", value: "1. Januar 2025" },
+      { label: "Titel", value: "Dienstleistungsvertrag, Nordlicht Software GmbH" },
+      { label: "Parteien", value: "Habermann Logistik GmbH und Nordlicht Software GmbH" },
+      { label: "Beginn", value: "1. Januar 2025" },
       { label: "Ende oder Laufzeit", value: "24 Monate" },
       { label: "Kündigungsfrist", value: "3 Monate zum Laufzeitende" },
       { label: "Haftungsobergrenze", value: "50.000 EUR je Vertragsjahr" },
     ],
     summaryLabel: "Zusammenfassung",
-    summary: "Nordlicht Software betreibt und wartet das Lagerverwaltungssystem der Habermann Logistik. Der Vertrag läuft 24 Monate ab dem 1. Januar 2025 und verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit drei Monaten Frist kündigt.",
+    summary: "Nordlicht Software betreibt und wartet das Lagerverwaltungssystem der Habermann Logistik. Der Vertrag läuft 24 Monate ab dem 1. Januar 2025 und verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit drei Monaten Frist kündigt.",
   },
   howItWorks: {
-    eyebrow: "Funktionsweise",
     title: "Von der Datei zur Akte in drei Schritten.",
     summary: "Contract Lens liest. Sie prüfen.",
     steps: [
@@ -117,18 +115,14 @@ export const de = {
     saveRecord: "Akte speichern",
   },
   whatItReads: {
-    eyebrow: "Was gelesen wird",
     title: "Die Checkliste hängt von der Vertragsart ab.",
-    summary: "Contract Lens erkennt zuerst die Art und liest dann mit der passenden Checkliste.",
-    body: "Eine Geheimhaltungsvereinbarung wirft andere Fragen auf als eine Softwarelizenz, deshalb hat jede Vertragsart ihre eigene Liste von Feldern. Sagt der Vertrag zu einem Punkt nichts, soll die Software das Feld leer lassen, statt zu raten.",
+    summary: "Eine Geheimhaltungsvereinbarung wirft andere Fragen auf als eine Softwarelizenz, deshalb hat jede Vertragsart ihre eigene Liste von Feldern. Sagt der Vertrag zu einem Punkt nichts, soll die Software das Feld leer lassen, statt zu raten.",
     types: contractTypes,
     footnote: "Alle drei Checklisten enthalten außerdem einen Titel und eine Zusammenfassung in zwei Sätzen. Andere Verträge, etwa Mietverträge oder Arbeitsverträge, werden nicht automatisch gelesen.",
   },
   deadlines: {
-    eyebrow: "Fristen",
     title: "Ein Alarm bleibt offen, bis ein Manager ihn schließt.",
-    summary: "Ein Manager beantwortet ihn, und jeder Schritt wird mit Name und Datum festgehalten.",
-    body: "Verträge, die abgelaufen sind oder innerhalb von 90 Tagen enden, stehen in einer Liste, mit der verbleibenden Zeit und der Kündigungsfrist. Sie können die Liste auf abgelaufene Verträge eingrenzen oder auf Verträge, die diese Woche oder innerhalb von 30 Tagen enden. Kommt es auf ein Datum an, setzen Sie einen Alarm darauf. Ein Manager antwortet dann mit einer von drei Möglichkeiten: Vertrag fortführen, Vertrag kündigen oder eine Rückfrage stellen.",
+    summary: "Kommt es auf ein Datum an, setzen Sie einen Alarm darauf. Ein Manager antwortet dann mit einer von drei Möglichkeiten: Vertrag fortführen, Vertrag kündigen oder eine Rückfrage stellen. Jeder Schritt wird mit Name und Datum festgehalten. Verträge, die abgelaufen sind oder innerhalb von 90 Tagen enden, stehen in einer Liste, mit der verbleibenden Zeit und der Kündigungsfrist.",
     listLabel: "Beispiel: die Liste der auslaufenden Verträge",
     list: {
       title: "Auslaufende Verträge",
@@ -147,15 +141,14 @@ export const de = {
       status: "Offen",
       contract: "Rahmenvertrag IT-Support",
       deadlineLabel: "Termin",
-      deadlineDate: "30. Sep. 2026",
+      deadlineDate: "30. Sep. 2026",
       deadlineType: "Kündigungsfrist",
       answerLabel: "Antwort",
       actions: ["Vertrag fortführen", "Vertrag kündigen", "Rückfrage"],
-      log: "Gesetzt von S. Brandt am 1. Sep. 2026",
+      log: "Gesetzt von S. Brandt am 1. Sep. 2026",
     },
   },
   firm: {
-    eyebrow: "Die Kanzlei",
     title: "Eine Akte je Vertrag, für die ganze Kanzlei.",
     summary: "Rollen legen fest, wer liest, wer bearbeitet und wer antwortet.",
     points: [
@@ -174,7 +167,6 @@ export const de = {
     ],
   },
   confidentiality: {
-    eyebrow: "Vertraulichkeit",
     title: "Was mit der Datei passiert.",
     summary: "Die Datei wird verschlüsselt gespeichert, und nur Ihre Kanzlei kann sie öffnen.",
     items: [
@@ -197,7 +189,6 @@ export const de = {
     ],
   },
   contact: {
-    eyebrow: "Kontakt",
     title: "Sehen Sie es an einem Ihrer eigenen Verträge.",
     body: "Schreiben Sie ein paar Zeilen zu Ihrer Kanzlei und dazu, wie Sie Verträge heute im Blick behalten. Wir antworten innerhalb eines Werktags, und die Demo läuft an einem Vertrag, den Sie mitbringen.",
     name: "Name",

@@ -1,8 +1,8 @@
 'use client';
 
-import { useInView, useReducedMotion } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import { Check, FileText } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { useLanguage } from './LanguageContext';
 
@@ -27,9 +27,29 @@ const FIELD_EVERY = 280;
 const STEP_DONE_AT_LINE = [2, 4];
 const TOTAL_STEPS = STEP_DONE_AT_LINE.length;
 
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+const subscribeToMotionPreference = (onChange: () => void) => {
+  const query = window.matchMedia(REDUCED_MOTION);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+};
+
+/**
+ * The visitor's motion setting, read in a way that survives hydration: the
+ * server has no media query, so it renders the figure before the run, and the
+ * browser swaps to the finished one right after hydration.
+ */
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    subscribeToMotionPreference,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
 export function Extract() {
   const { t, language } = useLanguage();
-  const reduce = useReducedMotion();
+  const skipRun = usePrefersReducedMotion();
   const figureRef = useRef<HTMLDivElement>(null);
   const inView = useInView(figureRef, { once: true, amount: 0.35 });
   const [reached, setReached] = useState(0);
@@ -43,13 +63,13 @@ export function Extract() {
   }, [fieldCount]);
 
   useEffect(() => {
-    if (reduce || !inView) return;
+    if (skipRun || !inView) return;
     const timers = beats.map((ms) => setTimeout(() => setReached(ms), ms));
     return () => timers.forEach(clearTimeout);
-  }, [beats, inView, reduce]);
+  }, [beats, inView, skipRun]);
 
   // Reduced motion skips the run and shows the finished figure.
-  const now = reduce ? Infinity : reached;
+  const now = skipRun ? Infinity : reached;
   const lineOn = (i: number) => now >= LINE_AT[i];
   const fieldOn = (i: number) => now >= FIELD_FROM + i * FIELD_EVERY;
   const finished = now >= lastBeat;
@@ -66,8 +86,8 @@ export function Extract() {
       {/* The analysis: the file, and the log as it comes in */}
       <div aria-hidden="true" className="overflow-hidden rounded-[14px] bg-paper shadow-sheet">
         <div className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3">
-          <span className="text-[11px] uppercase tracking-[0.14em] text-muted">{t.extract.title}</span>
-          <span className="text-xs tabular-nums text-muted">{stepLabel}</span>
+          <span className="text-[13px] font-semibold text-ink">{t.extract.title}</span>
+          <span className="text-[12px] tabular-nums text-muted">{stepLabel}</span>
         </div>
         <div className="h-[2px] bg-rule">
           <div
@@ -82,7 +102,7 @@ export function Extract() {
           </span>
           <div className="min-w-0">
             <div className="truncate text-[13px] font-medium text-ink">{t.extract.fileName}</div>
-            <div className="text-[11px] uppercase tracking-[0.08em] text-muted">{t.extract.fileMeta}</div>
+            <div className="text-[11px] uppercase tracking-[0.12em] text-muted">{t.extract.fileMeta}</div>
           </div>
         </div>
 
@@ -116,7 +136,7 @@ export function Extract() {
       {/* The record, as it comes back */}
       <div aria-hidden="true" className="overflow-hidden rounded-[14px] bg-paper shadow-sheet">
         <div className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3">
-          <span className="text-[11px] uppercase tracking-[0.14em] text-muted">{t.extract.recordTitle}</span>
+          <span className="text-[13px] font-semibold text-ink">{t.extract.recordTitle}</span>
           <span className={`text-xs text-muted transition-opacity duration-300 ${lineOn(2) ? 'opacity-100' : 'opacity-0'}`}>
             {t.extract.recognizedLabel} <span className="font-medium text-ink">{t.extract.recognized}</span>
           </span>
@@ -149,7 +169,7 @@ export function Extract() {
           }`}
         >
           <div className="text-[11px] uppercase tracking-[0.12em] text-muted">{t.extract.summaryLabel}</div>
-          <p className="mt-1 text-[13.5px] leading-[1.55] text-body">{t.extract.summary}</p>
+          <p className="mt-1 text-[13px] leading-[1.5] text-body">{t.extract.summary}</p>
         </div>
       </div>
     </div>

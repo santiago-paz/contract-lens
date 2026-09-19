@@ -15,7 +15,7 @@ type FormField = keyof typeof EMPTY_FORM;
 type ContactError = 'invalid' | 'throttled' | 'failed';
 
 const FIELD_CLASS =
-  'w-full rounded-[10px] border border-rule bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-muted/70 transition-colors focus:border-ink';
+  'w-full rounded-[10px] border border-rule-strong bg-paper px-4 py-3 text-copy leading-[1.5] text-ink placeholder:text-muted transition-colors focus:border-ink';
 
 export function ContactForm() {
   const { t } = useLanguage();
@@ -58,7 +58,6 @@ export function ContactForm() {
   return (
     <Section
       id="contact"
-      eyebrow={t.contact.eyebrow}
       title={t.contact.title}
       summary={t.contact.body}
       tone="navy"
@@ -66,7 +65,8 @@ export function ContactForm() {
     >
       {/* The form is a sheet on the navy block, so it keeps the light palette and the dark focus ring. */}
       <div className="on-paper rounded-[20px] bg-paper p-6 text-ink shadow-sheet sm:p-8">
-        <AnimatePresence mode="wait">
+        {/* initial={false}: the form is there from the first paint; only the switch to the sent note fades. */}
+        <AnimatePresence mode="wait" initial={false}>
           {success ? (
             <motion.div
               key="success"
@@ -80,8 +80,8 @@ export function ContactForm() {
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-ink text-paper">
                 <Check className="h-5 w-5" aria-hidden="true" />
               </span>
-              <h3 className="mt-5 text-2xl font-semibold text-ink">{t.contact.sentTitle}</h3>
-              <p className="mt-2 text-[16px] text-body">{t.contact.sentBody}</p>
+              <h3 className="display mt-5 text-[1.75rem] leading-[1.15] text-ink">{t.contact.sentTitle}</h3>
+              <p className="mt-2 text-copy text-body">{t.contact.sentBody}</p>
               <button
                 type="button"
                 onClick={() => {
@@ -105,7 +105,7 @@ export function ContactForm() {
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="mb-1.5 block text-[13px] font-medium text-ink">
+                  <label htmlFor="name" className="mb-1.5 block text-small font-medium text-ink">
                     {t.contact.name}
                   </label>
                   <input
@@ -122,7 +122,7 @@ export function ContactForm() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="mb-1.5 block text-[13px] font-medium text-ink">
+                  <label htmlFor="email" className="mb-1.5 block text-small font-medium text-ink">
                     {t.contact.email}
                   </label>
                   <input
@@ -142,7 +142,7 @@ export function ContactForm() {
               </div>
 
               <div>
-                <label htmlFor="message" className="mb-1.5 block text-[13px] font-medium text-ink">
+                <label htmlFor="message" className="mb-1.5 block text-small font-medium text-ink">
                   {t.contact.message}
                 </label>
                 <textarea
@@ -179,12 +179,12 @@ export function ContactForm() {
                   className="flex items-start gap-3 rounded-[10px] border border-beck/40 bg-beck-tint px-4 py-3"
                 >
                   <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-beck" aria-hidden="true" />
-                  <p className="text-[13px] leading-[1.5] text-ink">{errorMessage}</p>
+                  <p className="text-small text-ink">{errorMessage}</p>
                 </div>
               )}
 
               <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[13px] text-muted">{t.contact.note}</p>
+                <p className="text-small text-muted">{t.contact.note}</p>
                 <button type="submit" disabled={loading} className="btn btn-primary">
                   {loading ? (
                     <>

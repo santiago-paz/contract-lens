@@ -12,7 +12,7 @@ export function LanguageToggle({ className = '' }: { className?: string }) {
   const { language, setLanguage, t } = useLanguage();
 
   return (
-    <div role="group" aria-label={t.nav.languageLabel} className={`inline-flex items-center text-[13px] font-medium ${className}`}>
+    <div role="group" aria-label={t.nav.languageLabel} className={`inline-flex items-center text-small font-medium ${className}`}>
       {OPTIONS.map(([code, label], index) => (
         <span key={code} className="inline-flex items-center">
           {index > 0 && (

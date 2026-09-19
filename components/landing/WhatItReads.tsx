@@ -9,19 +9,16 @@ export function WhatItReads() {
   return (
     <Section
       id="what-it-reads"
-      eyebrow={t.whatItReads.eyebrow}
       title={t.whatItReads.title}
       summary={t.whatItReads.summary}
     >
-      <p className="max-w-[44rem] text-[1.0625rem] leading-[1.6] text-body">{t.whatItReads.body}</p>
-
-      <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {t.whatItReads.types.map((type) => (
           <div key={type.name} className="rounded-2xl border border-rule bg-paper p-6 sm:p-7">
-            <h3 className="text-[1.0625rem] font-semibold text-ink">{type.name}</h3>
+            <h3 className="text-title text-ink">{type.name}</h3>
             <ul className="mt-5 divide-y divide-rule border-t border-rule">
               {type.fields.map((field) => (
-                <li key={field} className="py-2.5 text-[14px] leading-[1.45] text-body">
+                <li key={field} className="py-2.5 text-row text-body">
                   {field}
                 </li>
               ))}
@@ -30,7 +27,7 @@ export function WhatItReads() {
         ))}
       </div>
 
-      <p className="mt-6 text-[13px] leading-[1.5] text-muted">{t.whatItReads.footnote}</p>
+      <p className="mt-6 max-w-[28rem] text-small text-muted">{t.whatItReads.footnote}</p>
     </Section>
   );
 }

@@ -41,10 +41,10 @@ const contractTypes: ContractTypeCard[] = [
 ];
 
 const deadlineRows: DeadlineRow[] = [
-  { title: "Maintenance contract, lift", partner: "Aufzugtechnik Sauer GmbH", notice: "3 months", ends: "in 5 days", urgency: "week" },
-  { title: "Software licence, case management", partner: "Advotec Systems AG", notice: "30 days", ends: "in 19 days", urgency: "month" },
-  { title: "Office lease, Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 months", ends: "in 47 days", urgency: "quarter" },
-  { title: "Framework agreement, translations", partner: "Lingua Nord GmbH", notice: "1 month", ends: "in 83 days", urgency: "quarter" },
+  { title: "Maintenance contract, lift", partner: "Aufzugtechnik Sauer GmbH", notice: "3 months", ends: "in 5 days", urgency: "week" },
+  { title: "Software licence, case management", partner: "Advotec Systems AG", notice: "30 days", ends: "in 19 days", urgency: "month" },
+  { title: "Office lease, Friedrichstraße", partner: "Immobilien Kessler KG", notice: "6 months", ends: "in 47 days", urgency: "quarter" },
+  { title: "Framework agreement, translations", partner: "Lingua Nord GmbH", notice: "1 month", ends: "in 83 days", urgency: "quarter" },
 ];
 
 export const en = {
@@ -61,13 +61,12 @@ export const en = {
     languageLabel: "Language",
   },
   hero: {
-    eyebrow: "Contract management for small law firms in Germany",
     titleLine1: "Upload a contract.",
     titleLine2: "Get the facts and the deadlines back.",
-    lead: "Contract Lens reads a PDF or Word file and fills in the record: parties, term, notice period, renewal, payment terms, liability. You check each field against the original page, so the last word stays with you. Contracts that end within 90 days show up in one list, and you set an alert on any date that matters.",
+    lead: "Contract Lens is made for small law firms in Germany. It reads a PDF or Word file and fills in the record. You check every field before you save.",
     cta: "Request a demo",
     figureLabel: "Sample: a service agreement being read, and the record Contract Lens fills in from it",
-    figureCaption: "A service agreement goes in, and the record comes back filled in. The log shows each step as it runs: Contract Lens reads the text, recognizes the type, and fills in the checklist for that type. You check every field before you save.",
+    figureCaption: "Sample: a service agreement. Contract Lens recognizes the type first, then fills in the checklist for that type.",
   },
   extract: {
     title: "Analysis",
@@ -86,18 +85,17 @@ export const en = {
     recognizedLabel: "Recognized as",
     recognized: "Service agreement",
     fields: [
-      { label: "Title", value: "Service agreement, Nordlicht Software GmbH" },
-      { label: "Parties", value: "Habermann Logistik GmbH and Nordlicht Software GmbH" },
-      { label: "Start", value: "1 January 2025" },
+      { label: "Title", value: "Service agreement, Nordlicht Software GmbH" },
+      { label: "Parties", value: "Habermann Logistik GmbH and Nordlicht Software GmbH" },
+      { label: "Start", value: "1 January 2025" },
       { label: "End or term", value: "24 months" },
       { label: "Notice period", value: "3 months to the end of the term" },
       { label: "Liability cap", value: "EUR 50,000 per contract year" },
     ],
     summaryLabel: "Summary",
-    summary: "Nordlicht Software operates and maintains the warehouse management system of Habermann Logistik. The agreement runs for 24 months from 1 January 2025 and renews for twelve months at a time unless one party gives three months' notice.",
+    summary: "Nordlicht Software operates and maintains the warehouse management system of Habermann Logistik. The agreement runs for 24 months from 1 January 2025 and renews for twelve months at a time unless one party gives three months' notice.",
   },
   howItWorks: {
-    eyebrow: "How it works",
     title: "From file to record in three steps.",
     summary: "Contract Lens does the reading. You do the checking.",
     steps: [
@@ -117,18 +115,14 @@ export const en = {
     saveRecord: "Save record",
   },
   whatItReads: {
-    eyebrow: "What it reads",
     title: "The checklist depends on the kind of contract.",
-    summary: "Contract Lens recognizes the type first, then reads with the checklist for that type.",
-    body: "A confidentiality agreement raises different questions than a software licence, so each type has its own list of fields. If the contract says nothing on a point, the software is told to leave that field empty rather than guess.",
+    summary: "A confidentiality agreement raises different questions than a software licence, so each type has its own list of fields. If the contract says nothing on a point, the software is told to leave that field empty rather than guess.",
     types: contractTypes,
     footnote: "All three checklists also include a title and a summary in two sentences. Other contracts, such as leases or employment contracts, are not read automatically.",
   },
   deadlines: {
-    eyebrow: "Deadlines",
     title: "An alert stays open until a manager closes it.",
-    summary: "A manager answers it, and each step goes on record with a name and a date.",
-    body: "Contracts that have expired or end within 90 days appear in one list, with the time left and the notice period. You can narrow the list to what has expired, what ends this week or what ends within 30 days. When a date matters, you set an alert on it. A manager then answers with one of three choices: continue the contract, terminate it, or ask a question.",
+    summary: "When a date matters, you set an alert on it. A manager then answers with one of three choices: continue the contract, terminate it, or ask a question. Each step goes on record with a name and a date. Contracts that have expired or end within 90 days appear in one list, with the time left and the notice period.",
     listLabel: "Sample: the list of expiring contracts",
     list: {
       title: "Expiring contracts",
@@ -147,15 +141,14 @@ export const en = {
       status: "Open",
       contract: "Framework agreement, IT support",
       deadlineLabel: "Deadline",
-      deadlineDate: "30 Sep 2026",
+      deadlineDate: "30 Sep 2026",
       deadlineType: "Notice period",
       answerLabel: "Answer",
       actions: ["Continue contract", "Terminate contract", "Question"],
-      log: "Set by S. Brandt on 1 Sep 2026",
+      log: "Set by S. Brandt on 1 Sep 2026",
     },
   },
   firm: {
-    eyebrow: "The firm",
     title: "One record per contract, shared by the whole firm.",
     summary: "Roles decide who reads, who edits and who answers.",
     points: [
@@ -174,7 +167,6 @@ export const en = {
     ],
   },
   confidentiality: {
-    eyebrow: "Confidentiality",
     title: "What happens to the file.",
     summary: "The file is stored encrypted, and only your firm can open it.",
     items: [
@@ -197,7 +189,6 @@ export const en = {
     ],
   },
   contact: {
-    eyebrow: "Contact",
     title: "See it on one of your own contracts.",
     body: "Write a few lines about your firm and how you keep track of contracts today. We reply within one business day, and the demo runs on a contract you bring.",
     name: "Name",
