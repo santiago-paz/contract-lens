@@ -198,13 +198,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*
- * Landing page (components/landing).
+ * The landing's visual world (components/landing, components/auth).
  *
- * The landing has its own tokens and type, scoped under `.landing` so the
- * dashboard keeps its look. Fonts go through `@theme inline` on purpose: the
- * font variables are set on the `.landing` wrapper by next/font (see
- * components/landing/fonts.ts), and a non-inline theme value would try to
- * resolve them on :root, where they do not exist.
+ * The world has its own tokens and type, scoped under `.landing` so the
+ * dashboard keeps its look. The class names a look, not a route: the sign-in
+ * and sign-up pages wrap in it too, so the door into the app is set in the
+ * same type and the same colours as the page a visitor arrives from.
+ *
+ * Fonts go through `@theme inline` on purpose: the font variables are set on
+ * the `.landing` wrapper by next/font (see components/landing/fonts.ts), and a
+ * non-inline theme value would try to resolve them on :root, where they do not
+ * exist.
  *
  * The page is white with one warm grey band and two deep navy blocks. The
  * serif carries only the headlines; everything that is read or pressed is set
@@ -254,6 +258,20 @@ h1, h2, h3, h4, h5, h6 {
 /* A sheet of paper lying on a surface: a hairline and a soft, low shadow. */
 @utility shadow-sheet {
   box-shadow: 0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28);
+}
+
+/*
+ * The nav bar's spill, once the page runs under it. It takes the sheet
+ * shadow's navy, but it is short and faint: the bar sits almost flush with
+ * the page, and it never reads as a floating sheet.
+ */
+@utility shadow-nav {
+  box-shadow: 0 1px 2px -1px rgba(26, 39, 66, 0.05), 0 10px 24px -14px rgba(26, 39, 66, 0.24);
+}
+
+/* The same shadow at no alpha, so the bar fades it in instead of snapping. */
+@utility shadow-nav-none {
+  box-shadow: 0 1px 2px -1px rgba(26, 39, 66, 0), 0 10px 24px -14px rgba(26, 39, 66, 0);
 }
 
 .landing {

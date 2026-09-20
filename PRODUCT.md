@@ -92,7 +92,7 @@ Not decided: EU hosting, pricing, and whether the app gets a German version late
 
 The name is Contract Lens and the domain is trycontractlens.com. Mail goes out from contact@trycontractlens.com and invites@trycontractlens.com.
 
-The mark is the § sign on a red disc, in components/landing/Logo.tsx and app/icon.svg. scripts/generate-icons.mjs builds the favicons from it.
+The mark is the § sign on a red disc. The sign is drawn rather than set in a typeface, so it still reads at 16px in a browser tab. The drawing lives in lib/brand-mark.ts and is the only copy: components/landing/Logo.tsx and app/opengraph-image.tsx draw it, and scripts/generate-icons.mjs writes app/icon.svg, app/favicon.ico and app/apple-icon.png from it.
 
 Blackletter is a retired name. It appears only in an unlinked walkthrough video in Vercel Blob storage (contract-lens-walkthrough-v3.mp4). Don't use it.
 

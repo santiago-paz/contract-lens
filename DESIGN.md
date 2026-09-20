@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Contract Lens landing page
-description: The visual system of trycontractlens.com. It covers app/page.tsx and components/landing only, not the dashboard.
+description: The visual system of trycontractlens.com. It covers app/page.tsx, components/landing and the sign-in and sign-up pages in components/auth, not the dashboard.
 colors:
   ink: "#16181d"
   navy: "#1a2742"
@@ -175,7 +175,7 @@ The mood is sober, plain and exact. The page is white, with two warm grey bands 
 
 Motion stays quiet. The hero's analysis run is the only timed sequence, and the measure's sideways creep is the only scroll-linked one. Everything else is a short rise: a section header fades in and moves up 12px over 450ms, once, when a quarter of it is in view. Buttons change color and never move. The page honors reduced motion everywhere.
 
-This file covers the landing page only: `app/page.tsx` and `components/landing/`, plus the share card and the favicon, which reuse its tokens. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The landing is light only and has no dark theme.
+This file covers the landing page, `app/page.tsx` and `components/landing/`, the sign-in and sign-up pages in `components/auth/`, and the share card and the favicon, which reuse its tokens. `.landing` in `app/globals.css` is the class that scopes the world, so it names a look and not a route: the auth pages wrap in it too. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The landing is light only and has no dark theme.
 
 **Key Characteristics:**
 - A white page with two warm grey bands and two full-bleed navy blocks, the bands lit and measured, the white sections left as paper.
@@ -246,7 +246,7 @@ Both fonts load through `next/font` and reach the page as `--font-source-serif` 
 Inside product screens the type runs smaller, the way a real app looks at reduced size: 11px labels, 12 to 13.5px text and 14px field values. Dates, counts and the step counter use tabular figures, so the digits line up.
 
 ### Named Rules
-**The Headline-Only Serif Rule.** The serif sets h1, h2, the § in the mark, the step numbers and the links in the mobile menu, and nothing else. Anything a visitor reads in detail or presses is IBM Plex Sans.
+**The Headline-Only Serif Rule.** The serif sets h1, h2, the step numbers and the links in the mobile menu, and nothing else. Anything a visitor reads in detail or presses is IBM Plex Sans. The § in the mark is not type at all: it is drawn, and it belongs to no font.
 
 **The Full Sentence Rule.** The h1 and every h2 are full sentences in sentence case, and they end with a period. Card titles, buttons and labels take no period. Only the 11px labels are uppercase.
 
@@ -279,13 +279,14 @@ Every string exists in English and German, and the German runs longer. No layout
 
 Depth comes from the ground and from one shadow, never from a stack of them. The bands are lit surfaces (see Colors: Ground); the white sections are flat paper. Text cards lie flat on the page with a hairline border and no shadow. Product screens float: they're white sheets on one soft, low shadow, so they read as the app itself, set on the page. The contact form floats too, because it's a working screen. Tinted ground does the rest. The Mist Blue hero panel and the tinted wells of the step cards set screens apart without more shadows.
 
-The nav bar is the only see-through surface: white at 90% with a 12px backdrop blur. A hairline appears under it once the page scrolls 8px.
+The nav bar is the only see-through surface: white at 90% with a 12px backdrop blur. Once the page scrolls 8px, a hairline and a short spill of shadow appear under it, so the page reads as passing beneath the bar rather than butting against it.
 
 ### Shadow Vocabulary
 - **Sheet** (`box-shadow: 0 0 0 1px rgba(22, 24, 29, 0.05), 0 18px 40px -18px rgba(26, 39, 66, 0.28)`): A faint 1px ring plus a navy-tinted shadow that falls below the sheet. It's the `shadow-sheet` utility. The hero's two screens, the three small screens in the step cards, the expiring list, the open alert and the contact form use it.
+- **Nav** (`box-shadow: 0 1px 2px -1px rgba(26, 39, 66, 0.05), 0 10px 24px -14px rgba(26, 39, 66, 0.24)`): The nav bar's spill, and the only other shadow on the page. It's the `shadow-nav` utility. It takes the sheet's navy, but it reaches about 8px and no further, so the bar stays almost flush and never reads as a floating sheet. `shadow-nav-none` holds the same geometry at no alpha, so the bar fades the shadow in over 300ms instead of snapping it on.
 
 ### Named Rules
-**The Screens Float Rule.** Only product screens and the contact form get the sheet shadow. A card that holds text never has one, and nothing else on the page casts a shadow.
+**The Screens Float Rule.** Only product screens and the contact form get the sheet shadow. A card that holds text never has one. The nav bar is the single exception on the page, and it gets its own short shadow rather than the sheet's.
 
 ## Shapes
 
@@ -334,7 +335,7 @@ Step cards open with a 224px well in Mist Blue, Sand or Sage that holds a small 
 The form keeps the light palette and the dark focus ring, because it sits on a white sheet inside the navy block. The sheet has a 20px radius, the sheet shadow and 24px of padding (32px from 640px).
 
 ### Navigation
-- **Bar:** Fixed and 64px tall, white at 90% with a backdrop blur. The hairline under it fades in over 300ms once the page scrolls 8px.
+- **Bar:** Fixed and 64px tall, white at 90% with a backdrop blur. Once the page scrolls 8px, the hairline and the nav shadow under it fade in together over 300ms. Both fade back out at the top, so the bar sits flat on the hero.
 - **From 1024px:** Three columns. The brand sits left, the four section links sit in the exact center, and the right side holds the EN / DE toggle, "Sign in" and a small primary button. The links are Plex 14px at weight 500 in Dark Slate, and they turn Ink on hover.
 - **Below 1024px:** The brand, the language toggle and a 40px round menu button with a hairline border. The menu opens as a full-screen white sheet under the bar. Its section links are serif at 28px, split by hairlines, with full-width primary and secondary buttons below them. Escape closes it, and the page behind it stops scrolling.
 - **Language toggle:** "EN / DE" at 13px and weight 500. The active language is Ink, the other is Muted Slate, and the slash is Hairline Grey.
@@ -345,7 +346,13 @@ The form keeps the light palette and the dark focus ring, because it sits on a w
 Every section opens with the eyebrow, the serif headline and the summary. On navy the headline turns white and the summary turns white at 75%. The three lines rise in 80ms apart.
 
 ### Brand Mark
-The § sits in Source Serif 4 at weight 600 and 19px, white on a 32px Commentary Red disc. The name "Contract Lens" follows in Plex 15px at weight 600 and -0.01em, marked `translate="no"`. The favicon (`app/icon.svg`) and the share card (`app/opengraph-image.tsx`) use the same mark.
+The § is drawn, not set in a typeface, and it sits white on a 32px Commentary Red disc. The drawing lives in `lib/brand-mark.ts` as a single path in a 64 by 64 box, and it is the only copy of the mark.
+
+The sign fills 64% of the disc, against 48% for a typeset one, and its stroke runs from 4.0 to 6.4 units, against a flat 3.9. Those two numbers are the whole point: a typeset § fills in below about 24px, and the mark has to hold in a browser tab at 16px. One S is drawn and turned 180 degrees about the centre of the disc for the other half, so the two halves cannot drift apart. The stroke is thin at the terminals and thick across the spine, the way a serif S is cut, and each terminal is cut on a lean.
+
+The name "Contract Lens" follows in Plex 15px at weight 600 and -0.01em, marked `translate="no"`, 10px from the disc.
+
+`components/landing/Logo.tsx` and the share card (`app/opengraph-image.tsx`) draw the path directly. `scripts/generate-icons.mjs` writes `app/icon.svg`, `app/favicon.ico` (16, 32 and 48px) and `app/apple-icon.png` from it. The iOS tile drops the disc for a full red square and grows the sign 6%, because a masked tile leaves less room round the edge than a disc does.
 
 ### Product Screens
 The page's pictures are the app's own screens, built in code with sample data.
@@ -354,6 +361,23 @@ The page's pictures are the app's own screens, built in code with sample data.
 - **Rows:** Split by hairlines, with 20px of padding at the sides and 12px above and below. Field labels are 11px uppercase at 0.12em in Muted Slate. Values are 14px at weight 500 in Ink.
 - **Ground:** Each screen sits on a tint: the Mist Blue panel in the hero, a well in a step card, or the Warm Grey band.
 - **Samples:** Each screen is `aria-hidden`, and its `figure` carries an aria-label that starts with "Sample:". The companies and people in them are invented, and the aria-labels mark them as samples.
+
+### Sign-in and Sign-up
+`/login` and `/register` share one shell, `components/auth/AuthShell.tsx`. It is the share card's composition, made live: paper on the left, a navy block on the right, split 7 to 5 from 1024px.
+
+- **Paper side:** the mark at the top, then the headline and the form. The mark, the headline and the fields share one left edge, and the column centres that group in a 28rem measure. The paper takes neither light nor measure, because it is what a visitor reads and types on.
+- **Navy block:** `tone-navy`, so it runs the same light and the same measure as the page's navy sections. One product screen floats on it, the list of expiring contracts, under a caption that names it as a sample. Its rows are the landing's own sample rows, imported from `components/landing/translations/en.ts`, so the two pages cannot drift apart.
+- **On a phone:** the paper side fills the first screen and the navy block follows under it, the way the landing's sections stack. The form is the whole first view.
+- **Headline:** Source Serif at 2rem, 2.375rem from 640px and 2.625rem from 1024px, one full sentence with a period, as on the landing. Sign-up adds a lead; sign-in needs none.
+- **Form:** the landing's field, error box and pill button, with the submit button run full width. The password field carries a reveal button inside its right edge: an 18px Lucide eye on a 36px round target, in Muted Slate, Ink on hover.
+- **Language:** English only, like the rest of the app, so these pages carry no language toggle.
+
+### Share Card
+`app/opengraph-image.tsx` is the page in miniature, at 1200 by 630. Paper on the left, a full-height navy block on the right, split 680 to 520.
+
+The paper side takes the mark, the hero's own headline in Source Serif at 56px, the lead under it at 19px, and the address at the foot. It carries no light and no measure, because it is what a reader reads on. It has no eyebrow: the card opens on the headline, the way the hero does.
+
+The navy block runs the same ground as the page's navy sections: the white hairline on the top edge, the pool of Navy Lit at 18% across dropped in from above, and the crest-to-floor grade under it. The measure fades in from the top right and is gone by 72% across. The record sheet floats on it, 424 wide, with 48px of navy on each side. satori ignores `inset` and drops a radial gradient inside a box that uses it, so every ground layer here gives an explicit top, left, width and height.
 
 ### Analysis Run
 The hero's analysis plays once, when the figure is 35% in view, and takes about 4.6 seconds. The log lines land at 0.4, 0.9, 1.5, 2.0, 4.2 and 4.6 seconds. The running line shows a pulsing dot, and each finished line gets an Ink disc with a white check. From 2.4 seconds the record's fields fill in one by one, 280ms apart, and grey bars hold their place until each value lands. A 2px progress bar grows in two steps, and the summary strip fades in last. With reduced motion, the finished figure appears at once.
@@ -377,7 +401,7 @@ The hero's analysis plays once, when the figure is 35% in view, and takes about 
 - **Don't** bring the dashboard's look onto the landing: no neon green (#CCFF00), 2px black borders, hard offset shadows (`shadow-hard`), uppercase Geist Mono headings or the `press` movement.
 - **Don't** draw lines, highlights or marks from a field to a passage in a contract, because the product doesn't link fields to passages.
 - **Don't** make a button, link, headline or background red.
-- **Don't** put a shadow on a text card, or use any shadow other than the sheet shadow.
+- **Don't** put a shadow on a text card, or use any shadow other than the sheet shadow and the nav bar's own.
 - **Don't** add decoration the page doesn't have: no glows, no blurred blobs, no background shapes, no gradient that announces itself as a gradient. The band ramps in Colors: Ground are the page's only background gradients, and they stay under the threshold of noticing.
 - **Don't** put light or the measure on a white section, on the hero or in the footer, and don't turn the measure into a two-axis grid. It's a ruler, not graph paper.
 - **Don't** set headings or buttons in Title Case or all caps. Only the 11px labels are uppercase.

@@ -59,8 +59,8 @@ export function Navbar() {
     <>
       <nav
         aria-label="Main"
-        className={`fixed inset-x-0 top-0 z-50 border-b bg-paper/90 backdrop-blur-md transition-[border-color] duration-300 ${
-          scrolled || open ? 'border-rule' : 'border-transparent'
+        className={`fixed inset-x-0 top-0 z-50 border-b bg-paper/90 backdrop-blur-md transition-[border-color,box-shadow] duration-300 ${
+          scrolled || open ? 'border-rule shadow-nav' : 'border-transparent shadow-nav-none'
         }`}
       >
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">

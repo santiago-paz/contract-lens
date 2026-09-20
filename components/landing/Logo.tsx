@@ -1,14 +1,19 @@
 import Link from 'next/link';
 
-/** The brand mark: the section sign on the red of the commentaries. */
+import { MARK_PATH, MARK_VIEWBOX } from '@/lib/brand-mark';
+
+/** The brand mark: the section sign, drawn, on the red of the commentaries. */
 export function Mark({ className = '' }: { className?: string }) {
   return (
-    <span
+    <svg
       aria-hidden="true"
-      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-beck font-serif text-[19px] font-semibold leading-none text-paper ${className}`}
+      focusable="false"
+      viewBox={MARK_VIEWBOX}
+      className={`h-8 w-8 shrink-0 ${className}`}
     >
-      §
-    </span>
+      <circle cx="32" cy="32" r="32" fill="var(--color-beck)" />
+      <path d={MARK_PATH} fill="var(--color-paper)" />
+    </svg>
   );
 }
 
