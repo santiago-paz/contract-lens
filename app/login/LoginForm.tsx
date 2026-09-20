@@ -9,10 +9,6 @@ import { Field, FormError, PasswordField, SubmitButton } from '@/components/auth
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const [state, action, isPending] = useActionState(login, null);
 
-  // Carry the visitor's destination across to sign-up, so someone who lands
-  // here from a protected page still gets there after creating an account.
-  const registerHref = redirectTo ? `/register?redirect=${encodeURIComponent(redirectTo)}` : '/register';
-
   return (
     <>
       <form action={action} className="space-y-5">
@@ -47,14 +43,17 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
         </div>
       </form>
 
+      {/* Sign-up is closed, so there is no link to it. An account comes from an
+          invitation sent by a firm that already uses Contract Lens. */}
       <p className="mt-8 border-t border-rule pt-6 text-small text-muted">
-        New to Contract Lens?{' '}
+        New to Contract Lens? You need an invitation from your firm. Ask a colleague, or{' '}
         <Link
-          href={registerHref}
+          href="/#contact"
           className="font-medium text-ink underline decoration-rule-strong underline-offset-4 transition-colors hover:decoration-ink"
         >
-          Create an account
+          get in touch
         </Link>
+        .
       </p>
     </>
   );

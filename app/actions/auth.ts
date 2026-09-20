@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { encrypt, getSession, setSessionCookie, clearSessionCookie } from '@/lib/auth'
 import { checkRateLimit } from '@/lib/rate-limit'
+import { openInvitationEmail } from '@/lib/invitations'
 
 // Pre-computed hash of a throwaway password. Compared against when the email
 // is unknown so that "no such user" and "wrong password" take the same time.
@@ -113,6 +114,15 @@ export async function register(prevState: any, formData: FormData) {
   const confirmPassword = formData.get('confirmPassword') as string
   if (password !== confirmPassword) {
     return { message: 'Passwords do not match.' }
+  }
+
+  // Sign-up is closed to the public. Only a live invitation creates an account,
+  // and the address has to be the one that was invited. The register page runs
+  // the same check, but a form post never goes through the page.
+  const invitePath = safeRedirectPath(formData.get('redirect'), '')
+  const invitedEmail = await openInvitationEmail(invitePath, email)
+  if (!invitedEmail) {
+    return { message: 'Contract Lens is invitation only. Ask a colleague at your firm to invite you.' }
   }
 
   try {

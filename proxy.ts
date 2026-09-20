@@ -46,8 +46,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // 3. Handle Login & Register pages
-  if (pathname === '/login' || pathname === '/register') {
+  // 3. Let /register answer for itself. Public sign-up is closed, so the page
+  // serves the form to a live invitation link and a 404 to everyone else.
+  if (pathname === '/register') {
+    return NextResponse.next()
+  }
+
+  // 4. Handle the Login page
+  if (pathname === '/login') {
     // If already logged in and no redirect param, go to dashboard
     if (session && !request.nextUrl.searchParams.has('redirect')) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
@@ -55,17 +61,17 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // 4. Allow invite pages (public for accepting invitations)
+  // 5. Allow invite pages (public for accepting invitations)
   if (pathname.startsWith('/invite')) {
     return NextResponse.next()
   }
 
-  // 5. Protect all other routes (Dashboard, etc.)
+  // 6. Protect all other routes (Dashboard, etc.)
   if (!session) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // 6. If authenticated but no organization, redirect to setup
+  // 7. If authenticated but no organization, redirect to setup
   if (!session.orgId && !pathname.startsWith('/setup-organization')) {
     return NextResponse.redirect(new URL('/setup-organization', request.url))
   }
