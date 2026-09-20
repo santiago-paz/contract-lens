@@ -152,9 +152,9 @@ components:
     textColor: "{colors.body}"
     height: "64px"
   brand-mark:
-    backgroundColor: "{colors.ink}"
+    backgroundColor: "{colors.beck}"
     textColor: "{colors.paper}"
-    rounded: "{rounded.icon}"
+    rounded: "{rounded.pill}"
     size: "32px"
   icon-disc:
     backgroundColor: "{colors.mist}"
@@ -171,11 +171,11 @@ components:
 
 The name comes from the four-eyes principle (Vier-Augen-Prinzip): one person does the work, and a second person checks it. Contract Lens splits the work the same way. The software reads the contract, and the lawyer checks what it found. The landing page follows that split. Its pictures are the product's own screens, built in code with sample data: the analysis log, the filled-in record, the list of expiring contracts and an open alert. A reader can check every claim on the page against what the app does.
 
-The mood is sober, plain and exact. The page is white, with two warm grey bands and two deep navy blocks. The white sections are flat paper, because that's where a visitor reads. The four bands are not: each one is lit from one side and carries a faint measure of vertical ticks on the other, so a band reads as a lit surface rather than a slab. A book serif sets the headlines, and a plain sans sets everything a visitor reads in detail or presses. Buttons, cards and fields are soft and plain: round pills, 16px cards and hairline borders, with no movement on hover. The one red is kept for things that need attention soon. The page should look like the software a firm would use. It never imitates a physical object such as a ledger, a form, a stamp or a binder.
+The mood is sober, plain and exact. The page is white, with two warm grey bands and two deep navy blocks. The white sections are flat paper, because that's where a visitor reads. The four bands are not: each one is lit from one side and carries a faint measure of vertical ticks on the other, so a band reads as a lit surface rather than a slab. A book serif sets the headlines, and a plain sans sets everything a visitor reads in detail or presses. Buttons, cards and fields are soft and plain: round pills, 16px cards and hairline borders, with no movement on hover. The one red is kept for the § mark and for things that need attention soon. The page should look like the software a firm would use. It never imitates a physical object such as a ledger, a form, a stamp or a binder.
 
 Motion stays quiet. The hero's analysis run is the only timed sequence, and the measure's sideways creep is the only scroll-linked one. Everything else is a short rise: a section header fades in and moves up 12px over 450ms, once, when a quarter of it is in view. Buttons change color and never move. The page honors reduced motion everywhere.
 
-This file covers the landing page, `app/page.tsx` and `components/landing/`, the sign-in and sign-up pages in `components/auth/`, and the share card and the favicon, which reuse its tokens. `.landing` in `app/globals.css` is the class that scopes the world, so it names a look and not a route: the auth pages wrap in it too. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The brand mark is the one thing that crosses: the dashboard's sidebar draws it from `components/landing/Logo.tsx`, because a product has one mark and not one per world. The landing is light only and has no dark theme.
+This file covers the landing page, `app/page.tsx` and `components/landing/`, the sign-in and sign-up pages in `components/auth/`, and the share card and the favicon, which reuse its tokens. `.landing` in `app/globals.css` is the class that scopes the world, so it names a look and not a route: the auth pages wrap in it too. The dashboard under `app/(dashboard)/` has an older, separate look: Geist type, black borders, hard offset shadows and a neon green accent. Its utilities share `app/globals.css` with the landing tokens, so keep the two apart. The landing is light only and has no dark theme.
 
 **Key Characteristics:**
 - A white page with two warm grey bands and two full-bleed navy blocks, the bands lit and measured, the white sections left as paper.
@@ -197,7 +197,7 @@ The palette is a white page with cool text greys, warm surface greys, one deep n
 - **Firm Navy** (#1a2742): Fills the two full-bleed blocks, the firm section and the contact section. It's also the hover color of the primary button. Text on navy is white: 75% for summaries and body text (9.0:1), 68% for eyebrows (7.6:1) and 80% for icons. Divider lines on navy are white at 20%. From 1024px, a faint texture of white hairlines, 16px apart at 13%, fades out from the top right corner of each block.
 
 ### Tertiary
-- **Commentary Red** (#a3202f): The code calls it the red of the commentaries. It fills the chip for a contract that ends within a week. It outlines the chip for one that ends within a month. It also marks an open alert (the status dot and the deadline label), the recognized-type dot in the upload step, and the icon in the form's error message. On white it reaches 7.5:1, so it works for small text.
+- **Commentary Red** (#a3202f): The code calls it the red of the commentaries. It fills the § mark and the chip for a contract that ends within a week. It outlines the chip for one that ends within a month. It also marks an open alert (the status dot and the deadline label), the recognized-type dot in the upload step, and the icon in the form's error message. On white it reaches 7.5:1, so it works for small text.
 - **Red Wash** (#fbeef0): The fill of the form's error message, under a border of Commentary Red at 40%.
 
 ### Neutral
@@ -219,7 +219,7 @@ The four bands are painted, not filled. Each ramp is narrow on purpose: about te
 `app/globals.css` also defines `navy-deep` (#121b30) and `beck-deep` (#85192a). Nothing on the landing uses them.
 
 ### Named Rules
-**The Red Means Soon Rule.** Commentary Red marks one thing: whatever needs attention soon. A close date, an open alert, an error. It is not a brand color, so the mark does not carry it. Buttons, links, headlines and backgrounds are never red.
+**The Red Means Soon Rule.** Commentary Red marks the brand and whatever needs attention soon: a close date, an open alert, an error. Buttons, links, headlines and backgrounds are never red.
 
 **The Block Rule.** Firm Navy fills whole sections from edge to edge. It's never a card, a chip or a text color. The one exception is the primary button's hover.
 
@@ -246,7 +246,7 @@ Both fonts load through `next/font` and reach the page as `--font-source-serif` 
 Inside product screens the type runs smaller, the way a real app looks at reduced size: 11px labels, 12 to 13.5px text and 14px field values. Dates, counts and the step counter use tabular figures, so the digits line up.
 
 ### Named Rules
-**The Headline-Only Serif Rule.** The serif sets h1, h2, the step numbers and the links in the mobile menu, and nothing else. Anything a visitor reads in detail or presses is IBM Plex Sans. The mark is not type at all: it is drawn, and it belongs to no font.
+**The Headline-Only Serif Rule.** The serif sets h1, h2, the step numbers and the links in the mobile menu, and nothing else. Anything a visitor reads in detail or presses is IBM Plex Sans. The § in the mark is not type at all: it is drawn, and it belongs to no font.
 
 **The Full Sentence Rule.** The h1 and every h2 are full sentences in sentence case, and they end with a period. Card titles, buttons and labels take no period. Only the 11px labels are uppercase.
 
@@ -346,22 +346,13 @@ The form keeps the light palette and the dark focus ring, because it sits on a w
 Every section opens with the eyebrow, the serif headline and the summary. On navy the headline turns white and the summary turns white at 75%. The three lines rise in 80ms apart.
 
 ### Brand Mark
-The mark is the lens: a disc with a smaller disc cut out of it, up and to the right, so what is left is a crescent that thins toward the bite. It reads as a lens or an aperture, which is the name of the product. It sits in paper on a 32px Ink tile with an 8px corner, which is `rounded.icon` at that size. The drawing lives in `lib/brand-mark.ts` as a single path in a 48 by 48 box, and it is the only copy of the mark.
+The § is drawn, not set in a typeface, and it sits white on a 32px Commentary Red disc. The drawing lives in `lib/brand-mark.ts` as a single path in a 64 by 64 box, and it is the only copy of the mark.
 
-The cut is a hole in the path, under `fill-rule: evenodd`, not a second shape painted in the ground color. That is what lets the mark move between grounds without being redrawn.
+The sign fills 64% of the disc, against 48% for a typeset one, and its stroke runs from 4.0 to 6.4 units, against a flat 3.9. Those two numbers are the whole point: a typeset § fills in below about 24px, and the mark has to hold in a browser tab at 16px. One S is drawn and turned 180 degrees about the centre of the disc for the other half, so the two halves cannot drift apart. The stroke is thin at the terminals and thick across the spine, the way a serif S is cut, and each terminal is cut on a lean.
 
-The disc fills 62% of the tile. Its thinnest part, where the bite comes closest to the edge, is 2.95 units, which lands just under a pixel at a 16px favicon. That is the intended reading: at tab size the crescent closes into a soft ring and the mark keeps its shape. Below 16px it is not used.
+The name "Contract Lens" follows in Plex 15px at weight 600 and -0.01em, marked `translate="no"`, 10px from the disc.
 
-The lens is lit from the top, the way every band on the page is: paper at full where the light lands, and paper at 95% at the foot. The ramp is about twelve RGB points end to end, the same register as the band ramps in Colors: Ground, so it stays under the threshold of noticing. On the Ink tile it runs from 17.8:1 down to 16.0:1.
-
-The name "Contract Lens" follows in Plex 15px at weight 600 and -0.01em, marked `translate="no"`, 10px from the tile.
-
-`components/landing/Logo.tsx` and the share card (`app/opengraph-image.tsx`) draw the path directly, and the dashboard's sidebar draws it through the same component. `scripts/generate-icons.mjs` writes `app/icon.svg`, `app/favicon.ico` (16, 32 and 48px) and `app/apple-icon.png` from it. The iOS tile squares its corner off, because iOS masks the tile itself; the lens does not grow, because at 62% it already clears the mask.
-
-The favicon ships as one cut, with no dark-theme rule. An SVG favicon's `prefers-color-scheme` follows the operating system, not the color of the tab strip the icon lands on, so a dark system with a light browser theme would paint a paper lens onto paper and the mark would disappear. The one cut is safe everywhere: in a dark tab strip the Ink tile fades into the browser's own chrome and the lens carries the mark on its own.
-
-### Named Rules
-**The Tile Is A Field Rule.** The lens is drawn at one size everywhere, and only its field comes and goes. On light ground it sits on the Ink tile. On dark ground, where the ground is known, the tile drops away and the lens goes paper: the dashboard's black sidebar bar is the one place this happens today. An Ink tile on that bar would sit at 1.2:1 against it and vanish, and a second near-black box inside a dark bar only muddies the edge.
+`components/landing/Logo.tsx` and the share card (`app/opengraph-image.tsx`) draw the path directly. `scripts/generate-icons.mjs` writes `app/icon.svg`, `app/favicon.ico` (16, 32 and 48px) and `app/apple-icon.png` from it. The iOS tile drops the disc for a full red square and grows the sign 6%, because a masked tile leaves less room round the edge than a disc does.
 
 ### Product Screens
 The page's pictures are the app's own screens, built in code with sample data.
@@ -398,7 +389,7 @@ The hero's analysis plays once, when the figure is 35% in view, and takes about 
 - **Do** write the h1 and every h2 as a full sentence in sentence case, with a period at the end.
 - **Do** make every button a pill. Use one Ink primary button per section, plus the one in the nav bar, with Firm Navy on hover.
 - **Do** show the product through its own screens: white sheets with the sheet shadow on a tinted ground, sample data, and an aria-label that starts with "Sample:".
-- **Do** keep Commentary Red for signals only: a filled chip within a week, an outlined chip within a month, grey beyond that. The mark takes no red.
+- **Do** keep Commentary Red for the mark and for signals: a filled chip within a week, an outlined chip within a month, grey beyond that.
 - **Do** alternate white, Warm Grey and Firm Navy, so no two neighboring sections share a background.
 - **Do** keep text at WCAG AA or better: Ink, Dark Slate or Muted Slate on white and Warm Grey, and white at 68% or more on navy.
 - **Do** use tabular figures for dates, counts and the step counter.
