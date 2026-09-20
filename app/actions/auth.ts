@@ -8,6 +8,11 @@ import { encrypt, getSession, setSessionCookie, clearSessionCookie } from '@/lib
 import { checkRateLimit } from '@/lib/rate-limit'
 import { openInvitationEmail } from '@/lib/invitations'
 
+// What a visitor is told when sign-in does not work. One message covers an
+// unknown email, a wrong password and, for now, a database that is unreachable,
+// so an outage looks the same as a bad password from the outside.
+const INVALID_CREDENTIALS = 'Invalid credentials'
+
 // Pre-computed hash of a throwaway password. Compared against when the email
 // is unknown so that "no such user" and "wrong password" take the same time.
 const DUMMY_HASH = '$2b$10$CwTycUXWue0Thq9StjUM0uJ8ZzP0R8gVQ8mS0uH6C1u1yG9c3mDCS'
@@ -50,7 +55,7 @@ export async function login(prevState: any, formData: FormData) {
     const passwordsMatch = await bcrypt.compare(password, user?.password ?? DUMMY_HASH)
 
     if (!user || !passwordsMatch) {
-      return { message: 'Invalid credentials' }
+      return { message: INVALID_CREDENTIALS }
     }
 
     // Look up the user's organization membership
@@ -76,8 +81,11 @@ export async function login(prevState: any, formData: FormData) {
     const session = await encrypt(sessionPayload)
     await setSessionCookie(session)
   } catch (error) {
+    // Temporary: the database is down, and a Prisma failure here would tell the
+    // visitor the site is broken. Send back the wrong-password message instead
+    // and keep the real cause in the server log.
     console.error('Login error:', error)
-    return { message: 'Something went wrong. Please try again.' }
+    return { message: INVALID_CREDENTIALS }
   }
 
   redirect(safeRedirectPath(formData.get('redirect'), '/dashboard'))
