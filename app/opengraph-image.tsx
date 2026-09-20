@@ -2,7 +2,16 @@ import { ImageResponse } from 'next/og'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { MARK_PATH } from '@/lib/brand-mark'
+import {
+  MARK_CENTRE,
+  MARK_LIT,
+  MARK_LIT_FROM,
+  MARK_LIT_TO,
+  MARK_PATH,
+  MARK_SHADE,
+  MARK_TILE_RADIUS,
+  MARK_VIEWBOX,
+} from '@/lib/brand-mark'
 
 export const alt =
   'Contract Lens: upload a contract, get the facts and the deadlines back. Next to the line, ' +
@@ -25,7 +34,6 @@ const NAVY = '#1a2742'
 const NAVY_CREST = '#1c2946'
 const NAVY_FLOOR = '#151f37'
 const NAVY_LIT = '#27365b'
-const BECK = '#a3202f'
 
 const PANEL = 520 // the navy block, the same one the landing's sections use
 const SHEET = 424 // the record, floating on it
@@ -83,9 +91,22 @@ export default async function Image() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <svg width="44" height="44" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="32" fill={BECK} />
-              <path d={MARK_PATH} fill={PAPER} />
+            <svg width="44" height="44" viewBox={MARK_VIEWBOX}>
+              <defs>
+                <linearGradient
+                  id="mark-lit"
+                  x1={MARK_CENTRE}
+                  y1={MARK_LIT_FROM}
+                  x2={MARK_CENTRE}
+                  y2={MARK_LIT_TO}
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stopColor={PAPER} stopOpacity={MARK_LIT} />
+                  <stop offset="1" stopColor={PAPER} stopOpacity={MARK_SHADE} />
+                </linearGradient>
+              </defs>
+              <rect width={MARK_CENTRE * 2} height={MARK_CENTRE * 2} rx={MARK_TILE_RADIUS} fill={INK} />
+              <path fillRule="evenodd" d={MARK_PATH} fill="url(#mark-lit)" />
             </svg>
             <div style={{ marginLeft: 13, fontSize: 22, fontWeight: 600, letterSpacing: -0.22, color: INK }}>
               Contract Lens

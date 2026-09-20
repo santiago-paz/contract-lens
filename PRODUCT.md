@@ -92,7 +92,11 @@ Not decided: EU hosting, pricing, and whether the app gets a German version late
 
 The name is Contract Lens and the domain is trycontractlens.com. Mail goes out from contact@trycontractlens.com and invites@trycontractlens.com.
 
-The mark is the § sign on a red disc. The sign is drawn rather than set in a typeface, so it still reads at 16px in a browser tab. The drawing lives in lib/brand-mark.ts and is the only copy: components/landing/Logo.tsx and app/opengraph-image.tsx draw it, and scripts/generate-icons.mjs writes app/icon.svg, app/favicon.ico and app/apple-icon.png from it.
+The mark is the lens: a disc with a smaller disc cut out of it, up and to the right, in paper on a near-black tile. It reads as a lens or an aperture, which is the name of the product. The cut is a hole in the path rather than a second shape in the ground color, so the mark holds on any ground. On a dark ground the tile drops away and the lens carries the mark on its own.
+
+The drawing lives in lib/brand-mark.ts and is the only copy: components/landing/Logo.tsx and app/opengraph-image.tsx draw it, the dashboard sidebar draws it through the same component, and scripts/generate-icons.mjs writes app/icon.svg, app/favicon.ico and app/apple-icon.png from it. Santiago supplied the drawing on 2026-09-20; it replaced a § sign on a red disc.
+
+Red is no longer part of the mark. It now means one thing only: something needs attention soon.
 
 Blackletter is a retired name. It appears only in an unlinked walkthrough video in Vercel Blob storage (contract-lens-walkthrough-v3.mp4). Don't use it.
 

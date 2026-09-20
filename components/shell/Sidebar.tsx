@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { logout } from '@/app/actions/auth';
+import { Mark } from '@/components/landing/Logo';
 
 type NavItem = {
   label: string;
@@ -77,10 +78,12 @@ export function Sidebar({ isCollapsed, toggleSidebar }: SidebarProps) {
         isCollapsed ? "justify-center px-0" : "justify-between"
       )}>
         {!isCollapsed && (
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#CCFF00] border border-white flex items-center justify-center">
-               <span className="text-black font-mono font-bold text-xs leading-none">§</span>
-            </div>
+          <div className="flex items-center gap-2.5">
+            {/* The bar is black, so the mark drops its tile and the lens
+                carries it on its own. The box stays 32px, the same as the nav
+                bar's, so the lens is drawn at one size everywhere and only its
+                field comes and goes. See components/landing/Logo.tsx. */}
+            <Mark tone="paper" />
             <span className="text-sm font-mono font-bold uppercase tracking-wider text-white">Contract Lens</span>
           </div>
         )}
