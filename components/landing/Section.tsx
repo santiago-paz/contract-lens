@@ -16,7 +16,7 @@ const TONE: Record<Tone, string> = {
  * it up, and the content follows: below it (`stack`), beside it (`split`), or
  * under a centred heading (`center`). Sections sit on white, on the warm grey
  * band, or on the navy block, and the heading takes its colours from that.
- * Headers do not animate in: the hero figure is the page's one moving moment.
+ * Headers do not animate in: the motion on this page belongs to the figures.
  */
 export function Section({
   id,
@@ -24,6 +24,7 @@ export function Section({
   summary,
   tone = 'paper',
   layout = 'stack',
+  backdrop,
   children,
 }: {
   id: string;
@@ -31,6 +32,8 @@ export function Section({
   summary?: string;
   tone?: Tone;
   layout?: Layout;
+  /** Sits behind the content, inside the section's own ground (the contact block's ruler field). */
+  backdrop?: ReactNode;
   children: ReactNode;
 }) {
   const titleId = `${id}-title`;
@@ -66,6 +69,7 @@ export function Section({
   // for the fixed bar, and the two would stack into a double offset.
   return (
     <section id={id} aria-labelledby={titleId} className={TONE[tone]}>
+      {backdrop && <div className="contact-backdrop">{backdrop}</div>}
       <div className="mx-auto max-w-[1200px] px-6 py-20 lg:py-28">
         {layout === 'split' ? (
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-12">

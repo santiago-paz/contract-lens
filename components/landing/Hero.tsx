@@ -1,8 +1,13 @@
 'use client';
 
-import { Extract } from './Extract';
+import type { CSSProperties } from 'react';
+
+import { HeroStage } from './HeroStage';
 import { useLanguage } from './LanguageContext';
 import { scrollToSection } from './scroll';
+
+/** Position in an entrance sequence, read by the `hero-line` and `hero-fade` rules in landing.css. */
+const at = (index: number) => ({ '--i': index }) as CSSProperties;
 
 export function Hero() {
   const { t } = useLanguage();
@@ -15,34 +20,43 @@ export function Hero() {
     scrollToSection(id);
   };
 
-  // The text and the figure are there from the first paint; only the analysis inside the figure moves.
+  // The text is there from the first paint and rises into place once, in CSS, so
+  // it never waits for a script. Only the analysis inside the stage is scripted.
   return (
-    <section className="pt-32 pb-16 lg:pt-40 lg:pb-24">
-      <div className="mx-auto max-w-[1200px] px-6">
-        <div className="mx-auto max-w-[62rem] text-center">
-          {/* One sentence per line. The clamp lets German fit a 320px phone; at 4rem each sentence holds one line from 1024px up. */}
-          <h1 className="mx-auto text-[clamp(2rem,10.2vw,2.625rem)] leading-[1.05] sm:text-[3.5rem] lg:text-[4rem]">
-            <span className="block">{t.hero.titleLine1}</span> <span className="block">{t.hero.titleLine2}</span>
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-grid">
+        <div className="hero-copy">
+          <h1
+            id="hero-title"
+            className="max-w-[11em] text-[clamp(2.25rem,9.6vw,2.625rem)] leading-[1.04] sm:text-[3.25rem] min-[1100px]:text-[clamp(3rem,3.9vw,3.75rem)]"
+          >
+            <span className="hero-line" style={at(0)}>
+              <span>{t.hero.titleLine1}</span>
+            </span>
+            <span className="hero-line" style={at(1)}>
+              <span>{t.hero.titleLine2}</span>
+            </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-[36rem] text-lead text-body lg:text-lead-lg">{t.hero.lead}</p>
+          <p className="hero-fade mt-6 max-w-[27rem] text-lead text-body lg:text-lead-lg" style={at(2)}>
+            {t.hero.lead}
+          </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <div className="hero-fade mt-8 flex flex-wrap items-center gap-x-7 gap-y-4" style={at(3)}>
             <a href="#contact" onClick={go('contact')} className="btn btn-primary">
               {t.hero.cta}
+            </a>
+            <a
+              href="#how-it-works"
+              onClick={go('how-it-works')}
+              className="text-row font-medium text-ink underline decoration-rule-strong decoration-1 underline-offset-[7px] transition-colors hover:decoration-ink"
+            >
+              {t.hero.secondary}
             </a>
           </div>
         </div>
 
-        {/* The figure sits where a photograph would: one large rounded panel, and the two sheets on it. */}
-        <figure className="mt-14 lg:mt-20" aria-label={t.hero.figureLabel}>
-          <div className="rounded-[20px] bg-mist p-4 sm:p-8 lg:rounded-[28px] lg:p-12">
-            <Extract />
-          </div>
-          <figcaption className="mx-auto mt-5 max-w-[32rem] text-balance text-center text-small text-muted">
-            {t.hero.figureCaption}
-          </figcaption>
-        </figure>
+        <HeroStage />
       </div>
     </section>
   );

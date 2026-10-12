@@ -71,7 +71,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the landing's bootstrap script adds a `js` class
+    // to <html> before React hydrates (components/landing/Bootstrap.tsx).
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

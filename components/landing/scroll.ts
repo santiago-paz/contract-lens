@@ -1,6 +1,7 @@
 /**
  * Scrolls to a landing-page section, falling back to an instant jump when the
  * visitor prefers reduced motion (JS smooth scrolling ignores the CSS override).
+ * The page keeps the browser's own scrolling: the wheel is never taken over.
  *
  * The click also moves keyboard focus into the section, the way a plain anchor
  * jump would. Without it a screen reader stays in the nav after "jumping", and

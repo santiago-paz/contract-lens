@@ -1,17 +1,22 @@
 'use client';
 
 import { MotionConfig } from 'framer-motion';
+import { useEffect } from 'react';
 
-import { Confidentiality } from './Confidentiality';
 import { ContactForm } from './ContactForm';
-import { Deadlines } from './Deadlines';
-import { Firm } from './Firm';
+import { Faq } from './Faq';
 import { Footer } from './Footer';
 import { Hero } from './Hero';
-import { HowItWorks } from './HowItWorks';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { Navbar } from './Navbar';
+import { Roles } from './Roles';
+import { Statement } from './Statement';
+import { Tour } from './Tour';
 import { WhatItReads } from './WhatItReads';
+import { YourData } from './YourData';
+import type { Language } from './translations';
+
+import './landing.css';
 
 function SkipLink() {
   const { t } = useLanguage();
@@ -25,21 +30,30 @@ function SkipLink() {
   );
 }
 
-/** The whole landing page. `fontClassName` carries the font variables that app/page.tsx loads. */
-export function LandingPage({ fontClassName }: { fontClassName: string }) {
+/**
+ * The whole landing page, in the language its route asks for. `fontClassName`
+ * carries the font variables that the server page loads.
+ */
+export function LandingPage({ language, fontClassName }: { language: Language; fontClassName: string }) {
+  // Tells Bootstrap's failsafe that the page's own code is running.
+  useEffect(() => {
+    window.__landingReady = true;
+  }, []);
+
   return (
-    <LanguageProvider>
+    <LanguageProvider language={language}>
       <MotionConfig reducedMotion="user">
         <div className={`landing ${fontClassName} min-h-screen bg-paper text-ink selection:bg-mist`}>
           <SkipLink />
           <Navbar />
           <main id="main-content">
             <Hero />
-            <HowItWorks />
+            <Statement />
+            <Tour />
             <WhatItReads />
-            <Deadlines />
-            <Firm />
-            <Confidentiality />
+            <YourData />
+            <Roles />
+            <Faq />
             <ContactForm />
           </main>
           <Footer />

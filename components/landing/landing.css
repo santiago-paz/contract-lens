@@ -1,0 +1,911 @@
+/*
+ * The landing's motion and depth layer. The tokens, type and buttons live in
+ * app/globals.css under `.landing`; this file holds what only the landing page
+ * uses: the hero stage, the tour, and the figures built for them. The sign-in
+ * and sign-up pages share `.landing` but not this file.
+ *
+ * Rules that hold throughout:
+ *  - The default markup is the finished state. Motion starts from something
+ *    already visible, or is held back only under `.js` (see Bootstrap.tsx),
+ *    which comes off again if the page's own script never starts.
+ *  - Shadows carry an offset and a soft blur. Nothing glows.
+ *  - Reduced motion is handled by the global rule in globals.css (animations
+ *    and transitions collapse to their end state), and by each script.
+ */
+
+.landing {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --navy-lit: #2d3f69;
+  --navy-crest: #1c2946;
+  --navy-floor: #131c33;
+}
+
+/* ── Entrances: the hero's one page-load sequence, in CSS so it never waits for a script ── */
+
+@keyframes line-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes sheet-rise {
+  from {
+    opacity: 0;
+    translate: 0 2.25rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Each sentence of the headline rises out of its own mask. */
+.landing .hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.landing .hero-line > span {
+  display: block;
+  animation: line-rise 1s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+}
+
+.landing .hero-fade {
+  animation: fade-up 0.9s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 120ms + 300ms);
+}
+
+/* ── Navigation: the link for the section under the middle of the viewport carries a rule ── */
+
+.landing .nav-link {
+  position: relative;
+}
+
+.landing .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: #16181d;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.landing .nav-link[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+
+/* ── Hero ── */
+
+.landing .hero {
+  position: relative;
+  padding-top: 5.5rem;
+  padding-bottom: 1rem;
+}
+
+.landing .hero-grid {
+  display: grid;
+  gap: 2.5rem;
+  padding-inline: 1.5rem;
+}
+
+.landing .hero-copy {
+  align-self: center;
+}
+
+/* The stage: a navy panel, lit from the upper right, that holds the field and the figure. */
+.landing .hero-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: 34rem;
+}
+
+.landing .hero-stage-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, rgba(255, 255, 255, 0) 1px),
+    radial-gradient(75% 60% at 82% -8%, var(--navy-lit) 0%, rgba(45, 63, 105, 0) 62%),
+    radial-gradient(60% 50% at 6% 108%, rgba(39, 54, 91, 0.5) 0%, rgba(39, 54, 91, 0) 70%),
+    linear-gradient(180deg, var(--navy-crest) 0%, #1a2742 46%, var(--navy-floor) 100%);
+  animation: stage-in 1.1s var(--ease-out) both;
+}
+
+/* The fallback ruler: the page's own measure. It fades out once the WebGL field is running over it. */
+.landing .hero-stage-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.13) 0 1px, transparent 1px 120px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 24px);
+  -webkit-mask-image: linear-gradient(0deg, #000 0%, transparent 64%);
+  mask-image: linear-gradient(0deg, #000 0%, transparent 64%);
+  transition: opacity 1.4s ease;
+}
+
+.landing .hero-stage-bg:has(.ruler-canvas.is-live)::before {
+  opacity: 0;
+}
+
+.landing .ruler-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.landing .ruler-canvas.is-live {
+  opacity: 1;
+}
+
+/* The figure: two sheets of the product, in slight perspective. The figure itself is not
+   positioned, so the caption measures from the stage and the sheets float on their own. */
+.landing .hero-figure {
+  margin: 0;
+}
+
+.landing .hero-float {
+  position: relative;
+  padding: 1.25rem;
+  perspective: 1600px;
+}
+
+.landing .hero-parallax,
+.landing .hero-run {
+  transform-style: preserve-3d;
+}
+
+.landing .hero-run {
+  display: grid;
+  gap: 1rem;
+}
+
+.landing .hero-sheet {
+  animation: sheet-rise 1.1s var(--ease-out) both;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 2px 5px rgba(8, 13, 28, 0.25),
+    0 26px 50px -14px rgba(6, 10, 24, 0.55),
+    0 70px 100px -40px rgba(6, 10, 24, 0.6);
+}
+
+.landing .hero-analysis {
+  animation-delay: 0.35s;
+}
+
+.landing .hero-record {
+  animation-delay: 0.5s;
+}
+
+.landing .hero-caption {
+  margin-top: 1.25rem;
+  max-width: 30rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.landing .hero-replay {
+  position: absolute;
+  z-index: 3;
+  top: 1rem;
+  right: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    opacity 0.4s ease,
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.landing .hero-replay:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.landing .hero-replay[data-hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.landing .hero-stage :focus-visible {
+  outline-color: #fff;
+}
+
+@media (min-width: 1100px) {
+  .landing .hero-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 0;
+    padding-left: max(1.5rem, calc((100vw - 1200px) / 2 + 1.5rem));
+    padding-right: 1rem;
+    min-height: calc(max(760px, 100svh) - 5.5rem - 1rem);
+  }
+
+  .landing .hero-copy {
+    padding-right: 3.5rem;
+  }
+
+  .landing .hero-stage {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .landing .hero-stage-bg {
+    border-radius: 1.75rem;
+  }
+
+  /* The sheets leave the panel on its left edge, so the product sits across the line between paper and navy. */
+  .landing .hero-float {
+    position: absolute;
+    top: 46%;
+    left: -3rem;
+    right: 2rem;
+    padding: 0;
+    transform: translateY(-50%);
+  }
+
+  .landing .hero-parallax {
+    transform: rotateY(-6deg) rotateX(2.5deg);
+  }
+
+  .landing .hero-run {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .landing .hero-analysis {
+    margin-top: 3.5rem;
+  }
+
+  .landing .hero-record {
+    transform: translateZ(40px);
+  }
+
+  .landing .hero-caption {
+    position: absolute;
+    left: 2.25rem;
+    bottom: 1.5rem;
+    margin: 0;
+  }
+
+  .landing .hero-replay {
+    top: 1.5rem;
+    right: 1.75rem;
+  }
+}
+
+/*
+ * The run's starting state. Under `.js`, and until the timeline takes over
+ * (`data-run` on the figure), the log and the record sit at the start of the
+ * analysis. Without the script, or once `data-run` is set, the finished figure
+ * shows and GSAP's inline styles do the rest.
+ */
+.landing [data-bar] {
+  opacity: 0;
+}
+
+.landing [data-progress] {
+  transform: scaleX(1);
+}
+
+.js .landing .run:not([data-run]) :is([data-line], [data-value], [data-recognized], [data-summary], [data-foot]) {
+  opacity: 0;
+}
+
+.js .landing .run:not([data-run]) [data-bar] {
+  opacity: 1;
+}
+
+.js .landing .run:not([data-run]) [data-progress] {
+  transform: scaleX(0);
+}
+
+/* Once the reading is done, "Save record" breathes: it is waiting for a person. */
+@keyframes save-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 24, 29, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(22, 24, 29, 0.14);
+  }
+}
+
+.landing .run.is-waiting .hero-save {
+  animation: save-breathe 2.6s ease-in-out infinite;
+}
+
+/* ── Sheets on a dark ground: one shadow recipe for every product window on navy ── */
+
+.landing .tour-window {
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  color: #16181d;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 2px 5px rgba(8, 13, 28, 0.25),
+    0 26px 50px -14px rgba(6, 10, 24, 0.55),
+    0 70px 100px -40px rgba(6, 10, 24, 0.6);
+}
+
+/* ── Tour ──
+ * Stacked by default: the header, then each step with its scene in its finished
+ * state. Tour.tsx adds `tour-live` on a wide, tall screen with motion allowed,
+ * and the section becomes a runway with a sticky stage.
+ */
+
+.landing .tour {
+  position: relative;
+  z-index: 1;
+  margin-top: -2rem;
+}
+
+.landing .tour-runway {
+  overflow: clip;
+  border-radius: 2rem 2rem 0 0;
+  background: #1a2742;
+}
+
+.landing .tour-sticky {
+  padding-block: 5rem;
+}
+
+.landing .tour-steps {
+  display: grid;
+  gap: 3.5rem;
+  margin-top: 3rem;
+}
+
+.landing .tour-step {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.landing .tour-copy {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.landing .tour-rail {
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.landing .tour-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+.landing .tour-scene {
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .landing .tour-sticky {
+    padding-block: 7rem;
+  }
+}
+
+/* Live: the runway is three and a half screens, and the stage holds still while the scenes play. */
+.landing .tour-live .tour-runway {
+  height: 360vh;
+}
+
+.landing .tour-live .tour-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  padding-block: 0;
+}
+
+.landing .tour-live .tour-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+}
+
+.landing .tour-live .tour-steps {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: 3.5rem;
+  row-gap: 1.75rem;
+  margin-top: 2.25rem;
+  align-items: center;
+}
+
+/* The copy runs down the left; every scene sits in the same cell on the right. */
+.landing .tour-live .tour-step {
+  display: contents;
+}
+
+.landing .tour-live .tour-copy {
+  grid-column: 1;
+}
+
+.landing .tour-live .tour-scene {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
+
+/* Inside the scenes */
+
+.landing .tour-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid #e1e2dd;
+}
+
+/* The reader's place in the record: a pale band that moves down the rows. */
+.landing .tour-hl {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  top: 0;
+  z-index: 0;
+  border-radius: 8px;
+  background: #e8edf3;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.landing .tour-typed {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  border-right: 1.5px solid transparent;
+}
+
+.landing .tour-wrow {
+  height: 56px;
+  overflow: hidden;
+}
+
+/* ── The checklist tabs: a segmented control with a sliding thumb ── */
+
+.landing .tab-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(22, 24, 29, 0.14),
+    0 4px 10px -4px rgba(26, 39, 66, 0.2);
+  transition:
+    transform 0.45s var(--ease-out),
+    width 0.45s var(--ease-out),
+    height 0.45s var(--ease-out);
+}
+
+/* ── Where your contract goes ──
+ * A grid of four nodes. On a phone Contract Lens, the firm and the database
+ * stand in one column with the outside AI providers beside Contract Lens; from
+ * 768px the firm, Contract Lens and the providers run across, with the
+ * database under Contract Lens. The lines between them fill in the direction
+ * the data moves (`--p`, 0 to 1, set by YourData.tsx).
+ */
+
+.landing .flow {
+  display: grid;
+  align-items: center;
+  column-gap: 0.25rem;
+  grid-template-columns: minmax(0, 1fr) 5.5rem minmax(0, 1fr);
+  grid-template-areas:
+    "firm . ."
+    "fl . ."
+    "lens la ai"
+    "dll dlc dlc"
+    "db . .";
+}
+
+@media (min-width: 768px) {
+  .landing .flow {
+    grid-template-columns: minmax(0, 1fr) 6.25rem minmax(0, 1fr) 6.25rem minmax(0, 1fr);
+    grid-template-areas:
+      "firm fl lens la ai"
+      ". . dll dlc dlc"
+      ". . db . .";
+  }
+}
+
+.landing .flow-node {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #e1e2dd;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(26, 39, 66, 0.06),
+    0 14px 26px -18px rgba(26, 39, 66, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+.landing .flow-node-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: #16181d;
+}
+
+.landing .flow-node-note {
+  font-size: 0.8125rem;
+  color: #5f6670;
+}
+
+.landing .flow-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  justify-content: center;
+  padding-inline: 0.15rem;
+}
+
+.landing .flow-link {
+  --p: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.landing .flow-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-align: center;
+  color: #5f6670;
+}
+
+.landing .flow-track {
+  position: relative;
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(22, 24, 29, 0.14);
+}
+
+.landing .flow-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: #16181d;
+  transform-origin: left center;
+  transform: scaleX(var(--p));
+}
+
+.landing .flow-head {
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 0;
+  height: 0;
+  border-left: 6px solid #16181d;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  opacity: calc(0.25 + 0.75 * var(--p));
+}
+
+/* A line that points back toward Contract Lens. */
+.landing .flow-link[data-back] .flow-fill {
+  transform-origin: right center;
+}
+
+.landing .flow-link[data-back] .flow-head {
+  right: auto;
+  left: -1px;
+  border-left: 0;
+  border-right: 6px solid #16181d;
+}
+
+/* Vertical lines: the line stands on the left and the label sits beside it. */
+.landing .flow-link[data-axis="y"],
+.landing .flow-link[data-axis="fl"] {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+}
+
+.landing .flow-link[data-axis="y"] .flow-track,
+.landing .flow-link[data-axis="fl"] .flow-track {
+  width: 2px;
+  height: auto;
+  flex: none;
+  margin-left: 1.25rem;
+}
+
+.landing .flow-link[data-axis="y"] .flow-fill,
+.landing .flow-link[data-axis="fl"] .flow-fill {
+  transform-origin: top center;
+  transform: scaleY(var(--p));
+}
+
+.landing .flow-link[data-axis="y"] .flow-head,
+.landing .flow-link[data-axis="fl"] .flow-head {
+  right: auto;
+  left: 50%;
+  top: auto;
+  bottom: -1px;
+  translate: -50% 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #16181d;
+  border-bottom: 0;
+}
+
+.landing .flow-link[data-axis="y"] .flow-label,
+.landing .flow-link[data-axis="fl"] .flow-label {
+  order: 2;
+  align-self: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* From 768px the line from the firm to Contract Lens runs across. */
+@media (min-width: 768px) {
+  .landing .flow-link[data-axis="fl"] {
+    flex-direction: column;
+    gap: 0.3rem;
+    min-height: 0;
+  }
+
+  .landing .flow-link[data-axis="fl"] .flow-track {
+    width: auto;
+    height: 2px;
+    margin-left: 0;
+  }
+
+  .landing .flow-link[data-axis="fl"] .flow-fill {
+    transform-origin: left center;
+    transform: scaleX(var(--p));
+  }
+
+  .landing .flow-link[data-axis="fl"] .flow-head {
+    right: -1px;
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    translate: 0 -50%;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #16181d;
+    border-right: 0;
+  }
+
+  .landing .flow-link[data-axis="fl"] .flow-label {
+    order: 0;
+    align-self: auto;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* What Contract Lens stores: two kinds of thing travel on the one line, and only one kind is locked. */
+.landing .flow-chips {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding-left: 0.75rem;
+}
+
+/* The line to the database stands under the middle of Contract Lens. */
+.landing .flow-link[data-axis="y"] {
+  justify-content: center;
+}
+
+.landing .flow-link[data-axis="y"] .flow-track {
+  margin-left: 0;
+}
+
+/* The step the diagram is on carries a rail, and an ink numeral. Text is never dimmed. */
+.landing .flow-rail {
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  bottom: 0.15rem;
+  width: 2px;
+  border-radius: 2px;
+  background: #16181d;
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+.landing .flow-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid #e1e2dd;
+  background: #fff;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: #3f444c;
+}
+
+.landing .flow-chip-locked {
+  border-color: #16181d;
+  color: #16181d;
+}
+
+/* ── The permissions matrix ── */
+
+.landing .roles-col {
+  transition: background-color 0.25s ease;
+}
+
+.landing .roles-col[data-selected] {
+  background: #e8edf3;
+}
+
+.landing th.roles-col:not([data-selected]) {
+  color: #5f6670;
+}
+
+.landing .roles-tick {
+  display: inline-block;
+  width: 3px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.landing .roles-tick-on {
+  height: 1.5rem;
+  background: #16181d;
+}
+
+.landing .roles-tick-off {
+  width: 2px;
+  height: 0.5rem;
+  background: #cfd1cc;
+}
+
+/* Five columns do not fit a phone: only the picked role's column shows. */
+@media (max-width: 767px) {
+  .landing .roles-col:not([data-selected]) {
+    display: none;
+  }
+}
+
+/* ── The FAQ: native <details>, eased open where the browser can ── */
+
+.landing .faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.landing .faq-mark {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.landing .faq-mark span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+  background: #16181d;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.landing .faq-mark span:last-child {
+  transform: rotate(90deg);
+}
+
+.landing .faq-item[open] .faq-mark span:last-child {
+  transform: rotate(0deg);
+}
+
+.landing .faq-item {
+  interpolate-size: allow-keywords;
+}
+
+.landing .faq-item::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 0.4s var(--ease-out),
+    content-visibility 0.4s allow-discrete;
+}
+
+.landing .faq-item[open]::details-content {
+  block-size: auto;
+}
+
+/* ── The contact block: a navy layer with a rounded top, and the ruler field behind it ── */
+
+.landing #contact {
+  position: relative;
+  z-index: 1;
+  margin-top: -2rem;
+  border-radius: 2rem 2rem 0 0;
+}
+
+.landing .tone-navy > .contact-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}

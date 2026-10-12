@@ -12,8 +12,8 @@ export function Footer() {
   const sections = [
     ['how-it-works', t.nav.howItWorks],
     ['what-it-reads', t.nav.whatItReads],
-    ['deadlines', t.nav.deadlines],
-    ['confidentiality', t.nav.confidentiality],
+    ['your-data', t.nav.yourData],
+    ['faq', t.nav.faq],
   ] as const;
 
   return (
@@ -48,7 +48,17 @@ export function Footer() {
           <span>
             © {new Date().getFullYear()} {t.footer.copyright}
           </span>
-          <LanguageToggle />
+          <span className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+            <a
+              href="https://www.linkedin.com/in/santiago-paz/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-4 hover:text-ink hover:underline"
+            >
+              {t.footer.credit}
+            </a>
+            <LanguageToggle />
+          </span>
         </div>
       </div>
     </footer>

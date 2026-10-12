@@ -2,6 +2,34 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { decrypt } from '@/lib/auth'
 
+/** Set by the landing's EN / DE switch (components/landing/LanguageContext.tsx). */
+const LANGUAGE_COOKIE = 'cl_lang'
+
+/**
+ * Whether the landing should open in German. The visitor's own pick wins; with
+ * none, the first language of English or German in the browser's list decides,
+ * highest quality first. Anything else (or no header at all, as with crawlers)
+ * gets English.
+ */
+function prefersGerman(request: NextRequest): boolean {
+  const picked = request.cookies.get(LANGUAGE_COOKIE)?.value
+  if (picked === 'de') return true
+  if (picked === 'en') return false
+
+  const ranked = (request.headers.get('accept-language') ?? '')
+    .split(',')
+    .map((part) => {
+      const [tag, ...params] = part.trim().split(';')
+      const quality = params.map((param) => param.trim()).find((param) => param.startsWith('q='))
+      return { tag: tag.toLowerCase(), q: quality ? Number(quality.slice(2)) : 1 }
+    })
+    .filter(({ tag, q }) => tag && q > 0)
+    .sort((a, b) => b.q - a.q)
+
+  const first = ranked.find(({ tag }) => /^(de|en)(-|$)/.test(tag))
+  return first ? first.tag.startsWith('de') : false
+}
+
 export async function proxy(request: NextRequest) {
   const cookie = request.cookies.get('auth_session')?.value
   const session = cookie ? await decrypt(cookie) : null
@@ -41,8 +69,18 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // 2. Allow Landing Page
+  // 2. Allow Landing Page. `/` is English and `/de` is German. A visitor whose
+  // browser prefers German, and who has not picked English, gets `/de` served
+  // from `/`, so the address stays short and everyone else still sees English.
   if (pathname === '/') {
+    const response = prefersGerman(request)
+      ? NextResponse.rewrite(new URL('/de', request.url))
+      : NextResponse.next()
+    response.headers.append('Vary', 'Accept-Language, Cookie')
+    return response
+  }
+
+  if (pathname === '/de') {
     return NextResponse.next()
   }
 

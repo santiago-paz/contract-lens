@@ -8,6 +8,7 @@ import { sendContactMessage } from '@/app/actions/contact';
 import { useLanguage } from './LanguageContext';
 import { DUR, EASE } from './motion';
 import { Section } from './Section';
+import { RulerField } from './webgl/RulerField';
 
 const EMPTY_FORM = { name: '', email: '', message: '', company: '' };
 
@@ -62,6 +63,7 @@ export function ContactForm() {
       summary={t.contact.body}
       tone="navy"
       layout="split"
+      backdrop={<RulerField intensity={0.7} />}
     >
       {/* The form is a sheet on the navy block, so it keeps the light palette and the dark focus ring. */}
       <div className="on-paper rounded-[20px] bg-paper p-6 text-ink shadow-sheet sm:p-8">

@@ -11,19 +11,20 @@ import { Brand } from './Logo';
 import { DUR, EASE } from './motion';
 import { scrollToSection } from './scroll';
 
-const SECTIONS = ['how-it-works', 'what-it-reads', 'deadlines', 'confidentiality'] as const;
+const SECTIONS = ['how-it-works', 'what-it-reads', 'your-data', 'faq'] as const;
 type SectionId = (typeof SECTIONS)[number];
 
 export function Navbar() {
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<SectionId | null>(null);
 
   const labels: Record<SectionId, string> = {
     'how-it-works': t.nav.howItWorks,
     'what-it-reads': t.nav.whatItReads,
-    deadlines: t.nav.deadlines,
-    confidentiality: t.nav.confidentiality,
+    'your-data': t.nav.yourData,
+    faq: t.nav.faq,
   };
 
   useEffect(() => {
@@ -31,6 +32,23 @@ export function Navbar() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Which section is under the middle of the viewport, so the bar can say where the visitor is.
+  useEffect(() => {
+    const seen = new Map<string, boolean>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) seen.set(entry.target.id, entry.isIntersecting);
+        setActive(SECTIONS.find((id) => seen.get(id)) ?? null);
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    for (const id of SECTIONS) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -73,7 +91,10 @@ export function Navbar() {
                 key={id}
                 href={`#${id}`}
                 onClick={go(id)}
-                className="text-row font-medium text-body transition-colors hover:text-ink"
+                aria-current={active === id ? 'true' : undefined}
+                className={`nav-link text-row font-medium transition-colors hover:text-ink ${
+                  active === id ? 'text-ink' : 'text-body'
+                }`}
               >
                 {labels[id]}
               </a>
