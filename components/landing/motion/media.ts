@@ -21,7 +21,7 @@ export function useMediaQuery(query: string) {
 export const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 export const NO_PREFERENCE = '(prefers-reduced-motion: no-preference)';
 export const FINE_POINTER = '(hover: hover) and (pointer: fine)';
-/** Wide enough for the hero's two-column stage and the pinned tour. */
-export const WIDE = '(min-width: 1100px)';
+/** Wide enough for the hero's two-column stage. (The pinned tour is a little narrower: 1100px.) */
+export const WIDE = '(min-width: 1200px)';
 
 export const usePrefersReducedMotion = () => useMediaQuery(REDUCED_MOTION);

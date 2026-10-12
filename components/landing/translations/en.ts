@@ -78,6 +78,10 @@ export const en = {
     closeMenu: "Close menu",
     languageLabel: "Language",
   },
+  motion: {
+    pause: "Pause motion",
+    resume: "Resume motion",
+  },
   hero: {
     titleLine1: "Upload a contract.",
     titleLine2: "Get the facts and the deadlines back.",
@@ -131,6 +135,7 @@ export const en = {
     title: "The software reads. Your firm decides.",
     summary: "After the file is read, a person checks the record, watches the dates and answers the alerts.",
     stepLabel: "Step {n} of {total}",
+    sampleNote: "Sample data.",
     steps: [
       {
         title: "Check the record",

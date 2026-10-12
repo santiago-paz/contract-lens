@@ -10,7 +10,8 @@ import { NO_PREFERENCE } from './motion/media';
  * The questions every contract raises, set large, and the one line that says
  * what Contract Lens does about them. The words light up as the visitor scrolls
  * past, so the reading speed is theirs. Nothing moves on its own, and the text
- * never leaves its place: only its brightness follows the scroll.
+ * never leaves its place: only its brightness follows the scroll. The unlit
+ * words stay at 3:1 against the page, the contrast large text needs.
  *
  * Without the script, or with reduced motion, the whole statement is simply lit.
  */
@@ -24,10 +25,11 @@ export function Statement() {
       if (!el) return;
       const mm = gsap.matchMedia();
       mm.add(NO_PREFERENCE, () => {
-        const split = SplitText.create(el, { type: 'words' });
+        // aria: 'none' leaves the paragraph as it is: SplitText's default puts an aria-label on a <p>, which is not allowed.
+        const split = SplitText.create(el, { type: 'words', aria: 'none' });
         gsap.fromTo(
           split.words,
-          { opacity: 0.16 },
+          { opacity: 0.48 },
           {
             opacity: 1,
             ease: 'none',

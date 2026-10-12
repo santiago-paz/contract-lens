@@ -80,6 +80,7 @@ export function DecideScene() {
             ))}
           </ol>
         </div>
+        <p className="border-t border-rule bg-ledger px-5 py-2 text-[11px] text-muted">{t.tour.sampleNote}</p>
       </div>
     </figure>
   );

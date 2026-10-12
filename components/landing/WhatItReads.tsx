@@ -119,14 +119,14 @@ export function WhatItReads() {
   const type = types[active];
 
   return (
-    <Section id="what-it-reads" title={t.whatItReads.title} summary={t.whatItReads.summary} layout="split">
+    <Section id="what-it-reads" title={t.whatItReads.title} summary={t.whatItReads.summary} layout="split" flip>
       <div>
         <div
           ref={tablistRef}
           role="tablist"
           aria-label={t.whatItReads.tabsLabel}
           onKeyDown={onKeyDown}
-          className="relative inline-flex max-w-full flex-wrap gap-1 rounded-full bg-ledger p-1"
+          className="relative inline-flex max-w-full flex-wrap gap-1 rounded-3xl bg-ledger p-1"
         >
           {thumb && (
             <span
@@ -229,7 +229,7 @@ export function WhatItReads() {
           )}
         </div>
 
-        <p className="mt-6 max-w-[28rem] text-small text-muted">{t.whatItReads.footnote}</p>
+        <p className="mt-6 text-small text-muted">{t.whatItReads.footnote}</p>
       </div>
     </Section>
   );

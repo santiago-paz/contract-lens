@@ -59,6 +59,7 @@ export async function proxy(request: NextRequest) {
   // unauthenticated, so redirecting them to /login breaks link previews.
   if (
     pathname.startsWith('/opengraph-image') ||
+    pathname.startsWith('/de/opengraph-image') ||
     pathname.startsWith('/twitter-image') ||
     pathname.startsWith('/icon') ||
     pathname.startsWith('/apple-icon') ||

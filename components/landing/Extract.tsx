@@ -30,7 +30,7 @@ export function ExtractSheets() {
       {/* The analysis: the file, and the log as it comes in */}
       <div className="hero-sheet hero-analysis overflow-hidden rounded-[14px] bg-paper">
         <div className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3">
-          <span className="text-[13px] font-semibold text-ink">{t.extract.title}</span>
+          <span className="shrink-0 whitespace-nowrap text-[13px] font-semibold text-ink">{t.extract.title}</span>
           <span data-step-label className="text-[12px] tabular-nums text-muted">
             {stepLabel(t.extract.stepLabel, TOTAL_STEPS)}
           </span>
@@ -69,7 +69,7 @@ export function ExtractSheets() {
       {/* The record, as it comes back */}
       <div className="hero-sheet hero-record overflow-hidden rounded-[14px] bg-paper">
         <div className="flex items-center justify-between gap-4 border-b border-rule px-5 py-3">
-          <span className="text-[13px] font-semibold text-ink">{t.extract.recordTitle}</span>
+          <span className="shrink-0 whitespace-nowrap text-[13px] font-semibold text-ink">{t.extract.recordTitle}</span>
           <span data-recognized className="text-xs text-muted">
             {t.extract.recognizedLabel} <span className="font-medium text-ink">{t.extract.recognized}</span>
           </span>
@@ -80,7 +80,7 @@ export function ExtractSheets() {
             <div
               key={field.label}
               data-field={i}
-              className="grid gap-x-4 gap-y-0.5 border-b border-rule py-3 sm:grid-cols-[8.5rem_1fr] sm:items-baseline"
+              className="grid gap-x-4 gap-y-0.5 border-b border-rule py-3 sm:grid-cols-[var(--record-label)_1fr] sm:items-baseline"
             >
               <dt className="text-[11px] uppercase tracking-[0.12em] text-muted">{field.label}</dt>
               <dd className="relative min-w-0 text-[14px] font-medium leading-[1.4] text-ink">

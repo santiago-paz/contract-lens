@@ -15,15 +15,15 @@ const PREVIEW = {
   between: ['zwischen', 'Habermann Logistik GmbH, Hamburg (Auftraggeber)', 'und', 'Nordlicht Software GmbH, Kiel (Auftragnehmer)'],
   clauses: [
     {
-      heading: '§ 1 Gegenstand',
+      heading: '§\u00a01 Gegenstand',
       body: 'Der Auftragnehmer betreibt und wartet das Lagerverwaltungssystem des Auftraggebers.',
     },
     {
-      heading: '§ 2 Laufzeit und Kündigung',
+      heading: '§\u00a02 Laufzeit und Kündigung',
       body: 'Der Vertrag beginnt am 1. Januar 2025 und läuft 24 Monate. Er verlängert sich jeweils um zwölf Monate, wenn ihn nicht eine Partei mit einer Frist von drei Monaten zum Ende der Laufzeit kündigt.',
     },
     {
-      heading: '§ 3 Haftung',
+      heading: '§\u00a03 Haftung',
       body: 'Die Haftung ist je Vertragsjahr auf 50.000 EUR begrenzt.',
     },
   ],
@@ -48,8 +48,8 @@ export function CheckScene() {
 
         <div className="grid sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)]">
           {/* The file, as the preview shows it */}
-          <div className="flex flex-col border-b border-rule bg-mist p-4 sm:border-b-0 sm:border-r">
-            <div className="min-h-[15.5rem] flex-1 overflow-hidden rounded-lg bg-paper px-4 py-4 shadow-[0_1px_2px_rgba(26,39,66,0.12)]">
+          <div className="tour-file flex flex-col border-b border-rule bg-mist p-4 sm:border-b-0 sm:border-r">
+            <div className="tour-paper min-h-[15.5rem] flex-1 overflow-hidden rounded-lg bg-paper px-4 py-4 shadow-[0_1px_2px_rgba(26,39,66,0.12)]">
               <div className="h-full overflow-hidden text-[10px] leading-[1.5] text-body">
                 <p className="text-[12px] font-semibold text-ink">{PREVIEW.title}</p>
                 <div className="mt-2 space-y-0.5">
@@ -58,7 +58,7 @@ export function CheckScene() {
                   ))}
                 </div>
                 {PREVIEW.clauses.map((clause) => (
-                  <div key={clause.heading} className="mt-3">
+                  <div key={clause.heading} className="tour-clause mt-3">
                     <p className="font-semibold text-ink">{clause.heading}</p>
                     <p className="mt-0.5">{clause.body}</p>
                   </div>
@@ -108,6 +108,7 @@ export function CheckScene() {
             </div>
           </div>
         </div>
+        <p className="border-t border-rule bg-ledger px-5 py-2 text-[11px] text-muted">{t.tour.sampleNote}</p>
       </div>
     </figure>
   );

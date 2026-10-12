@@ -24,6 +24,7 @@ export function Section({
   summary,
   tone = 'paper',
   layout = 'stack',
+  flip = false,
   backdrop,
   children,
 }: {
@@ -32,6 +33,8 @@ export function Section({
   summary?: string;
   tone?: Tone;
   layout?: Layout;
+  /** In a split, puts the content on the left and the heading on the right. The heading still comes first in the document. */
+  flip?: boolean;
   /** Sits behind the content, inside the section's own ground (the contact block's ruler field). */
   backdrop?: ReactNode;
   children: ReactNode;
@@ -73,8 +76,8 @@ export function Section({
       <div className="mx-auto max-w-[1200px] px-6 py-20 lg:py-28">
         {layout === 'split' ? (
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-12">
-            <div className="lg:col-span-5">{header}</div>
-            <div className="mt-12 lg:col-span-7 lg:mt-0">{children}</div>
+            <div className={`lg:col-span-5 ${flip ? 'lg:col-start-8 lg:row-start-1' : ''}`}>{header}</div>
+            <div className={`mt-12 lg:col-span-7 lg:mt-0 ${flip ? 'lg:col-start-1 lg:row-start-1' : ''}`}>{children}</div>
           </div>
         ) : (
           <>

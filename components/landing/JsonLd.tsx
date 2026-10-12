@@ -8,14 +8,15 @@ import { translations, type Language } from './translations';
  */
 export function JsonLd({ language }: { language: Language }) {
   const { faq } = translations[language];
+  const plain = (text: string) => text.replace(/\u00a0/g, ' ');
   const data = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     inLanguage: language,
     mainEntity: faq.items.map((item) => ({
       '@type': 'Question',
-      name: item.q,
-      acceptedAnswer: { '@type': 'Answer', text: item.a },
+      name: plain(item.q),
+      acceptedAnswer: { '@type': 'Answer', text: plain(item.a) },
     })),
   };
   // "<" is escaped so a string can never close the script early.

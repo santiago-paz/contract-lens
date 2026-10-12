@@ -34,7 +34,7 @@ export function WatchScene() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 px-5 py-2.5 text-[11px] uppercase tracking-[0.12em] text-muted sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)_auto]">
+        <div className="grid grid-cols-[minmax(0,1fr)_6.25rem] gap-x-4 px-5 py-2.5 text-[11px] uppercase tracking-[0.12em] text-muted sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)_6.25rem]">
           <span>{list.columns.contract}</span>
           <span className="hidden sm:block">{list.columns.notice}</span>
           <span className="text-right">{list.columns.ends}</span>
@@ -45,7 +45,7 @@ export function WatchScene() {
             <div
               key={row.title}
               data-wrow={row.days}
-              className="tour-wrow grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 border-b border-rule px-5 text-[13px] last:border-b-0 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)_auto]"
+              className="tour-wrow grid grid-cols-[minmax(0,1fr)_6.25rem] items-center gap-x-4 border-b border-rule px-5 text-[13px] last:border-b-0 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)_6.25rem]"
             >
               <span className="min-w-0">
                 <span className="block truncate font-medium text-ink">{row.title}</span>
@@ -62,6 +62,7 @@ export function WatchScene() {
             </div>
           ))}
         </div>
+        <p className="border-t border-rule bg-ledger px-5 py-2 text-[11px] text-muted">{t.tour.sampleNote}</p>
       </div>
     </figure>
   );

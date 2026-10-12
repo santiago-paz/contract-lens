@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <Bootstrap />
+      <Bootstrap language="de" />
       <JsonLd language="de" />
       <LandingPage language="de" fontClassName={`${sourceSerif.variable} ${plexSans.variable}`} />
     </>

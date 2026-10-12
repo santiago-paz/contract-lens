@@ -1,5 +1,6 @@
 'use client';
 
+import { Check } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 import { useLanguage } from './LanguageContext';
@@ -11,8 +12,8 @@ import { ROLE_ORDER, type Role } from './translations/types';
 /**
  * Who can do what, as the product's permissions have it. The five roles run
  * from least to most access and each one can do what the ones before it can,
- * so the matrix fills in from the top left like a staircase. A tick is the
- * page's own mark: a tall one for "can", a short faint one for "cannot".
+ * so the matrix fills in from the top left like a staircase. A check says
+ * "can" and a short dash says "cannot".
  *
  * The roles above the matrix are a control: pick one and its column is lit.
  * On a phone only the picked role's column shows, because five columns do not
@@ -27,18 +28,18 @@ export function Roles() {
 
   const has = (role: Role, from: Role) => ROLE_ORDER.indexOf(role) >= ROLE_ORDER.indexOf(from);
 
-  // The ticks of the picked column stand up. The first time, every column does, as the matrix comes into view.
+  // The checks of the picked column pop in. The first time, every column does, as the matrix comes into view.
   useGSAP(
     () => {
       const root = rootRef.current;
       if (!root) return;
       const mm = gsap.matchMedia();
       mm.add(NO_PREFERENCE, () => {
-        const grow = (ticks: Element[]) =>
+        const grow = (marks: Element[]) =>
           gsap.fromTo(
-            ticks,
-            { scaleY: 0, transformOrigin: '50% 100%' },
-            { scaleY: 1, duration: 0.5, ease: 'power3.out', stagger: 0.045, overwrite: 'auto' },
+            marks,
+            { scale: 0, opacity: 0, transformOrigin: '50% 60%' },
+            { scale: 1, opacity: 1, duration: 0.45, ease: 'power3.out', stagger: 0.045, overwrite: 'auto' },
           );
 
         if (!first.current) {
@@ -46,7 +47,7 @@ export function Roles() {
           return;
         }
         const all = gsap.utils.toArray<Element>(root.querySelectorAll('[data-on]'));
-        gsap.set(all, { scaleY: 0 });
+        gsap.set(all, { scale: 0, opacity: 0 });
         const io = new IntersectionObserver(
           ([entry]) => {
             if (!entry.isIntersecting) return;
@@ -56,8 +57,8 @@ export function Roles() {
             ROLE_ORDER.forEach((role, i) => {
               gsap.fromTo(
                 root.querySelectorAll(`[data-col="${role}"] [data-on]`),
-                { scaleY: 0, transformOrigin: '50% 100%' },
-                { scaleY: 1, duration: 0.5, ease: 'power3.out', stagger: 0.05, delay: i * 0.12 },
+                { scale: 0, opacity: 0, transformOrigin: '50% 60%' },
+                { scale: 1, opacity: 1, duration: 0.45, ease: 'power3.out', stagger: 0.05, delay: i * 0.12 },
               );
             });
           },
@@ -74,7 +75,7 @@ export function Roles() {
   return (
     <Section id="roles" title={t.roles.title} summary={t.roles.summary}>
       <div ref={rootRef}>
-        <div role="group" aria-label={t.roles.selectLabel} className="inline-flex max-w-full flex-wrap gap-1 rounded-full bg-ledger p-1">
+        <div role="group" aria-label={t.roles.selectLabel} className="inline-flex max-w-full flex-wrap gap-1 rounded-3xl bg-ledger p-1">
           {ROLE_ORDER.map((role) => (
             <button
               key={role}
@@ -126,12 +127,14 @@ export function Roles() {
                     >
                       {has(role, capability.from) ? (
                         <>
-                          <span data-on aria-hidden="true" className="roles-tick roles-tick-on" />
+                          <span data-on aria-hidden="true" className="roles-mark">
+                            <Check className="h-[1.125rem] w-[1.125rem]" strokeWidth={2.5} />
+                          </span>
                           <span className="sr-only">{t.roles.can}</span>
                         </>
                       ) : (
                         <>
-                          <span aria-hidden="true" className="roles-tick roles-tick-off" />
+                          <span aria-hidden="true" className="roles-dash" />
                           <span className="sr-only">{t.roles.cannot}</span>
                         </>
                       )}

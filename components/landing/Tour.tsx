@@ -44,7 +44,7 @@ export function Tour() {
       if (!section || !runway) return;
 
       const mm = gsap.matchMedia();
-      mm.add(`(min-width: 1100px) and (min-height: 700px) and ${NO_PREFERENCE}`, () => {
+      mm.add(`(min-width: 1100px) and (min-height: 640px) and ${NO_PREFERENCE}`, () => {
         section.classList.add('tour-live');
         const q = gsap.utils.selector(section);
 
@@ -82,8 +82,8 @@ export function Tour() {
 
         // --- starting state: the first scene, with the record as the software left it ---
         tl.set([watch, decide], { autoAlpha: 0, y: 28, scale: 0.985 }, 0)
-          .set([copies[1], copies[2]], { opacity: 0.5 }, 0)
-          .set(fills, { scaleY: 0 }, 0)
+          .set([copies[1], copies[2]], { opacity: 0.72 }, 0)
+          .set(fills, { scaleX: 0 }, 0)
           .set(highlight, { opacity: 0, y: rowBox[0].y, height: rowBox[0].h }, 0)
           .set(empty, { display: 'inline' }, 0)
           .set(typed, { width: 0, borderRightColor: 'transparent' }, 0)
@@ -98,11 +98,11 @@ export function Tour() {
           .set([events[1], events[2]], { autoAlpha: 0, y: 8 }, 0);
 
         // --- the left column: the step in progress is lit, and its rail fills ---
-        tl.fromTo(fills[0], { scaleY: 0 }, { scaleY: 1, duration: 3.7, ease: 'none' }, 0);
-        tl.fromTo(fills[1], { scaleY: 0 }, { scaleY: 1, duration: 3.1, ease: 'none' }, 3.7);
-        tl.fromTo(fills[2], { scaleY: 0 }, { scaleY: 1, duration: 3.2, ease: 'none' }, 6.8);
-        tl.to(copies[0], { opacity: 0.5, duration: 0.5 }, 3.6).to(copies[1], { opacity: 1, duration: 0.5 }, 3.6);
-        tl.to(copies[1], { opacity: 0.5, duration: 0.5 }, 6.7).to(copies[2], { opacity: 1, duration: 0.5 }, 6.7);
+        tl.fromTo(fills[0], { scaleX: 0 }, { scaleX: 1, duration: 3.7, ease: 'none' }, 0);
+        tl.fromTo(fills[1], { scaleX: 0 }, { scaleX: 1, duration: 3.1, ease: 'none' }, 3.7);
+        tl.fromTo(fills[2], { scaleX: 0 }, { scaleX: 1, duration: 3.2, ease: 'none' }, 6.8);
+        tl.to(copies[0], { opacity: 0.72, duration: 0.5 }, 3.6).to(copies[1], { opacity: 1, duration: 0.5 }, 3.6);
+        tl.to(copies[1], { opacity: 0.72, duration: 0.5 }, 6.7).to(copies[2], { opacity: 1, duration: 0.5 }, 6.7);
 
         // --- scene one: a person reads down the record, fills the empty field, and saves ---
         tl.to(highlight, { opacity: 1, duration: 0.25, ease: 'none' }, 0.1);
@@ -209,8 +209,8 @@ export function Tour() {
               {t.tour.steps.map((step, index) => (
                 <div key={step.title} className="tour-step">
                   <div data-copy={index} className="tour-copy">
-                    <span aria-hidden="true" className="tour-rail">
-                      <span data-progress className="tour-rail-fill" />
+                    <span aria-hidden="true" className="tour-bar">
+                      <span data-progress className="tour-bar-fill" />
                     </span>
                     <h3 className="text-title text-paper">
                       <span className="sr-only">

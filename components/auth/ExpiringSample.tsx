@@ -1,5 +1,5 @@
 import { URGENCY_CHIP } from '@/components/landing/chips';
-import { en } from '@/components/landing/translations/en';
+import { translations } from '@/components/landing/translations';
 
 /*
  * The screen that floats on the navy block: the product's list of expiring
@@ -7,6 +7,7 @@ import { en } from '@/components/landing/translations/en';
  * are the landing's own sample rows, so the two pages never drift apart, and
  * the partner sits under the title because this sheet is narrow at every width.
  */
+const en = translations.en;
 const { list } = en.deadlines;
 
 export function ExpiringSample() {

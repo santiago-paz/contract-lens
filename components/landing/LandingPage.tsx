@@ -1,6 +1,5 @@
 'use client';
 
-import { MotionConfig } from 'framer-motion';
 import { useEffect } from 'react';
 
 import { ContactForm } from './ContactForm';
@@ -42,8 +41,7 @@ export function LandingPage({ language, fontClassName }: { language: Language; f
 
   return (
     <LanguageProvider language={language}>
-      <MotionConfig reducedMotion="user">
-        <div className={`landing ${fontClassName} min-h-screen bg-paper text-ink selection:bg-mist`}>
+        <div data-lang={language} className={`landing ${fontClassName} min-h-screen bg-paper text-ink selection:bg-mist`}>
           <SkipLink />
           <Navbar />
           <main id="main-content">
@@ -58,7 +56,6 @@ export function LandingPage({ language, fontClassName }: { language: Language; f
           </main>
           <Footer />
         </div>
-      </MotionConfig>
     </LanguageProvider>
   );
 }

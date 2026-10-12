@@ -79,6 +79,10 @@ export const de: typeof en = {
     closeMenu: "Menü schließen",
     languageLabel: "Sprache",
   },
+  motion: {
+    pause: "Bewegung anhalten",
+    resume: "Bewegung fortsetzen",
+  },
   hero: {
     titleLine1: "Vertrag hochladen.",
     titleLine2: "Fakten und Fristen zurückbekommen.",
@@ -132,6 +136,7 @@ export const de: typeof en = {
     title: "Die Software liest. Ihre Kanzlei entscheidet.",
     summary: "Nach dem Lesen prüft eine Person die Akte, behält die Termine im Blick und beantwortet die Alarme.",
     stepLabel: "Schritt {n} von {total}",
+    sampleNote: "Beispieldaten.",
     steps: [
       {
         title: "Akte prüfen",
@@ -153,7 +158,7 @@ export const de: typeof en = {
       pageLabel: "Seite 1 von 12",
       paymentLabel: "Zahlungsbedingungen",
       paymentEmpty: "Nicht angegeben",
-      paymentValue: "30 Tage nach Rechnungsstellung",
+      paymentValue: "30 Tage netto",
       saved: "Gespeichert",
     },
   },

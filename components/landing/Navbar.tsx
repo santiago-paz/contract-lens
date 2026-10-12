@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -8,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useLanguage } from './LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
 import { Brand } from './Logo';
-import { DUR, EASE } from './motion';
 import { scrollToSection } from './scroll';
 
 const SECTIONS = ['how-it-works', 'what-it-reads', 'your-data', 'faq'] as const;
@@ -127,38 +125,32 @@ export function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: DUR.quick, ease: EASE }}
-            className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto overscroll-contain bg-paper lg:hidden"
-          >
-            <div className="mx-auto flex max-w-[1200px] flex-col px-6 py-6">
-              <ul className="divide-y divide-rule border-b border-rule">
-                {SECTIONS.map((id) => (
-                  <li key={id}>
-                    <a href={`#${id}`} onClick={go(id)} className="display block py-4 text-[1.75rem] text-ink">
-                      {labels[id]}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex flex-col gap-3">
-                <a href="#contact" onClick={go('contact')} className="btn btn-primary">
-                  {t.nav.requestDemo}
-                </a>
-                <Link href="/login" onClick={() => setOpen(false)} className="btn btn-secondary">
-                  {t.nav.signIn}
-                </Link>
-              </div>
+      {open && (
+        <div
+          id="mobile-menu"
+          className="menu-in fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto overscroll-contain bg-paper lg:hidden"
+        >
+          <div className="mx-auto flex max-w-[1200px] flex-col px-6 py-6">
+            <ul className="divide-y divide-rule border-b border-rule">
+              {SECTIONS.map((id) => (
+                <li key={id}>
+                  <a href={`#${id}`} onClick={go(id)} className="display block py-4 text-[1.75rem] text-ink">
+                    {labels[id]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-col gap-3">
+              <a href="#contact" onClick={go('contact')} className="btn btn-primary">
+                {t.nav.requestDemo}
+              </a>
+              <Link href="/login" onClick={() => setOpen(false)} className="btn btn-secondary">
+                {t.nav.signIn}
+              </Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 }

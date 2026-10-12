@@ -5,6 +5,7 @@ import { useRef } from 'react';
 
 import { ExtractSheets, stepLabel, TOTAL_STEPS } from './Extract';
 import { useLanguage } from './LanguageContext';
+import { MotionToggle } from './MotionToggle';
 import { gsap, useGSAP } from './motion/gsap';
 import { FINE_POINTER, NO_PREFERENCE, usePrefersReducedMotion, WIDE } from './motion/media';
 import { RulerField } from './webgl/RulerField';
@@ -146,6 +147,8 @@ export function HeroStage() {
       tl.set(rulerState, { pulse: -1 }, lastLine + 1.95);
       tl.call(() => replayRef.current?.removeAttribute('data-hidden'), [], lastLine + 1);
 
+      // Hidden until a run has finished, whatever a cleanup's callbacks did before this.
+      replayRef.current?.setAttribute('data-hidden', 'true');
       tl.progress(0).pause();
       timelineRef.current = tl;
       run.dataset.run = 'play';
@@ -222,10 +225,15 @@ export function HeroStage() {
         <figcaption className="hero-caption">{t.hero.figureCaption}</figcaption>
       </figure>
 
-      <button ref={replayRef} type="button" data-hidden="true" onClick={replay} className="hero-replay">
-        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-        {t.hero.replay}
-      </button>
+      <MotionToggle className="hero-motion" />
+
+      {/* With reduced motion there is no run to replay, so there is no button. */}
+      {!reduced && (
+        <button ref={replayRef} type="button" data-hidden="true" onClick={replay} className="hero-replay">
+          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+          {t.hero.replay}
+        </button>
+      )}
     </div>
   );
 }

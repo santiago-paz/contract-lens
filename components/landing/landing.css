@@ -15,9 +15,17 @@
 
 .landing {
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* The label column of a record figure. German compounds are long, and the labels are tracked capitals. */
+  --record-label: 8.5rem;
+  --tour-label: 7rem;
   --navy-lit: #2d3f69;
   --navy-crest: #1c2946;
   --navy-floor: #131c33;
+}
+
+.landing[data-lang="de"] {
+  --record-label: 10.25rem;
+  --tour-label: 9.5rem;
 }
 
 /* ── Entrances: the hero's one page-load sequence, in CSS so it never waits for a script ── */
@@ -62,6 +70,24 @@
     opacity: 1;
     scale: 1;
   }
+}
+
+/* The mobile menu fades in, and the contact form and its sent note ease into place. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.landing .menu-in {
+  animation: fade-in 0.28s var(--ease-out) both;
+}
+
+.landing .swap-in {
+  animation: fade-up 0.28s var(--ease-out) both;
 }
 
 /* Each sentence of the headline rises out of its own mask. */
@@ -184,7 +210,8 @@
 
 .landing .hero-float {
   position: relative;
-  padding: 1.25rem;
+  /* Stacked: the top padding is where the two controls sit. */
+  padding: 4rem 1.25rem 1.25rem;
   perspective: 1600px;
 }
 
@@ -217,8 +244,9 @@
 }
 
 .landing .hero-caption {
-  margin-top: 1.25rem;
+  margin: 0;
   max-width: 30rem;
+  padding: 0 1.25rem 1.5rem;
   font-size: 0.8125rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.72);
@@ -228,14 +256,16 @@
   position: absolute;
   z-index: 3;
   top: 1rem;
-  right: 1.25rem;
+  right: 4rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.45rem 0.8rem;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: transparent;
+  /* A tick passing behind the label would cut through it, so the pill has a backing. */
+  background: rgba(19, 28, 51, 0.78);
+  backdrop-filter: blur(6px);
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -247,7 +277,7 @@
 }
 
 .landing .hero-replay:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(46, 60, 94, 0.92);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.4);
 }
@@ -261,7 +291,7 @@
   outline-color: #fff;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   .landing .hero-grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: 0;
@@ -310,16 +340,78 @@
     transform: translateZ(40px);
   }
 
+  /* Top left of the stage: the ticks never pass behind it. */
   .landing .hero-caption {
     position: absolute;
     left: 2.25rem;
-    bottom: 1.5rem;
+    top: 1.6rem;
+    max-width: 19rem;
     margin: 0;
   }
 
+  /* The two controls sit together at the bottom right, clear of the sheets. The toggle's own rule comes later in this file, so it is named twice to win. */
   .landing .hero-replay {
-    top: 1.5rem;
-    right: 1.75rem;
+    top: auto;
+    bottom: 1.25rem;
+    right: 4rem;
+  }
+
+  .landing .motion-toggle.hero-motion {
+    top: auto;
+    bottom: 1.25rem;
+  }
+}
+
+/* Tablets and small laptops: the stage is a full-width panel, and the two sheets sit side by side in it. */
+@media (min-width: 700px) and (max-width: 1199px) {
+  .landing .hero-stage {
+    min-height: 0;
+  }
+
+  .landing .hero-float {
+    padding: 4rem 2rem 0.5rem;
+  }
+
+  .landing .hero-run {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .landing .hero-analysis {
+    margin-top: 2.5rem;
+  }
+
+  .landing .hero-caption {
+    margin: 0;
+    max-width: none;
+    padding: 1.25rem 2rem 1.75rem;
+  }
+}
+
+/* Mid-width desktops: a narrower stage leaves the caption less room before the sheets. */
+@media (min-width: 1200px) and (max-width: 1359px) {
+  .landing .hero-caption {
+    max-width: 13.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* A short window gets a smaller figure, so the sheets sit inside the panel and clear its caption. German is the tallest copy and sets the limit. */
+@media (min-width: 1200px) and (max-height: 860px) {
+  .landing .hero-float {
+    zoom: 0.93;
+  }
+}
+
+@media (min-width: 1200px) and (max-height: 780px) {
+  .landing .hero-float {
+    zoom: 0.85;
+  }
+}
+
+@media (min-width: 1200px) and (max-height: 700px) {
+  .landing .hero-float {
+    zoom: 0.76;
   }
 }
 
@@ -414,26 +506,35 @@
 
 .landing .tour-copy {
   position: relative;
-  padding-left: 1.5rem;
 }
 
-.landing .tour-rail {
+/* The progress bar across the top of a step exists only in the live layout: stacked, there is no progress. */
+.landing .tour-bar {
+  display: none;
   position: absolute;
+  top: 0;
   left: 0;
-  top: 0.2rem;
-  bottom: 0.2rem;
-  width: 2px;
+  right: 0;
+  height: 2px;
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.2);
   overflow: hidden;
 }
 
-.landing .tour-rail-fill {
+.landing .tour-live .tour-bar {
+  display: block;
+}
+
+.landing .tour-live .tour-copy {
+  padding-top: 0.9rem;
+}
+
+.landing .tour-bar-fill {
   position: absolute;
   inset: 0;
   background: #fff;
-  transform-origin: top;
-  transform: scaleY(1);
+  transform-origin: left center;
+  transform: scaleX(1);
 }
 
 .landing .tour-scene {
@@ -491,13 +592,72 @@
   align-self: center;
 }
 
+/* Short screens: the stage tightens its spacing, so the last step and the window never clip. German is the longest copy and sets the limit. */
+@media (max-height: 800px) {
+  .landing .tour-live .tour-inner {
+    padding-top: 4.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .landing .tour-live .tour-steps {
+    margin-top: 1.25rem;
+    row-gap: 1rem;
+  }
+
+  .landing .tour-live .tour-copy p {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .landing .tour-live .tour-inner header p {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 760px) {
+  /* The three steps say what the summary says, so the summary goes first. */
+  .landing .tour-live .tour-inner header p {
+    display: none;
+  }
+
+  .landing .tour-live .tour-inner h2 {
+    font-size: 2rem;
+  }
+}
+
+/* A 1366 by 768 laptop leaves about 650px. The file preview sets the height of the first scene, so it gives up padding; the stage then starts at the top, so any spare pixels fall at the bottom and the heading never slips under the bar. */
+@media (max-height: 700px) {
+  .landing .tour-live .tour-inner {
+    justify-content: flex-start;
+    padding-top: 4.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .landing .tour-live .tour-row {
+    padding-block: 0.5rem;
+  }
+
+  .landing .tour-live .tour-file {
+    padding: 0.75rem;
+  }
+
+  .landing .tour-live .tour-paper {
+    padding-block: 0.75rem;
+  }
+
+  .landing .tour-live .tour-clause {
+    margin-top: 0.5rem;
+  }
+}
+
 /* Inside the scenes */
 
 .landing .tour-row {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr);
+  grid-template-columns: var(--tour-label) minmax(0, 1fr);
   column-gap: 1rem;
   align-items: baseline;
   padding-block: 0.7rem;
@@ -549,60 +709,92 @@
 }
 
 /* ── Where your contract goes ──
- * A grid of four nodes. On a phone Contract Lens, the firm and the database
- * stand in one column with the outside AI providers beside Contract Lens; from
- * 768px the firm, Contract Lens and the providers run across, with the
- * database under Contract Lens. The lines between them fill in the direction
- * the data moves (`--p`, 0 to 1, set by YourData.tsx).
+ * A grid of four nodes on a navy layer. On a phone Contract Lens, the firm and
+ * the database stand in one column with the outside AI providers beside
+ * Contract Lens; from 768px the firm, Contract Lens and the providers run
+ * across, with the database under Contract Lens. The lines between them fill in
+ * the direction the data moves (`--p`, 0 to 1, set by YourData.tsx). Nodes are
+ * white sheets, like the product's own screens; a small lamp in each corner
+ * lights as the data reaches it.
  */
 
 .landing .flow {
   display: grid;
-  align-items: center;
+  align-items: stretch;
   column-gap: 0.25rem;
+  row-gap: 0.5rem;
   grid-template-columns: minmax(0, 1fr) 5.5rem minmax(0, 1fr);
   grid-template-areas:
     "firm . ."
     "fl . ."
     "lens la ai"
-    "dll dlc dlc"
+    "dll . ."
     "db . .";
 }
 
 @media (min-width: 768px) {
   .landing .flow {
-    grid-template-columns: minmax(0, 1fr) 6.25rem minmax(0, 1fr) 6.25rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 8rem minmax(0, 1fr) 8rem minmax(0, 1fr);
     grid-template-areas:
       "firm fl lens la ai"
-      ". . dll dlc dlc"
+      ". . dll . ."
       ". . db . .";
   }
 }
 
 .landing .flow-node {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.15rem;
-  padding: 0.9rem 1rem;
+  /* On a phone the node is about 120px wide. The lamp gets its own strip along the top, so the text can use the whole width of the card. */
+  padding: 1.45rem 0.85rem 0.95rem;
   border-radius: 14px;
-  border: 1px solid #e1e2dd;
   background: #fff;
+  color: #16181d;
   box-shadow:
-    0 1px 2px rgba(26, 39, 66, 0.06),
-    0 14px 26px -18px rgba(26, 39, 66, 0.3);
-  transition: border-color 0.3s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 5px rgba(8, 13, 28, 0.25),
+    0 22px 40px -16px rgba(6, 10, 24, 0.55);
+}
+
+/* Lit by default, so the finished diagram shows without the script. */
+.landing .flow-lamp {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.95rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: 1.5px solid #16181d;
+  background: #16181d;
 }
 
 .landing .flow-node-title {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.005em;
-  color: #16181d;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .landing .flow-node-note {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: #5f6670;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+@media (min-width: 768px) {
+  .landing .flow-node {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .landing .flow-node-title {
+    padding-right: 1rem;
+    font-size: 1.0625rem;
+  }
 }
 
 .landing .flow-links {
@@ -617,7 +809,7 @@
   --p: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.35rem;
 }
 
 .landing .flow-label {
@@ -626,9 +818,10 @@
   justify-content: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  line-height: 1.2;
+  line-height: 1.25;
   text-align: center;
-  color: #5f6670;
+  text-wrap: balance;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .landing .flow-track {
@@ -636,14 +829,14 @@
   display: block;
   height: 2px;
   border-radius: 2px;
-  background: rgba(22, 24, 29, 0.14);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .landing .flow-fill {
   position: absolute;
   inset: 0;
   border-radius: 2px;
-  background: #16181d;
+  background: #fff;
   transform-origin: left center;
   transform: scaleX(var(--p));
 }
@@ -655,7 +848,7 @@
   translate: 0 -50%;
   width: 0;
   height: 0;
-  border-left: 6px solid #16181d;
+  border-left: 6px solid #fff;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   opacity: calc(0.25 + 0.75 * var(--p));
@@ -670,7 +863,7 @@
   right: auto;
   left: -1px;
   border-left: 0;
-  border-right: 6px solid #16181d;
+  border-right: 6px solid #fff;
 }
 
 /* Vertical lines: the line stands on the left and the label sits beside it. */
@@ -705,7 +898,7 @@
   translate: -50% 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 6px solid #16181d;
+  border-top: 6px solid #fff;
   border-bottom: 0;
 }
 
@@ -717,11 +910,11 @@
   text-align: left;
 }
 
-/* From 768px the line from the firm to Contract Lens runs across. */
+/* From 768px the line from the firm to Contract Lens runs across, and labels keep to one line. */
 @media (min-width: 768px) {
   .landing .flow-link[data-axis="fl"] {
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.35rem;
     min-height: 0;
   }
 
@@ -744,7 +937,7 @@
     translate: 0 -50%;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
-    border-left: 6px solid #16181d;
+    border-left: 6px solid #fff;
     border-right: 0;
   }
 
@@ -754,20 +947,57 @@
     justify-content: center;
     text-align: center;
   }
+
+  .landing .flow-label {
+    white-space: nowrap;
+  }
 }
 
-/* What Contract Lens stores: two kinds of thing travel on the one line, and only one kind is locked. */
+/* What Contract Lens stores: two kinds of thing travel on the one line, and only one kind is locked.
+   The chips hang off the right of the line, so they stay beside it at any width. */
 .landing .flow-chips {
-  align-self: center;
+  position: absolute;
+  left: calc(50% + 0.9rem);
+  top: 50%;
+  translate: 0 -50%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.4rem;
-  padding-left: 0.75rem;
+  white-space: nowrap;
+}
+
+.landing .flow-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+  /* The longest chip (German) must end inside the card column on a 360px phone. */
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (min-width: 480px) {
+  .landing .flow-chip {
+    font-size: 0.75rem;
+  }
+}
+
+/* The locked chip is solid: it is the one the product protects. */
+.landing .flow-chip-locked {
+  border-color: #fff;
+  background: #fff;
+  font-weight: 500;
+  color: #16181d;
 }
 
 /* The line to the database stands under the middle of Contract Lens. */
 .landing .flow-link[data-axis="y"] {
+  position: relative;
   justify-content: center;
 }
 
@@ -775,35 +1005,24 @@
   margin-left: 0;
 }
 
-/* The step the diagram is on carries a rail, and an ink numeral. Text is never dimmed. */
-.landing .flow-rail {
+/* Each step carries a bar across its top that fills as the diagram reaches it. Lit by default. */
+.landing .step-bar {
   position: absolute;
+  top: 0;
   left: 0;
-  top: 0.15rem;
-  bottom: 0.15rem;
-  width: 2px;
+  right: 0;
+  height: 2px;
   border-radius: 2px;
-  background: #16181d;
-  transform-origin: top;
-  transform: scaleY(0);
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
-.landing .flow-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  border: 1px solid #e1e2dd;
+.landing .step-bar-fill {
+  position: absolute;
+  inset: 0;
   background: #fff;
-  font-size: 0.75rem;
-  line-height: 1.3;
-  color: #3f444c;
-}
-
-.landing .flow-chip-locked {
-  border-color: #16181d;
-  color: #16181d;
+  transform-origin: left center;
+  transform: scaleX(1);
 }
 
 /* ── The permissions matrix ── */
@@ -820,22 +1039,20 @@
   color: #5f6670;
 }
 
-.landing .roles-tick {
+/* A check for "can", a short dash for "cannot". The checks grow in column by column. */
+.landing .roles-mark {
+  display: inline-flex;
+  color: #16181d;
+}
+
+.landing .roles-dash {
   display: inline-block;
-  width: 3px;
+  width: 0.625rem;
+  height: 2px;
   border-radius: 2px;
   vertical-align: middle;
-}
-
-.landing .roles-tick-on {
-  height: 1.5rem;
-  background: #16181d;
-}
-
-.landing .roles-tick-off {
-  width: 2px;
-  height: 0.5rem;
-  background: #cfd1cc;
+  /* 3:1 against the picked column's pale blue as well as against white. */
+  background: #80858c;
 }
 
 /* Five columns do not fit a phone: only the picked role's column shows. */
@@ -896,7 +1113,8 @@
 
 /* ── The contact block: a navy layer with a rounded top, and the ruler field behind it ── */
 
-.landing #contact {
+.landing #contact,
+.landing #your-data {
   position: relative;
   z-index: 1;
   margin-top: -2rem;
@@ -908,4 +1126,77 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+}
+
+/* ── Pause motion: the control, and what it stops ── */
+
+.landing .motion-toggle {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(19, 28, 51, 0.78);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.82);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.landing .motion-toggle:hover {
+  background: rgba(46, 60, 94, 0.92);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.landing .motion-toggle:focus-visible {
+  outline-color: #fff;
+}
+
+.landing .hero-motion {
+  top: 1rem;
+  right: 1.25rem;
+}
+
+.landing .tone-navy > .contact-backdrop .contact-motion {
+  pointer-events: auto;
+  left: 1.5rem;
+  bottom: 1.25rem;
+}
+
+/* With motion paused, the pulse on "Save record" holds still too. */
+html[data-motion-paused] .landing .run.is-waiting .hero-save {
+  animation: none;
+}
+
+/* The landing is a light page: native controls, scrollbars and the resize handle stay light on a dark system. */
+html:has(.landing) {
+  color-scheme: light;
+}
+
+/* A question under the pointer: its mark darkens, so the row reads as pressable. */
+.landing .faq-summary:hover .faq-mark span {
+  background: #3f444c;
+}
+
+
+/* Selected text: on navy, a light veil under white text. Inside a white sheet, mist and ink again. */
+.landing .tone-navy ::selection,
+.landing .hero-stage ::selection {
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.landing .tone-navy .on-paper ::selection,
+.landing .tour-window ::selection,
+.landing .flow-node ::selection,
+.landing .hero-sheet ::selection {
+  background: #e8edf3;
+  color: #16181d;
 }

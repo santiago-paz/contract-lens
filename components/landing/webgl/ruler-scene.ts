@@ -12,6 +12,7 @@ import {
   WebGLRenderer,
 } from 'three';
 
+import { motionPause } from '../motion/pause';
 import { rulerState } from './ruler-state';
 
 /*
@@ -88,7 +89,7 @@ const VERTEX = /* glsl */ `
     // Far rows and the sides dissolve into the ground.
     float depth = clamp((z + 12.0) / 16.0, 0.0, 1.0);
     float edge = 1.0 - smoothstep(uHalf * 0.5, uHalf, abs(x));
-    vAlpha = (0.03 + 0.97 * pow(depth, 1.35)) * edge * uFade;
+    vAlpha = (0.05 + 0.95 * pow(depth, 1.15)) * edge * uFade;
     vKind = aKind;
     vY = position.y;
     vHeat = heat;
@@ -107,8 +108,8 @@ const FRAGMENT = /* glsl */ `
 
   void main() {
     vec3 col = vKind > 1.5 ? uRed : (vKind > 0.5 ? uBright : uInk);
-    float tip = 0.3 + 0.7 * vY;
-    float weight = vKind > 1.5 ? 1.15 : (vKind > 0.5 ? 0.55 : 0.34);
+    float tip = 0.45 + 0.55 * vY;
+    float weight = vKind > 1.5 ? 1.25 : (vKind > 0.5 ? 0.85 : 0.52);
     float heat = clamp(vHeat, 0.0, 1.0);
     float a = vAlpha * tip * weight + heat * 0.4 * vAlpha;
     gl_FragColor = vec4(mix(col, uBright, heat * 0.75), clamp(a, 0.0, 1.0));
@@ -192,7 +193,7 @@ export function createRulerScene(canvas: HTMLCanvasElement, options: RulerSceneO
     uTime: { value: 0 },
     uAmp: { value: options.intensity },
     uResolution: { value: new Vector2(1, 1) },
-    uLineWidth: { value: 1.3 },
+    uLineWidth: { value: 1.5 },
     uLens: { value: new Vector2(0, -3) },
     uLensR: { value: 2.1 },
     uLensGain: { value: 0.75 * options.intensity },
@@ -216,10 +217,6 @@ export function createRulerScene(canvas: HTMLCanvasElement, options: RulerSceneO
   mesh.frustumCulled = false;
   scene.add(mesh);
 
-  // Development only: a handle for tuning the look from the console.
-  if (process.env.NODE_ENV !== 'production') {
-    (window as unknown as { __ruler?: unknown }).__ruler = { uniforms, camera, cameraHome, lookAt, material };
-  }
 
   // --- sizing -------------------------------------------------------------
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -290,10 +287,13 @@ export function createRulerScene(canvas: HTMLCanvasElement, options: RulerSceneO
     const elapsed = last ? now - last : 0;
     const dt = Math.min(elapsed / 1000, 0.05);
     last = now;
-    clock += dt;
+    // "Pause motion" freezes the sway and the idle drift. The lens still follows the pointer,
+    // because that motion is the visitor's own.
+    const frozen = motionPause.get();
+    if (!frozen) clock += dt;
 
     // Idle, the lens drifts along a slow path, so the field is alive without a pointer.
-    if (!pointerActive) {
+    if (!pointerActive && !frozen) {
       lensTarget.set(Math.sin(clock * 0.21) * 7.5, -3.2 + Math.cos(clock * 0.17) * 2.4);
     }
     lensNow.lerp(lensTarget, 1 - Math.exp(-dt * (pointerActive ? 7 : 1.6)));

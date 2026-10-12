@@ -28,7 +28,7 @@ export function Hero() {
         <div className="hero-copy">
           <h1
             id="hero-title"
-            className="max-w-[11em] text-[clamp(2.25rem,9.6vw,2.625rem)] leading-[1.04] sm:text-[3.25rem] min-[1100px]:text-[clamp(3rem,3.9vw,3.75rem)]"
+            className="max-w-[11em] text-[clamp(2.25rem,9.6vw,2.625rem)] leading-[1.04] sm:text-[3.25rem] min-[1200px]:text-[clamp(3rem,3.9vw,3.75rem)]"
           >
             <span className="hero-line" style={at(0)}>
               <span>{t.hero.titleLine1}</span>

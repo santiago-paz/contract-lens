@@ -14,7 +14,7 @@ export function Faq() {
   const { t } = useLanguage();
 
   return (
-    <Section id="faq" title={t.faq.title} layout="split">
+    <Section id="faq" title={t.faq.title} tone="ledger" layout="split">
       <div className="divide-y divide-rule border-y border-rule">
         {t.faq.items.map((item) => (
           <details key={item.q} name="faq" className="faq-item group">
