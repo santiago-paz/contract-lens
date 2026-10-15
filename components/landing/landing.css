@@ -202,8 +202,8 @@
   opacity: 1;
 }
 
-/* The figure: two sheets of the product, in slight perspective. The figure itself is not
-   positioned, so the caption measures from the stage and the sheets float on their own. */
+/* The figure: two sheets of the product. The figure itself is not positioned, so the
+   caption measures from the stage and the sheets float on their own. */
 .landing .hero-figure {
   margin: 0;
 }
@@ -212,12 +212,6 @@
   position: relative;
   /* Stacked: the top padding is where the two controls sit. */
   padding: 4rem 1.25rem 1.25rem;
-  perspective: 1600px;
-}
-
-.landing .hero-parallax,
-.landing .hero-run {
-  transform-style: preserve-3d;
 }
 
 .landing .hero-run {
@@ -323,10 +317,6 @@
     transform: translateY(-50%);
   }
 
-  .landing .hero-parallax {
-    transform: rotateY(-6deg) rotateX(2.5deg);
-  }
-
   .landing .hero-run {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
     align-items: start;
@@ -334,10 +324,6 @@
 
   .landing .hero-analysis {
     margin-top: 3.5rem;
-  }
-
-  .landing .hero-record {
-    transform: translateZ(40px);
   }
 
   /* Top left of the stage: the ticks never pass behind it. */

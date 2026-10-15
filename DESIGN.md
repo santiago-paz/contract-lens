@@ -328,7 +328,7 @@ On a phone everything stacks into one column. The matrix shows only the picked r
 - **768px (`md`):** The data-flow diagram runs across in five columns, and the facts sit two across. Below 768px the matrix shows one role.
 - **1024px (`lg`):** The full nav bar, the split layouts, 112px section padding, the larger lead and four data-flow steps across.
 - **1100px wide and 640px tall:** The tour goes live (a script media query, with motion allowed).
-- **1200px:** The hero's two-column stage. The pointer leans the figure (fine pointer only). The replay and pause controls move to the bottom right of the stage.
+- **1200px:** The hero's two-column stage. The replay and pause controls move to the bottom right of the stage.
 - **1200px to 1359px:** The stage caption narrows to 13.5rem at 12px.
 - **1280px (`xl`):** The nav gaps widen.
 
@@ -409,11 +409,11 @@ The page's pictures are the product's own windows, built in code with sample dat
 ### Hero stage
 Paper on the left, and a floating navy panel on the right, with the product across the line between them.
 - **Panel:** A navy panel with the stage ground (see Colors), a 28px radius from 1200px (24px below) and a 16px inset from the right edge and the bottom.
-- **Sheets:** The analysis sheet and the record sheet float on the panel in slight perspective (`rotateY(-6deg) rotateX(2.5deg)` under a 1600px perspective), with the record 40px nearer. From 1200px the analysis sheet crosses the panel's left edge by 48px, so the product sits across the line between paper and navy.
+- **Sheets:** The analysis sheet and the record sheet float on the panel, flat and square to the screen. They do not tilt, and the pointer does not move them. From 1200px the analysis sheet crosses the panel's left edge by 48px, so the product sits across the line between paper and navy.
 - **Caption:** A 13px caption in white at 72% names the figure as a sample. From 1200px it sits at the top left of the panel, clear of the sheets.
 - **Controls:** The replay pill and the pause control sit together at the bottom right of the panel from 1200px, and at the top right below that. The replay pill stays hidden until a run has finished, and it is not drawn under reduced motion.
 - **Entrance:** Plain CSS, so it never waits for script. Each sentence of the headline rises out of its own mask over 1s, 110ms apart. The lead and the buttons fade up over 0.9s, 120ms apart. The panel scales in over 1.1s, and the sheets rise over 1.1s at 0.35s and 0.5s.
-- **Run:** One GSAP timeline starts 0.95s after load and plays once. The log lines land at 0.4, 0.9, 1.5, 2.0, 4.2 and 4.6 seconds, each typed in by a wipe. The record's fields fill in from 2.4s, 280ms apart, and grey placeholder bars hold their place until each value lands. The progress bar grows in two steps, and the step label counts them. The summary arrives at about 4.1s. "Save record" arrives at 4.7s and then pulses its ring. The replay pill returns at 5.6s. With reduced motion, the finished figure appears at once. With a mouse on a wide screen, the figure leans a few degrees toward the pointer.
+- **Run:** One GSAP timeline starts 0.95s after load and plays once. The log lines land at 0.4, 0.9, 1.5, 2.0, 4.2 and 4.6 seconds, each typed in by a wipe. The record's fields fill in from 2.4s, 280ms apart, and grey placeholder bars hold their place until each value lands. The progress bar grows in two steps, and the step label counts them. The summary arrives at about 4.1s. "Save record" arrives at 4.7s and then pulses its ring. The replay pill returns at 5.6s. With reduced motion, the finished figure appears at once.
 
 ### Statement
 The five questions every contract raises, and the one line that answers them, set large in the serif as one paragraph. As the visitor scrolls past, the words light up one after another: SplitText splits the paragraph into words, and the scroll scrubs their opacity from 0.48 to 1. Nothing moves from its place. The unlit words stay at 3:1 against the page. Without script, or with reduced motion, the whole statement is lit.

@@ -7,7 +7,7 @@ import { ExtractSheets, stepLabel, TOTAL_STEPS } from './Extract';
 import { useLanguage } from './LanguageContext';
 import { MotionToggle } from './MotionToggle';
 import { gsap, useGSAP } from './motion/gsap';
-import { FINE_POINTER, NO_PREFERENCE, usePrefersReducedMotion, WIDE } from './motion/media';
+import { usePrefersReducedMotion } from './motion/media';
 import { RulerField } from './webgl/RulerField';
 import { rulerState } from './webgl/ruler-state';
 
@@ -19,13 +19,9 @@ const FIELD_EVERY = 0.28;
 /** Log lines that close a tracked step: the type is known, the details are read. */
 const STEP_DONE_AT_LINE = [2, 4];
 
-/** The figure's resting tilt, in degrees. The pointer leans it a few degrees either way. */
-const BASE_RY = -6;
-const BASE_RX = 2.5;
-
 /**
  * The hero's stage: a navy panel holding the ruler field and the analysis of
- * one contract, in slight perspective.
+ * one contract.
  *
  * The run is one GSAP timeline, played once the figure has settled: log lines
  * land, the fields fill in while the details are read, and "Save record" waits
@@ -42,15 +38,13 @@ export function HeroStage() {
   const reduced = usePrefersReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
   const runRef = useRef<HTMLDivElement>(null);
-  const parallaxRef = useRef<HTMLDivElement>(null);
   const replayRef = useRef<HTMLButtonElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useGSAP(
     () => {
       const run = runRef.current;
-      const stage = stageRef.current;
-      if (!run || !stage) return;
+      if (!run) return;
 
       if (reduced) {
         run.dataset.run = 'done';
@@ -156,43 +150,8 @@ export function HeroStage() {
       // Start once the entrance has settled.
       const start = gsap.delayedCall(0.95, () => tl.play(0));
 
-      // Pointer depth: the figure leans toward the pointer. Wide screens with a mouse only.
-      const mm = gsap.matchMedia();
-      mm.add(`${FINE_POINTER} and ${NO_PREFERENCE} and ${WIDE}`, () => {
-        const figure = parallaxRef.current;
-        if (!figure) return;
-        gsap.set(figure, { rotationY: BASE_RY, rotationX: BASE_RX });
-        const ry = gsap.quickTo(figure, 'rotationY', { duration: 0.9, ease: 'power3' });
-        const rx = gsap.quickTo(figure, 'rotationX', { duration: 0.9, ease: 'power3' });
-        const px = gsap.quickTo(figure, 'x', { duration: 1.1, ease: 'power3' });
-        const py = gsap.quickTo(figure, 'y', { duration: 1.1, ease: 'power3' });
-
-        const onMove = (event: PointerEvent) => {
-          const rect = stage.getBoundingClientRect();
-          const nx = (event.clientX - rect.left) / rect.width - 0.5;
-          const ny = (event.clientY - rect.top) / rect.height - 0.5;
-          ry(BASE_RY + nx * 7);
-          rx(BASE_RX - ny * 5);
-          px(nx * -14);
-          py(ny * -10);
-        };
-        const onLeave = () => {
-          ry(BASE_RY);
-          rx(BASE_RX);
-          px(0);
-          py(0);
-        };
-        stage.addEventListener('pointermove', onMove);
-        stage.addEventListener('pointerleave', onLeave);
-        return () => {
-          stage.removeEventListener('pointermove', onMove);
-          stage.removeEventListener('pointerleave', onLeave);
-        };
-      });
-
       return () => {
         start.kill();
-        mm.revert();
         timelineRef.current = null;
         rulerState.sweep = -1;
         rulerState.pulse = -1;
@@ -216,10 +175,8 @@ export function HeroStage() {
 
       <figure className="hero-figure" aria-label={t.hero.figureLabel}>
         <div className="hero-float">
-          <div ref={parallaxRef} className="hero-parallax">
-            <div ref={runRef} className="hero-run run" aria-hidden="true">
-              <ExtractSheets />
-            </div>
+          <div ref={runRef} className="hero-run run" aria-hidden="true">
+            <ExtractSheets />
           </div>
         </div>
         <figcaption className="hero-caption">{t.hero.figureCaption}</figcaption>
